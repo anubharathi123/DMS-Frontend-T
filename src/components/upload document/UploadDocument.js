@@ -25,18 +25,16 @@ const UploadDocument = () => {
 
   const handleFileChange = (e, type) => {
     const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFiles((prevFiles) => ({
-        ...prevFiles,
-        [type]: selectedFile,
-      }));
+    setFiles((prevFiles) => ({
+      ...prevFiles,
+      [type]: selectedFile,
+    }));
 
-      // Mark this file type as uploaded
-      setUploadedFilesStatus((prevState) => ({
-        ...prevState,
-        [type]: true,
-      }));
-    }
+    // Mark this file type as uploaded
+    setUploadedFilesStatus((prevState) => ({
+      ...prevState,
+      [type]: true,
+    }));
   };
 
   const handleCancelUpload = (type) => {
@@ -67,7 +65,7 @@ const UploadDocument = () => {
 
       {/* Declaration Number Section */}
       <div className="declaration-number-container">
-        <p className="declaration-number"><b>Declaration Number </b></p>
+        <p className="declaration-number"><b>Declaration Number:</b></p>
         <input 
           type="text" 
           value={1234} 
@@ -98,8 +96,6 @@ const UploadDocument = () => {
                         type="checkbox" 
                         className="checkbox" 
                         disabled={uploadedFilesStatus[docType]} 
-                        checked={uploadedFilesStatus[docType]} 
-                        readOnly
                       />
                       {docType.charAt(0).toUpperCase() + docType.slice(1).replace(/([A-Z])/g, ' $1')}
                     </label>

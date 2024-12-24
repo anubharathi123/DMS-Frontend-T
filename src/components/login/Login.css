@@ -1,68 +1,35 @@
-/* Container for login form */
-.login-container {
+/* Login.css */
+.container {
   width: 100%;
-  /* max-width: 400px; */
-  /* margin: 16px auto; */
-  /* padding: 20px; */
-  background-color: #0b3041;
+  max-width: 400px;
+  margin: 16px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
   height: 492px;
 }
 
-.login-container{
-  /* width: 100%; */
-    /* max-width: 400px; */
-    /* margin: 16px auto; */
-    /* padding: 20px; */
-    /* background-color: #ff0f0f; */
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    height: 100%;
-    width: 100%;
-    justify-items: center;
-}
-
-.login-inner-container{
-  display: block;
-
-    background-color: #0b3041;
-    max-width: 400px;
-    width: 100%;
-    height: 89%;
-    align-content: center;
-
-}
-.login-inner-container1{
-  background-color: white;
-  border-radius: 55px;
-}
-
-
-/* Heading */
-h1 {
+.login-h1 {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
-  margin-bottom: 20px !important;
 }
 
-/* Form input styling */
-.form-group {
+.login-form-group {
   margin-bottom: 15px;
 }
 
-label {
+.login-label {
   display: block;
   font-size: 14px;
   color: #333;
   margin-bottom: 5px;
 }
 
-input {
+.login-input {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -80,34 +47,34 @@ input:focus {
   color: red;
 }
 
-/* Submit button styling */
 .login-btn {
-  width: 64%;
+  width: 40%;
   padding: 8px;
-  background-color: #5fc3d7; /* Primary color */
+  align-self: center;
+  background-color: #5fc3d7;
   color: white;
   border: none;
   border-radius: 13px;
   font-size: 14px;
   cursor: pointer;
-  text-align: center;
-  margin-top: -24px;
+  margin-top: 47px;
+ 
 }
 
-button:hover {
-  background-color: #46a1b6; /* Darker secondary color */
+.login-button:hover {
+  background-color:#5fc3d7;
 }
 
-/* Forgot Password link styling */
 .forgot-password-link {
   text-align: left;
-  margin-top: -17px;
+ 
+
 }
 
 .forgot-password-link a {
-  color: #5fc3d7; /* Primary color */
+  color: #5fc3d7;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 12px;
   text-align-last: right;
 }
 
@@ -123,7 +90,7 @@ button:hover {
   text-align: center;
 }
 
-.success {
+.login-success {
   background-color: #d4edda;
   color: #155724;
 }
@@ -150,15 +117,17 @@ button:hover {
   margin-bottom: 5px;
 }
 
-/* Form styling */
-
+form {
+  display: flex;
+  flex-direction: column;
+}
 
 form input,
 form button {
   margin-bottom: 10px;
 }
 
-form button {
+.login-form button {
   margin-top: 0px;
 }
 
@@ -167,12 +136,11 @@ form button {
   margin-top: 20px;
 }
 
-form button[type="submit"] {
+.form-button[type="submit"] {
   text-align-last: center;
   align-self: center;
 }
-
-/* form {
+.login-form {
   max-width: 345px;
   margin: auto;
   padding: 25px;
@@ -180,14 +148,17 @@ form button[type="submit"] {
   border-radius: 52px;
   background-color: #f9f9f9;
   height: 312px;
-  display: flex;
-  flex-direction: column;
-} */
-
-.center-button {
+}
+.login-center-button {
   margin: 0 auto; /* This will center the button */
 }
-
 .right-link {
   margin-left: auto; /* This will push the link to the right side */
+}
+.change-password-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5; /* Example background color */
 }

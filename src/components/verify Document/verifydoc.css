@@ -4,8 +4,8 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width:78%;
-  height: 80%;
+  width:78.8%;
+  height: 82%;
   margin-top: 64px;
   margin-left: 240px;
   background: #fcfbfb;
@@ -301,5 +301,3 @@ h2 {
   position: fixed;
   z-index: 9999; /* Ensure the date picker appears above other elements */
 }
-
-
