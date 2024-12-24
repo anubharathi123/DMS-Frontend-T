@@ -1,0 +1,33 @@
+/* App.css */
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  /* background-color: #f4f4f4; */
+  place-content: center;
+  place-content: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body{
+  /* background-color: #0b3041; */
+}
+
+.Inner_content_indent
+{
+  margin-left: 250px;
+  margin-top: 80px;
+  margin-top: -380px;
+  justify-items: center;
+    width: -webkit-fill-available;
+}
+.content {
+  margin-left: 250px; /* Add left margin equal to the sidebar's width */
+  flex: 1;
+  padding: 20px;
+  background-color: #fff; /* White background for the content area */
+  overflow-y: auto; /* Allow content scrolling if needed */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+

@@ -1,0 +1,157 @@
+/* Login.css */
+.container {
+  width: 100%;
+  max-width: 400px;
+  margin: 16px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  height: 492px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.required {
+  color: red;
+}
+
+button {
+  width: 64%;
+  padding: 8px;
+  background-color: #5fc3d7;
+  color: white;
+  border: none;
+  border-radius: 13px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  align-content: center;
+  /* margin-top: -24px; */
+}
+
+button:hover {
+  background-color:#5fc3d7;
+}
+
+forgot-password-link {
+  text-align: left;
+  margin-top: -17px;
+
+}
+
+.forgot-password-link a {
+  color: #5fc3d7;
+  text-decoration: none;
+  font-size: 13px;
+  text-align-last: right;
+}
+
+.forgot-password-link a:hover {
+  text-decoration: underline;
+}
+
+/* Success and Failure messages */
+.login-status {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.failure {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.messages {
+  margin-bottom: 20px;
+}
+
+.messages ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.messages li {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input,
+form button {
+  margin-bottom: 10px;
+}
+
+form button {
+  margin-top: 0px;
+}
+
+/* OTP Section */
+.form-group.otp {
+  margin-top: 20px;
+}
+
+form button[type="submit"] {
+  text-align-last: center;
+  align-self: center;
+}
+form {
+  max-width: 345px;
+  margin: auto;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 52px;
+  background-color: #f9f9f9;
+  height: 312px;
+}
+center-button {
+  margin: 0 auto; /* This will center the button */
+}
+.right-link {
+  margin-left: auto; /* This will push the link to the right side */
+}

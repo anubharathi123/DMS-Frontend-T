@@ -1,0 +1,76 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 60vmin;
+  pointer-events: none;
+}
+
+.auditpage {
+  background: rgb(248, 249, 250);
+}
+
+h1{
+  font-family:'Times New Roman', Times, serif;
+  text-align: center;
+}
+
+.to-date .from-date .actions .mail-id{
+  margin-left: 20%;
+}
+
+.audit-input {
+  margin-left: 15px;
+  width: 250px;
+}
+
+.from-date {
+  margin-right: 15px;
+}
+
+.to-date {
+  margin-left: 25px;
+}
+
+.apply-filterbtn {
+  margin-left: 30%;
+  width: 110px;
+  border: none;
+  background: #5fc3d7;
+  border-radius: 3px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.apply-filterbtn:hover {
+  background: #0f3c46;
+  color: white;
+}
+
+
+.audit-table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 40%;
+  margin-left: 30%;
+}
+
+th {
+  text-align: center;
+  padding: 20px;
+}
+
+.editbtn {
+  border: none;
+  background:none;
+  cursor: pointer;
+
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+

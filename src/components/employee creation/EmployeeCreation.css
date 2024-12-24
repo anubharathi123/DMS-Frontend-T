@@ -1,0 +1,106 @@
+/* Container Styles */
+.emp-creation-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 210px; /* Adjusted for the AsideBar width */
+  margin-top: 100px;
+}
+
+.emp-inner-container{
+
+}
+
+.emp-creation-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  margin-left: 110px;
+  margin-top: -7px;
+}
+
+/* Form Styles */
+.emp-creation-form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 250px;
+}
+
+.emp-creation-form-group {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+/* Unique Label Styling for Employee Creation Form */
+.emp-creation-label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  min-width: 115px;
+  text-align: left;
+}
+
+.emp-creation-mandatory {
+  color: red;
+  font-size: 18px;
+  margin-left: 5px;
+}
+
+/* Access Dates Styles */
+.emp-creation-access-dates {
+  display: flex;
+  gap: 20px;
+}
+
+.emp-creation-access-date {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Input Fields */
+.emp-creation-input {
+  width: 50%;
+  max-width: 195px;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.emp-creation-input::placeholder {
+  font-style: italic;
+  color: #aaa;
+}
+
+/* Input Field Alignment */
+.emp-creation-input,
+.emp-creation-select {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* Submit Button */
+.emp-creation-submit-button {
+  width: 35%;
+  padding: 10px 20px;
+  background-color: #5eb6d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.emp-creation-submit-button:hover {
+  background-color: #4ba3bf;
+}

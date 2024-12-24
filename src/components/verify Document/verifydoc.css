@@ -1,0 +1,296 @@
+.verify-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width:78%;
+  height: 80%;
+  margin-top: 64px;
+  margin-left: 240px;
+  background-color: #f9f9f9;
+  position: absolute;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-section {
+  margin-top: 20px;
+}
+
+.search-btn {
+  margin-left: -60px;
+  margin-right: 30px;
+  margin-top: 1px;
+  width: 25px;
+  border: none;
+  background:#5fc3d7;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background: #0f3c46;
+  color: white;
+}
+
+.declaration-no {
+  font-size: 1.1em;
+  color: black;
+}
+
+.declaration-number {
+  margin-left: 25%;
+  margin-bottom: 20px;
+}
+
+.declaration-number label {
+  font-size: 18px;
+}
+
+.declaration-number input {
+  padding: 5px;
+  margin-right: 60px;
+  width: 180px;
+  border-color: black;
+  border-style:groove ;
+  border-width: 1px;
+}
+
+.suggestion-box {
+  position: absolute;
+  margin-top: 5px;
+  margin-left: 180px;
+  border-radius:5px ;
+  list-style-type: none;
+  width: 150px;
+  height:100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #f7f5f5;
+  cursor: pointer;
+}
+
+.suggestion-item {
+  margin-top: 15px;
+  padding: 5px;
+  border-radius:6px ;
+}
+
+.suggestion-item:hover {
+  background:#535353;
+  color: whitesmoke;
+  width: 120px;
+}
+
+.approvebtn1 {
+  cursor: pointer;
+  border: none;
+  background: #5fc3d7;
+  margin-top: 1px;
+  border-radius: 4px;
+  width: 10%;
+  padding: 5px;
+
+}
+
+.approvebtn1:hover {
+  background: #0f3c46;
+  color: white;
+}
+
+.rejectbtn1 {
+  cursor: pointer;
+  border: none;
+  background: #5fc3d7;
+  margin-top: 1px;
+  border-radius: 4px;
+  width: 10%;
+  padding: 5px;
+}
+
+.rejectbtn1:hover {
+  background: #0f3c46;
+  color: white;
+}
+
+.show-doc-type-btn {
+  cursor: pointer;
+  border: none;
+  margin-left: 1px;
+  margin-top: -3px;
+  background:none;
+  border-radius: 4px;
+  width: 22px;
+  height: 22px;
+  position:absolute;
+  filter: invert(1);
+}
+
+
+.calendarbtn {
+  cursor: pointer;
+  border: none;
+  background:none;
+  margin-left: 5px;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.verifydoc-dropdown-list {
+  position: fixed;
+  background: white;
+  border: 1px solid #ccc;
+  margin-top: 2px;
+  margin-left: 29px;
+  color: black;
+  border-radius: 4px;
+  z-index: 1000;
+  padding: 10px;
+  list-style-type: none;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.doc-list {
+  list-style-type:none;
+  padding: 0;
+  font-weight:lighter;
+}
+
+.allbtn {
+ padding: 5px; 
+  cursor: pointer;
+}
+
+.allbtn:hover {
+  background: rgb(77, 73, 73);
+  color: white;
+}
+
+.declaration {
+  padding: 5px; 
+  cursor: pointer;
+}
+
+.declaration:hover {
+  background: rgb(77, 73, 73);
+  color: white;
+}
+
+.invoice {
+  padding: 5px; 
+  cursor: pointer;
+}
+
+.invoice:hover {
+  background: rgb(77, 73, 73);
+  color: white;
+}
+
+.packing-list {
+  padding: 5px; 
+  cursor: pointer;
+}
+
+.packing-list:hover {
+  background: rgb(77, 73, 73);
+  color: white;
+}
+.document-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.document-table th {
+  color: white;
+  padding: 10px;
+}
+.document-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align:center;
+}
+
+.document-table th {
+  background-color: #156082;
+}
+
+.date-picker-header {
+  padding: 5px;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  border: none;
+}
+
+.calendar-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 20px;
+  color: #666;
+  margin-left: 10px;
+}
+
+.reset-btn {
+  cursor: pointer;
+  border: none;
+  background:none;
+  border-radius: 4px;
+  margin-left: 4px;
+  width: 15%;
+  height: 15%;
+  padding: 5px;
+}
+
+.reset-btn:hover {
+  background: #706b6b;
+  color: white;
+}
+
+.dropdown-arrow {
+  width: 24px;
+  height:24px;
+  margin-top: -1px;
+  margin-left: -6px;
+}
+
+.dropdown-arrow:hover {
+  filter:invert(5);
+}
+.doc-type-filter {
+  margin-bottom: 20px;
+  margin-left: 25%;
+}
+
+.doc-type-filter select {
+  padding: 5px;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.doc-type-dropdown {
+  font-size: 14px;
+  margin-left: 10px;
+  padding: 5px;
+  width: 160px;
+}
+
+.global-date-filter {
+  margin-left: 25%;
+}
+
+.datefilter {
+  padding:5px;
+}
+
+.react-datepicker {
+  z-index: 9999; /* Ensure the date picker appears above other elements */
+}
+
+
