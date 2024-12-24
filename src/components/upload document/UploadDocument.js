@@ -86,7 +86,7 @@ const UploadDocument = () => {
                 'declaration',
                 'invoice',
                 'packingList',
-                'awsBOL',
+                'AWS/BOL',
                 'countryOfOrigin',
                 'deliveryOrder',
                 'others',

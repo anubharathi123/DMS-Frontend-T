@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./verifydoc.css";
@@ -34,16 +34,17 @@ const App = () => {
 
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
   const [filterDocType, setFilterDocType] = useState("All");
-  const [filterDate, setFilterDate] = useState(null);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isDocTypeDropdownOpen, setIsDocTypeDropdownOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [declarationInput, setDeclarationInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [filterDate, setFilterDate] = useState(null);
 
-  const toggleCalendar = () => setIsCalendarOpen((prev) => !prev);
-  const toggleDocTypeDropdown = () => setIsDocTypeDropdownOpen((prev) => !prev);
+  const calendarRef = useRef(null);
+  const dropdownRef = useRef(null);
 
+  // Apply filters
   const applyFilters = () => {
     let filtered = [...documents];
 
@@ -68,18 +69,7 @@ const App = () => {
     setFilteredDocuments(filtered);
   };
 
-  const handleDateChange = (date) => {
-    setFilterDate(date);
-    setIsCalendarOpen(false);
-    applyFilters();
-  };
-
-  const handleDocTypeChange = (docType) => {
-    setFilterDocType(docType);
-    setIsDocTypeDropdownOpen(false);
-    applyFilters();
-  };
-
+  // Handle input changes
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     setDeclarationInput(inputValue);
@@ -103,31 +93,54 @@ const App = () => {
     applyFilters();
   };
 
-  const handleCheckboxChange = (index) => {
-    setSelectedRows((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
-    );
+  const handleDocTypeChange = (type) => {
+    setFilterDocType(type);
+    setIsDocTypeDropdownOpen(false);
+    applyFilters();
+  };
+
+  const toggleCalendar = () => {
+    setIsCalendarOpen((prev) => !prev);
+    setIsDocTypeDropdownOpen(false); // Close dropdown when calendar opens
+  };
+
+  const toggleDocTypeDropdown = () => {
+    setIsDocTypeDropdownOpen((prev) => !prev);
+    setIsCalendarOpen(false); // Close calendar when dropdown opens
   };
 
   const handleAction = (actionType) => {
-    const updatedDocuments = filteredDocuments.map((doc, index) => {
-      if (selectedRows.includes(index)) {
-        return { ...doc, actions: actionType };
-      }
-      return doc;
-    });
+    const updatedDocuments = filteredDocuments.map((doc, index) =>
+      selectedRows.includes(index) ? { ...doc, actions: actionType } : doc
+    );
 
-    setFilteredDocuments(updatedDocuments);
+    const remainingDocuments = updatedDocuments.filter(
+      (doc) => doc.actions !== "Approved" && doc.actions !== "Rejected"
+    );
+
+    setFilteredDocuments(remainingDocuments);
     setSelectedRows([]);
   };
 
-  const resetAction = (index) => {
-    const updatedDocuments = [...filteredDocuments];
-    updatedDocuments[index].actions = "";
-    setFilteredDocuments(updatedDocuments);
-  };
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setIsCalendarOpen(false);
+        setIsDocTypeDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="verify-container">
@@ -185,10 +198,14 @@ const App = () => {
                   📅
                 </button>
                 {isCalendarOpen && (
-                  <div style={{ position: "absolute", zIndex: 1000 }}>
+                  <div ref={calendarRef} style={{ zIndex: 1000 }}>
                     <DatePicker
                       selected={filterDate}
-                      onChange={handleDateChange}
+                      onChange={(date) => {
+                        setFilterDate(date);
+                        setIsCalendarOpen(false);
+                        applyFilters();
+                      }}
                       inline
                     />
                   </div>
@@ -207,22 +224,34 @@ const App = () => {
                   />
                 </button>
                 {isDocTypeDropdownOpen && (
-                  <ul className="verifydoc-dropdown-list">
-                    {[
-                      "All",
-                      "Declaration",
-                      "Invoice",
-                      "Packing List",
-                    ].map((type) => (
+                  <div ref={dropdownRef} className="verifydoc-dropdown-list">
+                    <ul className="doc-list">
                       <li
-                        key={type}
-                        className={type.toLowerCase().replace(" ", "-")}
-                        onClick={() => handleDocTypeChange(type)}
+                        onClick={() => handleDocTypeChange("All")}
+                        className="allbtn"
                       >
-                        {type}
+                        All
                       </li>
-                    ))}
-                  </ul>
+                      <li
+                        onClick={() => handleDocTypeChange("Declaration")}
+                        className="declaration"
+                      >
+                        Declaration
+                      </li>
+                      <li
+                        onClick={() => handleDocTypeChange("Invoice")}
+                        className="invoice"
+                      >
+                        Invoice
+                      </li>
+                      <li
+                        onClick={() => handleDocTypeChange("Packing List")}
+                        className="packing-list"
+                      >
+                        Packing List
+                      </li>
+                    </ul>
+                  </div>
                 )}
               </th>
               <th>Actions</th>
@@ -233,46 +262,29 @@ const App = () => {
               <tr key={index}>
                 <td>{doc.declarationNumber}</td>
                 <td>
-                  {doc.downloadUrl ? (
-                    <a
-                      href={doc.downloadUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {doc.FileName || "View Document"}
-                    </a>
-                  ) : (
-                    "N/A"
-                  )}
+                  <a
+                    href={doc.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="file-link"
+                  >
+                    {doc.FileName || "View Document"}
+                  </a>
                 </td>
                 <td>{doc.updatedDate}</td>
                 <td>{doc.documentType}</td>
                 <td>
-                  {!doc.actions ? (
-                    <input
-                      type="checkbox"
-                      checked={selectedRows.includes(index)}
-                      onChange={() => handleCheckboxChange(index)}
-                    />
-                  ) : (
-                    <>
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          color: doc.actions === "Approved" ? "green" : "red",
-                        }}
-                      >
-                        {doc.actions}
-                      </span>
-                      <button
-                        className="reset-btn"
-                        onClick={() => resetAction(index)}
-                        title="Reset Action"
-                      >
-                        ⛔
-                      </button>
-                    </>
-                  )}
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(index)}
+                    onChange={() =>
+                      setSelectedRows((prev) =>
+                        prev.includes(index)
+                          ? prev.filter((i) => i !== index)
+                          : [...prev, index]
+                      )
+                    }
+                  />
                 </td>
               </tr>
             ))}

@@ -8,8 +8,7 @@
   height: 80%;
   margin-top: 64px;
   margin-left: 240px;
-  background-color: #f9f9f9;
-  position: absolute;
+  background: #fcfbfb;
 }
 
 h2 {
@@ -50,6 +49,7 @@ h2 {
 
 .declaration-number label {
   font-size: 18px;
+  color: black;
 }
 
 .declaration-number input {
@@ -62,9 +62,9 @@ h2 {
 }
 
 .suggestion-box {
-  position: absolute;
-  margin-top: 5px;
-  margin-left: 180px;
+  position: fixed;
+  margin-top: 150px;
+  margin-left: 143px;
   border-radius:5px ;
   list-style-type: none;
   width: 150px;
@@ -130,6 +130,9 @@ h2 {
   filter: invert(1);
 }
 
+.show-doc-type-btn:hover {
+  background:none;
+}
 
 .calendarbtn {
   cursor: pointer;
@@ -138,6 +141,12 @@ h2 {
   margin-left: 5px;
   border-radius: 4px;
   padding: 4px;
+  position: fixed;
+  margin-top: -5px;
+}
+
+.calendarbtn:hover {
+  background: none;
 }
 
 .verifydoc-dropdown-list {
@@ -145,12 +154,11 @@ h2 {
   background: white;
   border: 1px solid #ccc;
   margin-top: 2px;
-  margin-left: 29px;
+  margin-left: 60px;
   color: black;
   border-radius: 4px;
   z-index: 1000;
   padding: 10px;
-  list-style-type: none;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -290,6 +298,7 @@ h2 {
 }
 
 .react-datepicker {
+  position: fixed;
   z-index: 9999; /* Ensure the date picker appears above other elements */
 }
 
