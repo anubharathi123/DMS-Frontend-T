@@ -12,6 +12,8 @@ import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
+
+
 import "./App.css";
 
 // Function to check authentication status
@@ -28,12 +30,12 @@ const hasToken = () => {
 
 // Private Route Wrapper
 const PrivateRoute = ({ children }) => {
-  return isAuthenticated() ? children : <Navigate to="/login" />;
+  return isAuthenticated() ? children : <Navigate to="/Login" />;
 };
 
 // Token-only Route Wrapper (for Change Password)
 const TokenRoute = ({ children }) => {
-  return hasToken() ? children : <Navigate to="/login" />;
+  return hasToken() ? children : <Navigate to="/Login" />;
 };
 
 function App() {
@@ -42,10 +44,10 @@ function App() {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
     localStorage.removeItem("access_status");
-    window.location.href = "/login"; // Redirect to login page after logout
+    window.location.href = "/Login"; // Redirect to login page after logout
   };
   
-  const shouldDisplayAsideBar = !["/login/", "/ResetPassword", "/ChangePassword"].includes(window.location.pathname);
+  const shouldDisplayAsideBar = !["/Login", "/resetpassword", "/changepassword"].includes(window.location.pathname);
 
   return (
     <Router>
@@ -57,7 +59,7 @@ function App() {
         {/* <div className="Inner_content_indent"> */}
           <Routes>
             {/* Route for Login */}
-            <Route path="/login" element={<Login />} />
+            <Route path="/Login" element={<Login />} />
 
             {/* Reset Password (Unrestricted Access) */}
             <Route path="/ResetPassword" element={<ResetPassword />} />
