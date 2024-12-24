@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Login.css';
 import authService from '../../ApiServices/ApiServices';
 
@@ -11,7 +12,6 @@ const Login = () => {
   const [isOtpVisible, setIsOtpVisible] = useState(false);
   const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
-  const navigate = useNavigate();
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
@@ -53,8 +53,6 @@ const Login = () => {
       setIsOtpVerified(true);
       setMessages([]);
       console.log('OTP verification successful:', verifyResponse);
-      localStorage.setItem("access_status","true")
-      navigate("/dashboard");  // Redirect to the home page after successful OTP verification
       alert('OTP Verified!');
     } catch (error) {
       console.error('OTP verification error:', error.message || error);
@@ -64,14 +62,14 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      
+    <div className="container">
       {/* Show login success or failure message at the top */}
       {isLoginSuccessful && !isOtpVerified && (
         <div className="login-status success">
           <p>Welcome User! Please verify the OTP.</p>
         </div>
       )}
+
 
       {/* Show messages for other errors */}
       {messages.length > 0 && (
@@ -83,11 +81,10 @@ const Login = () => {
           </ul>
         </div>
       )}
-<div className='login-inner-container'>
-<div className='login-inner-container1'>
+
       {/* Login Form */}
       <h1>Login</h1>
-      <form onSubmit={isOtpVisible ? handleOtpSubmit : handleLoginSubmit}>
+      <form onSubmit={handleLoginSubmit}>
         <div className="form-group">
           <label htmlFor="username">
             Username/Email Id <span className="required">*</span>
@@ -95,11 +92,11 @@ const Login = () => {
           <input
             type="text"
             id="username"
+            className='login-input'
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            disabled={isOtpVisible} // Disable if OTP field is visible
           />
         </div>
 
@@ -110,17 +107,17 @@ const Login = () => {
           <input
             type="password"
             id="password"
-            name="password"
+            className='login-input'
+            
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            disabled={isOtpVisible} // Disable if OTP field is visible
           />
         </div>
 
         {/* Forgot Password link */}
         <div className="forgot-password-link">
-          <Link to="/forgot-password">Forgot Password?</Link>
+          <Link to="/ResetPassword">Forgot Password?</Link>
         </div>
 
         {/* OTP input only shows when login is successful */}
@@ -131,6 +128,7 @@ const Login = () => {
             </label>
             <input
               type="text"
+              className='login-input'
               id="otp"
               name="otp"
               value={otp}
@@ -143,8 +141,6 @@ const Login = () => {
         {/* Submit Button */}
         <button className='login-btn' type="submit">{isOtpVisible ? 'Verify OTP' : 'Login'}</button>
       </form>
-      </div>
-      </div>
     </div>
   );
 };

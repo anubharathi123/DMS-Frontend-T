@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./verifydoc.css";
-import DropDownArrow from "../../assets/images/dropdown-arrow.png";
+import DropDownArrow from '../../assets/images/dropdown-arrow.png';
 
 const App = () => {
   const [documents] = useState([
@@ -41,8 +41,8 @@ const App = () => {
   const [declarationInput, setDeclarationInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  const toggleCalendar = () => setIsCalendarOpen((prev) => !prev);
-  const toggleDocTypeDropdown = () => setIsDocTypeDropdownOpen((prev) => !prev);
+  const toggleCalendar = () => setIsCalendarOpen(!isCalendarOpen);
+  const toggleDocTypeDropdown = () => setIsDocTypeDropdownOpen(!isDocTypeDropdownOpen);
 
   const applyFilters = () => {
     let filtered = [...documents];
@@ -60,9 +60,7 @@ const App = () => {
 
     // Filter by Declaration Number
     if (declarationInput) {
-      filtered = filtered.filter((doc) =>
-        doc.declarationNumber.includes(declarationInput)
-      );
+      filtered = filtered.filter((doc) => doc.declarationNumber.includes(declarationInput));
     }
 
     setFilteredDocuments(filtered);
@@ -104,19 +102,21 @@ const App = () => {
   };
 
   const handleCheckboxChange = (index) => {
-    setSelectedRows((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
-    );
+    const updatedSelectedRows = [...selectedRows];
+    if (updatedSelectedRows.includes(index)) {
+      updatedSelectedRows.splice(updatedSelectedRows.indexOf(index), 1);
+    } else {
+      updatedSelectedRows.push(index);
+    }
+    setSelectedRows(updatedSelectedRows);
   };
 
   const handleAction = (actionType) => {
-    const updatedDocuments = filteredDocuments.map((doc, index) => {
+    const updatedDocuments = filteredDocuments.filter((_, index) => {
       if (selectedRows.includes(index)) {
-        return { ...doc, actions: actionType };
+        return false;
       }
-      return doc;
+      return true;
     });
 
     setFilteredDocuments(updatedDocuments);
@@ -145,11 +145,7 @@ const App = () => {
           onChange={handleInputChange}
           placeholder="Enter 13-digit DecNum"
         />
-        <button
-          className="approvebtn1"
-          onClick={() => handleAction("Approved")}
-          style={{ marginRight: "10px" }}
-        >
+        <button className="approvebtn1" onClick={() => handleAction("Approved")} style={{ marginRight: "10px" }}>
           Approve
         </button>
         <button className="rejectbtn1" onClick={() => handleAction("Rejected")}>
@@ -196,10 +192,7 @@ const App = () => {
               </th>
               <th>
                 Document Type
-                <button
-                  className="show-doc-type-btn"
-                  onClick={toggleDocTypeDropdown}
-                >
+                <button className="show-doc-type-btn" onClick={toggleDocTypeDropdown}>
                   <img
                     src={DropDownArrow}
                     alt="dropdown-arrow"
@@ -207,22 +200,36 @@ const App = () => {
                   />
                 </button>
                 {isDocTypeDropdownOpen && (
-                  <ul className="verifydoc-dropdown-list">
-                    {[
-                      "All",
-                      "Declaration",
-                      "Invoice",
-                      "Packing List",
-                    ].map((type) => (
-                      <li
-                        key={type}
-                        className={type.toLowerCase().replace(" ", "-")}
-                        onClick={() => handleDocTypeChange(type)}
-                      >
-                        {type}
+                  <div className="verifydoc-dropdown-list">
+                    <li className="allbtn" onClick={() => {
+                        setFilterDocType("All");
+                        setIsDocTypeDropdownOpen(false);
+                        applyFilters();
+                      }}>
+                        All
                       </li>
-                    ))}
-                  </ul>
+                      <li className="declaration" onClick={() => {
+                        setFilterDocType("Declaration");
+                        setIsDocTypeDropdownOpen(false);
+                        applyFilters();
+                      }}>
+                        Declaration
+                      </li>
+                      <li className="invoice" onClick={() => {
+                        setFilterDocType("Invoice");
+                        setIsDocTypeDropdownOpen(false);
+                        applyFilters();
+                      }}>
+                        Invoice
+                      </li>
+                      <li className="packing-list" onClick={() => {
+                        setFilterDocType("Packing List");
+                        setIsDocTypeDropdownOpen(false);
+                        applyFilters();
+                      }}>
+                        Packing List
+                      </li>
+                  </div>
                 )}
               </th>
               <th>Actions</th>
@@ -234,11 +241,7 @@ const App = () => {
                 <td>{doc.declarationNumber}</td>
                 <td>
                   {doc.downloadUrl ? (
-                    <a
-                      href={doc.downloadUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={doc.downloadUrl} target="_blank" rel="noopener noreferrer">
                       {doc.FileName || "View Document"}
                     </a>
                   ) : (
@@ -264,11 +267,7 @@ const App = () => {
                       >
                         {doc.actions}
                       </span>
-                      <button
-                        className="reset-btn"
-                        onClick={() => resetAction(index)}
-                        title="Reset Action"
-                      >
+                      <button className="reset-btn" onClick={() => resetAction(index)} title="Reset Action">
                         ⛔
                       </button>
                     </>
