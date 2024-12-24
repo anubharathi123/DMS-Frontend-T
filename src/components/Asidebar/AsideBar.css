@@ -172,4 +172,20 @@ nav::-webkit-scrollbar-thumb:hover {
   background-color: #3a5068;
 }
 
-
+.dropdown-toggle {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-left: auto;  /* Align the button to the right */
+  cursor: pointer;
+}
+/* Optional: Adjust the position and size of the icon */
+.dropdown-toggle img {
+  width: 20px;
+  height: 20px;
+  margin-top: -35px;
+  transition: transform 0.3s ease;
+}

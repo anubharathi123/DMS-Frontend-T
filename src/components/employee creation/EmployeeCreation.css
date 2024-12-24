@@ -4,8 +4,6 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-left: 210px; /* Adjusted for the AsideBar width */
   margin-top: 100px;
 }
@@ -19,7 +17,7 @@
   font-size: 24px;
   margin-bottom: 20px;
   margin-left: 110px;
-  margin-top: -7px;
+  margin-top: -40px;
 }
 
 /* Form Styles */
@@ -35,6 +33,43 @@
   align-items: center;
   text-align: left;
 }
+
+/* Submit Button */
+.emp-creation-submit-button {
+  width: 25%;
+  padding: 9px 17px;
+  background-color: #5eb6d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px; /* Space between the buttons */
+}
+
+.emp-creation-submit-button:hover {
+  background-color: #4ba3bf;
+}
+
+/* Cancel Button */
+.emp-creation-cancel-button {
+  width: 17%;
+  padding: 9px 17px;
+  background-color: #5eb6d2; /* Red background for cancel */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
+}
+
+.emp-creation-cancel-button:hover {
+  background-color: #4ba3bf; /* Darker red on hover */
+}
+
 
 /* Unique Label Styling for Employee Creation Form */
 .emp-creation-label {
@@ -67,10 +102,9 @@
 
 /* Input Fields */
 .emp-creation-input {
-  width: 50%;
+  width: 47%;
   max-width: 195px;
   padding: 4px;
-  border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
@@ -90,15 +124,17 @@
 
 /* Submit Button */
 .emp-creation-submit-button {
-  width: 35%;
-  padding: 10px 20px;
+  width: 17%;
+  padding: 9px 17px;
+  margin-left: -100px;
   background-color: #5eb6d2;
   color: #fff;
   border: none;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 13px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 126px;
 }
 
 .emp-creation-submit-button:hover {

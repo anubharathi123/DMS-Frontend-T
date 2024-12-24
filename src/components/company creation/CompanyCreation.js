@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import './CompanyCreation.css';
 import { FaCloudUploadAlt } from 'react-icons/fa';
@@ -104,164 +103,161 @@ const CompanyCreation = () => {
   };
 
   return (
-    <div className="company-register-container">
-      <h2 className="company-register-title">Company Register</h2>
-      <form  onSubmit={handleSubmit}>
-        {/* Username */}
-        <div className="company-form-group">
-          <label className="username-label">
-            Username<span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="username"
-            value={company.username}
-            onChange={handleChange}
-            className="username-input"
-            required
-          />
-        </div>
+    <div className="company-register-body">
+      <div className="company-register-content">
+        <h2 className="company-register-title">Company Register</h2>
+        <form className="company-creation-form" onSubmit={handleSubmit}>
+          {/* Username */}
+          <div className="company-creation-formdiv">
+            <label className="company-creation-label">
+              Username<span className="mandatory">*</span>
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={company.username}
+              onChange={handleChange}
+              className="company-creation-input"
+              required
+            />
+          </div>
 
-        {/* Company Name */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Company Name <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="companyName"
-            value={company.companyName}
-            onChange={handleChange}
-            className="company-name-input"
-            required
-          />
-        </div>
+          {/* Company Name */}
+          <div className="company-creation-form">
+            <label className="company-creation-label">
+              Company Name <span className="mandatory">*</span>
+            </label>
+            <input
+              type="text"
+              name="companyName"
+              value={company.companyName}
+              onChange={handleChange}
+              className="company-creation-input"
+              required
+            />
+          </div>
 
-        {/* Person Name */}
-        <div className="company-form-group">
-          <label className="person-label">
-            Person Name <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="personName"
-            value={company.personName}
-            onChange={handleChange}
-            className="person-name-input"
-            required
-          />
-        </div>
+          {/* Person Name */}
+          <div className="company-creation-form">
+            <label className="company-creation-label">
+              Person Name <span className="mandatory">*</span>
+            </label>
+            <input
+              type="text"
+              name="personName"
+              value={company.personName}
+              onChange={handleChange}
+              className="company-creation-input"
+              required
+            />
+          </div>
 
-        {/* Mobile */}
-        <div className="company-form-group">
-          <label className="mobile-label">
-            Mobile <span className="mandatory">*</span>
-          </label>
-          <input
-            type="tel"
-            name="mobile"
-            value={company.mobile}
-            onChange={handleChange}
-            className="mobile-input"
-            required
-          />
-        </div>
+          {/* Mobile */}
+          <div className="company-creation-form">
+            <label className="company-creation-label">
+              Mobile <span className="mandatory">*</span>
+            </label>
+            <input
+              type="tel"
+              name="mobile"
+              value={company.mobile}
+              onChange={handleChange}
+              className="company-creation-input"
+              required
+            />
+          </div>
 
-        {/* Email */}
-        <div className="company-form-group">
-          <label className="mailId-label">
-            Mail ID <span className="mandatory">*</span>
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={company.email}
-            onChange={handleChange}
-            className="email-input"
-            required
-          />
-        </div>
+          {/* Email */}
+          <div className="company-creation-form">
+            <label className="company-creation-label">
+              Mail ID <span className="mandatory">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={company.email}
+              onChange={handleChange}
+              className="company-creation-input"
+              required
+            />
+          </div>
 
-        {/* Access Creation Date */}
-        <div className="company-form-group">
-          <label className="acd-label">
-            Access Creation Date <span className="mandatory">*</span>
-          </label>
-          <input
-            type="date"
-            name="accessCreationDate"
-            value={company.accessCreationDate}
-            onChange={handleChange}
-            className="accessCreationDate"
-            required
-          />
-        </div>
+          {/* Date Inputs */}
+          <div className="company-creation-dates">
+            <div className="company-creation-form">
+              <label className="company-creation-label">
+                Access Creation Date <span className="mandatory">*</span>
+              </label>
+              <input
+                type="date"
+                name="accessCreationDate"
+                value={company.accessCreationDate}
+                onChange={handleChange}
+                className="company-creation-input"
+                required
+              />
+            </div>
+            <div className="company-creation-form">
+              <label className="company-creation-label">
+                Access Expiry Date <span className="mandatory">*</span>
+              </label>
+              <input
+                type="date"
+                name="accessExpiryDate"
+                value={company.accessExpiryDate}
+                onChange={handleChange}
+                className="company-creation-input"
+                required
+              />
+            </div>
+          </div>
 
-        {/* Access Expiry Date */}
-        <div className="company-form-group">
-          <label className="aed-label">
-            Access Expiry Date <span className="mandatory">*</span>
-          </label>
-          <input
-            type="date"
-            name="accessExpiryDate"
-            value={company.accessExpiryDate}
-            onChange={handleChange}
-            className="accessExpiryDate"
-            required
-          />
-        </div>
-
-        {/* Attach Contract Document */}
-        <div className="company-form-group">
-          <label className="atcd-label">
-            Attach Contract Document <span className="mandatory">*</span>
-          </label>
+          {/* File Upload */}
           <div
-            className={`file-upload-area ${dragging ? 'dragging' : ''}`}
+            className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={handleUploadClick}
           >
-            <div className="upload-container">
-              <FaCloudUploadAlt className="upload-icon" />
-              {contractDocuments.length === 0 ? (
-                <p>Drag & Drop files here</p>
-              ) : (
-                <div className="file-names">
-                  {contractDocuments.map((file, index) => (
-                    <div key={index} className="file-item">
-                      <span>{file.name}</span>
-                      <button
-                        type="button"
-                        className="remove-file-btn"
-                        onClick={() => handleRemoveFile(index)}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <FaCloudUploadAlt className="company-creation-upload-icon" />
+            <span>Drag & drop documents here, or click to select</span>
             <input
-              id="file-input"
               type="file"
+              id="file-input"
               multiple
-              className="file-input"
               onChange={handleFileChange}
               style={{ display: 'none' }}
             />
+            {contractDocuments.length > 0 && (
+              <div className="company-creation-file-names">
+                {contractDocuments.map((file, index) => (
+                  <div className="company-creation-file-item" key={index}>
+                    <span>{file.name}</span>
+                    <button
+                      type="button"
+                      className="company-craetion-remove-file-btn"
+                      onClick={() => handleRemoveFile(index)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* Button Group */}
-        <div className="button-group">
-          <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn-submit">Create</button>
-        </div>
-      </form>
+          {/* Buttons */}
+          <div className="company-creation-button-group">
+            <button type="submit" className="btn-submit">
+              Submit
+            </button>
+            <button type="button" className="btn-cancel" onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
