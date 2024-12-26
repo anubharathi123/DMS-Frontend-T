@@ -21,11 +21,16 @@ const Login = () => {
         return;
       }
 
-      // Call login API
+      // // Call login API
       const loginResponse = await authService.login({ username, password });
       setIsLoginSuccessful(true);
       setMessages([]);
       console.log('Login successful:', loginResponse);
+      const handleClose = () => {
+        
+      };
+    
+      
 
       // Send OTP after successful login
       const otpResponse = await authService.sendOTP(username);
@@ -62,14 +67,15 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login-div">
+    
       {/* Show login success or failure message at the top */}
       {isLoginSuccessful && !isOtpVerified && (
-        <div className="login-status success">
+        <div className="login-status login-success">
           <p>Welcome User! Please verify the OTP.</p>
         </div>
       )}
-
+     
 
       {/* Show messages for other errors */}
       {messages.length > 0 && (
@@ -81,7 +87,7 @@ const Login = () => {
           </ul>
         </div>
       )}
-
+<div className="login-container">
       {/* Login Form */}
       <h1>Login</h1>
       <form onSubmit={handleLoginSubmit}>
@@ -142,7 +148,9 @@ const Login = () => {
         <button className='login-btn' type="submit">{isOtpVisible ? 'Verify OTP' : 'Login'}</button>
       </form>
     </div>
+    </div>
   );
+
 };
 
 export default Login;

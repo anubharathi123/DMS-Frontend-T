@@ -47,7 +47,7 @@ function App() {
     window.location.href = "/Login"; // Redirect to login page after logout
   };
   
-  const shouldDisplayAsideBar = !["/Login", "/resetpassword", "/changepassword"].includes(window.location.pathname);
+  const shouldDisplayAsideBar = !["/login", "/resetpassword", "/changepassword"].includes(window.location.pathname);
 
   return (
     <Router>
