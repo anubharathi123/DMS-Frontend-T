@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AsideBar_Header from "./pages/Asidebar_Header";
 import UploadDocument from "./components/upload document/UploadDocument";
 import VerifyDoc from "./components/verify Document/verifydoc";
@@ -12,7 +12,6 @@ import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
-
 
 import "./App.css";
 
@@ -30,130 +29,137 @@ const hasToken = () => {
 
 // Private Route Wrapper
 const PrivateRoute = ({ children }) => {
-  return isAuthenticated() ? children : <Navigate to="/Login" />;
+  return isAuthenticated() ? children : <Navigate to="/login" />;
 };
 
 // Token-only Route Wrapper (for Change Password)
 const TokenRoute = ({ children }) => {
-  return hasToken() ? children : <Navigate to="/Login" />;
+  return hasToken() ? children : <Navigate to="/login" />;
 };
 
 function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   // Function to handle logout logic
   const handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
     localStorage.removeItem("access_status");
-    window.location.href = "/Login"; // Redirect to login page after logout
+    navigate("/login"); // Redirect to login page after logout
   };
-  
-  const shouldDisplayAsideBar = !["/login", "/resetpassword", "/changepassword"].includes(window.location.pathname);
+
+  const shouldDisplayAsideBar = !["/login", "/login/","/resetpassword", "/ResetPassword", "/changepassword"].includes(location.pathname);
 
   return (
-    <Router>
-      <div className="app">
-        {/* Static AsideBar with Logout functionality */}
-        {shouldDisplayAsideBar && <AsideBar_Header onLogout={handleLogout} />}
+    <div className="app">
+      {/* Static AsideBar with Logout functionality */}
+      {shouldDisplayAsideBar && <AsideBar_Header onLogout={handleLogout} />}
 
-        {/* Main Content */}
-        {/* <div className="Inner_content_indent"> */}
-          <Routes>
-            {/* Route for Login */}
-            <Route path="/Login" element={<Login />} />
+      {/* Main Content */}
+      <Routes>
+        {/* Route for Login */}
+        <Route path="/login" element={<Login />} />
 
-            {/* Reset Password (Unrestricted Access) */}
-            <Route path="/ResetPassword" element={<ResetPassword />} />
+        {/* Reset Password (Unrestricted Access) */}
+        <Route path="/resetpassword" element={<ResetPassword />} />
 
-            {/* Change Password (Token Only) */}
-            <Route
-              path="/ChangePassword"
-              element={
-                <TokenRoute>
-                  <ChangePassword />
-                </TokenRoute>
-              }
-            />
+        {/* Change Password (Token Only) */}
+        <Route
+          path="/changepassword"
+          element={
+            <TokenRoute>
+              <ChangePassword />
+            </TokenRoute>
+          }
+        />
 
-            {/* Protected Routes */}
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <DocumentList />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/UploadDocument"
-              element={
-                <PrivateRoute>
-                  <UploadDocument />
-                </PrivateRoute>
-              }
-            />
-             <Route
-              path="/EmployeeCreation"
-              element={
-                <PrivateRoute>
-                  <EmployeeCreation />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/verifydoc"
-              element={
-                <PrivateRoute>
-                  <VerifyDoc />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/CompanyCreation"
-              element={
-                <PrivateRoute>
-                  <CompanyCreation />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/DocumentList"
-              element={
-                <PrivateRoute>
-                  <DocumentList />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/AuditLog"
-              element={
-                <PrivateRoute>
-                  <AuditLog />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/CreateUser"
-              element={
-                <PrivateRoute>
-                  <CreateUser />
-                </PrivateRoute>
-              }
-            />
+        {/* Protected Routes */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <DocumentList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/UploadDocument"
+          element={
+            <PrivateRoute>
+              <UploadDocument />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/EmployeeCreation"
+          element={
+            <PrivateRoute>
+              <EmployeeCreation />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/verifydoc"
+          element={
+            <PrivateRoute>
+              <VerifyDoc />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/CompanyCreation"
+          element={
+            <PrivateRoute>
+              <CompanyCreation />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/DocumentList"
+          element={
+            <PrivateRoute>
+              <DocumentList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/AuditLog"
+          element={
+            <PrivateRoute>
+              <AuditLog />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/CreateUser"
+          element={
+            <PrivateRoute>
+              <CreateUser />
+            </PrivateRoute>
+          }
+        />
 
-            {/* Fallback route for unmatched paths */}
-            <Route path="*" element={<Login />} />
-          </Routes>
-        {/* </div> */}
-      </div>
-    </Router>
+        {/* Fallback route for unmatched paths */}
+        <Route path="*" element={<Login />} />
+      </Routes>
+    </div>
   );
 }
 

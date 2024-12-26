@@ -8,16 +8,17 @@
 .login-div {
   width: 100%;
   /* max-width: 400px; */
-  margin: 16px auto;
+  /* margin: 16px auto; */
   
   align-content: center;
   justify-items: center;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   
   /* height: 90vh; */
 }
 .login-container{
   background-color: #f9f9f9;
+  border-radius: 8px;
   width: 400px;
   padding: 20px;
   height: 400px;
@@ -29,6 +30,11 @@
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
+}
+
+.login-div-alignment{
+  text-align: -webkit-center;
+
 }
 
 .form-group {
