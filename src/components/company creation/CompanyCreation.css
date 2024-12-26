@@ -1,70 +1,78 @@
-.company-register-body {
+/* Container Styles */
+.company-creation-container {
   width: 100%;
-  height: 100%;
-  position: inherit;
-  margin-left: 250px;
-  margin-top: 57px;
-  justify-items: center;
-  overflow: auto;
+  margin-top: -26px;
+  background-color: #ffffff;
+  height: 110vh;
+  justify-items: left;
 }
 
-.company-creation-formdiv,
+.company-creation-inner-container {
+  width: 100%;
+  margin-top: 100px;
+  max-width: 716px;
+  margin-left: 250px;
+}
+
+/* Title Styles */
+.company-creation-title {
+  text-align: center;
+  font-size: 24px;
+  margin-left: 225px;
+}
+
+/* Form Styles */
 .company-creation-form {
-  /* background-color: #FFF; */
-  width: 600px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 0px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 250px;
+}
+
+.company-creation-form-group {
+  margin-bottom: 12px;
+  display: flex;
+  text-align: left;
 }
 
 .company-creation-label {
+  font-size: 12px;
+  font-weight: bold;
   color: #333;
-  height: 20px;
-  width: 200px;
-  margin-left: 10px;
+  margin-bottom: 8px;
+  min-width: 115px;
   text-align: left;
-  margin-right: 15px;
-  font-size: 14px; /* Ensure the label font size is the same as in EmployeeCreation */
-  float: left;
-  font-weight: bold; /* Make the labels bold */
 }
 
+.company-creation-mandatory {
+  color: red;
+  font-size: 18px;
+  margin-left: 5px;
+}
+
+/* Input Field Styles */
 .company-creation-input {
-  height: 20px;
-  width: 63%;
+  width: 58%;
   padding: 5px;
-  /* padding-left: 10px;
-  padding-right: 10px; */
-  background-color: #e7e7e7;
-  border-radius: 5px;
+  font-size: 14px;
+  background-color: #f2f2f2;
   border: 1px solid #ccc;
-  font-size: 14px; /* Match the font size to EmployeeCreation */
-  /* float: right; Align input fields to the right */
+  border-radius: 4px;
 }
 
-.company-creation-form {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.company-creation-dates {
+.company-creation-date-group {
   display: flex;
   justify-content: space-between;
-  gap: 20px; /* Add gap between the two date fields */
+  gap: 20px;
 }
 
+/* File Upload Styles */
 .company-creation-upload-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 30px 20px;
-  width: 100%;
+  width: 75%;
   border: 1px dashed #ccc;
   border-radius: 5px;
+  margin-left: 100px;
 }
 
 .company-creation-upload-icon {
@@ -80,74 +88,60 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
-.company-creation-file-item span {
+.file-name {
   font-size: 14px;
+  color: #333;
 }
 
-.company-craetion-remove-file-btn {
+.company-creation-remove-file-btn {
   background: transparent;
   border: none;
   color: #ff6666;
+  font-size: 18px;
   cursor: pointer;
 }
 
+/* Buttons Styles */
 .company-creation-button-group {
   display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
+  justify-content: center;
+  margin-top: 25px;
+  gap: 25px;
+  margin-left: 50px;
 }
 
-.btn-submit,
-.btn-cancel {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+.company-creation-submit-button,
+.company-creation-cancel-button {
+  padding: 9px 19px;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 14px; /* Match font size for buttons */
+  border-radius: 5px;
+  border: none;
 }
 
-.btn-submit {
-  background-color: #28a745;
+.company-creation-submit-button {
+  background-color: #5eb6d2;
   color: white;
 }
 
-.btn-cancel {
-  background-color: #dc3545;
+.company-creation-cancel-button {
+  background-color: #5eb6d2;
   color: white;
 }
 
-.file-upload-area.dragging {
+.company-creation-submit-button:hover {
+  background-color: #4ba3bf;
+}
+
+.company-creation-cancel-button:hover {
+  background-color: #5eb6d2;
+}
+
+/* Dragging styles */
+.company-creation-upload-container.dragging {
   border-color: #258feb;
   background-color: #f8f9fa;
-}
-
-/* Add the star (red color) for required fields */
-.company-creation-label.required::after {
-  content: "*";
-  color: red;
-  margin-left: 5px;
-  font-size: 16px;
-}
-
-/* Create button at the bottom */
-.create-button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.create-button {
-  padding: 12px 25px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.create-button:hover {
-  background-color: #0056b3;
 }
