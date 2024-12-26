@@ -62,10 +62,10 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       {/* Show login success or failure message at the top */}
       {isLoginSuccessful && !isOtpVerified && (
-        <div className="login-status success">
+        <div className="login-status login-success">
           <p>Welcome User! Please verify the OTP.</p>
         </div>
       )}
