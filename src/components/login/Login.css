@@ -1,16 +1,29 @@
 /* Login.css */
-.container {
+.login-div {
   width: 100%;
-  max-width: 400px;
-  margin: 16px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  height: 492px;
+  height: 100vh;
+  background-color: #0b3041;
 }
-
+   
+.login-div {
+  width: 100%;
+  /* max-width: 400px; */
+  margin: 16px auto;
+  
+  align-content: center;
+  justify-items: center;
+  border-radius: 8px;
+  
+  /* height: 90vh; */
+}
+.login-container{
+  background-color: #f9f9f9;
+  width: 400px;
+  padding: 20px;
+  height: 400px;
+  box-shadow: 0 2px 10px rgba(202, 17, 17, 0.1);
+  font-family: Arial, sans-serif;
+}
 .login-h1 {
   text-align: center;
   font-size: 24px;
@@ -18,7 +31,7 @@
   color: #333;
 }
 
-.login-form-group {
+.form-group {
   margin-bottom: 15px;
 }
 
@@ -38,7 +51,7 @@
   box-sizing: border-box;
 }
 
-input:focus {
+.login-input:focus {
   border-color: #007bff;
   outline: none;
 }
@@ -57,7 +70,7 @@ input:focus {
   border-radius: 13px;
   font-size: 14px;
   cursor: pointer;
-  margin-top: 47px;
+  
  
 }
 
@@ -65,7 +78,7 @@ input:focus {
   background-color:#5fc3d7;
 }
 
-.forgot-password-link {
+.login-forgot-password-link {
   text-align: left;
  
 
@@ -78,12 +91,12 @@ input:focus {
   text-align-last: right;
 }
 
-.forgot-password-link a:hover {
+.login-forgot-password-link a:hover {
   text-decoration: underline;
 }
 
 /* Success and Failure messages */
-.login-status {
+.login-status.sucess {
   padding: 10px;
   margin-bottom: 20px;
   border-radius: 4px;
@@ -95,7 +108,7 @@ input:focus {
   color: #155724;
 }
 
-.failure {
+.login-failure {
   background-color: #f8d7da;
   color: #721c24;
 }
@@ -107,9 +120,10 @@ input:focus {
 .messages ul {
   list-style-type: none;
   padding: 0;
+  color: red;
 }
 
-.messages li {
+.login-messages li {
   background-color: #f8d7da;
   color: #721c24;
   padding: 8px;
@@ -117,12 +131,12 @@ input:focus {
   margin-bottom: 5px;
 }
 
-form {
+.login-form {
   display: flex;
   flex-direction: column;
 }
 
-form input,
+.login-form-input,
 form button {
   margin-bottom: 10px;
 }
@@ -132,11 +146,11 @@ form button {
 }
 
 /* OTP Section */
-.form-group.otp {
+.login-form-group.otp {
   margin-top: 20px;
 }
 
-.form-button[type="submit"] {
+.login-form-button[type="submit"] {
   text-align-last: center;
   align-self: center;
 }
@@ -152,10 +166,10 @@ form button {
 .login-center-button {
   margin: 0 auto; /* This will center the button */
 }
-.right-link {
+.login-right-link {
   margin-left: auto; /* This will push the link to the right side */
 }
-.change-password-div {
+.login-change-password-div {
   display: flex;
   justify-content: center;
   align-items: center;
