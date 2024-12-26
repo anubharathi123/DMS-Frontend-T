@@ -57,7 +57,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/login", "/login/","/resetpassword", "/ResetPassword", "/changepassword"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/login","/Login", "/login/","/resetpassword", "/ResetPassword", "/changepassword"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -99,6 +99,12 @@ function AppContent() {
             </PrivateRoute>
           }
         />
+        {/* <Route
+          path="/logout"
+          element={
+            handleLogout()
+          }
+        /> */}
         <Route
           path="/EmployeeCreation"
           element={
