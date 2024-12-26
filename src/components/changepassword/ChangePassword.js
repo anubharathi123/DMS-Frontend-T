@@ -5,7 +5,7 @@ import authService from '../../ApiServices/ApiServices';
 
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [password, setpassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -18,12 +18,12 @@ const ChangePassword = () => {
     setSuccessMessage('');
 
     // Validate input
-    if (newPassword !== confirmPassword) {
+    if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match.');
       return;
     }
 
-    if (newPassword.length < 6) {
+    if (password.length < 6) {
       setErrorMessage('Password must be at least 6 characters.');
       return;
     }
@@ -31,11 +31,11 @@ const ChangePassword = () => {
     // Call API to change the password
     try {
       await authService.changePassword({
-        newPassword
+        password
       });
       setSuccessMessage('Password changed successfully!');
       setOldPassword('');
-      setNewPassword('');
+      setpassword('');
       setConfirmPassword('');
 
       // Navigate to the login page after a short delay
@@ -64,8 +64,8 @@ const ChangePassword = () => {
               type="password"
               id="new-password"
               className="changepassword-input"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setpassword(e.target.value)}
               required
             />
           </div>

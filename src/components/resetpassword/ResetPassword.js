@@ -50,8 +50,9 @@ const ResetPassword = () => {
   };
 
   return (
+    <div className='reset-outer-container'>
     <div className="reset-password-container">
-      <h2>Reset Password</h2>
+      <h2 className='reset-h2'>Reset Password</h2>
 
       {errorMessage && <div className="error">{errorMessage}</div>}
       {successMessage && <div className="success">{successMessage}</div>}
@@ -84,9 +85,11 @@ const ResetPassword = () => {
             />
           </div>
         )}
-
+      <div className='reset-btn-adjustment'>
         <button className='reset-submit' type="submit">{isOtpSent ? 'Verify OTP' : 'Submit'}</button>
+        </div>
       </form>
+    </div>
     </div>
   );
 };

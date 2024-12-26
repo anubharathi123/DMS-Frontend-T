@@ -85,7 +85,7 @@ const AsideBar = () => {
             <li className={`dropdown ${openDropdowns.dashboard ? 'open' : ''}`}>
               
               <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p style={{ marginLeft: '15px' }}>Dashboard</p>
+                <p style={{ marginLeft: '0px' }}>Dashboard</p>
               </NavLink>
               <button onClick={() => toggleDropdown('dashboard')} className="dropdown-toggle">
                 {renderDropdownIcon('dashboard')}
@@ -258,7 +258,7 @@ const AsideBar = () => {
           {(role === 'Product Owner' || role === 'Client Admin') && (
             <li>
               <NavLink to="/settings" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p style={{ marginLeft: '15px' }}>Settings</p>
+                <p style={{ marginLeft: '0px' }}>Settings</p>
               </NavLink>
             </li>
           )}
