@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DocumentList.css";
 import DownArrow from "../../assets/images/down-arrow.png";
 
 const DocumentList = () => {
-  // Define the documents array
   const documents = [
     {
       declarationNumber: "1234567890123",
@@ -37,11 +36,10 @@ const DocumentList = () => {
       fileUrl: "https://example.com/files/File4.pdf",
       updatedDate: "2024-09-10",
       docType: "Delivery Order",
-      status: "Canceled",
+      status: "Cancelled",
     },
   ];
 
-  // States
   const [filterDate, setFilterDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
@@ -50,34 +48,35 @@ const DocumentList = () => {
   const [filterDocType, setFilterDocType] = useState("All");
   const [suggestions, setSuggestions] = useState([]);
 
-  // Toggle Calendar
-  const toggleCalendar = () => setIsCalendarOpen(!isCalendarOpen);
+  const calendarRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const containerRef = useRef(null);
 
-  // Apply Filters
   const applyFilters = () => {
     let filtered = [...documents];
 
-    // Filter by document type
-    if (filterDocType !== "All") {
-      filtered = filtered.filter((doc) => doc.docType === filterDocType);
-    }
-
-    // Filter by date
     if (filterDate) {
-      const formattedDate = filterDate.toISOString().split("T")[0];
-      filtered = filtered.filter((doc) => doc.updatedDate === formattedDate);
+      const selectedDate = filterDate.toISOString().split("T")[0];
+      filtered = filtered.filter((doc) => doc.updatedDate === selectedDate);
     }
 
-    // Filter by declaration number
     if (declarationInput) {
       filtered = filtered.filter((doc) =>
         doc.declarationNumber.includes(declarationInput)
       );
     }
+
+    if (filterDocType !== "All") {
+      filtered = filtered.filter((doc) => doc.docType === filterDocType);
+    }
+
     setFilteredDocuments(filtered);
   };
 
-  // Handle Declaration Number Input Change
+  useEffect(() => {
+    applyFilters();
+  }, [filterDate, declarationInput, filterDocType]);
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     setDeclarationInput(inputValue);
@@ -91,8 +90,48 @@ const DocumentList = () => {
     } else {
       setSuggestions([]);
     }
+  };
 
-    applyFilters();
+  const handleCalendarToggle = () => {
+    setIsCalendarOpen((prev) => {
+      if (!prev) setDocTypeDropdownVisible(false); // Close dropdown when calendar opens
+      return !prev;
+    });
+  };
+
+  const handleDropdownToggle = () => {
+    setDocTypeDropdownVisible((prev) => {
+      if (!prev) setIsCalendarOpen(false); // Close calendar when dropdown opens
+      return !prev;
+    });
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.target) &&
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target) &&
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target)
+    ) {
+      setIsCalendarOpen(true);
+      setDocTypeDropdownVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const resetFilters = () => {
+    setFilterDate(null);
+    setDeclarationInput("");
+    setFilterDocType("All");
+    setFilteredDocuments(documents);
   };
 
   const docTypes = [
@@ -100,49 +139,72 @@ const DocumentList = () => {
     "Declaration",
     "Invoice",
     "Packing List",
-    "AWS/BOL",
-    "Country Of Origin",
     "Delivery Order",
-    "Others",
   ];
 
   return (
     <div className="document-list-container">
-      <h2 className="title">Document List</h2>
+      <h2 className="document-list-title">Document List</h2>
 
       {/* Declaration Number Section */}
-      <div className="declaration-section" style={{ textAlign: "right", marginBottom: "10px" }}>
-        <label className="declaration-label">
+      <div
+        className="document-list-declaration-section"
+        style={{ textAlign: "right", marginBottom: "10px" }}
+      >
+        <label className="document-list-declaration-label">
           <b>Declaration Number:</b>
         </label>
         <input
           type="text"
-          className="declaration-input"
+          className="document-list-declaration-input"
           placeholder="Enter 13-digit Dec num"
           value={declarationInput}
           onChange={handleInputChange}
         />
       </div>
 
+      {/* Reset Filters Button */}
+      <div style={{ marginBottom: "5px", textAlign: "right" }}>
+        <button
+          className="document-list-reset-button"
+          onClick={resetFilters}
+          style={{
+            padding: "5px 10px",
+            borderRadius: "5px",
+            border: "none",
+            backgroundColor: "#5fc3d7",
+            cursor: "pointer",
+            marginLeft: "981px",
+          }}
+        >
+          Reset Filters
+        </button>
+      </div>
+
       {/* Table Section */}
-      <table className="document-table">
+      <table className="document-list-table">
         <thead>
           <tr>
             <th>Declaration Number</th>
             <th>File Name</th>
             <th>
               Updated Date
-              <button className="calendarbtn" onClick={toggleCalendar}>
+              <button
+                className="document-list-calendarbtn"
+                onClick={handleCalendarToggle}
+              >
                 📅
               </button>
               {isCalendarOpen && (
-                <div style={{ position: "absolute", zIndex: 1000 }}>
+                <div
+                  style={{ position: "absolute", zIndex: 1000 }}
+                  ref={calendarRef}
+                >
                   <DatePicker
                     selected={filterDate}
                     onChange={(date) => {
                       setFilterDate(date);
                       setIsCalendarOpen(false);
-                      applyFilters();
                     }}
                     inline
                   />
@@ -155,18 +217,20 @@ const DocumentList = () => {
                 src={DownArrow}
                 alt="Dropdown"
                 className="document-list-dropdown-icon"
-                onClick={() => setDocTypeDropdownVisible(!isDocTypeDropdownVisible)}
+                onClick={handleDropdownToggle}
               />
               {isDocTypeDropdownVisible && (
-                <div className="document-dropdown-list">
+                <div
+                  className="document-dropdown-list"
+                  ref={dropdownRef}
+                >
                   {docTypes.map((docType) => (
                     <div
                       key={docType}
-                      className="dropdown-item"
+                      className="document-list-dropdown-item"
                       onClick={() => {
                         setFilterDocType(docType);
                         setDocTypeDropdownVisible(false);
-                        applyFilters();
                       }}
                     >
                       {docType}
@@ -183,7 +247,11 @@ const DocumentList = () => {
             <tr key={index}>
               <td>{row.declarationNumber}</td>
               <td>
-                <a href={row.fileUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={row.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {row.fileName}
                 </a>
               </td>

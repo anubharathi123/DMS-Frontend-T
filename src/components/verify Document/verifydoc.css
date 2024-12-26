@@ -11,16 +11,16 @@
   background: #fcfbfb;
 }
 
-h2 {
+.verify-h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.form-section {
+.verify-form-section {
   margin-top: 20px;
 }
 
-.search-btn {
+.verify-search-btn {
   margin-left: -60px;
   margin-right: 30px;
   margin-top: 1px;
@@ -32,39 +32,37 @@ h2 {
   cursor: pointer;
 }
 
-.search-btn:hover {
+.verify-search-btn:hover {
   background: #0f3c46;
   color: white;
 }
 
-.declaration-no {
-  font-size: 1.1em;
-  color: black;
-}
-
-.declaration-number {
+.verify-declaration-number {
   margin-left: 25%;
   margin-bottom: 20px;
 }
 
-.declaration-number label {
+.verify-declaration_no {
   font-size: 18px;
   color: black;
+  position: fixed;
 }
 
-.declaration-number input {
+.verify-declaration-no {
   padding: 5px;
   margin-right: 60px;
+  margin-left: 190px;
+  margin-top: -2px;
   width: 180px;
   border-color: black;
   border-style:groove ;
   border-width: 1px;
 }
 
-.suggestion-box {
+.verify-suggestion-box {
   position: fixed;
-  margin-top: 150px;
-  margin-left: 143px;
+  margin-top: 2px;
+  margin-left: 190px;
   border-radius:5px ;
   list-style-type: none;
   width: 150px;
@@ -74,19 +72,19 @@ h2 {
   cursor: pointer;
 }
 
-.suggestion-item {
+.verify-suggestion-item {
   margin-top: 15px;
   padding: 5px;
   border-radius:6px ;
 }
 
-.suggestion-item:hover {
+.verify-suggestion-item:hover {
   background:#535353;
   color: whitesmoke;
   width: 120px;
 }
 
-.approvebtn1 {
+.verify-approvebtn1 {
   cursor: pointer;
   border: none;
   background: #5fc3d7;
@@ -97,12 +95,12 @@ h2 {
 
 }
 
-.approvebtn1:hover {
+.verify-approvebtn1:hover {
   background: #0f3c46;
   color: white;
 }
 
-.rejectbtn1 {
+.verify-rejectbtn1 {
   cursor: pointer;
   border: none;
   background: #5fc3d7;
@@ -112,12 +110,28 @@ h2 {
   padding: 5px;
 }
 
-.rejectbtn1:hover {
+.verify-rejectbtn1:hover {
   background: #0f3c46;
   color: white;
 }
 
-.show-doc-type-btn {
+.verifydoc-reset-btn {
+  cursor: pointer;
+  border: none;
+  background: #5fc3d7;
+  margin-top: 1px;
+  margin-left: 10px;
+  border-radius: 4px;
+  width: 12%;
+  padding: 5px;
+}
+
+.verifydoc-reset-btn:hover {
+  background: #0f3c46;
+  color: white;
+}
+
+.verify-show-doc-type-btn {
   cursor: pointer;
   border: none;
   margin-left: 1px;
@@ -130,11 +144,11 @@ h2 {
   filter: invert(1);
 }
 
-.show-doc-type-btn:hover {
+.verify-show-doc-type-btn:hover {
   background:none;
 }
 
-.calendarbtn {
+.verify-calendarbtn {
   cursor: pointer;
   border: none;
   background:none;
@@ -145,7 +159,7 @@ h2 {
   margin-top: -5px;
 }
 
-.calendarbtn:hover {
+.verify-calendarbtn:hover {
   background: none;
 }
 
@@ -162,72 +176,72 @@ h2 {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.doc-list {
+.verify-doc-list {
   list-style-type:none;
   padding: 0;
   font-weight:lighter;
 }
 
-.allbtn {
+.verify-allbtn {
  padding: 5px; 
   cursor: pointer;
 }
 
-.allbtn:hover {
+.verify-allbtn:hover {
   background: rgb(77, 73, 73);
   color: white;
 }
 
-.declaration {
+.verify-declaration {
   padding: 5px; 
   cursor: pointer;
 }
 
-.declaration:hover {
+.verify-declaration:hover {
   background: rgb(77, 73, 73);
   color: white;
 }
 
-.invoice {
+.verify-invoice {
   padding: 5px; 
   cursor: pointer;
 }
 
-.invoice:hover {
+.verify-invoice:hover {
   background: rgb(77, 73, 73);
   color: white;
 }
 
-.packing-list {
+.verify-packing-list {
   padding: 5px; 
   cursor: pointer;
 }
 
-.packing-list:hover {
+.verify-packing-list:hover {
   background: rgb(77, 73, 73);
   color: white;
 }
-.document-table {
+.verify-document-table {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
 }
 
-.document-table th {
+.verify-document-table th {
   color: white;
   padding: 10px;
 }
-.document-table td {
+.verify-document-table td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align:center;
 }
 
-.document-table th {
+.verify-document-table th {
   background-color: #156082;
 }
 
-.date-picker-header {
+.verify-date-picker-header {
   padding: 5px;
   font-size: 14px;
   width: 30px;
@@ -235,40 +249,15 @@ h2 {
   border: none;
 }
 
-.calendar-icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  font-size: 20px;
-  color: #666;
-  margin-left: 10px;
-}
 
-.reset-btn {
-  cursor: pointer;
-  border: none;
-  background:none;
-  border-radius: 4px;
-  margin-left: 4px;
-  width: 15%;
-  height: 15%;
-  padding: 5px;
-}
-
-.reset-btn:hover {
-  background: #706b6b;
-  color: white;
-}
-
-.dropdown-arrow {
+.verify-dropdown-arrow {
   width: 24px;
   height:24px;
   margin-top: -1px;
   margin-left: -6px;
 }
 
-.dropdown-arrow:hover {
+.verify-dropdown-arrow:hover {
   filter:invert(5);
 }
 .doc-type-filter {
