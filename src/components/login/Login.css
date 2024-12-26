@@ -1,16 +1,29 @@
 /* Login.css */
-.login-container {
+.login-div {
   width: 100%;
-  max-width: 400px;
-  margin: 16px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
   height: 100vh;
+  background-color: #0b3041;
 }
-
+   
+.login-div {
+  width: 100%;
+  /* max-width: 400px; */
+  margin: 16px auto;
+  
+  align-content: center;
+  justify-items: center;
+  border-radius: 8px;
+  
+  /* height: 90vh; */
+}
+.login-container{
+  background-color: #f9f9f9;
+  width: 400px;
+  padding: 20px;
+  height: 400px;
+  box-shadow: 0 2px 10px rgba(202, 17, 17, 0.1);
+  font-family: Arial, sans-serif;
+}
 .login-h1 {
   text-align: center;
   font-size: 24px;
@@ -57,7 +70,7 @@
   border-radius: 13px;
   font-size: 14px;
   cursor: pointer;
-  margin-top: 47px;
+  
  
 }
 
@@ -71,7 +84,7 @@
 
 }
 
-.login-forgot-password-link a {
+.forgot-password-link a {
   color: #5fc3d7;
   text-decoration: none;
   font-size: 12px;
@@ -107,6 +120,7 @@
 .messages ul {
   list-style-type: none;
   padding: 0;
+  color: red;
 }
 
 .login-messages li {
