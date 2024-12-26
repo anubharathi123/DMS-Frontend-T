@@ -43,6 +43,7 @@ const App = () => {
 
   const calendarRef = useRef(null);
   const dropdownRef = useRef(null);
+  const containerRef = useRef(null);
 
   // Apply filters
   const applyFilters = () => {
@@ -68,6 +69,9 @@ const App = () => {
 
     setFilteredDocuments(filtered);
   };
+useEffect(() => {
+    applyFilters();
+  }, [filterDate, declarationInput, filterDocType]);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -85,6 +89,13 @@ const App = () => {
     }
 
     applyFilters();
+  };
+
+  const resetFilters = () => {
+    setFilterDate(null);
+    setDeclarationInput("");
+    setFilterDocType("All");
+    setFilteredDocuments(documents);
   };
 
   const selectSuggestion = (suggestion) => {
@@ -126,16 +137,20 @@ const App = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target) &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
+        containerRef.current &&
+        containerRef.current.contains(event.target)
       ) {
-        setIsCalendarOpen(false);
-        setIsDocTypeDropdownOpen(false);
+        if (
+          calendarRef.current &&
+          !calendarRef.current.contains(event.target) &&
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target)
+        ) {
+          setIsCalendarOpen(false);
+          setIsDocTypeDropdownOpen(false);
+        }
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -144,39 +159,43 @@ const App = () => {
 
   return (
     <div className="verify-container">
-      <h2>Verify Document</h2>
+      <h2 className="verify-h2" >Verify Document</h2>
 
       {/* Declaration Number Search */}
-      <div className="declaration-number">
-        <label className="declaration_no">
+      <div className="verify-declaration-number">
+        <label className="verify-declaration_no">
           <b>Declaration Number: </b>
         </label>
         <input
           id="declarationNumber"
           type="text"
+          className="verify-declaration-no"
           value={declarationInput}
           onChange={handleInputChange}
           placeholder="Enter 13-digit DecNum"
         />
+
+        
         <button
-          className="approvebtn1"
+          className="verify-approvebtn1"
           onClick={() => handleAction("Approved")}
           style={{ marginRight: "10px" }}
         >
           Approve
         </button>
-        <button className="rejectbtn1" onClick={() => handleAction("Rejected")}>
+        <button className="verify-rejectbtn1" onClick={() => handleAction("Rejected")}>
           Reject
         </button>
+        <button className="verifydoc-reset-btn" onClick={resetFilters}>Reset Filters</button>
 
         {/* Suggestion Box */}
         {suggestions.length > 0 && (
-          <ul className="suggestion-box">
+          <ul className="verify-suggestion-box">
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
                 onClick={() => selectSuggestion(suggestion)}
-                className="suggestion-item"
+                className="verify-suggestion-item"
               >
                 {suggestion}
               </li>
@@ -186,15 +205,15 @@ const App = () => {
       </div>
 
       {/* Document Table */}
-      <div className="form-section">
-        <table className="document-table">
+      <div className="verify-form-section">
+        <table className="verify-document-table">
           <thead>
             <tr>
               <th>Declaration Number</th>
               <th>File Name</th>
               <th>
                 Updated Date
-                <button className="calendarbtn" onClick={toggleCalendar}>
+                <button className="verify-calendarbtn" onClick={toggleCalendar}>
                   📅
                 </button>
                 {isCalendarOpen && (
@@ -214,39 +233,39 @@ const App = () => {
               <th>
                 Document Type
                 <button
-                  className="show-doc-type-btn"
+                  className="verify-show-doc-type-btn"
                   onClick={toggleDocTypeDropdown}
                 >
                   <img
                     src={DropDownArrow}
                     alt="dropdown-arrow"
-                    className="dropdown-arrow"
+                    className="verify-dropdown-arrow"
                   />
                 </button>
                 {isDocTypeDropdownOpen && (
                   <div ref={dropdownRef} className="verifydoc-dropdown-list">
-                    <ul className="doc-list">
+                    <ul className="verify-doc-list">
                       <li
                         onClick={() => handleDocTypeChange("All")}
-                        className="allbtn"
+                        className="verify-allbtn"
                       >
                         All
                       </li>
                       <li
                         onClick={() => handleDocTypeChange("Declaration")}
-                        className="declaration"
+                        className="verify-declaration"
                       >
                         Declaration
                       </li>
                       <li
                         onClick={() => handleDocTypeChange("Invoice")}
-                        className="invoice"
+                        className="verify-invoice"
                       >
                         Invoice
                       </li>
                       <li
                         onClick={() => handleDocTypeChange("Packing List")}
-                        className="packing-list"
+                        className="verify-packing-list"
                       >
                         Packing List
                       </li>
@@ -266,7 +285,7 @@ const App = () => {
                     href={doc.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="file-link"
+                    className="verify-file-link"
                   >
                     {doc.FileName || "View Document"}
                   </a>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
 import './UploadDocument.css';
+import { color } from 'chart.js/helpers';
 
 const UploadDocument = () => {
   const [files, setFiles] = useState({
@@ -61,24 +62,24 @@ const UploadDocument = () => {
 
   return (
     <div className="upload-document-container">
-      <h3 className="upload-h3">Upload Document</h3>
+      <h2 className="upload-h2">Upload Document</h2>
 
       {/* Declaration Number Section */}
-      <div className="declaration-number-container">
-        <p className="declaration-number"><b>Declaration Number:</b></p>
+      <div className="upload-declaration-number-container">
+        <p className="upload-declaration-number"><b>Declaration Number:</b></p>
         <input 
           type="text" 
           value={1234} 
           readOnly 
-          className="declaration-number-input" 
+          className="upload-declaration-number-input" 
         />
-        <span className="arrow-icon">→</span>
+        <span className="upload-arrow-icon">→</span>
       </div>
 
-      <div className="document-type-container">
-        <h4>Document Type</h4>
-        <div className="checkbox-section">
-          <table className="checkbox-table">
+      <div className="upload-document-type-container">
+        <p className='upload-p'><b>Document Type</b></p>
+        <div className="upload-checkbox-section">
+          <table>
             <tbody>
               {[
                 'declaration',
@@ -89,14 +90,9 @@ const UploadDocument = () => {
                 'deliveryOrder',
                 'others',
               ].map((docType) => (
-                <tr className="checkbox-item" key={docType}>
-                  <td className="checkbox-label">
-                    <label>
-                      <input 
-                        type="checkbox" 
-                        className="checkbox" 
-                        disabled={uploadedFilesStatus[docType]} 
-                      />
+                <tr className="upload-checkbox-item" key={docType}>
+                  <td>
+                    <label style={{color:"black"}}>
                       {docType.charAt(0).toUpperCase() + docType.slice(1).replace(/([A-Z])/g, ' $1')}
                     </label>
                   </td>
