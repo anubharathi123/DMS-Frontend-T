@@ -69,8 +69,7 @@ const UploadDocument = () => {
         <p className="upload-declaration-number"><b>Declaration Number:</b></p>
         <input 
           type="text" 
-          value={1234} 
-          readOnly 
+          placeholder='Enter 13-digit DecNum'
           className="upload-declaration-number-input" 
         />
         <span className="upload-arrow-icon">→</span>
