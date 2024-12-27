@@ -88,6 +88,7 @@ const ResetPassword = () => {
       <div className='reset-btn-adjustment'>
         <button className='reset-submit' type="submit">{isOtpSent ? 'Verify OTP' : 'Submit'}</button>
         </div>
+        
       </form>
     </div>
     </div>
