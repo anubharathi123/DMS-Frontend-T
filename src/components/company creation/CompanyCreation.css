@@ -54,10 +54,12 @@
 .company-creation-input {
   width: 58%;
   padding: 5px;
-  font-size: 14px;
-  background-color: #f2f2f2;
+  font-size: 13px;
+  background-color: #ffffff;
   border: 1px solid #ccc;
   border-radius: 4px;
+  height: fit-content;
+  margin-top: 8px;
 }
 
 .company-creation-date-group {
@@ -75,7 +77,7 @@
   border-radius: 5px;
   margin-left: 100px;
   height: 60px;
-  position: relative; /* Ensure that the remove button is positioned absolutely */
+  position: inherit; /* Ensure that the remove button is positioned absolutely */
 }
 
 .company-creation-upload-icon {
