@@ -138,6 +138,7 @@ const Header = () => {
                         type="button"
                         className="signout-button"
                         onClick={() => alert("Sign Out Clicked")}
+
                     >
                         Sign Out
                     </button>
