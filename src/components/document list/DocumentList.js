@@ -174,7 +174,7 @@ const DocumentList = () => {
             border: "none",
             backgroundColor: "#5fc3d7",
             cursor: "pointer",
-            marginLeft: "981px",
+            marginLeft: "690px",
           }}
         >
           Reset Filters

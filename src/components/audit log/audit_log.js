@@ -5,19 +5,19 @@ import './audit_log.css';
 const App = () => {
   return (
     <div className='auditpage'>
-        <h1>Audit Log</h1>
+        <h1 className='audit-h1'>Audit Log</h1>
         <label for="mail-id">Mail ID</label>
         <input type='text' name='mail-id' id='mail-id' required placeholder='Enter Mail ID'></input>
         <br></br>
         <br></br>
         <label for="actions">Actions</label>
-        <input type='text' name='actions' id='actions' required placeholder='Enter Actions'></input>
+        <input type='text' className='audit-actions' name='actions' id='actions' required placeholder='Enter Actions'></input>
         <br></br>
         <br></br>
         <label className="from-date" for="from-date">From</label>
-        <input type='date' name='from-date' id='from-date' required ></input>
+        <input type='date' className='audit_from-date' name='from-date' id='from-date' required ></input>
         <label className='to-date' for="to-date">To</label>
-        <input className='audit-input' type='date' name='to-date' id='to-date' required ></input>
+        <input className='audit_to-date' type='date' name='to-date' id='to-date' required ></input>
         <br></br>
         <br></br>
         <button type='button' className='apply-filterbtn'>Apply Filter</button>
