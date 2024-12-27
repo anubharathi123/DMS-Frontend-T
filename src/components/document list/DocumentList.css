@@ -39,7 +39,7 @@
     margin-right: 6px;
     margin-left: -100px;
     color: #101010;
-    margin-bottom: 1px;
+    margin-bottom: -2px;
   }
   
   .document-list-declaration-input {
@@ -66,10 +66,11 @@
   .document-list-table th {
     background-color: #156082;
     color: white;
+    
   }
   
   .document-list-table td {
-    padding: 10px;
+    padding: 9px;
     text-align: center;
     background-color: #ffffff;
     border-color: #ccc;
@@ -96,7 +97,7 @@
     width: 16px;
     height: 16px;
     margin-left: 10px;
-    position: fixed;
+    margin-bottom: -2px;
     filter: invert(1);
   }
 

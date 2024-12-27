@@ -11,16 +11,21 @@
   background: rgb(248, 249, 250);
 }
 
-h1{
+.audit-h1{
   font-family:'Times New Roman', Times, serif;
   text-align: center;
 }
 
-.to-date .from-date .actions .mail-id{
-  margin-left: 20%;
+.audit-actions {
+
 }
 
-.audit-input {
+.audit_from-date {
+  margin-left: 15px;
+  width: 250px;
+}
+
+.audit_to-date {
   margin-left: 15px;
   width: 250px;
 }
@@ -58,7 +63,7 @@ h1{
 
 th {
   text-align: center;
-  padding: 20px;
+  padding: 10px;
 }
 
 .editbtn {

@@ -13,7 +13,7 @@
 
 .verify-h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .verify-form-section {
@@ -38,22 +38,25 @@
 }
 
 .verify-declaration-number {
-  margin-left: 25%;
+  margin-left: 20%;
+
   margin-bottom: 20px;
 }
 
 .verify-declaration_no {
   font-size: 18px;
   color: black;
-  position: fixed;
+  margin-left: -10px;
+  margin-right: -30px;
 }
 
 .verify-declaration-no {
   padding: 5px;
   margin-right: 60px;
-  margin-left: 190px;
+  margin-left: 40px;
   margin-top: -2px;
   width: 180px;
+  border-radius: 5px;
   border-color: black;
   border-style:groove ;
   border-width: 1px;
@@ -155,7 +158,6 @@
   margin-left: 5px;
   border-radius: 4px;
   padding: 4px;
-  position: fixed;
   margin-top: -5px;
 }
 
@@ -223,7 +225,7 @@
 }
 .verify-document-table {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
   border-collapse: collapse;
 }
 
