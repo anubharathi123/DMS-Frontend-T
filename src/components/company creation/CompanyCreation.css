@@ -77,7 +77,7 @@
   border-radius: 5px;
   margin-left: 100px;
   height: 60px;
-  position: relative; /* Ensure that the remove button is positioned absolutely */
+  position: inherit; /* Ensure that the remove button is positioned absolutely */
 }
 
 .company-creation-upload-icon {

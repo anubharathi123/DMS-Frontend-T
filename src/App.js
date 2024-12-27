@@ -57,7 +57,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/login","/Login", "/login/","/resetpassword", "/ResetPassword", "/changepassword"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/login","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -74,7 +74,7 @@ function AppContent() {
 
         {/* Change Password (Token Only) */}
         <Route
-          path="/changepassword"
+          path="/ChangePassword"
           element={
             <TokenRoute>
               <ChangePassword />
