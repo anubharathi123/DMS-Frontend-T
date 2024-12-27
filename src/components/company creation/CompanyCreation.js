@@ -224,7 +224,7 @@ const CompanyCreation = () => {
             <FaCloudUploadAlt className="company-creation-upload-icon" />
             {/* Conditionally render the placeholder text */}
             {contractDocuments.length === 0 && (
-             <span> Drag & drop a document, or select here   </span>
+             <span> Drag & drop or select here   </span>
             )}
             <input
               type="file"

@@ -3,11 +3,12 @@ import './header.css';
 import Notification from '../../assets/images/notification-icon.png'
 import CandidateProfile from '../../assets/images/candidate-profile.png'
 import SearchIcon from '../../assets/images/search_icon.png'
-
+import { NavLink } from "react-router-dom";
+import NotificationPage from "../NotificationDropdown/NotificationDropdown";
 
 const App = () => {
     return (
-        <div style={{ background: "rgb(248, 249, 250)"}}>
+        <div style={{ background: "rgb(248, 249, 250)" }}>
             <Header />
         </div>
     );
@@ -17,15 +18,16 @@ const Header = () => {
     const [query, setQuery] = useState(""); // State for search input
     const [suggestions, setSuggestions] = useState([]); // State for suggestions
     const [activeDropdown, setActiveDropdown] = useState(null); // Tracks which dropdown is open
-
     const notifications = [
-        "New announcement created",
-        "Company profile updated",
-        "Admin added a new user",
-        "System maintenance scheduled",
-        "New document uploaded",
+        { id: 1, name: 'Ansari', message: 'marked the task as done', time: '1 hour ago', read: true },
+        { id: 2, name: 'AnuBharathi', message: 'answered your comment', time: '2 hours ago', read: true },
+        { id: 3, name: 'Alex', message: 'mentioned you in her comment', time: '3 hours ago', read: false },
+        { id: 4, name: 'Stev', message: 'mentioned you in her comment on Invoices', time: '2 days ago', read: false },
+        { id: 5, name: 'Sidd Ahamahad', message: 'assigned a new task to you', time: '3 days ago', read: false },
+        { id: 6, name: 'Vimal Kumar', message: 'updated the project deadline', time: '4 days ago', read: false },
+        { id: 7, name: 'Tamil', message: 'commented on your post', time: '5 days ago', read: false },
+        { id: 8, name: 'Shreenivas', message: 'liked your comment on the report', time: '6 days ago', read: false },
     ];
-
     const allSuggestions = [
         "Find Company",
         "Find Documents",
@@ -100,20 +102,7 @@ const Header = () => {
             {/* Notification Dropdown */}
             {activeDropdown === "notification" && (
                 <div className="notification-dropdown">
-                    <button
-                        type="button"
-                        className="close-button"
-                        onClick={() => setActiveDropdown(null)}
-                    >
-                        &times;
-                    </button>
-                    <ul className="notification-list">
-                        {notifications.map((notification, index) => (
-                            <li key={index} className="notification-item">
-                                {notification}
-                            </li>
-                        ))}
-                    </ul>
+                    <NotificationPage />
                 </div>
             )}
 
@@ -129,6 +118,7 @@ const Header = () => {
                     className="profile-image"
                 />
             </button>
+
             {/* Profile Dropdown */}
             {activeDropdown === "profile" && (
                 <div className="profile-dropdown">
@@ -138,7 +128,6 @@ const Header = () => {
                         type="button"
                         className="signout-button"
                         onClick={() => alert("Sign Out Clicked")}
-
                     >
                         Sign Out
                     </button>
