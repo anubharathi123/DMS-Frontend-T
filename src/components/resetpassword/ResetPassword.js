@@ -2,21 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import authService from '../../ApiServices/ApiServices'; // Import API service
 import './ResetPassword.css'; 
-
 const ResetPassword = () => {
   const [emailOrUsername, setEmailOrUsername] = useState('');
   const [otp, setOtp] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
-
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-
     if (!isOtpSent) {
       if (!emailOrUsername) {
         setErrorMessage('Please enter your email or username.');
@@ -27,7 +23,6 @@ const ResetPassword = () => {
       await verifyOtp();
     }
   };
-
   const sendOtp = async () => {
     try {
       const response = await authService.sendOTP(emailOrUsername);
@@ -37,7 +32,6 @@ const ResetPassword = () => {
       setErrorMessage(error.message || 'Failed to send OTP. Please try again.');
     }
   };
-
   const verifyOtp = async () => {
     try {
       const data = { email: emailOrUsername, otp };
@@ -48,16 +42,14 @@ const ResetPassword = () => {
       setErrorMessage(error.message || 'Invalid OTP. Please try again.');
     }
   };
-
   return (
+    <div className='reset-outer-container'>
     <div className="reset-password-container">
-      <h2>Reset Password</h2>
-
+      <h2 className='reset-h2'>Reset Password</h2>
       {errorMessage && <div className="error">{errorMessage}</div>}
       {successMessage && <div className="success">{successMessage}</div>}
-
       <form className="form1" onSubmit={handleSubmit}>
-        <div className="reset-form-group">
+        <div className="form-group">
           <label htmlFor="email-username">Email/Username:</label>
           <input
             type="text"
@@ -69,7 +61,6 @@ const ResetPassword = () => {
             required
           />
         </div>
-
         {isOtpSent && (
           <div className="form-group">
             <label htmlFor="otp">Enter OTP:</label>
@@ -84,17 +75,12 @@ const ResetPassword = () => {
             />
           </div>
         )}
-
+      <div className='reset-btn-adjustment'>
         <button className='reset-submit' type="submit">{isOtpSent ? 'Verify OTP' : 'Submit'}</button>
+        </div>
       </form>
-
-      
-        <button className="reset-submit" type="submit">{isOtpSent ? 'Verify OTP' : 'Submit'}</button>
-    </div>
     </div>
     </div>
   );
 };
-
 export default ResetPassword;
-
