@@ -11,7 +11,7 @@ const MyChart = () => {
 
 const App = () => {
   return (
-    <div style={{ background: 'rgb(248, 249, 250)' }}>
+    <div>
       <Dashboard />
       <PieChart />
       <MyChart />

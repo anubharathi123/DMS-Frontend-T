@@ -78,19 +78,26 @@ const DocumentList = () => {
   }, [filterDate, declarationInput, filterDocType]);
 
   const handleInputChange = (e) => {
-    const inputValue = e.target.value;
+    let inputValue = e.target.value;
+  
+    // Allow only numeric input and restrict length to 13 digits
+    if (!/^\d*$/.test(inputValue)) return; // Prevent non-numeric input
+    if (inputValue.length > 13) inputValue = inputValue.slice(0, 13);
+  
     setDeclarationInput(inputValue);
-
-    if (inputValue) {
+  
+    // Filter documents only if input length is exactly 13
+    if (inputValue.length === 13) {
       const matchingSuggestions = documents
         .filter((doc) => doc.declarationNumber.startsWith(inputValue))
         .map((doc) => doc.declarationNumber);
-
+  
       setSuggestions(matchingSuggestions);
     } else {
       setSuggestions([]);
     }
   };
+  
 
   const handleCalendarToggle = () => {
     setIsCalendarOpen((prev) => {
@@ -157,7 +164,7 @@ const DocumentList = () => {
         <input
           type="text"
           className="document-list-declaration-input"
-          placeholder="Enter 13-digit Dec num"
+          placeholder="Enter 13-digit DecNum"
           value={declarationInput}
           onChange={handleInputChange}
         />
