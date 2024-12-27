@@ -87,7 +87,7 @@ const Login = () => {
       )}
 
       <div className="login-container">
-        <h1>Login</h1>
+        <h1 className="login-h2">Login</h1>
         <form onSubmit={handleLoginSubmit}>
           <div className="form-group">
             <label htmlFor="username">
