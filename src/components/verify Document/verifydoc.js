@@ -76,21 +76,31 @@ useEffect(() => {
   // Handle input changes
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-    setDeclarationInput(inputValue);
-
-    if (inputValue) {
-      const matchingSuggestions = documents
-        .filter((doc) => doc.declarationNumber.startsWith(inputValue))
-        .map((doc) => doc.declarationNumber);
-
-      setSuggestions(matchingSuggestions);
-    } else {
-      setSuggestions([]);
+  
+    // Limit input to digits and maximum length of 13
+    if (/^\d{0,13}$/.test(inputValue)) {
+      setDeclarationInput(inputValue);
+  
+      // Filter only if the input is exactly 13 digits
+      if (inputValue.length === 13) {
+        const matchingSuggestions = documents
+          .filter((doc) => doc.declarationNumber.startsWith(inputValue))
+          .map((doc) => doc.declarationNumber);
+  
+        setSuggestions(matchingSuggestions);
+      } else {
+        setSuggestions([]);
+      }
+  
+      // Apply filters only for valid 13-digit input
+      if (inputValue.length === 13) {
+        applyFilters();
+      } else {
+        setFilteredDocuments(documents); // Reset the filter if not 13 digits
+      }
     }
-
-    applyFilters();
   };
-
+  
   const resetFilters = () => {
     setFilterDate(null);
     setDeclarationInput("");
