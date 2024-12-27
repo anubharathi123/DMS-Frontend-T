@@ -7,8 +7,9 @@ import Dropup from '../../assets/images/dropup.webp';
 
 const AsideBar = () => {
   // Retrieve the user's role from localStorage (simulated here)
+
   localStorage.setItem("role", "Viewer"); // This should be set based on the logged-in user
-  const role = localStorage.getItem('role'); // Assuming role is stored in localStorage
+const role = localStorage.getItem('role'); // Assuming role is stored in localStorage
 
   // State to track which dropdown is open (both main and inner dropdowns)
   const [openDropdowns, setOpenDropdowns] = useState({});
@@ -34,9 +35,9 @@ const AsideBar = () => {
   // Render dropdown icon based on whether it's open or not
   const renderDropdownIcon = (dropdownName) => {
     return openDropdowns[dropdownName] ? (
-      <img src={Dropup} alt="Drop Up" style={{ width: '25px', height: '25px', filter: 'hue-rotate(90deg)' }} />
+      <img src={Dropup} alt="Drop Up" style={{ width: '25px', height: '25px', filter: 'invert(1)' }} />
     ) : (
-      <img src={Dropdown} alt="Drop Down" style={{ width: '25px', height: '25px', filter: 'hue-rotate(90deg)' }} />
+      <img src={Dropdown} alt="Drop Down" style={{ width: '25px', height: '25px', filter: 'invert(1)'}} />
     );
   };
 
@@ -68,13 +69,17 @@ const AsideBar = () => {
               <button onClick={() => toggleDropdown('profile')} className="dropdown-toggle">
                 {renderDropdownIcon('profile')}
               </button>
+              
               {openDropdowns.profile && (
                 <ul className="dropdown-menu">
+                  {/* {(role === 'Product Owner' || role === 'Client Admin') && ( */}
                   <li>
                     <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Profile Management
                     </NavLink>
                   </li>
+                  {/* )} */}
+
                 </ul>
               )}
             </li>
@@ -220,7 +225,7 @@ const AsideBar = () => {
           {(role === '#' || role === 'Client Admin') && (
             <li>
               <NavLink to="/EmployeeCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p style={{ marginLeft: '15px' }}>Create User</p>
+                <p >Create User</p>
               </NavLink>
             </li>
           )}
@@ -229,7 +234,7 @@ const AsideBar = () => {
           {(role === 'Viewer' || role === 'Client Admin') && (
             <li>
               <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p style={{ marginLeft: '15px' }}>Document View</p>
+                <p >Document View</p>
               </NavLink>
             </li>
           )}
@@ -241,7 +246,6 @@ const AsideBar = () => {
               <NavLink to="/verifydocument" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p>Verify Document</p>
               </NavLink>
-
               {openDropdowns.VerifyDoc && (
                 <ul className="dropdown-menu">
                   <li>
