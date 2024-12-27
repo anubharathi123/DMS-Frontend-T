@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import authService from '../../ApiServices/ApiServices';
 
@@ -12,9 +11,16 @@ const Login = () => {
   const [isOtpVisible, setIsOtpVisible] = useState(false);
   const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const Navigate = useNavigate()
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
+    if (isOtpVisible) {
+      // Handle OTP submission if OTP is visible
+      handleOtpSubmit();
+      return;
+    }
+
     try {
       if (!username || !password) {
         setMessages(['Please fill in all fields']);
@@ -40,8 +46,7 @@ const Login = () => {
     }
   };
 
-  const handleOtpSubmit = async (event) => {
-    event.preventDefault();
+  const handleOtpSubmit = async () => {
     try {
       if (!otp) {
         setMessages(['Please enter the OTP']);
@@ -54,6 +59,8 @@ const Login = () => {
       setMessages([]);
       console.log('OTP verification successful:', verifyResponse);
       alert('OTP Verified!');
+      localStorage.setItem("access_status",true)
+      Navigate("/")
     } catch (error) {
       console.error('OTP verification error:', error.message || error);
       setMessages([error.message || 'Invalid OTP. Please try again.']);
@@ -62,16 +69,13 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      {/* Show login success or failure message at the top */}
+    <div className="login-div">
       {isLoginSuccessful && !isOtpVerified && (
         <div className="login-status login-success">
           <p>Welcome User! Please verify the OTP.</p>
         </div>
       )}
 
-
-      {/* Show messages for other errors */}
       {messages.length > 0 && (
         <div className="messages">
           <ul>
@@ -82,65 +86,66 @@ const Login = () => {
         </div>
       )}
 
-      {/* Login Form */}
-      <h1>Login</h1>
-      <form onSubmit={handleLoginSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">
-            Username/Email Id <span className="required">*</span>
-          </label>
-          <input
-            type="text"
-            id="username"
-            className='login-input'
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">
-            Password <span className="required">*</span>
-          </label>
-          <input
-            type="password"
-            id="password"
-            className='login-input'
-            
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        {/* Forgot Password link */}
-        <div className="forgot-password-link">
-          <Link to="/ResetPassword">Forgot Password?</Link>
-        </div>
-
-        {/* OTP input only shows when login is successful */}
-        {isOtpVisible && (
+      <div className="login-container">
+        <h1>Login</h1>
+        <form onSubmit={handleLoginSubmit}>
           <div className="form-group">
-            <label htmlFor="otp">
-              OTP <span className="required">*</span>
+            <label htmlFor="username">
+              Username/Email Id <span className="required">*</span>
             </label>
             <input
               type="text"
-              className='login-input'
-              id="otp"
-              name="otp"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              id="username"
+              className="login-input"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
-        )}
 
-        {/* Submit Button */}
-        <button className='login-btn' type="submit">{isOtpVisible ? 'Verify OTP' : 'Login'}</button>
-      </form>
+          <div className="form-group">
+            <label htmlFor="password">
+              Password <span className="required">*</span>
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="login-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="forgot-password-link">
+            <Link to="/ResetPassword">Forgot Password?</Link>
+          </div>
+
+          {isOtpVisible && (
+            <div className="form-group">
+              <label htmlFor="otp">
+                OTP <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                className="login-input"
+                id="otp"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+              />
+            </div>
+          )}
+
+          <div className="login-div-alignment">
+            <button className="login-btn" type="submit">
+              {isOtpVisible ? 'Verify OTP' : 'Login'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

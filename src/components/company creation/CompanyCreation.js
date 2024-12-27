@@ -23,11 +23,13 @@ const CompanyCreation = () => {
     setCompany({ ...company, [name]: value });
   };
 
-  // Handles file selection
+  // Handles file selection (only one file at a time)
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setContractDocuments([...contractDocuments, ...files]);
-    setFileInputClicked(true);
+    const file = e.target.files[0]; // Only take the first file
+    if (file) {
+      setContractDocuments([file]); // Replace the previous files with the selected one
+      setFileInputClicked(true);
+    }
   };
 
   // Handles drag-over event
@@ -47,18 +49,17 @@ const CompanyCreation = () => {
     e.preventDefault();
     e.stopPropagation();
     setDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    setContractDocuments([...contractDocuments, ...files]);
-    setFileInputClicked(true);
+    const file = e.dataTransfer.files[0]; // Only take the first dropped file
+    if (file) {
+      setContractDocuments([file]); // Replace the previous files with the selected one
+      setFileInputClicked(true);
+    }
   };
 
   // Removes a specific file
-  const handleRemoveFile = (index) => {
-    const updatedFiles = contractDocuments.filter((_, i) => i !== index);
-    setContractDocuments(updatedFiles);
-    if (updatedFiles.length === 0) {
-      setFileInputClicked(false);
-    }
+  const handleRemoveFile = () => {
+    setContractDocuments([]); // Remove the file
+    setFileInputClicked(false); // Reset the file input click status
   };
 
   // Handles form submission
@@ -103,14 +104,14 @@ const CompanyCreation = () => {
   };
 
   return (
-    <div className="company-register-body">
-      <div className="company-register-content">
-        <h2 className="company-register-title">Company Register</h2>
+    <div className="company-creation-container">
+      <div className="company-creation-inner-container">
+        <h2 className="company-creation-title">Company Register</h2>
         <form className="company-creation-form" onSubmit={handleSubmit}>
           {/* Username */}
-          <div className="company-creation-formdiv">
+          <div className="company-creation-form-group">
             <label className="company-creation-label">
-              Username<span className="mandatory">*</span>
+              Username<span className="company-creation-mandatory">*</span>
             </label>
             <input
               type="text"
@@ -123,9 +124,9 @@ const CompanyCreation = () => {
           </div>
 
           {/* Company Name */}
-          <div className="company-creation-form">
+          <div className="company-creation-form-group">
             <label className="company-creation-label">
-              Company Name <span className="mandatory">*</span>
+              Company Name <span className="company-creation-mandatory">*</span>
             </label>
             <input
               type="text"
@@ -138,9 +139,9 @@ const CompanyCreation = () => {
           </div>
 
           {/* Person Name */}
-          <div className="company-creation-form">
+          <div className="company-creation-form-group">
             <label className="company-creation-label">
-              Person Name <span className="mandatory">*</span>
+              Person Name <span className="company-creation-mandatory">*</span>
             </label>
             <input
               type="text"
@@ -153,9 +154,9 @@ const CompanyCreation = () => {
           </div>
 
           {/* Mobile */}
-          <div className="company-creation-form">
+          <div className="company-creation-form-group">
             <label className="company-creation-label">
-              Mobile <span className="mandatory">*</span>
+              Mobile <span className="company-creation-mandatory">*</span>
             </label>
             <input
               type="tel"
@@ -168,9 +169,9 @@ const CompanyCreation = () => {
           </div>
 
           {/* Email */}
-          <div className="company-creation-form">
+          <div className="company-creation-form-group">
             <label className="company-creation-label">
-              Mail ID <span className="mandatory">*</span>
+              Mail ID <span className="company-creation-mandatory">*</span>
             </label>
             <input
               type="email"
@@ -183,10 +184,10 @@ const CompanyCreation = () => {
           </div>
 
           {/* Date Inputs */}
-          <div className="company-creation-dates">
-            <div className="company-creation-form">
+          <div className="company-creation-date-group">
+            <div className="company-creation-form-group">
               <label className="company-creation-label">
-                Access Creation Date <span className="mandatory">*</span>
+                Access Creation Date <span className="company-creation-mandatory">*</span>
               </label>
               <input
                 type="date"
@@ -197,9 +198,9 @@ const CompanyCreation = () => {
                 required
               />
             </div>
-            <div className="company-creation-form">
+            <div className="company-creation-form-group">
               <label className="company-creation-label">
-                Access Expiry Date <span className="mandatory">*</span>
+                Access Expiry Date <span className="company-creation-mandatory">*</span>
               </label>
               <input
                 type="date"
@@ -221,38 +222,38 @@ const CompanyCreation = () => {
             onClick={handleUploadClick}
           >
             <FaCloudUploadAlt className="company-creation-upload-icon" />
-            <span>Drag & drop documents here, or click to select</span>
+            {/* Conditionally render the placeholder text */}
+            {contractDocuments.length === 0 && (
+             <span> Drag & drop a document, or select here  </span>
+            )}
             <input
               type="file"
               id="file-input"
-              multiple
               onChange={handleFileChange}
               style={{ display: 'none' }}
             />
             {contractDocuments.length > 0 && (
               <div className="company-creation-file-names">
-                {contractDocuments.map((file, index) => (
-                  <div className="company-creation-file-item" key={index}>
-                    <span>{file.name}</span>
-                    <button
-                      type="button"
-                      className="company-craetion-remove-file-btn"
-                      onClick={() => handleRemoveFile(index)}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
+                <div className="company-creation-file-item">
+                  <span className="file-name">{contractDocuments[0].name}</span>
+                  <button
+                    type="button"
+                    className="company-creation-remove-file-btn"
+                    onClick={handleRemoveFile}
+                  >
+                    X
+                  </button>
+                </div>
               </div>
             )}
           </div>
 
           {/* Buttons */}
           <div className="company-creation-button-group">
-            <button type="submit" className="btn-submit">
+            <button type="submit" className="company-creation-submit-button">
               Submit
             </button>
-            <button type="button" className="btn-cancel" onClick={handleCancel}>
+            <button type="button" className="company-creation-cancel-button" onClick={handleCancel}>
               Cancel
             </button>
           </div>

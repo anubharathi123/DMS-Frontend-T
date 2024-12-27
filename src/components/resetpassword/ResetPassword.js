@@ -50,11 +50,10 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="reset-password-div">
-      {errorMessage && <div className="error">{errorMessage}</div>}
     <div className="reset-password-container">
-      <h2 className="reset-h2">Reset Password</h2>
-      
+      <h2>Reset Password</h2>
+
+      {errorMessage && <div className="error">{errorMessage}</div>}
       {successMessage && <div className="success">{successMessage}</div>}
 
       <form className="form1" onSubmit={handleSubmit}>
@@ -85,11 +84,13 @@ const ResetPassword = () => {
             />
           </div>
         )}
-       
+
+        <button className='reset-submit' type="submit">{isOtpSent ? 'Verify OTP' : 'Submit'}</button>
       </form>
 
       
         <button className="reset-submit" type="submit">{isOtpSent ? 'Verify OTP' : 'Submit'}</button>
+    </div>
     </div>
     </div>
   );
