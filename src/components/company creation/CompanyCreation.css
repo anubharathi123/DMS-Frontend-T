@@ -54,10 +54,12 @@
 .company-creation-input {
   width: 58%;
   padding: 5px;
-  font-size: 14px;
-  background-color: #f2f2f2;
+  font-size: 13px;
+  background-color: #ffffff;
   border: 1px solid #ccc;
   border-radius: 4px;
+  height: fit-content;
+  margin-top: 8px;
 }
 
 .company-creation-date-group {
@@ -70,12 +72,12 @@
 .company-creation-upload-container {
   display: flex;
   align-items: center;
-  width: 75%;
+  width: 53%;
   border: 1px dashed #ccc;
   border-radius: 5px;
-  margin-left: 100px;
+  margin-left: 121px;
   height: 60px;
-  position: relative; /* Ensure that the remove button is positioned absolutely */
+  position: inherit; /* Ensure that the remove button is positioned absolutely */
 }
 
 .company-creation-upload-icon {
@@ -107,7 +109,7 @@
   font-size: 18px;
   cursor: pointer;
   position: absolute;
-  right: 10px; /* Place the X button on the right */
+  left: 66%;  
 }
 
 .company-creation-button-group {

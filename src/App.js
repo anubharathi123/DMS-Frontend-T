@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AsideBar_Header from "./pages/Asidebar_Header";
+import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
 import UploadDocument from "./components/upload document/UploadDocument";
 import VerifyDoc from "./components/verify Document/verifydoc";
 import CompanyCreation from "./components/company creation/CompanyCreation";
@@ -58,7 +59,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/login","/Login", "/login/","/resetpassword", "/ResetPassword", "/changepassword"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -75,7 +76,7 @@ function AppContent() {
 
         {/* Change Password (Token Only) */}
         <Route
-          path="/changepassword"
+          path="/ChangePassword"
           element={
             <TokenRoute>
               <ChangePassword />
@@ -159,6 +160,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <CreateUser />
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/NotificationDropdown"
+          element={
+            <PrivateRoute>
+              <NotificationPage />
             </PrivateRoute>
           }
         />

@@ -103,9 +103,8 @@
 /* Input Fields */
 .emp-creation-input {
   width: 47%;
-  max-width: 195px;
+  max-width: 207px;
   padding: 4px;
-  border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
 }
@@ -118,7 +117,7 @@
 /* Input Field Alignment */
 .emp-creation-input,
 .emp-creation-select {
-  margin-left: 10px;
+  /* margin-left: 10px; */
   margin-right: 10px;
 }
 

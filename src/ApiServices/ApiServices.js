@@ -65,11 +65,9 @@ const authService = {
     }
     return response;
   },
-  sendOTP: async (email) => {
-    if (!email) {
-      throw new Error('Email is required to send OTP.');
-    }
-    return handleResponse(apiClient.get('auth/otp/', { params: { email } }));
+  sendOTP: async () => {
+    
+    return handleResponse(apiClient.get('auth/otp/'));
   },
   verifyOTP: async (data) => {
     if (!data.otp) {
@@ -87,7 +85,11 @@ const authService = {
     if (!data.email) {
       throw new Error('Email, OTP, and new password are required for password reset.');
     }
-    return handleResponse(apiClient.post('auth/reset/', data));
+    const response = await handleResponse(apiClient.post('auth/reset/', data));
+    if (response.token) {
+      localStorage.setItem('token', response.token);
+    }
+    return response;
   },
   changePassword: async (data) => {
     // if (data.confirmPassword == !data.new_password) {
