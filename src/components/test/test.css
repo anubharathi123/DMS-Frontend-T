@@ -1,0 +1,89 @@
+/* Container */
+.documenttable_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80%;
+    margin-left: 250px;
+    position: absolute;
+    top: 100px;
+  }
+  
+  /* Search and Filters */
+  .documenttable_controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .documenttable_search,
+  .documenttable_filter,
+  .documenttable_rows {
+    display: flex;
+    align-items: center;
+  }
+  
+  .documenttable_search_input,
+  .documenttable_filter_select,
+  .documenttable_rows_select {
+    width: 200px;
+  }
+  
+  /* Table */
+  .documenttable_table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .documenttable_thead {
+    background-color: #f3f4f6;
+    color: #000b58;
+  }
+  
+  .documenttable_th {
+    padding: 16px;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .documenttable_row {
+    background-color: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .documenttable_td {
+    padding: 16px;
+    text-align: left;
+  }
+  
+  .documenttable_status {
+    display: inline-block;
+    text-align: center;
+    width: fit-content;
+  }
+  
+  /* Pagination */
+  .documenttable_pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .documenttable_pageinfo_text {
+    font-size: 14px;
+  }
+  
+  .documenttable_paging_button {
+    background-color: #000b58;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .documenttable_paging_button:disabled {
+    background-color: #e5e7eb;
+    cursor: not-allowed;
+  }
+  
