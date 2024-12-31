@@ -3,7 +3,7 @@ import './header.css';
 import Notification from '../../assets/images/notification-icon.png'
 import CandidateProfile from '../../assets/images/candidate-profile.png'
 import SearchIcon from '../../assets/images/search_icon.png'
-import { NavLink } from "react-router-dom";
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 import NotificationPage from "../NotificationDropdown/NotificationDropdown";
 
 const App = () => {
@@ -28,6 +28,7 @@ const Header = () => {
         { id: 7, name: 'Tamil', message: 'commented on your post', time: '5 days ago', read: false },
         { id: 8, name: 'Shreenivas', message: 'liked your comment on the report', time: '6 days ago', read: false },
     ];
+    const Navigate = useNavigate();
     const allSuggestions = [
         "Find Company",
         "Find Documents",
@@ -51,6 +52,14 @@ const Header = () => {
             setSuggestions([]);
         }
     };
+    const handleLogout=()=>{
+        localStorage.removeItem("username");
+        localStorage.removeItem("token");
+        localStorage.removeItem("access_status");
+        localStorage.removeItem("role");
+        Navigate('/login');
+
+    }
 
     return (
         <div className="header-container" style={{ background: "#0b3041", padding: "10px", height: "45px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
@@ -127,9 +136,9 @@ const Header = () => {
                     <button
                         type="button"
                         className="signout-button"
-                        onClick={() => alert("Sign Out Clicked")}
+                        onClick={() => handleLogout()}
                     >
-                        Sign Out
+                        LogOut
                     </button>
                 </div>
             )}
