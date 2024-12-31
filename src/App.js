@@ -12,6 +12,7 @@ import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
+import Fileupload from "./components/fileuploadtestpage/file upload"
 
 import "./App.css";
 
@@ -68,7 +69,7 @@ function AppContent() {
       <Routes>
         {/* Route for Login */}
         <Route path="/login" element={<Login />} />
-
+        <Route path="/upload" element={<Fileupload />} />
         {/* Reset Password (Unrestricted Access) */}
         <Route path="/resetpassword" element={<ResetPassword />} />
 
