@@ -99,9 +99,7 @@ nav ul li:hover {
   background-color: #34495e;
 }
 
-nav ul li:hover a {
-  /* Change text/icon color on hover */
-}
+
 
 nav ul li i {
   font-size: 1.4rem;

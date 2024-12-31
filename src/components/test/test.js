@@ -2,15 +2,8 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import './test.css';
 
-interface Document {
-  declarationNumber: string;
-  fileName: string;
-  updatedDate: string;
-  docType: string;
-  status: string;
-}
 
-const tempData: Document[] = [
+const tempData= [
     { declarationNumber: '1234567890123', fileName: 'File1.pdf', updatedDate: '2024-12-01', docType: 'Invoice', status: 'Pending' },
     { declarationNumber: '9876543210987', fileName: 'File2.pdf', updatedDate: '2024-11-20', docType: 'Packing List', status: 'Reject' },
     { declarationNumber: '1122334455667', fileName: 'File3.pdf', updatedDate: '2024-10-15', docType: 'Declaration', status: 'Approve' },
