@@ -78,6 +78,9 @@ const authService = {
   resendOTP: async () => {
     return handleResponse(apiClient.put('auth/otp/'));
   },
+  details: async () => {
+    return handleResponse(apiClient.get('details/'));
+  },
   resetPassword: async (data) => {
     if (!data.email) {
       throw new Error('Email, OTP, and new password are required for password reset.');

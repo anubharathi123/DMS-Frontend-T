@@ -8,7 +8,7 @@ import Dropup from '../../assets/images/dropup.webp';
 const AsideBar = () => {
   // Retrieve the user's role from localStorage (simulated here)
 
-  localStorage.setItem("role", "Viewer"); // This should be set based on the logged-in user
+  // localStorage.setItem("role", "VIEWER"); // This should be set based on the logged-in user
 const role = localStorage.getItem('role'); // Assuming role is stored in localStorage
 
   // State to track which dropdown is open (both main and inner dropdowns)
@@ -61,7 +61,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
 
         <ul>
           {/* Profile Dropdown */}
-          {(role === 'Product Owner' || role === 'Client Admin' || role === 'Compiler' || role === 'Approver' || role === 'Viewer') && (
+          {(role === 'PRODUCT_OWNER' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
             <li className={`dropdown ${openDropdowns.profile ? 'open' : ''}`}>
               <NavLink to="/Profile" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p className="profiletab">Profile</p>
@@ -72,7 +72,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               
               {openDropdowns.profile && (
                 <ul className="dropdown-menu1">
-                  {/* {(role === 'Product Owner' || role === 'Client Admin') && ( */}
+                  {/* {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && ( */}
                   <li>
                     <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Profile Management
@@ -86,7 +86,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Dashboard Dropdown */}
-          {(role === 'Product Owner' || role === 'Client Admin') && (
+          {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
             <li className={`dropdown ${openDropdowns.dashboard ? 'open' : ''}`}>
               
               <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -156,7 +156,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Create Admin Dropdown */}
-          {role === 'Product Owner' && (
+          {role === 'PRODUCT_OWNER' && (
 
             <li className={`dropdown ${openDropdowns['create-admin'] ? 'open' : ''}`}>
               <NavLink to="EmployeeCreation"className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -178,7 +178,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Organization Dropdown */}
-          {(role === 'Product Owner' || role === '#') && (
+          {(role === 'PRODUCT_OWNER' || role === '#') && (
 
             <li className={`dropdown ${openDropdowns['organization'] ? 'open' : ''}`}>
               <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -200,7 +200,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Document Upload Dropdown */}
-          {(role === 'Compiler' || role === '#') && (
+          {(role === 'UPLOADER' || role === '#') && (
 
             <li className={`dropdown ${openDropdowns['UploadDocument'] ? 'open' : ''}`}>
               <NavLink to="/uploaddocument" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -222,7 +222,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Create User */}
-          {(role === '#' || role === 'Client Admin') && (
+          {(role === '#' || role === 'ADMIN') && (
             <li>
               <NavLink to="/EmployeeCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p >Create User</p>
@@ -231,7 +231,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Document View */}
-          {(role === 'Viewer' || role === 'Client Admin') && (
+          {(role === 'VIEWER' || role === 'ADMIN') && (
             <li>
               <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p >Document View</p>
@@ -240,7 +240,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Verify Document */}
-          {(role === 'Approver' || role === '#') && (
+          {(role === 'REVIEWER' || role === '#') && (
 
             <li className={`dropdown ${openDropdowns['verifydocument'] ? 'open' : ''}`}>
               <NavLink to="/verifydocument" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -259,7 +259,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
           )}
 
           {/* Settings */}
-          {(role === 'Product Owner' || role === 'Client Admin') && (
+          {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
             <li>
               <NavLink to="/settings" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p style={{ marginLeft: '0px' }}>Settings</p>

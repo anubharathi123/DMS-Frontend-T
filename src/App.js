@@ -16,7 +16,7 @@ import EmployeeCreation from "./components/employee creation/EmployeeCreation";
 import Fileupload from "./components/fileuploadtestpage/file upload"
 import Test from './components/test/test'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./App.css";
 

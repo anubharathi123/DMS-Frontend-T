@@ -44,7 +44,8 @@ const Login = () => {
       setIsOtpVisible(true);
       setCounter(30);
       setIsResendEnabled(false);
-      const otpResponse = await authService.sendOTP(username);
+      
+      const otpResponse = await authService.sendOTP();
       console.log('OTP sent successfully:', otpResponse);
 
       
@@ -69,8 +70,13 @@ const Login = () => {
       setIsOtpVerified(true);
       setMessages([]);
       alert('OTP Verified!');
-
+      const details_data = await authService.details();
+      console.log(details_data)
+      const role = details_data.details[1].name
+      console.log(role)
+      localStorage.setItem('role', role);
       localStorage.setItem('access_status', true);
+
       navigate('/');
     } catch (error) {
       console.error('OTP verification error:', error.message || error);
