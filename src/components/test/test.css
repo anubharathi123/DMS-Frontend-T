@@ -30,7 +30,7 @@
   }
   
   .documenttable_search_input{
-    width: 250px;
+    width: 260px;
   }
   .documenttable_filter_select,
   .documenttable_rows_select {
@@ -142,5 +142,5 @@
   } */
 
   svg{
-    margin-left: -30px;
+    margin-left: -35px;
   }

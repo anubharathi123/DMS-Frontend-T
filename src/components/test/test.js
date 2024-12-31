@@ -58,19 +58,19 @@ const DocumentTable = () => {
 
   const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFilter = (e) => {
     setFilter(e.target.value);
   };
 
-  const handleRowsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRowsPerPage = (e) => {
     setRowsPerPage(parseInt(e.target.value));
   };
 
-  const handlePageChange = (pageNumber: number) => {
+  const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
