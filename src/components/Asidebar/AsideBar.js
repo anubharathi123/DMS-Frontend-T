@@ -71,7 +71,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               </button>
               
               {openDropdowns.profile && (
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu1">
                   {/* {(role === 'Product Owner' || role === 'Client Admin') && ( */}
                   <li>
                     <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -97,7 +97,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               </button>
               {openDropdowns.dashboard && (
                   
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu1">
                   <li>
                     <NavLink to="/audit-log" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Audit Log
@@ -113,7 +113,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
                 </button>
                   
                     {openDropdowns.document && (
-                      <ul className="dropdown-menu">
+                      <ul className="dropdown-menu1">
                         <li>
                           <NavLink to="/document-creation" className={({ isActive }) => (isActive ? 'active' : '')}>
                             Document Creation
@@ -136,7 +136,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
                 </button>
 
                     {openDropdowns.announcement && (
-                      <ul className="dropdown-menu">
+                      <ul className="dropdown-menu1">
                         <li>
                           <NavLink to="/announcement-creation" className={({ isActive }) => (isActive ? 'active' : '')}>
                             Announcement Creation
@@ -166,7 +166,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
                 {renderDropdownIcon('create-admin')}
               </button>
               {openDropdowns['create-admin'] && (
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu1">
                   <li>
                     <NavLink to="/admin-list" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Admin List
@@ -188,7 +188,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
                 {renderDropdownIcon('organization')}
               </button>
               {openDropdowns['organization'] && (
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu1">
                   <li>
                     <NavLink to="/organization-list" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Organization List
@@ -210,7 +210,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               {renderDropdownIcon('uploaddocument')}
               </button>
               {openDropdowns.uploaddocument && (
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu1">
                   <li>
                     <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Document List
@@ -247,7 +247,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
                 <p>Verify Document</p>
               </NavLink>
               {openDropdowns.VerifyDoc && (
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu1">
                   <li>
                     <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Document List

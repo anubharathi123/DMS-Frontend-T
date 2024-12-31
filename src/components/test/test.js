@@ -20,6 +20,15 @@ const tempData: Document[] = [
     { declarationNumber: '1234567890123', fileName: 'File1.pdf', updatedDate: '2024-12-01', docType: 'Invoice', status: 'Pending' },
     { declarationNumber: '9876543210987', fileName: 'File2.pdf', updatedDate: '2024-11-20', docType: 'Packing List', status: 'Reject' },
     { declarationNumber: '1122334455667', fileName: 'File3.pdf', updatedDate: '2024-10-15', docType: 'Declaration', status: 'Approve' },
+    { declarationNumber: '1234567890123', fileName: 'File1.pdf', updatedDate: '2024-12-01', docType: 'Invoice', status: 'Pending' },
+    { declarationNumber: '9876543210987', fileName: 'File2.pdf', updatedDate: '2024-11-20', docType: 'Packing List', status: 'Reject' },
+    { declarationNumber: '1122334455667', fileName: 'File3.pdf', updatedDate: '2024-10-15', docType: 'Declaration', status: 'Approve' },
+    { declarationNumber: '1234567890123', fileName: 'File1.pdf', updatedDate: '2024-12-01', docType: 'Invoice', status: 'Pending' },
+    { declarationNumber: '9876543210987', fileName: 'File2.pdf', updatedDate: '2024-11-20', docType: 'Packing List', status: 'Reject' },
+    { declarationNumber: '1122334455667', fileName: 'File3.pdf', updatedDate: '2024-10-15', docType: 'Declaration', status: 'Approve' },
+    { declarationNumber: '1234567890123', fileName: 'File1.pdf', updatedDate: '2024-12-01', docType: 'Invoice', status: 'Pending' },
+    { declarationNumber: '9876543210987', fileName: 'File2.pdf', updatedDate: '2024-11-20', docType: 'Packing List', status: 'Reject' },
+    { declarationNumber: '1122334455667', fileName: 'File3.pdf', updatedDate: '2024-10-15', docType: 'Declaration', status: 'Approve' },
   ];
 
 const DocumentTable = () => {
@@ -66,7 +75,7 @@ const DocumentTable = () => {
   };
 
   return (
-    <div className="documenttable_container mx-auto p-4">
+    <div className="documenttable_container">
       <div className="documenttable_controls flex justify-between mb-4">
         <div className="documenttable_search flex items-center">
           <Search className="documenttable_search_icon w-5 h-5 mr-2" />
@@ -114,10 +123,16 @@ const DocumentTable = () => {
               <td className="documenttable_td px-6 py-4">{item.updatedDate}</td>
               <td className="documenttable_td px-6 py-4">{item.docType}</td>
               <td className="documenttable_td px-6 py-4">
-                <span className={`documenttable_status text-xs font-medium ${item.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : item.status === 'Reject' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} py-1 px-2 rounded`}>
-                  {item.status}
-                </span>
-              </td>
+  <span
+    className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
+      ${item.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+      item.status === 'Reject' ? 'bg-red-100 text-red-800' : 
+      'bg-green-100 text-green-800'}`}
+  >
+    {item.status}
+  </span>
+</td>
+
             </tr>
           ))}
         </tbody>

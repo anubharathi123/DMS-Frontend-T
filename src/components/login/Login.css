@@ -1,60 +1,54 @@
-/* Login.css */
+/* Updated Login.css */
 .login-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   width: 100%;
-  height: 100vh;
   background-color: #0b3041;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
 }
-   
-.login-div {
-  width: 100%;
-  /* max-width: 400px; */
-  /* margin: 16px auto; */
-  
-  align-content: center;
-  justify-items: center;
-  /* border-radius: 8px; */
-  
-  /* height: 90vh; */
-}
-.login-container{
+
+.login-container {
   background-color: #f9f9f9;
-  border-radius: 8px;
-  width: 400px;
-  padding: 20px;
-  height: 400px;
-  box-shadow: 0 2px 10px rgba(202, 17, 17, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   font-family: Arial, sans-serif;
-}
-.login-h2 {
   text-align: center;
-  /* font-size: 24px; */
-  margin-bottom: 20px;
-  color: #333;
 }
 
-.login-div-alignment{
-  text-align: -webkit-center;
-
+.login-h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .login-label {
   display: block;
   font-size: 14px;
-  color: #333;
+  color: #555;
   margin-bottom: 5px;
 }
 
 .login-input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
 }
 
 .login-input:focus {
@@ -64,48 +58,79 @@
 
 .required {
   color: red;
+  font-size: 12px;
 }
 
 .login-btn {
-  width: 70px;
-  padding: 8px;
-  align-self: center;
+  width: 100%;
+  padding: 10px;
   background-color: #5fc3d7;
   color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
-  
- 
+  transition: background-color 0.3s ease;
 }
 
-.login-button:hover {
-  background-color:#5fc3d7;
+.login-btn:hover {
+  background-color: #4faac2;
 }
 
-.login-forgot-password-link {
-  text-align: left;
- 
-
+.forgot-password-link {
+  text-align: right;
+  margin-top: 10px;
 }
 
 .forgot-password-link a {
   color: #5fc3d7;
   text-decoration: none;
-  font-size: 12px;
-  text-align-last: right;
+  font-size: 14px;
 }
 
-.login-forgot-password-link a:hover {
+.forgot-password-link a:hover {
   text-decoration: underline;
 }
 
-/* Success and Failure messages */
-.login-status.sucess {
-  padding: 10px;
+.otp-timer {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #777;
+}
+
+.resend-otp-link {
+  color: #5fc3d7;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.resend-otp-link:hover {
+  text-decoration: underline;
+}
+
+.messages {
   margin-bottom: 20px;
-  border-radius: 4px;
+  text-align: center;
+}
+
+.messages ul {
+  list-style-type: none;
+  padding: 0;
+  color: red;
+}
+
+.messages li {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.login-status {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 6px;
   text-align: center;
 }
 
@@ -119,66 +144,26 @@
   color: #721c24;
 }
 
-.messages {
-  margin-bottom: 20px;
-}
-
-.messages ul {
-  list-style-type: none;
-  padding: 0;
-  color: red;
-}
-
-.login-messages li {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 8px;
-  border-radius: 4px;
-  margin-bottom: 5px;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.login-form-input,
-form button {
-  margin-bottom: 10px;
-}
-
-.login-form button {
-  margin-top: 0px;
-}
-
-/* OTP Section */
-.login-form-group.otp {
-  margin-top: 20px;
-}
-
-.login-form-button[type="submit"] {
-  text-align-last: center;
-  align-self: center;
-}
-.login-form {
-  max-width: 345px;
-  margin: auto;
-  padding: 25px;
-  border: 1px solid #ccc;
-  border-radius: 52px;
-  background-color: #f9f9f9;
-  height: 312px;
-}
-.login-center-button {
-  margin: 0 auto; /* This will center the button */
-}
-.login-right-link {
-  margin-left: auto; /* This will push the link to the right side */
-}
-.login-change-password-div {
+.login-div-alignment {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5; /* Example background color */
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .login-h2 {
+    font-size: 20px;
+  }
+
+  .login-btn {
+    font-size: 14px;
+  }
+
+  .forgot-password-link a {
+    font-size: 12px;
+  }
 }

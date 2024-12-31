@@ -1,5 +1,5 @@
 /* Container */
-.documenttable_container {
+.documenttable_container{
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -16,19 +16,62 @@
     gap: 20px;
   }
   
+  .documenttable_search
+  {
+    flex-direction: row-reverse;
+  }
   .documenttable_search,
   .documenttable_filter,
   .documenttable_rows {
     display: flex;
     align-items: center;
+    gap: 5px;
+    
   }
   
-  .documenttable_search_input,
+  .documenttable_search_input{
+    width: 250px;
+  }
   .documenttable_filter_select,
   .documenttable_rows_select {
     width: 200px;
   }
   
+
+  /* General Table Styling */
+.documenttable_td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .documenttable_status {
+    display: inline-block;
+    text-align: center;
+  }
+  
+  /* Status-Specific Styles */
+  .bg-yellow-100 {
+    background-color: #fef3c7;
+  }
+  .text-yellow-800 {
+    color: #854d0e;
+  }
+  
+  .bg-red-100 {
+    background-color: #fee2e2;
+  }
+  .text-red-800 {
+    color: #991b1b;
+  }
+  
+  .bg-green-100 {
+    background-color: #d1fae5;
+  }
+  .text-green-800 {
+    color: #064e3b;
+  }
+  
+
   /* Table */
   .documenttable_table {
     width: 100%;
@@ -79,11 +122,25 @@
     color: white;
     border-radius: 5px;
     padding: 8px 16px;
+    margin-right: 40px; 
     cursor: pointer;
   }
   
   .documenttable_paging_button:disabled {
+    margin-right: 40px;
     background-color: #e5e7eb;
+    color: #495057;
     cursor: not-allowed;
   }
   
+  .py-2{
+    border-radius:7px;
+  }
+
+  /* .documenttable_controls{
+    z-index: -1;
+  } */
+
+  svg{
+    margin-left: -30px;
+  }
