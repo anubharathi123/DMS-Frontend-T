@@ -62,7 +62,6 @@
   height: fit-content;
   margin-top: 8px;
   margin-left: 26px;
-
 }
 
 .company-creation-date-group {
@@ -72,7 +71,7 @@
 
 /* Fix for Creation Date Input */
 .company-creation-date-input {
-  width: 58%; /* Align it with the input fields */
+  width: 58%;
   padding: 5px;
   font-size: 13px;
   background-color: #ffffff;
@@ -86,12 +85,12 @@
 .company-creation-upload-container {
   display: flex;
   align-items: center;
-  width: 61%;
+  width: 58%; /* Same width as other fields */
   border: 1px dashed #ccc;
   border-radius: 5px;
-  margin-left: 131px;
   height: 63px;
-  position: relative; /* Position relative to contain the absolute positioning of the remove button */
+  position: relative;
+  margin-left: 26px;
 }
 
 .company-creation-upload-icon {
@@ -122,10 +121,9 @@
   font-size: 14px;
   color: #333;
   margin-top: -10px;
-  flex-grow: 1; /* Allow the file name to take all available space */
+  flex-grow: 1;
 }
 
-/* Fix for Remove File Button */
 .company-creation-remove-file-btn {
   background: transparent;
   border: none;
@@ -133,9 +131,9 @@
   font-size: 18px;
   cursor: pointer;
   position: absolute;
-  right: 10px; /* Align to the right */
+  right: 10px;
   top: 50%;
-  transform: translateY(-50%); /* Vertically center the button */
+  transform: translateY(-50%);
 }
 
 .company-creation-button-group {
@@ -178,4 +176,3 @@
   border-color: #258feb;
   background-color: #f8f9fa;
 }
-

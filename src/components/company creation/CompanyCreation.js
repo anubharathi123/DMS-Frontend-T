@@ -203,49 +203,43 @@ const CompanyCreation = () => {
             </div>
           </div>
 
-          {/* File Upload */}
-          <div
-            className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={(e) => {
-              // Ensure the file input dialog only triggers when the span text is clicked
-              if (e.target.classList.contains("company-creation-upload-text")) {
-                if (!fileInputClicked) {
-                  document.getElementById("file-input").click();
-                }
-              }
-            }}
-          >
-            <FaCloudUploadAlt className="company-creation-upload-icon" />
-
-            {/* Conditionally render the placeholder text */}
-            {contractDocuments.length === 0 && (
-              <span className="company-creation-upload-text">Drag & drop or select here</span>
-            )}
-
-            <input
-              type="file" 
-              id="file-input"
-              onChange={handleFileChange}
-              style={{ display: 'none' }}  // Hide the file input
-            />
-
-            {contractDocuments.length > 0 && (
-              <div className="company-creation-file-names">
-                <div className="company-creation-file-item">
-                  <span className="file-name">{contractDocuments[0].name}</span>
-                  <button
-                    type="button"
-                    className="company-creation-remove-file-btn"
-                    onClick={handleRemoveFile}
-                  >
-                    X
-                  </button>
+          {/* Contract Document */}
+          <div className="company-creation-form-group">
+            <label className="company-creation-label">
+              Contract Document <span className="company-creation-mandatory"></span>
+            </label>
+            <div
+              className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={(e) => handleUploadClick(e)}
+            >
+              <FaCloudUploadAlt className="company-creation-upload-icon" />
+              {contractDocuments.length === 0 && (
+                <span className="company-creation-upload-text">Drag & drop or select here</span>
+              )}
+              <input
+                type="file" 
+                id="file-input"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}  // Hide the file input
+              />
+              {contractDocuments.length > 0 && (
+                <div className="company-creation-file-names">
+                  <div className="company-creation-file-item">
+                    <span className="file-name">{contractDocuments[0].name}</span>
+                    <button
+                      type="button"
+                      className="company-creation-remove-file-btn"
+                      onClick={handleRemoveFile}
+                    >
+                      X
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Buttons */}
@@ -264,4 +258,3 @@ const CompanyCreation = () => {
 };
 
 export default CompanyCreation;
-
