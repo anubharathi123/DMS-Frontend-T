@@ -5,7 +5,7 @@
   background-color: #ffffff;
   height: 110vh;
   justify-items: left;
-  margin-top: 0px;
+  margin-top: -20px;
 }
 
 .company-creation-inner-container {
@@ -42,6 +42,7 @@
   margin-bottom: 8px;
   min-width: 105px;
   text-align: left;
+  margin-top: 5px;
 }
 
 .company-creation-mandatory {
@@ -60,28 +61,49 @@
   border-radius: 4px;
   height: fit-content;
   margin-top: 8px;
+  margin-left: 26px;
+
 }
 
 .company-creation-date-group {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column;
+}
+
+/* Fix for Creation Date Input */
+.company-creation-date-input {
+  width: 58%; /* Align it with the input fields */
+  padding: 5px;
+  font-size: 13px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 8px;
+  margin-left: 26px;
 }
 
 /* File Upload Styles */
 .company-creation-upload-container {
   display: flex;
   align-items: center;
-  width: 53%;
+  width: 61%;
   border: 1px dashed #ccc;
   border-radius: 5px;
-  margin-left: 121px;
-  height: 60px;
-  position: inherit; /* Ensure that the remove button is positioned absolutely */
+  margin-left: 131px;
+  height: 63px;
+  position: relative; /* Position relative to contain the absolute positioning of the remove button */
 }
 
 .company-creation-upload-icon {
   font-size: 30px;
+  margin-left: 10px;
+}
+
+.company-creation-upload-text {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
 }
 
 .company-creation-file-names {
@@ -100,8 +122,10 @@
   font-size: 14px;
   color: #333;
   margin-top: -10px;
+  flex-grow: 1; /* Allow the file name to take all available space */
 }
 
+/* Fix for Remove File Button */
 .company-creation-remove-file-btn {
   background: transparent;
   border: none;
@@ -109,15 +133,17 @@
   font-size: 18px;
   cursor: pointer;
   position: absolute;
-  left: 66%;  
+  right: 10px; /* Align to the right */
+  top: 50%;
+  transform: translateY(-50%); /* Vertically center the button */
 }
 
 .company-creation-button-group {
   display: flex;
   justify-content: center;
-  margin-top: 25px;
+  margin-top: 12px;
   gap: 25px;
-  margin-left: 50px;
+  margin-left: 75px;
 }
 
 .company-creation-submit-button,
@@ -152,3 +178,4 @@
   border-color: #258feb;
   background-color: #f8f9fa;
 }
+
