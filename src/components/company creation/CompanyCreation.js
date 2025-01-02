@@ -4,7 +4,7 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const CompanyCreation = () => {
   const [company, setCompany] = useState({
-    username: '',
+    username: 'AE-',
     companyName: '',
     personName: '',
     mobile: '',
@@ -69,7 +69,7 @@ const CompanyCreation = () => {
     console.log('Submitted Data:', formData);
     alert('Company registered successfully!');
     setCompany({
-      username: '',
+      username: 'AE-', 
       companyName: '',
       personName: '',
       mobile: '',
@@ -84,7 +84,7 @@ const CompanyCreation = () => {
   // Handles cancel action
   const handleCancel = () => {
     setCompany({
-      username: '',
+      username: 'AE-', 
       companyName: '',
       personName: '',
       mobile: '',
@@ -96,10 +96,13 @@ const CompanyCreation = () => {
     setFileInputClicked(false);
   };
 
-  // Triggers file input dialog when clicking the upload area
-  const handleUploadClick = () => {
-    if (!fileInputClicked) {
-      document.getElementById('file-input').click();
+  // Triggers file input dialog when clicking the upload text
+  const handleUploadClick = (e) => {
+    // Ensure the file input dialog only triggers when the span text is clicked
+    if (e.target.classList.contains("company-creation-upload-text")) {
+      if (!fileInputClicked) {
+        document.getElementById("file-input").click();
+      }
     }
   };
 
@@ -187,71 +190,62 @@ const CompanyCreation = () => {
           <div className="company-creation-date-group">
             <div className="company-creation-form-group">
               <label className="company-creation-label">
-                Access Creation Date <span className="company-creation-mandatory">*</span>
+                Creation Date <span className="company-creation-mandatory">*</span>
               </label>
               <input
                 type="date"
                 name="accessCreationDate"
                 value={company.accessCreationDate}
                 onChange={handleChange}
-                className="company-creation-input"
-                required
-              />
-            </div>
-            <div className="company-creation-form-group">
-              <label className="company-creation-label">
-                Access Expiry Date <span className="company-creation-mandatory">*</span>
-              </label>
-              <input
-                type="date"
-                name="accessExpiryDate"
-                value={company.accessExpiryDate}
-                onChange={handleChange}
-                className="company-creation-input"
+                className="company-creation-date-input"
                 required
               />
             </div>
           </div>
 
-          {/* File Upload */}
-          <div
-            className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={handleUploadClick}
-          >
-            <FaCloudUploadAlt className="company-creation-upload-icon" />
-            {/* Conditionally render the placeholder text */}
-            {contractDocuments.length === 0 && (
-             <span> Drag & drop or select here   </span>
-            )}
-            <input
-              type="file"
-              id="file-input"
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-            />
-            {contractDocuments.length > 0 && (
-              <div className="company-creation-file-names">
-                <div className="company-creation-file-item">
-                  <span className="file-name">{contractDocuments[0].name}</span>
-                  <button
-                    type="button"
-                    className="company-creation-remove-file-btn"
-                    onClick={handleRemoveFile}
-                  >
-                    X
-                  </button>
+          {/* Contract Document */}
+          <div className="company-creation-form-group">
+            <label className="company-creation-label">
+              Contract Document <span className="company-creation-mandatory"></span>
+            </label>
+            <div
+              className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={(e) => handleUploadClick(e)}
+            >
+              <FaCloudUploadAlt className="company-creation-upload-icon" />
+              {contractDocuments.length === 0 && (
+                <span className="company-creation-upload-text">Drag & drop or select here</span>
+              )}
+              <input
+                type="file" 
+                id="file-input"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}  // Hide the file input
+              />
+              {contractDocuments.length > 0 && (
+                <div className="company-creation-file-names">
+                  <div className="company-creation-file-item">
+                    <span className="file-name">{contractDocuments[0].name}</span>
+                    <button
+                      type="button"
+                      className="company-creation-remove-file-btn"
+                      onClick={handleRemoveFile}
+                    >
+                      X
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Buttons */}
           <div className="company-creation-button-group">
             <button type="submit" className="company-creation-submit-button">
-              Submit
+              Create
             </button>
             <button type="button" className="company-creation-cancel-button" onClick={handleCancel}>
               Cancel

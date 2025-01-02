@@ -15,9 +15,9 @@
 .emp-creation-title {
   text-align: center;
   font-size: 24px;
-  margin-bottom: 20px;
-  margin-left: 110px;
   margin-top: -40px;
+  margin-bottom: 46px;
+  margin-left: 156px;
 }
 
 /* Form Styles */
@@ -102,12 +102,16 @@
 
 /* Input Fields */
 .emp-creation-input {
-  width: 47%;
-  max-width: 207px;
+  width: 58%;
+  /* max-width: 207px; */
   padding: 4px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: 20px;
 }
+
 
 .emp-creation-input::placeholder {
   font-style: italic;
