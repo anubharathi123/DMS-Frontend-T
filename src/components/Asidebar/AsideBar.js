@@ -8,7 +8,7 @@ import Dropup from '../../assets/images/dropup.webp';
 const AsideBar = () => {
   // Retrieve the user's role from localStorage (simulated here)
 
-  // localStorage.setItem("role", "VIEWER"); // This should be set based on the logged-in user
+  localStorage.setItem("role", "PRODUCT_OWNER"); // This should be set based on the logged-in user
 const role = localStorage.getItem('role'); // Assuming role is stored in localStorage
 
   // State to track which dropdown is open (both main and inner dropdowns)
