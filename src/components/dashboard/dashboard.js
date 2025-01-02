@@ -11,7 +11,7 @@ const MyChart = () => {
 
 const App = () => {
   return (
-    <div style={{ background: 'rgb(248, 249, 250)' }}>
+    <div className="dashboard-container">
       <Dashboard />
       <PieChart />
       <MyChart />
@@ -22,18 +22,16 @@ const App = () => {
 const Dashboard = () => {
   return (
     <div className="dashboard">
-      <h1>
-        <center>Dashboard</center>
-      </h1>
-      <p>
-        <strong>Number Of Companies</strong>
+      <h2 className='dashboard-h2'>
+        Dashboard
+      </h2>
+      <p className='no-of-cmp'>
+        Number Of Companies
       </p>
-      <p2>Active Companies: 126</p2>
-      <br></br>
-      <br></br>
-      <p3>
-        <strong1>Inactive Companies: 32</strong1>
-        </p3>
+      <p className='active-cmp'>Active Companies: 126</p>
+      <p className='inactive-cmp'>
+        Inactive Companies: 32
+        </p>
     </div>
   );
 };
