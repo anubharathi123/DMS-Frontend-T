@@ -7,7 +7,7 @@ import Dropup from '../../assets/images/dropup.webp';
 
 const AsideBar = () => {
   // Retrieve the user's role from localStorage (simulated here)
-  localStorage.setItem("role", "Client Admin"); // This should be set based on the logged-in user
+  localStorage.setItem("role", "Compiler"); // This should be set based on the logged-in user
   const role = localStorage.getItem('role'); // Assuming role is stored in localStorage
 
   // State to track which dropdown is open (both main and inner dropdowns)
@@ -71,13 +71,13 @@ const AsideBar = () => {
               
               {openDropdowns.profile && (
                 <ul className="dropdown-menu">
-                  {/* {(role === 'Product Owner' || role === 'Client Admin') && ( */}
+                  {(role === 'Product Owner' || role === 'Client Admin') && (
                   <li>
                     <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Profile Management
                     </NavLink>
                   </li>
-                  {/* )} */}
+                  )} 
 
                 </ul>
               )}
