@@ -20,7 +20,7 @@ const DocumentList = () => {
       fileUrl: "https://example.com/files/File2.pdf",
       updatedDate: "2024-11-20",
       docType: "Packing List",
-      status: "Reject",
+      status: "Rejected",
     },
     {
       declarationNumber: "1122334455667",
@@ -28,7 +28,7 @@ const DocumentList = () => {
       fileUrl: "https://example.com/files/File3.pdf",
       updatedDate: "2024-10-15",
       docType: "Declaration",
-      status: "Approve",
+      status: "Approved",
     },
     {
       declarationNumber: "2233445566778",
@@ -36,21 +36,25 @@ const DocumentList = () => {
       fileUrl: "https://example.com/files/File4.pdf",
       updatedDate: "2024-09-10",
       docType: "Delivery Order",
-      status: "Cancelled",
+      status: "Pending",
     },
   ];
 
   const [filterDate, setFilterDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
+  const [isStatusDropdownVisible, setIsStatusDropdownVisible] = useState(false);
   const [declarationInput, setDeclarationInput] = useState("");
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
   const [filterDocType, setFilterDocType] = useState("All");
+  const [filterStatus, setFilterStatus] = useState("All");
   const [suggestions, setSuggestions] = useState([]);
 
   const calendarRef = useRef(null);
   const dropdownRef = useRef(null);
+  const docTypeDropdownRef = useRef(null);
   const containerRef = useRef(null);
+  const statusDropdownRef = useRef(null);
 
   const applyFilters = () => {
     let filtered = [...documents];
@@ -70,12 +74,16 @@ const DocumentList = () => {
       filtered = filtered.filter((doc) => doc.docType === filterDocType);
     }
 
+    if (filterStatus !== "All") {
+      filtered = filtered.filter((doc) => doc.status === filterStatus);
+    }
+
     setFilteredDocuments(filtered);
   };
 
   useEffect(() => {
     applyFilters();
-  }, [filterDate, declarationInput, filterDocType]);
+  }, [filterDate, declarationInput, filterDocType, filterStatus]);
 
   const handleInputChange = (e) => {
     let inputValue = e.target.value;
@@ -106,12 +114,18 @@ const DocumentList = () => {
     });
   };
 
-  const handleDropdownToggle = () => {
-    setDocTypeDropdownVisible((prev) => {
-      if (!prev) setIsCalendarOpen(false); // Close calendar when dropdown opens
-      return !prev;
-    });
+  const handleDropdownToggle = (type) => {
+    if (type === "docType") {
+      setDocTypeDropdownVisible((prev) => !prev);
+      setIsCalendarOpen(false);
+      setIsStatusDropdownVisible(false);
+    } else if (type === "status") {
+      setIsStatusDropdownVisible((prev) => !prev);
+      setDocTypeDropdownVisible(false);
+      setIsCalendarOpen(false);
+    }
   };
+  
 
   const handleClickOutside = (event) => {
     if (
@@ -138,6 +152,7 @@ const DocumentList = () => {
     setFilterDate(null);
     setDeclarationInput("");
     setFilterDocType("All");
+    setFilterStatus("All");
     setFilteredDocuments(documents);
   };
 
@@ -147,6 +162,12 @@ const DocumentList = () => {
     "Invoice",
     "Packing List",
     "Delivery Order",
+  ];
+
+  const status = [
+    "Pending",
+    "Approved",
+    "Rejected",
   ];
 
   return (
@@ -219,34 +240,55 @@ const DocumentList = () => {
               )}
             </th>
             <th>
-              Doc Type
+  Doc Type
+  <img
+    src={DownArrow}
+    alt="Dropdown"
+    className="document-list-dropdown-icon"
+    onClick={() => handleDropdownToggle("docType")}
+  />
+  {isDocTypeDropdownVisible && (
+    <div ref={docTypeDropdownRef} className="document-dropdown-list">
+      {docTypes.map((doctype) => (
+        <div
+          key={doctype}
+          className="document-list-dropdown-item"
+          onClick={() => {
+            setFilterDocType(doctype);
+            setDocTypeDropdownVisible(false);
+          }}
+        >
+          {doctype}
+        </div>
+      ))}
+    </div>
+  )}
+</th>
+            <th>
+              Status
               <img
                 src={DownArrow}
                 alt="Dropdown"
-                className="document-list-dropdown-icon"
-                onClick={handleDropdownToggle}
+                className="status-list-dropdown-icon"
+                onClick={() => handleDropdownToggle("status")}
               />
-              {isDocTypeDropdownVisible && (
-                <div
-                  className="document-dropdown-list"
-                  ref={dropdownRef}
-                >
-                  {docTypes.map((docType) => (
+              {isStatusDropdownVisible && (
+                <div ref={statusDropdownRef} className="status-dropdown-list">
+                  {status.map((status) => (
                     <div
-                      key={docType}
-                      className="document-list-dropdown-item"
+                      key={status}
+                      className="status-list-dropdown-item"
                       onClick={() => {
-                        setFilterDocType(docType);
-                        setDocTypeDropdownVisible(false);
+                        setFilterStatus(status);
+                        setIsStatusDropdownVisible(false);
                       }}
                     >
-                      {docType}
+                      {status}
                     </div>
                   ))}
                 </div>
               )}
             </th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>

@@ -72,10 +72,10 @@
 .company-creation-upload-container {
   display: flex;
   align-items: center;
-  width: 75%;
+  width: 53%;
   border: 1px dashed #ccc;
   border-radius: 5px;
-  margin-left: 100px;
+  margin-left: 121px;
   height: 60px;
   position: inherit; /* Ensure that the remove button is positioned absolutely */
 }
@@ -109,7 +109,7 @@
   font-size: 18px;
   cursor: pointer;
   position: absolute;
-  right: 10px; /* Place the X button on the right */
+  left: 66%;  
 }
 
 .company-creation-button-group {

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AsideBar_Header from "./pages/Asidebar_Header";
+import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
 import UploadDocument from "./components/upload document/UploadDocument";
 import VerifyDoc from "./components/verify Document/verifydoc";
 import CompanyCreation from "./components/company creation/CompanyCreation";
@@ -12,6 +13,10 @@ import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
+import Fileupload from "./components/fileuploadtestpage/file upload"
+import Test from './components/test/test'
+
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./App.css";
 
@@ -68,7 +73,8 @@ function AppContent() {
       <Routes>
         {/* Route for Login */}
         <Route path="/login" element={<Login />} />
-
+        <Route path="/upload" element={<Fileupload />} />
+        <Route path="/test" element={<Test />} />
         {/* Reset Password (Unrestricted Access) */}
         <Route path="/resetpassword" element={<ResetPassword />} />
 
@@ -158,6 +164,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <CreateUser />
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/NotificationDropdown"
+          element={
+            <PrivateRoute>
+              <NotificationPage />
             </PrivateRoute>
           }
         />

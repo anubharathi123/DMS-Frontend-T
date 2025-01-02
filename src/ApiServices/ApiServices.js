@@ -75,11 +75,11 @@ const authService = {
     }
     return handleResponse(apiClient.post('auth/otp/', data));
   },
-  resendOTP: async (email) => {
-    if (!email) {
-      throw new Error('Email is required to resend OTP.');
-    }
-    return handleResponse(apiClient.put('auth/otp/', { email }));
+  resendOTP: async () => {
+    return handleResponse(apiClient.put('auth/otp/'));
+  },
+  details: async () => {
+    return handleResponse(apiClient.get('details/'));
   },
   resetPassword: async (data) => {
     if (!data.email) {

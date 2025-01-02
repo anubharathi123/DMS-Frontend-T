@@ -55,7 +55,7 @@ const ChangePassword = () => {
 
         <form className="form2" onSubmit={handleSubmit}>
           <div className="form-group">
-            <h2>Change Password</h2>
+            <h2 className="changepassword-h2">Change Password</h2>
           </div>
 
           <div className="form-group">

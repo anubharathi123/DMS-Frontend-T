@@ -66,6 +66,7 @@
   .document-list-table th {
     background-color: #156082;
     color: white;
+    padding: 8px;
 
   }
   
@@ -103,14 +104,14 @@
 
   /* Dropdown container styles */
   .document-dropdown-list {
-   position:fixed;
+    position: fixed;
     background-color: white;
-    border: 1px solid #ddd;
-    width: 150px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    padding: 5px;
     z-index: 1000;
-    margin-top: 10px;
-    right: 190px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   /* Style for each item in the dropdown */
@@ -123,7 +124,39 @@
   .document-list-dropdown-item:hover {
     background-color: #f0f0f0;
   }
+
+  .status-list-dropdown-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    margin-bottom: -2px;
+    filter: invert(1);
+  }
+
+  /* Dropdown container styles */
+  .status-dropdown-list {
+   position:fixed;
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 150px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    margin-top: 10px;
+    right: 23px;
+  }
+
+  /* Style for each item in the dropdown */
+  .status-list-dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+    color: #333;
+  }
   
+  .status-list-dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+
   /* Adjustments for dropdown position */
   /* .document-table th {
     position: relative;
