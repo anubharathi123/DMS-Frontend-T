@@ -77,11 +77,11 @@ nav ul li a {
   transition: color 0.3s, background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-.dropdown-menu li {
+.dropdown-menu1 li {
   background-color: transparent !important;
 }
 
-nav ul li .dropdown-menu li a {
+nav ul li .dropdown-menu1 li a {
   display: flex;
   justify-content: space-between; /* Push the icon to the right */
   align-items: center;
@@ -90,7 +90,7 @@ nav ul li .dropdown-menu li a {
   margin-left: 20px !important;
 }
 
-.dropdown-menu li a img {
+.dropdown-menu1 li a img {
   margin-left: auto; /* Push the icon to the left */
 }
 
@@ -99,9 +99,7 @@ nav ul li:hover {
   background-color: #34495e;
 }
 
-nav ul li:hover a {
-  /* Change text/icon color on hover */
-}
+
 
 nav ul li i {
   font-size: 1.4rem;
@@ -122,21 +120,21 @@ nav ul li a.active {
 }
 
 /* Dropdown Menu */
-.dropdown-menu {
+.dropdown-menu1 {
   padding: 2px 0;
 }
 
-.dropdown-menu li {
+.dropdown-menu1 li {
   padding: 1px;
   text-align: left;
   border-radius: 5px;
 }
 
-.dropdown-menu li:hover {
+.dropdown-menu1 li:hover {
   background-color: #3a5068; /* Hover background for dropdown items */
 }
 
-.dropdown-menu li a {
+.dropdown-menu1 li a {
   color: #fff;
   width: 100%;
   display: block;
