@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./verifydoc.css";
 import DropDownArrow from "../../assets/images/dropdown-arrow.png";
+import DescSort from "../../assets/images/desc-sort.png";
 
 const App = () => {
   const [documents] = useState([
@@ -30,6 +31,32 @@ const App = () => {
       actions: "",
       downloadUrl: "/downloads/sample3.xlsx",
     },
+    {
+      declarationNumber: "2233445566778",
+      FileName: "DO-22",
+      updatedDate: "2024-09-10",
+      documentType: "Delivery Order",
+      actions: "",
+      downloadUrl: "/downloads/sample4.pdf",
+    },
+
+    {
+      declarationNumber: "5678901234567",
+      FileName: "IN-90",
+      updatedDate: "2025-01-02",
+      documentType: "Invoice",
+      actions: "",
+      downloadUrl: "/downloads/sample5.pdf",
+    },
+
+    {
+      declarationNumber: "3456789033445",
+      FileName: "AWS-23",
+      updatedDate: "2024-11-12",
+      documentType: "AWS/BOL",
+      actions: "",
+      downloadUrl: "/downloads/sample6.pdf",
+    },
   ]);
 
   const PDFViewer = ({ url }) => (
@@ -52,6 +79,7 @@ const App = () => {
   const [filterDate, setFilterDate] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
   const [currentDocument, setCurrentDocument] = useState(null);
+  const [isAscSort, setIsAscSort] = useState(false);
 
   const calendarRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -112,6 +140,23 @@ useEffect(() => {
       }
     }
   };
+
+  const handleAscSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      a.declarationNumber.localeCompare(b.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(true); // Set to true to indicate ascending sort is active
+  };
+
+  const handleDescSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      b.declarationNumber.localeCompare(a.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(false); // Set to false to indicate descending sort is active
+  };
+
 
   const handlePopupAction = (action) => {
     if (currentDocument) {
@@ -245,7 +290,14 @@ useEffect(() => {
         <table className="verify-document-table">
           <thead>
             <tr>
-              <th>Declaration Number</th>
+              <th>Declaration Number
+              <button className="verifydoc_desc-sort" onClick={handleDescSort}>
+              <img src={DescSort} alt="DescSort" className="verifydoc_desc-sortimg" />
+              </button>
+              <button className="verifydoc_asc-sort" onClick={handleAscSort}>
+              <img src={DescSort} alt="AscSort" className="verifydoc_asc-sortimg" />
+              </button>
+              </th>
               <th>File Name</th>
               <th>
                 Updated Date

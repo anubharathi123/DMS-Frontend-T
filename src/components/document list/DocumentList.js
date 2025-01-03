@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DocumentList.css";
 import DownArrow from "../../assets/images/down-arrow.png";
+import DescSort from "../../assets/images/desc-sort.png";
 
 const DocumentList = () => {
   const documents = [
@@ -23,7 +24,7 @@ const DocumentList = () => {
       status: "Rejected",
     },
     {
-      declarationNumber: "1122334455667",
+      declarationNumber: "4125364850617",
       fileName: "File3.pdf",
       fileUrl: "https://example.com/files/File3.pdf",
       updatedDate: "2024-10-15",
@@ -38,6 +39,25 @@ const DocumentList = () => {
       docType: "Delivery Order",
       status: "Pending",
     },
+
+    {
+      declarationNumber: "5678901234567",
+      fileName: "File5.pdf",
+      fileUrl: "https://example.com/files/File5.pdf",
+      updatedDate: "2025-01-02",
+      docType: "Invoice",
+      status: "Approved",
+    },
+
+    {
+      declarationNumber: "3456789033445",
+      fileName: "File6.pdf",
+      fileUrl: "https://example.com/files/File6.pdf",
+      updatedDate: "2024-11-12",
+      docType: "AWS/BOL",
+      status: "Rejected",
+    },
+
   ];
 
   const [filterDate, setFilterDate] = useState(null);
@@ -49,6 +69,7 @@ const DocumentList = () => {
   const [filterDocType, setFilterDocType] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
   const [suggestions, setSuggestions] = useState([]);
+  const [isAscSort, setIsAscSort] = useState(false);
 
   const calendarRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -85,6 +106,23 @@ const DocumentList = () => {
     applyFilters();
   }, [filterDate, declarationInput, filterDocType, filterStatus]);
 
+  const handleAscSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      a.declarationNumber.localeCompare(b.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(true); // Set to true to indicate ascending sort is active
+  };
+
+  const handleDescSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      b.declarationNumber.localeCompare(a.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(false); // Set to false to indicate descending sort is active
+  };
+
+  
   const handleInputChange = (e) => {
     let inputValue = e.target.value;
   
@@ -162,9 +200,12 @@ const DocumentList = () => {
     "Invoice",
     "Packing List",
     "Delivery Order",
+    "AWS/BOL",
+    "Country Of Origin",
   ];
 
   const status = [
+    "All",
     "Pending",
     "Approved",
     "Rejected",
@@ -213,7 +254,14 @@ const DocumentList = () => {
       <table className="document-list-table">
         <thead>
           <tr>
-            <th>Declaration Number</th>
+            <th>Declaration Number
+              <button className="document-list_desc-sort" onClick={handleDescSort}>
+              <img src={DescSort} alt="DescSort" className="doc-list_desc-sortimg" />
+              </button>
+              <button className="document-list_asc-sort" onClick={handleAscSort}>
+              <img src={DescSort} alt="AscSort" className="doc-list_asc-sortimg" />
+              </button>
+            </th>
             <th>File Name</th>
             <th>
               Updated Date
@@ -306,9 +354,12 @@ const DocumentList = () => {
               </td>
               <td>{row.updatedDate}</td>
               <td>{row.docType}</td>
-              <td>{row.status}</td>
-            </tr>
-          ))}
+              <td><span className={`dl-documenttable_status text-xs font-medium dl-py-1 dl-px-2 rounded 
+                    ${row.status === 'Pending' ? 'dl-bg-yellow-100 dl-text-yellow-800' : 
+                      row.status === 'Rejected' ? 'dl-bg-red-100 dl-text-red-800' : 
+                      'dl-bg-green-100 dl-text-green-800'}`}>{row.status} </span></td>
+        </tr>
+        ))}
         </tbody>
       </table>
     </div>
