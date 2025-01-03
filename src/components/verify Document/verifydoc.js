@@ -33,16 +33,6 @@ const VerifyDoc = () => {
     },
   ]);
 
-  const PDFViewer = ({ url }) => (
-    <iframe
-      src={url}
-      style={{ width: "100%", height: "500px" }}
-      title="PDF Viewer"
-    ></iframe>
-  );
-
-  
-
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
   const [filterDocType, setFilterDocType] = useState("All");
   const [isDocTypeDropdownOpen, setIsDocTypeDropdownOpen] = useState(false);
@@ -58,22 +48,18 @@ const VerifyDoc = () => {
   const dropdownRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Apply filters
   const applyFilters = () => {
     let filtered = [...documents];
 
-    // Filter by Document Type
     if (filterDocType !== "All") {
       filtered = filtered.filter((doc) => doc.documentType === filterDocType);
     }
 
-    // Filter by Updated Date
     if (filterDate) {
       const formattedDate = filterDate.toISOString().split("T")[0];
       filtered = filtered.filter((doc) => doc.updatedDate === formattedDate);
     }
 
-    // Filter by Declaration Number
     if (declarationInput) {
       filtered = filtered.filter((doc) =>
         doc.declarationNumber.includes(declarationInput)
@@ -87,15 +73,11 @@ const VerifyDoc = () => {
     applyFilters();
   }, [filterDate, declarationInput, filterDocType]);
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-
-    // Limit input to digits and maximum length of 13
     if (/^\d{0,13}$/.test(inputValue)) {
       setDeclarationInput(inputValue);
 
-      // Filter only if the input is exactly 13 digits
       if (inputValue.length === 13) {
         const matchingSuggestions = documents
           .filter((doc) => doc.declarationNumber.startsWith(inputValue))
@@ -106,11 +88,10 @@ const VerifyDoc = () => {
         setSuggestions([]);
       }
 
-      // Apply filters only for valid 13-digit input
       if (inputValue.length === 13) {
         applyFilters();
       } else {
-        setFilteredDocuments(documents); // Reset the filter if not 13 digits
+        setFilteredDocuments(documents);
       }
     }
   };
@@ -136,12 +117,12 @@ const VerifyDoc = () => {
 
   const toggleCalendar = () => {
     setIsCalendarOpen((prev) => !prev);
-    setIsDocTypeDropdownOpen(false); // Close dropdown when calendar opens
+    setIsDocTypeDropdownOpen(false);
   };
 
   const toggleDocTypeDropdown = () => {
     setIsDocTypeDropdownOpen((prev) => !prev);
-    setIsCalendarOpen(false); // Close calendar when dropdown opens
+    setIsCalendarOpen(false);
   };
 
   const handleAction = (actionType) => {
@@ -157,7 +138,6 @@ const VerifyDoc = () => {
     setSelectedRows([]);
   };
 
-  // Open the document in a new tab with Approve/Reject actions
   const openDocumentInNewTab = (doc) => {
     const newWindow = window.open("", "_blank");
 
@@ -202,7 +182,6 @@ const VerifyDoc = () => {
     }
   };
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -230,7 +209,6 @@ const VerifyDoc = () => {
     <div className="verify-container">
       <h2 className="verify-h2">Verify Document</h2>
 
-      {/* Declaration Number Search */}
       <div className="verify-declaration-number">
         <label className="verify-declaration_no">
           <b>Declaration Number: </b>
@@ -256,7 +234,6 @@ const VerifyDoc = () => {
         </button>
         <button className="verifydoc-reset-btn" onClick={resetFilters}>Reset Filters</button>
 
-        {/* Suggestion Box */}
         {suggestions.length > 0 && (
           <ul className="verify-suggestion-box">
             {suggestions.map((suggestion, index) => (
@@ -272,7 +249,6 @@ const VerifyDoc = () => {
         )}
       </div>
 
-      {/* Document Table */}
       <div className="verify-form-section">
         <table className="verify-document-table">
           <thead>
@@ -360,7 +336,7 @@ const VerifyDoc = () => {
                     }}
                   >
                     {doc.FileName || "View Document"}
-                  </span>
+                  </a>
                 </td>
                 <td>{doc.updatedDate}</td>
                 <td>{doc.documentType}</td>
@@ -382,7 +358,6 @@ const VerifyDoc = () => {
           </tbody>
         </table>
       </div>
-      
     </div>
   );
 };
