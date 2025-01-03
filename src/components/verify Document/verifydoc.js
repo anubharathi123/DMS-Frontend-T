@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./verifydoc.css";
 import DropDownArrow from "../../assets/images/dropdown-arrow.png";
 
-const App = () => {
+const VerifyDoc = () => {
   const [documents] = useState([
     {
       declarationNumber: "1234567890123",
@@ -12,7 +13,7 @@ const App = () => {
       updatedDate: "2024-12-15",
       documentType: "Invoice",
       actions: "",
-      downloadUrl: "/hello.pdf",
+      downloadUrl: "/downloads/sample1.docx",
     },
     {
       declarationNumber: "9876543210123",
@@ -20,7 +21,7 @@ const App = () => {
       updatedDate: "2024-12-10",
       documentType: "Declaration",
       actions: "",
-      downloadUrl: "/downloads/sample2.docx",
+      downloadUrl: "/downloads/sample2.xlsx",
     },
     {
       declarationNumber: "1112233445566",
@@ -31,16 +32,6 @@ const App = () => {
       downloadUrl: "/downloads/sample3.xlsx",
     },
   ]);
-
-  const PDFViewer = ({ url }) => (
-    <iframe
-      src={url}
-      style={{ width: "100%", height: "500px" }}
-      title="PDF Viewer"
-    ></iframe>
-  );
-
-  
 
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
   const [filterDocType, setFilterDocType] = useState("All");
@@ -57,22 +48,18 @@ const App = () => {
   const dropdownRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Apply filters
   const applyFilters = () => {
     let filtered = [...documents];
 
-    // Filter by Document Type
     if (filterDocType !== "All") {
       filtered = filtered.filter((doc) => doc.documentType === filterDocType);
     }
 
-    // Filter by Updated Date
     if (filterDate) {
       const formattedDate = filterDate.toISOString().split("T")[0];
       filtered = filtered.filter((doc) => doc.updatedDate === formattedDate);
     }
 
-    // Filter by Declaration Number
     if (declarationInput) {
       filtered = filtered.filter((doc) =>
         doc.declarationNumber.includes(declarationInput)
@@ -81,48 +68,34 @@ const App = () => {
 
     setFilteredDocuments(filtered);
   };
-useEffect(() => {
+
+  useEffect(() => {
     applyFilters();
   }, [filterDate, declarationInput, filterDocType]);
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-  
-    // Limit input to digits and maximum length of 13
     if (/^\d{0,13}$/.test(inputValue)) {
       setDeclarationInput(inputValue);
-  
-      // Filter only if the input is exactly 13 digits
+
       if (inputValue.length === 13) {
         const matchingSuggestions = documents
           .filter((doc) => doc.declarationNumber.startsWith(inputValue))
           .map((doc) => doc.declarationNumber);
-  
+
         setSuggestions(matchingSuggestions);
       } else {
         setSuggestions([]);
       }
-  
-      // Apply filters only for valid 13-digit input
+
       if (inputValue.length === 13) {
         applyFilters();
       } else {
-        setFilteredDocuments(documents); // Reset the filter if not 13 digits
+        setFilteredDocuments(documents);
       }
     }
   };
 
-  const handlePopupAction = (action) => {
-    if (currentDocument) {
-      setFilteredDocuments((prev) =>
-        prev.filter((doc) => doc.declarationNumber !== currentDocument.declarationNumber)
-      );
-    }
-    setPopupVisible(false);
-    setCurrentDocument(null);
-  };
-  
   const resetFilters = () => {
     setFilterDate(null);
     setDeclarationInput("");
@@ -144,12 +117,12 @@ useEffect(() => {
 
   const toggleCalendar = () => {
     setIsCalendarOpen((prev) => !prev);
-    setIsDocTypeDropdownOpen(false); // Close dropdown when calendar opens
+    setIsDocTypeDropdownOpen(false);
   };
 
   const toggleDocTypeDropdown = () => {
     setIsDocTypeDropdownOpen((prev) => !prev);
-    setIsCalendarOpen(false); // Close calendar when dropdown opens
+    setIsCalendarOpen(false);
   };
 
   const handleAction = (actionType) => {
@@ -165,11 +138,50 @@ useEffect(() => {
     setSelectedRows([]);
   };
 
-  const handleFileClick = (downloadUrl) => {
-    window.open(downloadUrl, "_blank");
+  const openDocumentInNewTab = (doc) => {
+    const newWindow = window.open("", "_blank");
+
+    if (newWindow) {
+      newWindow.document.write(`
+        <html>
+          <head>
+            <title>${doc.FileName}</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                text-align: center;
+              }
+              .action-buttons {
+                margin-top: 20px;
+              }
+              button {
+                padding: 10px 20px;
+                margin: 5px;
+                font-size: 16px;
+                cursor: pointer;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>${doc.FileName}</h1>
+            <div class="document-view">
+              ${doc.downloadUrl.endsWith('.pdf') ? 
+                `<iframe src="${doc.downloadUrl}" width="100%" height="600px"></iframe>` :
+                `<p>File format not supported for preview</p>`
+              }
+            </div>
+            <div class="action-buttons">
+              <button onclick="window.opener.handleAction('Approved')">Approve</button>
+              <button onclick="window.opener.handleAction('Rejected')">Reject</button>
+            </div>
+          </body>
+        </html>
+      `);
+      newWindow.document.close();
+    }
   };
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -195,9 +207,8 @@ useEffect(() => {
 
   return (
     <div className="verify-container">
-      <h2 className="verify-h2" >Verify Document</h2>
+      <h2 className="verify-h2">Verify Document</h2>
 
-      {/* Declaration Number Search */}
       <div className="verify-declaration-number">
         <label className="verify-declaration_no">
           <b>Declaration Number: </b>
@@ -211,7 +222,6 @@ useEffect(() => {
           placeholder="Enter 13-digit DecNum"
         />
 
-        
         <button
           className="verify-approvebtn1"
           onClick={() => handleAction("Approved")}
@@ -224,7 +234,6 @@ useEffect(() => {
         </button>
         <button className="verifydoc-reset-btn" onClick={resetFilters}>Reset Filters</button>
 
-        {/* Suggestion Box */}
         {suggestions.length > 0 && (
           <ul className="verify-suggestion-box">
             {suggestions.map((suggestion, index) => (
@@ -240,7 +249,6 @@ useEffect(() => {
         )}
       </div>
 
-      {/* Document Table */}
       <div className="verify-form-section">
         <table className="verify-document-table">
           <thead>
@@ -317,12 +325,18 @@ useEffect(() => {
               <tr key={index}>
                 <td>{doc.declarationNumber}</td>
                 <td>
-                <span
-                    onClick={() => handleFileClick(doc.downloadUrl, doc)}
-                    style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+                  <a
+                    href={doc.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="verify-file-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openDocumentInNewTab(doc);
+                    }}
                   >
                     {doc.FileName || "View Document"}
-                  </span>
+                  </a>
                 </td>
                 <td>{doc.updatedDate}</td>
                 <td>{doc.documentType}</td>
@@ -344,9 +358,8 @@ useEffect(() => {
           </tbody>
         </table>
       </div>
-      
     </div>
   );
 };
 
-export default App;
+export default VerifyDoc;
