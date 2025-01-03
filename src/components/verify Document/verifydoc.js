@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./verifydoc.css";
 import DropDownArrow from "../../assets/images/dropdown-arrow.png";
 
-const App = () => {
+const VerifyDoc = () => {
   const [documents] = useState([
     {
       declarationNumber: "1234567890123",
@@ -12,7 +13,7 @@ const App = () => {
       updatedDate: "2024-12-15",
       documentType: "Invoice",
       actions: "",
-      downloadUrl: "/downloads/sample1.pdf",
+      downloadUrl: "/downloads/sample1.docx",
     },
     {
       declarationNumber: "9876543210123",
@@ -20,7 +21,7 @@ const App = () => {
       updatedDate: "2024-12-10",
       documentType: "Declaration",
       actions: "",
-      downloadUrl: "/downloads/sample2.docx",
+      downloadUrl: "/downloads/sample2.xlsx",
     },
     {
       declarationNumber: "1112233445566",
@@ -69,29 +70,30 @@ const App = () => {
 
     setFilteredDocuments(filtered);
   };
-useEffect(() => {
+
+  useEffect(() => {
     applyFilters();
   }, [filterDate, declarationInput, filterDocType]);
 
   // Handle input changes
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-  
+
     // Limit input to digits and maximum length of 13
     if (/^\d{0,13}$/.test(inputValue)) {
       setDeclarationInput(inputValue);
-  
+
       // Filter only if the input is exactly 13 digits
       if (inputValue.length === 13) {
         const matchingSuggestions = documents
           .filter((doc) => doc.declarationNumber.startsWith(inputValue))
           .map((doc) => doc.declarationNumber);
-  
+
         setSuggestions(matchingSuggestions);
       } else {
         setSuggestions([]);
       }
-  
+
       // Apply filters only for valid 13-digit input
       if (inputValue.length === 13) {
         applyFilters();
@@ -100,7 +102,7 @@ useEffect(() => {
       }
     }
   };
-  
+
   const resetFilters = () => {
     setFilterDate(null);
     setDeclarationInput("");
@@ -143,6 +145,51 @@ useEffect(() => {
     setSelectedRows([]);
   };
 
+  // Open the document in a new tab with Approve/Reject actions
+  const openDocumentInNewTab = (doc) => {
+    const newWindow = window.open("", "_blank");
+
+    if (newWindow) {
+      newWindow.document.write(`
+        <html>
+          <head>
+            <title>${doc.FileName}</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                text-align: center;
+              }
+              .action-buttons {
+                margin-top: 20px;
+              }
+              button {
+                padding: 10px 20px;
+                margin: 5px;
+                font-size: 16px;
+                cursor: pointer;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>${doc.FileName}</h1>
+            <div class="document-view">
+              ${doc.downloadUrl.endsWith('.pdf') ? 
+                `<iframe src="${doc.downloadUrl}" width="100%" height="600px"></iframe>` :
+                `<p>File format not supported for preview</p>`
+              }
+            </div>
+            <div class="action-buttons">
+              <button onclick="window.opener.handleAction('Approved')">Approve</button>
+              <button onclick="window.opener.handleAction('Rejected')">Reject</button>
+            </div>
+          </body>
+        </html>
+      `);
+      newWindow.document.close();
+    }
+  };
+
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -169,7 +216,7 @@ useEffect(() => {
 
   return (
     <div className="verify-container">
-      <h2 className="verify-h2" >Verify Document</h2>
+      <h2 className="verify-h2">Verify Document</h2>
 
       {/* Declaration Number Search */}
       <div className="verify-declaration-number">
@@ -185,7 +232,6 @@ useEffect(() => {
           placeholder="Enter 13-digit DecNum"
         />
 
-        
         <button
           className="verify-approvebtn1"
           onClick={() => handleAction("Approved")}
@@ -296,6 +342,10 @@ useEffect(() => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="verify-file-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openDocumentInNewTab(doc);
+                    }}
                   >
                     {doc.FileName || "View Document"}
                   </a>
@@ -324,4 +374,4 @@ useEffect(() => {
   );
 };
 
-export default App;
+export default VerifyDoc;
