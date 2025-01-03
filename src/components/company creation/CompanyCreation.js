@@ -206,7 +206,7 @@ const CompanyCreation = () => {
           {/* Contract Document */}
           <div className="company-creation-form-group">
             <label className="company-creation-label">
-              Contract Document <span className="company-creation-mandatory"></span>
+              Contract Document <span className="company-creation-mandatory">*</span>
             </label>
             <div
               className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
