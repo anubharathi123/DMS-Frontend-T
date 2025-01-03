@@ -33,6 +33,16 @@ const VerifyDoc = () => {
     },
   ]);
 
+  const PDFViewer = ({ url }) => (
+    <iframe
+      src={url}
+      style={{ width: "100%", height: "500px" }}
+      title="PDF Viewer"
+    ></iframe>
+  );
+
+  
+
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
   const [filterDocType, setFilterDocType] = useState("All");
   const [isDocTypeDropdownOpen, setIsDocTypeDropdownOpen] = useState(false);
@@ -41,6 +51,8 @@ const VerifyDoc = () => {
   const [declarationInput, setDeclarationInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [filterDate, setFilterDate] = useState(null);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [currentDocument, setCurrentDocument] = useState(null);
 
   const calendarRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -348,7 +360,7 @@ const VerifyDoc = () => {
                     }}
                   >
                     {doc.FileName || "View Document"}
-                  </a>
+                  </span>
                 </td>
                 <td>{doc.updatedDate}</td>
                 <td>{doc.documentType}</td>
@@ -370,6 +382,7 @@ const VerifyDoc = () => {
           </tbody>
         </table>
       </div>
+      
     </div>
   );
 };

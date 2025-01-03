@@ -72,7 +72,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               
               {openDropdowns.profile && (
                 <ul className="dropdown-menu">
-                  {/* {(role === 'Product Owner' || role === 'Client Admin') && ( */}
+                  {(role === 'Product Owner' || role === 'Client Admin') && (
                   <li>
                     <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Profile Management
