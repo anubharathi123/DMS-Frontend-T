@@ -9,33 +9,81 @@
 
 .auditpage {
   background: rgb(248, 249, 250);
+  width: 70%;
+  height: 85%;
+  margin-top: 50px;
+  margin-left: 250px;
 }
 
 .audit-h1{
-  font-family:'Times New Roman', Times, serif;
+  font-family: 'Arial', sans-serif;
   text-align: center;
 }
 
-.audit-actions {
-
+.audit_mail-id_label {
+  margin-left: 50px;
+  font-weight: bold;
 }
 
-.audit_from-date {
-  margin-left: 15px;
-  width: 250px;
+.audit_mail-id_input {
+  margin-left: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  border-style: groove;
+  border-width: 1px;
+  border-color: black;
 }
+
+.audit_actions-label {
+  margin-left: 50px;
+  font-weight: bold;
+}
+
+.audit_actions-input {
+  margin-left: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  border-style: groove;
+  border-width: 1px;
+  border-color: black;
+}
+
 
 .audit_to-date {
   margin-left: 15px;
   width: 250px;
 }
 
-.from-date {
+.audit_from-date_label {
   margin-right: 15px;
+  margin-left: 50px;
+  font-weight: bold;
+}
+.audit_from-date_input {
+  margin-left: 22px;
+  width: 170px;
+  padding: 5px;
+  border-radius: 5px;
+  border-style: groove;
+  border-width: 1px;
+  border-color: black;
 }
 
-.to-date {
-  margin-left: 25px;
+
+.audit_to-date_label {
+  margin-right: 15px;
+  margin-left: 50px;
+  font-weight: bold;
+}
+
+.audit_to-date_input {
+  margin-left: 10px;
+  width: 170px;
+  padding: 5px;
+  border-radius: 5px;
+  border-style: groove;
+  border-width: 1px;
+  border-color: black;
 }
 
 .apply-filterbtn {
@@ -57,13 +105,25 @@
 .audit-table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 40%;
-  margin-left: 30%;
+  width: 50%;
+  margin-top: 20px;
+  margin-left: 25%;
+  margin-bottom: 20px;
 }
 
-th {
+.audit-table_header {
+  background: #156082;
+  color: white;
+
+}
+.audit-table th {
+padding: 8px;
+}
+
+.audit-table td {
   text-align: center;
-  padding: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
 }
 
 .editbtn {

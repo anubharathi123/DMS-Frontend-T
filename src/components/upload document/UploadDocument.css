@@ -6,6 +6,7 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
 }
 
 
@@ -107,8 +108,8 @@
   color: black;
   width: 24px;
   height: 27px;
-  padding-left: 6px;
-  
+  padding: 4px 4px 4px 3px;
+  font-weight: bold;
   border-radius: 50%;
 }
 
@@ -163,6 +164,12 @@
   padding: 4px;
   border-radius: 5px;
 }
+
+.grayed-out {
+  color: gray;
+}
+
+
 
 
 

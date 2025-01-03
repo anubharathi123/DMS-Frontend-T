@@ -12,7 +12,7 @@ const App = () => {
       updatedDate: "2024-12-15",
       documentType: "Invoice",
       actions: "",
-      downloadUrl: "/downloads/sample1.pdf",
+      downloadUrl: "/hello.pdf",
     },
     {
       declarationNumber: "9876543210123",
@@ -32,6 +32,16 @@ const App = () => {
     },
   ]);
 
+  const PDFViewer = ({ url }) => (
+    <iframe
+      src={url}
+      style={{ width: "100%", height: "500px" }}
+      title="PDF Viewer"
+    ></iframe>
+  );
+
+  
+
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
   const [filterDocType, setFilterDocType] = useState("All");
   const [isDocTypeDropdownOpen, setIsDocTypeDropdownOpen] = useState(false);
@@ -40,6 +50,8 @@ const App = () => {
   const [declarationInput, setDeclarationInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [filterDate, setFilterDate] = useState(null);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [currentDocument, setCurrentDocument] = useState(null);
 
   const calendarRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -100,6 +112,16 @@ useEffect(() => {
       }
     }
   };
+
+  const handlePopupAction = (action) => {
+    if (currentDocument) {
+      setFilteredDocuments((prev) =>
+        prev.filter((doc) => doc.declarationNumber !== currentDocument.declarationNumber)
+      );
+    }
+    setPopupVisible(false);
+    setCurrentDocument(null);
+  };
   
   const resetFilters = () => {
     setFilterDate(null);
@@ -141,6 +163,10 @@ useEffect(() => {
 
     setFilteredDocuments(remainingDocuments);
     setSelectedRows([]);
+  };
+
+  const handleFileClick = (downloadUrl) => {
+    window.open(downloadUrl, "_blank");
   };
 
   // Close dropdowns when clicking outside
@@ -291,14 +317,12 @@ useEffect(() => {
               <tr key={index}>
                 <td>{doc.declarationNumber}</td>
                 <td>
-                  <a
-                    href={doc.downloadUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="verify-file-link"
+                <span
+                    onClick={() => handleFileClick(doc.downloadUrl, doc)}
+                    style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
                   >
                     {doc.FileName || "View Document"}
-                  </a>
+                  </span>
                 </td>
                 <td>{doc.updatedDate}</td>
                 <td>{doc.documentType}</td>
@@ -320,6 +344,7 @@ useEffect(() => {
           </tbody>
         </table>
       </div>
+      
     </div>
   );
 };
