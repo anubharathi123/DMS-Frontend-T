@@ -11,7 +11,8 @@ const Header = () => {
     const [suggestions, setSuggestions] = useState([]); // State for suggestions
     const [activeDropdown, setActiveDropdown] = useState(null); // Tracks which dropdown is open
     const Navigate = useNavigate();
-    const dropdownRef = useRef(null); // Ref for the dropdown container
+    const dropdownRef = useRef(null); // Ref for the notification dropdown container
+    const profileDropdownRef = useRef(null); // Ref for the profile dropdown container
 
     const allSuggestions = [
         "Find Company",
@@ -46,7 +47,12 @@ const Header = () => {
     };
 
     const handleClickOutside = (event) => {
+        // Close notification dropdown if clicked outside
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setActiveDropdown(null);
+        }
+        // Close profile dropdown if clicked outside
+        if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
             setActiveDropdown(null);
         }
     };
@@ -128,7 +134,7 @@ const Header = () => {
 
                 {/* Profile Dropdown */}
                 {activeDropdown === "profile" && (
-                    <div className="profile-dropdown">
+                    <div className="profile-dropdown" ref={profileDropdownRef}>
                         <p><b>Name:</b> John Doe</p>
                         <p><b>Email:</b> john.doe@example.com</p>
                         <button
