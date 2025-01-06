@@ -1,4 +1,5 @@
 import axios from 'axios';
+import DocumentList from '../components/document list/DocumentList';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
 
@@ -189,6 +190,12 @@ const authService = {
       throw new Error('Document ID and file are required for re-uploading.');
     }
     return handleResponse(apiClient.post(`documents/${docId}/reupload/`, data));
+  },
+  DocumentList: async (docId, data) => {
+    if (!docId || !data.file) {
+      throw new Error('Document ID and file are required for viewing the status of document.');
+    }
+    return handleResponse(apiClient.post(`documents/${docId}/DocumentList/`, data));
   },
 
   // Notifications APIs

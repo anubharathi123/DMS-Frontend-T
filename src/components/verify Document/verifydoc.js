@@ -7,6 +7,8 @@ import DropDownArrow from "../../assets/images/dropdown-arrow.png";
 import DescSort from "../../assets/images/desc-sort.png";
 
 const VerifyDoc = () => {
+  const ITEMS_PER_PAGE = 6;
+  const [currentPage, setCurrentPage] = useState(0);
   const [documents] = useState([
     {
       declarationNumber: "1234567890123",
@@ -14,7 +16,7 @@ const VerifyDoc = () => {
       updatedDate: "2024-12-15",
       documentType: "Invoice",
       actions: "",
-      downloadUrl: "/downloads/sample1.docx",
+      downloadUrl: "./hello.pdf",
     },
     {
       declarationNumber: "9876543210123",
@@ -58,6 +60,57 @@ const VerifyDoc = () => {
       actions: "",
       downloadUrl: "/downloads/sample6.pdf",
     },
+
+    {
+      declarationNumber: "8766902314267",
+      FileName: "PL-35",
+      updatedDate: "2024-10-11",
+      documentType: "Packing List",
+      actions: "",
+      downloadUrl: "/downloads/sample7.docx",
+    },
+    {
+      declarationNumber: "9187654321249",
+      FileName: "DE-96",
+      updatedDate: "2024-06-02",
+      documentType: "Declaration",
+      actions: "",
+      downloadUrl: "/downloads/sample8.xlsx",
+    },
+    {
+      declarationNumber: "9182736456748",
+      FileName: "IN-55",
+      updatedDate: "2024-02-09",
+      documentType: "Invoice",
+      actions: "",
+      downloadUrl: "/downloads/sample9.xlsx",
+    },
+    {
+      declarationNumber: "8766564491237",
+      FileName: "AWS-40",
+      updatedDate: "2024-10-20",
+      documentType: "AWS/BOL",
+      actions: "",
+      downloadUrl: "/downloads/sample10.pdf",
+    },
+
+    {
+      declarationNumber: "6789012345678",
+      FileName: "DO-90",
+      updatedDate: "2024-08-23",
+      documentType: "Delivery Order",
+      actions: "",
+      downloadUrl: "/downloads/sample11.pdf",
+    },
+
+    {
+      declarationNumber: "8292351783291",
+      FileName: "DE-23",
+      updatedDate: "2024-07-14",
+      documentType: "Declaration",
+      actions: "",
+      downloadUrl: "/downloads/sample12.pdf",
+    },
   ]);
 
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
@@ -68,8 +121,6 @@ const VerifyDoc = () => {
   const [declarationInput, setDeclarationInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [filterDate, setFilterDate] = useState(null);
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [currentDocument, setCurrentDocument] = useState(null);
   const [isAscSort, setIsAscSort] = useState(false);
 
   const calendarRef = useRef(null);
@@ -93,13 +144,28 @@ const VerifyDoc = () => {
         doc.declarationNumber.includes(declarationInput)
       );
     }
-
+    setCurrentPage(0);
     setFilteredDocuments(filtered);
   };
 
   useEffect(() => {
     applyFilters();
   }, [filterDate, declarationInput, filterDocType]);
+
+  const handlePageChange = (direction) => {
+    const totalItems = filteredDocuments.length; // Use filtered documents for pagination
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  
+    let newPage = currentPage;
+  
+    if (direction === "next" && currentPage < totalPages - 1) {
+      newPage += 1;
+    } else if (direction === "prev" && currentPage > 0) {
+      newPage -= 1;
+    }
+  
+    setCurrentPage(newPage);
+  };
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
@@ -122,16 +188,6 @@ const VerifyDoc = () => {
         setFilteredDocuments(documents);
       }
     }
-  };
-
-  const handlePopupAction = (action) => {
-    if (currentDocument) {
-      setFilteredDocuments((prev) =>
-        prev.filter((doc) => doc.declarationNumber !== currentDocument.declarationNumber)
-      );
-    }
-    setPopupVisible(false);
-    setCurrentDocument(null);
   };
 
   const resetFilters = () => {
@@ -177,7 +233,7 @@ const VerifyDoc = () => {
   };
 
   const openDocumentInNewTab = (doc) => {
-    const newWindow = window.open("", "_blank");
+    const newWindow = window.open(doc.downloadUrl, "_blank");
 
     if (newWindow) {
       newWindow.document.write(`
@@ -187,37 +243,61 @@ const VerifyDoc = () => {
             <style>
               body {
                 font-family: Arial, sans-serif;
-                margin: 20px;
                 text-align: center;
+                margin: 20px;
               }
               .action-buttons {
                 margin-top: 20px;
               }
-              button {
-                padding: 10px 20px;
-                margin: 5px;
-                font-size: 16px;
-                cursor: pointer;
-              }
+             
             </style>
           </head>
           <body>
-            <h1>${doc.FileName}</h1>
-            <div class="document-view">
-              ${doc.downloadUrl.endsWith('.pdf') ? 
-                `<iframe src="${doc.downloadUrl}" width="100%" height="600px"></iframe>` :
-                `<p>File format not supported for preview</p>`
-              }
-            </div>
+            <h1>Viewing: ${doc.FileName}</h1>
+            <iframe src="${doc.downloadUrl}" width="100%" height="600px" style="border: none;"></iframe>
             <div class="action-buttons">
-              <button onclick="window.opener.handleAction('Approved')">Approve</button>
-              <button onclick="window.opener.handleAction('Rejected')">Reject</button>
+              <button style="border:none; 
+                            border-radius:5px;
+                            background-color:#43bade;
+                            cursor:pointer;
+                            margin: 5px;
+                            color: black;
+                            padding: 10px 20px;" 
+                            onclick="window.opener.alertAction('Approved', '${doc.declarationNumber}')">Approve</button>
+              <button style="border:none; 
+                            border-radius:5px;
+                            background-color:#43bade;
+                            cursor:pointer;
+                            margin: 5px;
+                            color: black;
+                            padding: 10px 20px;"
+               onclick="window.opener.alertAction('Rejected', '${doc.declarationNumber}')">Reject</button>
             </div>
           </body>
         </html>
       `);
       newWindow.document.close();
     }
+  };
+
+  window.alertAction = (action, declarationNumber) => {
+    alert(`Document with Declaration Number ${declarationNumber} has been ${action}.`);
+  };
+
+  const handleAscSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      a.declarationNumber.localeCompare(b.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(true); // Set to true to indicate ascending sort is active
+  };
+
+  const handleDescSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      b.declarationNumber.localeCompare(a.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(false); // Set to false to indicate descending sort is active
   };
 
   useEffect(() => {
@@ -366,7 +446,9 @@ const VerifyDoc = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredDocuments.map((doc, index) => (
+            {filteredDocuments
+            .slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE)
+            .map((doc, index) => (
               <tr key={index}>
                 <td>{doc.declarationNumber}</td>
                 <td>
@@ -403,6 +485,14 @@ const VerifyDoc = () => {
           </tbody>
         </table>
       </div>
+      <button className="verifydoc_prev-button" onClick={() => handlePageChange("prev")} disabled={currentPage === 0}>
+        Previous
+        </button>
+        <button
+            className="verifydoc_next-button" onClick={() => handlePageChange("next")} 
+            disabled={(currentPage + 1) * ITEMS_PER_PAGE >= filteredDocuments.length}>
+          Next
+        </button>
     </div>
   );
 };

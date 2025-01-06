@@ -245,24 +245,24 @@
     width: fit-content;
   }
   .dl-bg-yellow-100 {
-    background-color: #ebf8369f;
+    background-color: #f7da66;
   }
   .dl-text-yellow-800 {
-    color: #000000;
+    color: #73850e;
   }
   
   .dl-bg-red-100 {
-    background-color: #ee4a4a70;
+    background-color: #fee2e2;
   }
   .dl-text-red-800 {
-    color: #000000;
+    color: #991b1b;
   }
   
   .dl-bg-green-100 {
-    background-color: #2df80570;
+    background-color: #d1fae5;
   }
   .dl-text-green-800 {
-    color: #080808;
+    color: #064e3b;
   }
   .dl-py-1 {
     padding-top: .25rem !important;
@@ -271,4 +271,38 @@
   .dl-px-2 {
     padding-right: .5rem !important;
     padding-left: .5rem !important;
+  }
+
+  .document-list_next-button {
+    background-color: #43bade;
+    color: black;
+    padding: 5px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+
+  }
+
+  .document-list_next-button:hover {
+    background: #0f3c46;
+    color: white;
+  }
+
+  .document-list_prev-button {
+    background-color: #43bade;
+    color: black;
+    padding: 5px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 850px;
+    
+  }
+
+  .document-list_prev-button:hover {
+    background: #0f3c46;
+    color: white;
   }

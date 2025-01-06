@@ -139,7 +139,6 @@ const UploadDocument = () => {
       </div>
 
       <div className="upload-document-type-container">
-        
         <div className="upload-checkbox-section">
           <table>
             <tbody>
