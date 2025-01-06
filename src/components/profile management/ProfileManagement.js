@@ -1,4 +1,5 @@
 
+
 import React, { useState, useRef } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import './ProfileManagement.css';
@@ -20,14 +21,25 @@ const ProfileManagement = () => {
   // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Get the image to be saved (either cropped image or uploaded image)
+    const savedImage = croppedImage || image; 
+
     const employeeDetails = {
-      username: "AE-xxx",  
-      role,
       email,
+      role,
       mobile,
-      image: croppedImage || image, 
+      image: savedImage,
     };
+
     console.log('Employee Details:', employeeDetails);
+
+    // Clear input fields and image after saving
+    setEmail('');
+    setRole('');
+    setMobile('');
+    setImage(null);
+    setCroppedImage(null);
   };
 
   // Handle image upload
@@ -75,22 +87,27 @@ const ProfileManagement = () => {
     resetFileInput();  
   };
 
+  // Handle profile image click (opens the file input dialog)
+  const handleImageClick = () => {
+    fileInputRef.current.click();  // Trigger the file input click
+  };
+
   return (
     <div className="profile-management-body">
       <div className="profile-management-container">
         {/* Header Section */}
         <div className="profile-management-header">
           <div className="profile-management-profileSection">
-            <div className="profile-management-profilePicContainer">
+            <div className="profile-management-profilePicContainer" onClick={handleImageClick}>
               <img
-                src={croppedImage || image || "https://via.placeholder.com/150"}
+                src={croppedImage || image || "https://via.placeholder.com/100"}
                 alt="Profile"
                 className="profile-management-profilePic"
               />
             </div>
             <div className="profile-management-companyName">Name of the Company</div>
           </div>
-          <div className="profile-management-cameraIconContainer" onClick={() => fileInputRef.current.click()}>
+          <div className="profile-management-cameraIconContainer" onClick={handleImageClick}>
             <i className="fa fa-camera profile-management-cameraIcon"></i>
             <span>Create your picture</span>
           </div>
@@ -107,15 +124,6 @@ const ProfileManagement = () => {
 
         {/* Employee Info Form */}
         <form className="profile-management-formContainer" onSubmit={handleSubmit}>
-          {/* <div className="profile-management-formRow">
-            <div className="profile-management-label">User Name:</div>
-            <div className="profile-management-input">
-              AE-xxx
-            </div>
-          </div> */}
-
-          
-
           <div className="profile-management-formRow">
             <div className="profile-management-label">Mail ID:</div>
             <input
@@ -137,7 +145,6 @@ const ProfileManagement = () => {
               placeholder="Role"
             />
           </div>
-
 
           <div className="profile-management-formRow">
             <div className="profile-management-label">Mobile:</div>
@@ -191,3 +198,8 @@ const ProfileManagement = () => {
 };
 
 export default ProfileManagement;
+
+
+
+
+
