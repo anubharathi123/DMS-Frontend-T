@@ -15,8 +15,8 @@ import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
 import Fileupload from "./components/fileuploadtestpage/file upload"
 import Test from './components/test/test'
-import EmployeeProfile from "./components/employee profile/EmployeeProfile";
-import ProfileManagement from "./components/profile management/ProfileManagement";
+// import EmployeeProfile from "./components/employee profile/EmployeeProfile";
+// import ProfileManagement from "./components/profile management/ProfileManagement";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./App.css";
@@ -170,23 +170,23 @@ function AppContent() {
           }
         />
 
-<Route
+{/* <Route
   path="/EmployeeProfile"
   element={
     <PrivateRoute>
       <EmployeeProfile />
     </PrivateRoute>
   }
-/>
+/> */}
 
-<Route
+{/* <Route
   path="/ProfileManagement"
   element={
     <PrivateRoute>
       <ProfileManagement />
     </PrivateRoute>
   }
-/>
+/> */}
 
 
          <Route

@@ -66,7 +66,6 @@ const authService = {
     return response;
   },
   sendOTP: async () => {
-    
     return handleResponse(apiClient.get('auth/otp/'));
   },
   verifyOTP: async (data) => {
@@ -92,11 +91,8 @@ const authService = {
     return response;
   },
   changePassword: async (data) => {
-    // if (data.confirmPassword == !data.new_password) {
-    //   throw new Error('Olpassword and new password are required.');
-    // }
-    const response = handleResponse(apiClient.post('auth/change-password/', data));
-    return response
+    const response = await handleResponse(apiClient.post('auth/change-password/', data));
+    return response;
   },
   logout: async () => {
     try {
@@ -162,6 +158,14 @@ const authService = {
       throw new Error('Organization ID and employee ID are required to resume an employee.');
     }
     return handleResponse(apiClient.post(`organizations/${orgId}/employees/${employeeId}/resume/`));
+  },
+
+  // New Company API
+  createCompany: async (companyData) => {
+    if (!companyData.companyName || !companyData.personName || !companyData.email) {
+      throw new Error('Company name, person name, and email are required.');
+    }
+    return handleResponse(apiClient.post('companies/', companyData)); // Post to the `companies` endpoint
   },
 
   // Document APIs
