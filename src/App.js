@@ -12,6 +12,7 @@ import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
+import AnnouncementCreation from "./components/AnnouncementCreation/AnnouncementCreation";
 
 import "./App.css";
 
@@ -96,6 +97,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <UploadDocument />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/announcement"
+          element={
+            <PrivateRoute>
+              <AnnouncementCreation />
             </PrivateRoute>
           }
         />
