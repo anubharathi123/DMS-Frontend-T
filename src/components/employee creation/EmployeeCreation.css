@@ -15,9 +15,9 @@
 .emp-creation-title {
   text-align: center;
   font-size: 24px;
-  margin-bottom: 20px;
-  margin-left: 110px;
   margin-top: -40px;
+  margin-bottom: 20px;
+  margin-left: 156px;
 }
 
 /* Form Styles */
@@ -32,6 +32,7 @@
   display: flex;
   align-items: center;
   text-align: left;
+  padding: 3px;
 }
 
 /* Submit Button */
@@ -102,13 +103,16 @@
 
 /* Input Fields */
 .emp-creation-input {
-  width: 47%;
-  max-width: 195px;
+  width: 58%;
+  /* max-width: 207px; */
   padding: 4px;
-  /* border-radius: 4px; */
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: 20px;
 }
+
 
 .emp-creation-input::placeholder {
   font-style: italic;
@@ -134,9 +138,15 @@
   font-size: 13px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-left: 126px;
+  margin-left: 190px;
 }
 
 .emp-creation-submit-button:hover {
   background-color: #4ba3bf;
 }
+
+.emp-creation-form-group select {
+  position: relative;
+  z-index: 10; /* Ensure the dropdown appears above other elements */
+}
+

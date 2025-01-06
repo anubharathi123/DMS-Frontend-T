@@ -1,30 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './header.css';
-import Notification from '../../assets/images/notification-icon.png'
-import CandidateProfile from '../../assets/images/candidate-profile.png'
-import SearchIcon from '../../assets/images/search_icon.png'
-
-
-const App = () => {
-    return (
-        <div style={{ background: "rgb(248, 249, 250)"}}>
-            <Header />
-        </div>
-    );
-};
+import Notification from '../../assets/images/notification-icon.png';
+import CandidateProfile from '../../assets/images/candidate-profile.png';
+import SearchIcon from '../../assets/images/search_icon.png';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
+import NotificationPage from "../NotificationDropdown/NotificationDropdown";
 
 const Header = () => {
     const [query, setQuery] = useState(""); // State for search input
     const [suggestions, setSuggestions] = useState([]); // State for suggestions
     const [activeDropdown, setActiveDropdown] = useState(null); // Tracks which dropdown is open
-
-    const notifications = [
-        "New announcement created",
-        "Company profile updated",
-        "Admin added a new user",
-        "System maintenance scheduled",
-        "New document uploaded",
-    ];
+    const Navigate = useNavigate();
+    const dropdownRef = useRef(null); // Ref for the notification dropdown container
+    const profileDropdownRef = useRef(null); // Ref for the profile dropdown container
 
     const allSuggestions = [
         "Find Company",
@@ -49,6 +37,32 @@ const Header = () => {
             setSuggestions([]);
         }
     };
+
+    const handleLogout = () => {
+        localStorage.removeItem("username");
+        localStorage.removeItem("token");
+        localStorage.removeItem("access_status");
+        localStorage.removeItem("role");
+        Navigate('/login');
+    };
+
+    const handleClickOutside = (event) => {
+        // Close notification dropdown if clicked outside
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setActiveDropdown(null);
+        }
+        // Close profile dropdown if clicked outside
+        if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+            setActiveDropdown(null);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="header-container" style={{ background: "#0b3041", padding: "10px", height: "45px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
@@ -85,67 +99,56 @@ const Header = () => {
             </div>
 
             {/* Notification Button */}
-            <button
-                type="button"
-                className="notificationbtn"
-                onClick={() => setActiveDropdown(activeDropdown === "notification" ? null : "notification")}
-            >
-                <img
-                    src={Notification}
-                    alt="Notifications"
-                    className="notification-icon"
-                />
-            </button>
+            <div ref={dropdownRef}>
+                <button
+                    type="button"
+                    className="notificationbtn"
+                    onClick={() => setActiveDropdown(activeDropdown === "notification" ? null : "notification")}
+                >
+                    <img
+                        src={Notification}
+                        alt="Notifications"
+                        className="notification-icon"
+                    />
+                </button>
 
-            {/* Notification Dropdown */}
-            {activeDropdown === "notification" && (
-                <div className="notification-dropdown">
-                    <button
-                        type="button"
-                        className="close-button"
-                        onClick={() => setActiveDropdown(null)}
-                    >
-                        &times;
-                    </button>
-                    <ul className="notification-list">
-                        {notifications.map((notification, index) => (
-                            <li key={index} className="notification-item">
-                                {notification}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+                {/* Notification Dropdown */}
+                {activeDropdown === "notification" && (
+                    <div className="notification-dropdown">
+                        <NotificationPage />
+                    </div>
+                )}
 
-            {/* Profile Button */}
-            <button
-                type="button"
-                className="profilebtn"
-                onClick={() => setActiveDropdown(activeDropdown === "profile" ? null : "profile")}
-            >
-                <img
-                    src={CandidateProfile}
-                    alt="Candidate profile"
-                    className="profile-image"
-                />
-            </button>
-            {/* Profile Dropdown */}
-            {activeDropdown === "profile" && (
-                <div className="profile-dropdown">
-                    <p><b>Name:</b> John Doe</p>
-                    <p><b>Email:</b> john.doe@example.com</p>
-                    <button
-                        type="button"
-                        className="signout-button"
-                        onClick={() => alert("Sign Out Clicked")}
+                {/* Profile Button */}
+                <button
+                    type="button"
+                    className="profilebtn"
+                    onClick={() => setActiveDropdown(activeDropdown === "profile" ? null : "profile")}
+                >
+                    <img
+                        src={CandidateProfile}
+                        alt="Candidate profile"
+                        className="profile-image"
+                    />
+                </button>
 
-                    >
-                        Sign Out
-                    </button>
-                </div>
-            )}
+                {/* Profile Dropdown */}
+                {activeDropdown === "profile" && (
+                    <div className="profile-dropdown" ref={profileDropdownRef}>
+                        <p><b>Name:</b> John Doe</p>
+                        <p><b>Email:</b> john.doe@example.com</p>
+                        <button
+                            type="button"
+                            className="signout-button"
+                            onClick={handleLogout}
+                        >
+                            LogOut
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
 
-export default App;
+export default Header;

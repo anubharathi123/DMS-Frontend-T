@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DocumentList.css";
 import DownArrow from "../../assets/images/down-arrow.png";
+import DescSort from "../../assets/images/desc-sort.png";
 
 const DocumentList = () => {
   const documents = [
@@ -20,15 +21,15 @@ const DocumentList = () => {
       fileUrl: "https://example.com/files/File2.pdf",
       updatedDate: "2024-11-20",
       docType: "Packing List",
-      status: "Reject",
+      status: "Rejected",
     },
     {
-      declarationNumber: "1122334455667",
+      declarationNumber: "4125364850617",
       fileName: "File3.pdf",
       fileUrl: "https://example.com/files/File3.pdf",
       updatedDate: "2024-10-15",
       docType: "Declaration",
-      status: "Approve",
+      status: "Approved",
     },
     {
       declarationNumber: "2233445566778",
@@ -36,21 +37,45 @@ const DocumentList = () => {
       fileUrl: "https://example.com/files/File4.pdf",
       updatedDate: "2024-09-10",
       docType: "Delivery Order",
-      status: "Cancelled",
+      status: "Pending",
     },
+
+    {
+      declarationNumber: "5678901234567",
+      fileName: "File5.pdf",
+      fileUrl: "https://example.com/files/File5.pdf",
+      updatedDate: "2025-01-02",
+      docType: "Invoice",
+      status: "Approved",
+    },
+
+    {
+      declarationNumber: "3456789033445",
+      fileName: "File6.pdf",
+      fileUrl: "https://example.com/files/File6.pdf",
+      updatedDate: "2024-11-12",
+      docType: "AWS/BOL",
+      status: "Rejected",
+    },
+
   ];
 
   const [filterDate, setFilterDate] = useState(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
+  const [isStatusDropdownVisible, setIsStatusDropdownVisible] = useState(false);
   const [declarationInput, setDeclarationInput] = useState("");
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
   const [filterDocType, setFilterDocType] = useState("All");
+  const [filterStatus, setFilterStatus] = useState("All");
   const [suggestions, setSuggestions] = useState([]);
+  const [isAscSort, setIsAscSort] = useState(false);
 
   const calendarRef = useRef(null);
   const dropdownRef = useRef(null);
+  const docTypeDropdownRef = useRef(null);
   const containerRef = useRef(null);
+  const statusDropdownRef = useRef(null);
 
   const applyFilters = () => {
     let filtered = [...documents];
@@ -70,27 +95,55 @@ const DocumentList = () => {
       filtered = filtered.filter((doc) => doc.docType === filterDocType);
     }
 
+    if (filterStatus !== "All") {
+      filtered = filtered.filter((doc) => doc.status === filterStatus);
+    }
+
     setFilteredDocuments(filtered);
   };
 
   useEffect(() => {
     applyFilters();
-  }, [filterDate, declarationInput, filterDocType]);
+  }, [filterDate, declarationInput, filterDocType, filterStatus]);
 
+  const handleAscSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      a.declarationNumber.localeCompare(b.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(true); // Set to true to indicate ascending sort is active
+  };
+
+  const handleDescSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      b.declarationNumber.localeCompare(a.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(false); // Set to false to indicate descending sort is active
+  };
+
+  
   const handleInputChange = (e) => {
-    const inputValue = e.target.value;
+    let inputValue = e.target.value;
+  
+    // Allow only numeric input and restrict length to 13 digits
+    if (!/^\d*$/.test(inputValue)) return; // Prevent non-numeric input
+    if (inputValue.length > 13) inputValue = inputValue.slice(0, 13);
+  
     setDeclarationInput(inputValue);
-
-    if (inputValue) {
+  
+    // Filter documents only if input length is exactly 13
+    if (inputValue.length === 13) {
       const matchingSuggestions = documents
         .filter((doc) => doc.declarationNumber.startsWith(inputValue))
         .map((doc) => doc.declarationNumber);
-
+  
       setSuggestions(matchingSuggestions);
     } else {
       setSuggestions([]);
     }
   };
+  
 
   const handleCalendarToggle = () => {
     setIsCalendarOpen((prev) => {
@@ -99,12 +152,18 @@ const DocumentList = () => {
     });
   };
 
-  const handleDropdownToggle = () => {
-    setDocTypeDropdownVisible((prev) => {
-      if (!prev) setIsCalendarOpen(false); // Close calendar when dropdown opens
-      return !prev;
-    });
+  const handleDropdownToggle = (type) => {
+    if (type === "docType") {
+      setDocTypeDropdownVisible((prev) => !prev);
+      setIsCalendarOpen(false);
+      setIsStatusDropdownVisible(false);
+    } else if (type === "status") {
+      setIsStatusDropdownVisible((prev) => !prev);
+      setDocTypeDropdownVisible(false);
+      setIsCalendarOpen(false);
+    }
   };
+  
 
   const handleClickOutside = (event) => {
     if (
@@ -131,6 +190,7 @@ const DocumentList = () => {
     setFilterDate(null);
     setDeclarationInput("");
     setFilterDocType("All");
+    setFilterStatus("All");
     setFilteredDocuments(documents);
   };
 
@@ -140,6 +200,15 @@ const DocumentList = () => {
     "Invoice",
     "Packing List",
     "Delivery Order",
+    "AWS/BOL",
+    "Country Of Origin",
+  ];
+
+  const status = [
+    "All",
+    "Pending",
+    "Approved",
+    "Rejected",
   ];
 
   return (
@@ -157,7 +226,7 @@ const DocumentList = () => {
         <input
           type="text"
           className="document-list-declaration-input"
-          placeholder="Enter 13-digit Dec num"
+          placeholder="Enter 13-digit DecNum"
           value={declarationInput}
           onChange={handleInputChange}
         />
@@ -185,7 +254,14 @@ const DocumentList = () => {
       <table className="document-list-table">
         <thead>
           <tr>
-            <th>Declaration Number</th>
+            <th>Declaration Number
+              <button className="document-list_desc-sort" onClick={handleDescSort}>
+              <img src={DescSort} alt="DescSort" className="doc-list_desc-sortimg" />
+              </button>
+              <button className="document-list_asc-sort" onClick={handleAscSort}>
+              <img src={DescSort} alt="AscSort" className="doc-list_asc-sortimg" />
+              </button>
+            </th>
             <th>File Name</th>
             <th>
               Updated Date
@@ -212,34 +288,55 @@ const DocumentList = () => {
               )}
             </th>
             <th>
-              Doc Type
+  Doc Type
+  <img
+    src={DownArrow}
+    alt="Dropdown"
+    className="document-list-dropdown-icon"
+    onClick={() => handleDropdownToggle("docType")}
+  />
+  {isDocTypeDropdownVisible && (
+    <div ref={docTypeDropdownRef} className="document-dropdown-list">
+      {docTypes.map((doctype) => (
+        <div
+          key={doctype}
+          className="document-list-dropdown-item"
+          onClick={() => {
+            setFilterDocType(doctype);
+            setDocTypeDropdownVisible(false);
+          }}
+        >
+          {doctype}
+        </div>
+      ))}
+    </div>
+  )}
+</th>
+            <th>
+              Status
               <img
                 src={DownArrow}
                 alt="Dropdown"
-                className="document-list-dropdown-icon"
-                onClick={handleDropdownToggle}
+                className="status-list-dropdown-icon"
+                onClick={() => handleDropdownToggle("status")}
               />
-              {isDocTypeDropdownVisible && (
-                <div
-                  className="document-dropdown-list"
-                  ref={dropdownRef}
-                >
-                  {docTypes.map((docType) => (
+              {isStatusDropdownVisible && (
+                <div ref={statusDropdownRef} className="status-dropdown-list">
+                  {status.map((status) => (
                     <div
-                      key={docType}
-                      className="document-list-dropdown-item"
+                      key={status}
+                      className="status-list-dropdown-item"
                       onClick={() => {
-                        setFilterDocType(docType);
-                        setDocTypeDropdownVisible(false);
+                        setFilterStatus(status);
+                        setIsStatusDropdownVisible(false);
                       }}
                     >
-                      {docType}
+                      {status}
                     </div>
                   ))}
                 </div>
               )}
             </th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -257,9 +354,12 @@ const DocumentList = () => {
               </td>
               <td>{row.updatedDate}</td>
               <td>{row.docType}</td>
-              <td>{row.status}</td>
-            </tr>
-          ))}
+              <td><span className={`dl-documenttable_status text-xs font-medium dl-py-1 dl-px-2 rounded 
+                    ${row.status === 'Pending' ? 'dl-bg-yellow-100 dl-text-yellow-800' : 
+                      row.status === 'Rejected' ? 'dl-bg-red-100 dl-text-red-800' : 
+                      'dl-bg-green-100 dl-text-green-800'}`}>{row.status} </span></td>
+        </tr>
+        ))}
         </tbody>
       </table>
     </div>

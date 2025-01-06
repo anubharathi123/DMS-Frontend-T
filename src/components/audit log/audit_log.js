@@ -6,43 +6,43 @@ const App = () => {
   return (
     <div className='auditpage'>
         <h1 className='audit-h1'>Audit Log</h1>
-        <label for="mail-id">Mail ID</label>
-        <input type='text' name='mail-id' id='mail-id' required placeholder='Enter Mail ID'></input>
+        <label className='audit_mail-id_label' for="mail-id">Mail ID</label>
+        <input type='text' className='audit_mail-id_input' name='mail-id' id='mail-id' required placeholder='Enter Mail ID'></input>
         <br></br>
         <br></br>
-        <label for="actions">Actions</label>
-        <input type='text' className='audit-actions' name='actions' id='actions' required placeholder='Enter Actions'></input>
+        <label className='audit_actions-label' for="actions">Actions</label>
+        <input type='text' className='audit_actions-input' name='actions' id='actions' required placeholder='Enter Actions'></input>
         <br></br>
         <br></br>
-        <label className="from-date" for="from-date">From</label>
-        <input type='date' className='audit_from-date' name='from-date' id='from-date' required ></input>
-        <label className='to-date' for="to-date">To</label>
-        <input className='audit_to-date' type='date' name='to-date' id='to-date' required ></input>
+        <label className="audit_from-date_label" for="from-date">From</label>
+        <input type='date' className='audit_from-date_input' name='from-date' id='from-date' required ></input>
+        <label className='audit_to-date_label' for="to-date">To</label>
+        <input className='audit_to-date_input' type='date' name='to-date' id='to-date' required ></input>
         <br></br>
         <br></br>
         <button type='button' className='apply-filterbtn'>Apply Filter</button>
         <br></br>
         <table className='audit-table'>
-            <tr>
+            <tr className='audit-table_header'>
                 <th>Mail ID</th>
                 <th>User Login</th>
                 <th>Actions</th>
             </tr>
             <tr>
                 
-                <th>sample01@gmail.com</th>
-                <th>Company Admin</th>
-                <th>Company created on (12/11/2023)</th>
+                <td>sample01@gmail.com</td>
+                <td>Company Admin</td>
+                <td>Company created on (12/11/2023)</td>
             </tr>
             <tr>
-                <th>sample02@gmail.com</th>
-                <th>Company Admin</th>
-                <th>Company created on (12/11/2023)</th>
+                <td>sample02@gmail.com</td>
+                <td>Company Admin</td>
+                <td>Company created on (12/11/2023)</td>
             </tr>
             <tr>
-                <th>sample03@gmail.com</th>
-                <th>Company Admin</th>
-                <th>Company created on (12/11/2023)</th>
+                <td>sample03@gmail.com</td>
+                <td>Company Admin</td>
+                <td>Company created on (12/11/2023)</td>
             </tr>
 
         </table>

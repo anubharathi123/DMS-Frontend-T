@@ -20,7 +20,6 @@
   
   /* Title Styles */
   .document-list-title {
- 
     color: #333;
     text-align: center;
     margin-bottom: 15px;
@@ -43,13 +42,13 @@
   }
   
   .document-list-declaration-input {
-    padding: 8px;
+    padding: 5px;
     /* font-size: 1em; */
     border-radius: 5px;
     border: 1px solid #444;
     /* margin-right: 32%; */
      margin-bottom: -5px; 
-    width: 200px;
+    width: 180px;
     max-width: 100%;
   }
   
@@ -60,28 +59,61 @@
     border-color: #ccc;
     border-style: groove;
     border-width: 1px;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
   .document-list-table th {
     background-color: #156082;
     color: white;
-    
+    padding: 8px;
+
   }
   
   .document-list-table td {
-    padding: 9px;
+    padding: 8px;
     text-align: center;
     background-color: #ffffff;
-    border-color: #ccc;
-    border-style: groove;
-    border-width: 1px;
     color: rgb(0, 0, 0);
     border-bottom: 1px solid #ddd;
   }
   
   .document-list-table tr:nth-child(even) {
     background-color: #e9f7e9;
+  }
+
+  .document-list_desc-sort {
+    background:none;
+    border:none;
+    cursor: pointer;
+    margin-left: 5px;
+  
+  }
+
+  .doc-list_desc-sortimg{
+    cursor: pointer;
+    width: 19px;
+    height: 19px;
+    margin-top: 4px;
+    margin-left: -5px;
+    margin-bottom: -2px;
+  }
+
+  .doc-list_asc-sortimg{
+    cursor: pointer;
+    width: 19px;
+    height: 19px;
+    margin-top: 4px;
+    margin-left: -5px;
+    margin-bottom: -2px;
+    transform: rotate(180deg);
+  }
+
+  .document-list_asc-sort {
+    background: none;
+    border:none;
+    cursor: pointer;
+    margin-left: -5px;
+ 
   }
   
  
@@ -103,14 +135,14 @@
 
   /* Dropdown container styles */
   .document-dropdown-list {
-   position:fixed;
+    position: fixed;
     background-color: white;
-    border: 1px solid #ddd;
-    width: 150px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    padding: 5px;
     z-index: 1000;
-    margin-top: 10px;
-    right: 190px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   /* Style for each item in the dropdown */
@@ -123,7 +155,39 @@
   .document-list-dropdown-item:hover {
     background-color: #f0f0f0;
   }
+
+  .status-list-dropdown-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    margin-bottom: -2px;
+    filter: invert(1);
+  }
+
+  /* Dropdown container styles */
+  .status-dropdown-list {
+   position:fixed;
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 150px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    margin-top: 10px;
+    right: 23px;
+  }
+
+  /* Style for each item in the dropdown */
+  .status-list-dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+    color: #333;
+  }
   
+  .status-list-dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+
   /* Adjustments for dropdown position */
   /* .document-table th {
     position: relative;
@@ -175,4 +239,36 @@
     background-color: #f0f0f0;
     border-radius: 4px;
   }
+  .dl-documenttable_status {
+    display: inline-block;
+    text-align: center;
+    width: fit-content;
+  }
+  .dl-bg-yellow-100 {
+    background-color: #ebf8369f;
+  }
+  .dl-text-yellow-800 {
+    color: #000000;
+  }
   
+  .dl-bg-red-100 {
+    background-color: #ee4a4a70;
+  }
+  .dl-text-red-800 {
+    color: #000000;
+  }
+  
+  .dl-bg-green-100 {
+    background-color: #2df80570;
+  }
+  .dl-text-green-800 {
+    color: #080808;
+  }
+  .dl-py-1 {
+    padding-top: .25rem !important;
+    padding-bottom: .25rem !important;
+  }
+  .dl-px-2 {
+    padding-right: .5rem !important;
+    padding-left: .5rem !important;
+  }

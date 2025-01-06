@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './EmployeeCreation.css';  // Importing the combined CSS for this component
+import './EmployeeCreation.css';  
 
 const EmployeeCreation = () => {
   const [employee, setEmployee] = useState({
@@ -8,8 +8,7 @@ const EmployeeCreation = () => {
     personName: '',
     mobile: '',
     email: '',
-    accessCreationDate: '',
-    accessExpiryDate: '',
+    creationDate: '',  
     role: '',
     status: 'Active', // New status condition added
   });
@@ -30,10 +29,9 @@ const EmployeeCreation = () => {
       personName: '',
       mobile: '',
       email: '',
-      accessCreationDate: '',
-      accessExpiryDate: '',
+      creationDate: '', 
       role: '',
-      status: 'Active', // Resetting new condition
+      status: 'Active', 
     });
   };
 
@@ -122,39 +120,20 @@ const EmployeeCreation = () => {
             />
           </div>
 
-          {/* Access Dates Group */}
+          {/* Creation Date */}
           <div className="emp-creation-form-group">
-            {/* Access Creation Date */}
-            <div className="emp-creation-access-date">
-              <label htmlFor="accessCreationDate" className="emp-creation-label">
-                Access Creation Date <span className="emp-creation-mandatory">*</span>
-              </label>
-              <input
-                type="date"
-                id="accessCreationDate"
-                name="accessCreationDate"
-                value={employee.accessCreationDate}
-                onChange={handleChange}
-                className="emp-creation-input"
-                required
-              />
-            </div>
-
-            {/* Access Expiry Date */}
-            <div className="emp-creation-access-date">
-              <label htmlFor="accessExpiryDate" className="emp-creation-label">
-                Access Expiry Date <span className="emp-creation-mandatory">*</span>
-              </label>
-              <input
-                type="date"
-                id="accessExpiryDate"
-                name="accessExpiryDate"
-                value={employee.accessExpiryDate}
-                onChange={handleChange}
-                className="emp-creation-input"
-                required
-              />
-            </div>
+            <label htmlFor="creationDate" className="emp-creation-label">
+              Creation Date <span className="emp-creation-mandatory">*</span>
+            </label>
+            <input
+              type="date"
+              id="creationDate"
+              name="creationDate"
+              value={employee.creationDate}
+              onChange={handleChange}
+              className="emp-creation-input"
+              required
+            />
           </div>
 
           {/* Role */}
@@ -174,41 +153,39 @@ const EmployeeCreation = () => {
                 Select Role
               </option>
               <option value="Compiler">Compiler</option>
-              <option value="Reviewer">Reviewer</option>
+              <option value="Approver">Approver</option>
               <option value="Viewer">Viewer</option>
             </select>
           </div>
 
           <div className="emp-creation-form-group">
-  <button type="submit" className="emp-creation-submit-button">
-    Create 
-  </button>
-  <button
-    type="button"
-    className="emp-creation-cancel-button"
-    onClick={() => {
-      // Handle the cancel action, such as clearing the form or redirecting
-      setEmployee({
-        userName: '',
-        companyName: '',
-        personName: '',
-        mobile: '',
-        email: '',
-        accessCreationDate: '',
-        accessExpiryDate: '',
-        role: '',
-        status: 'Active', // Resetting new condition
-      });
-    }}
-  >
-    Cancel
-  </button>
-</div>
+            <button type="submit" className="emp-creation-submit-button">
+              Create 
+            </button>
+            <button
+              type="button"
+              className="emp-creation-cancel-button"
+              onClick={() => {
+                // Handle the cancel action, such as clearing the form or redirecting
+                setEmployee({
+                  userName: '',
+                  companyName: '',
+                  personName: '',
+                  mobile: '',
+                  email: '',
+                  creationDate: '', 
+                  role: '',
+                  status: 'Active', 
+                });
+              }}
+            >
+              Cancel
+            </button>
+          </div>
 
         </form>
       </div>
     </div>
   );
 };
-
 export default EmployeeCreation;

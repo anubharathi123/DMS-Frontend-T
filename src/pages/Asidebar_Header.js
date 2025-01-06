@@ -6,7 +6,7 @@ import AsideBar from '../components/Asidebar/AsideBar';
 const CompanyCreation = () => {
   
   return (
-    <div className='Asidebar-header-mobile' style={{width: '100%',position: 'fixed',top: '0'}} ><Header/>
+    <div className='Asidebar-header-mobile' style={{width: '100%',position: 'fixed',top: '0', zIndex:'1'}} ><Header/>
     <AsideBar/>
       </div>
     

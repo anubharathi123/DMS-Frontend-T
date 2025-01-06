@@ -134,6 +134,42 @@
   color: white;
 }
 
+.verifydoc_desc-sort {
+  background:none;
+  border:none;
+  cursor: pointer;
+  margin-left: 5px;
+
+}
+
+.verifydoc_desc-sortimg{
+  cursor: pointer;
+  width: 19px;
+  height: 19px;
+  margin-top: 4px;
+  margin-left: -5px;
+  margin-bottom: -2px;
+}
+
+.verifydoc_asc-sortimg{
+  cursor: pointer;
+  width: 19px;
+  height: 19px;
+  margin-top: 4px;
+  margin-left: -5px;
+  margin-bottom: -2px;
+  transform: rotate(180deg);
+}
+
+.verifydoc_asc-sort {
+  background: none;
+  border:none;
+  cursor: pointer;
+  margin-left: -5px;
+
+}
+
+
 .verify-show-doc-type-btn {
   cursor: pointer;
   border: none;
