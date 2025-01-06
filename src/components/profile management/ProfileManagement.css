@@ -49,6 +49,7 @@
     height: 100px;
     object-fit: cover;
     border-radius: 50px;
+    cursor: pointer;
   }
   
   .profile-management-companyName {
@@ -112,7 +113,7 @@
   /* Action Buttons */
   .profile-management-button {
     padding: 10px 15px;
-    background-color: #111010;
+    background-color: #5fc3d7;
     color: white;
     border: none;
     border-radius: 5px;
@@ -137,7 +138,7 @@
     font-size: 12px;
     margin-top: 10px;
     margin-right: 10px;
-    background-color: #f44336; /* Red color for Cancel */
+    background-color: #5fc3d7; 
   }
   
   .profile-management-cancelButton:hover {
