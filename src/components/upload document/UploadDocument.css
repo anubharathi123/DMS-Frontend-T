@@ -34,10 +34,11 @@
 }
 
 .upload-checkbox-section {
-  /* margin-top: 5px; */
+  margin-top: 5px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-left: 332px;
   
 }
 
@@ -58,7 +59,7 @@
 .file-upload {
   display: flex;
   align-items: center;
-  margin-left: 10px;
+  margin-left: 260px;
 }
 
 .file-upload input[type="file"] {

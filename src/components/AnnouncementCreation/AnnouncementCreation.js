@@ -32,9 +32,9 @@ const AnnouncementCreation = () => {
   return (
     <div className="container-body">
     <div className="container">
-      <h2>Create Announcement</h2>
+      <h2 className="announcement_title">Create Announcement</h2>
       <form onSubmit={handleSubmit}>
-        <label>Title:</label>
+        <label className="announcement_title-label">Title:</label>
         <input
           type="text"
           name="title"

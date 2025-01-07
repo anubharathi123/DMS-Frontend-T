@@ -1,4 +1,5 @@
 import axios from 'axios';
+import DocumentList from '../components/document list/DocumentList';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
 
@@ -66,7 +67,6 @@ const authService = {
     return response;
   },
   sendOTP: async () => {
-    
     return handleResponse(apiClient.get('auth/otp/'));
   },
   verifyOTP: async (data) => {
@@ -92,11 +92,8 @@ const authService = {
     return response;
   },
   changePassword: async (data) => {
-    // if (data.confirmPassword == !data.new_password) {
-    //   throw new Error('Olpassword and new password are required.');
-    // }
-    const response = handleResponse(apiClient.post('auth/change-password/', data));
-    return response
+    const response = await handleResponse(apiClient.post('auth/change-password/', data));
+    return response;
   },
   logout: async () => {
     try {
@@ -164,6 +161,14 @@ const authService = {
     return handleResponse(apiClient.post(`organizations/${orgId}/employees/${employeeId}/resume/`));
   },
 
+  // New Company API
+  createCompany: async (companyData) => {
+    if (!companyData.companyName || !companyData.personName || !companyData.email) {
+      throw new Error('Company name, person name, and email are required.');
+    }
+    return handleResponse(apiClient.post('companies/', companyData)); // Post to the `companies` endpoint
+  },
+
   // Document APIs
   uploadDocument: async (data) => {
     if (!data.file || !data.metadata) {
@@ -189,6 +194,12 @@ const authService = {
       throw new Error('Document ID and file are required for re-uploading.');
     }
     return handleResponse(apiClient.post(`documents/${docId}/reupload/`, data));
+  },
+  DocumentList: async (docId, data) => {
+    if (!docId || !data.file) {
+      throw new Error('Document ID and file are required for viewing the status of document.');
+    }
+    return handleResponse(apiClient.post(`documents/${docId}/DocumentList/`, data));
   },
 
   // Notifications APIs

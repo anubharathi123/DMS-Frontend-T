@@ -328,3 +328,36 @@
   position: fixed;
   z-index: 9999; /* Ensure the date picker appears above other elements */
 }
+
+.verifydoc_next-button {
+  background-color: #43bade;
+  color: black;
+  padding: 5px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 20px;
+
+}
+
+.verifydoc_next-button:hover {
+  background: #0f3c46;
+  color: white;
+}
+
+.verifydoc_prev-button {
+  background-color: #43bade;
+  color: black;
+  padding: 5px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 880px;  
+}
+
+.verifydoc_prev-button:hover {
+  background: #0f3c46;
+  color: white;
+}

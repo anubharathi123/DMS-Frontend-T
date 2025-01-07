@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './CompanyCreation.css';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import authService from '../../ApiServices/ApiServices';
 
 const CompanyCreation = () => {
   const [company, setCompany] = useState({
@@ -16,6 +17,7 @@ const CompanyCreation = () => {
   const [contractDocuments, setContractDocuments] = useState([]);
   const [dragging, setDragging] = useState(false);
   const [fileInputClicked, setFileInputClicked] = useState(false);
+  const [error, setError] = useState(null); // For error handling
 
   // Handles input changes
   const handleChange = (e) => {
@@ -63,22 +65,28 @@ const CompanyCreation = () => {
   };
 
   // Handles form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = { ...company, contractDocuments };
-    console.log('Submitted Data:', formData);
-    alert('Company registered successfully!');
-    setCompany({
-      username: 'AE-', 
-      companyName: '',
-      personName: '',
-      mobile: '',
-      email: '',
-      accessCreationDate: '',
-      accessExpiryDate: '',
-    });
-    setContractDocuments([]);
-    setFileInputClicked(false);
+
+    try {
+      await authService.createCompany(formData); // Call the API service
+      alert('Company registered successfully!');
+      // Reset the form after successful submission
+      setCompany({
+        username: 'AE-', 
+        companyName: '',
+        personName: '',
+        mobile: '',
+        email: '',
+        accessCreationDate: '',
+        accessExpiryDate: '',
+      });
+      setContractDocuments([]);
+      setFileInputClicked(false);
+    } catch (error) {
+      setError(error.message || 'Something went wrong.'); // Display error if API call fails
+    }
   };
 
   // Handles cancel action
@@ -98,7 +106,6 @@ const CompanyCreation = () => {
 
   // Triggers file input dialog when clicking the upload text
   const handleUploadClick = (e) => {
-    // Ensure the file input dialog only triggers when the span text is clicked
     if (e.target.classList.contains("company-creation-upload-text")) {
       if (!fileInputClicked) {
         document.getElementById("file-input").click();
@@ -205,49 +212,51 @@ const CompanyCreation = () => {
 
           {/* Contract Document */}
           <div className="company-creation-form-group">
-            <label className="company-creation-label">
-              Contract Document <span className="company-creation-mandatory">*</span>
-            </label>
             <div
-              className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
+              className={`company-creation-upload-area ${dragging ? 'dragging' : ''}`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              onClick={(e) => handleUploadClick(e)}
             >
-              <FaCloudUploadAlt className="company-creation-upload-icon" />
-              {contractDocuments.length === 0 && (
-                <span className="company-creation-upload-text">Drag & drop or select here</span>
-              )}
               <input
-                type="file" 
+                type="file"
                 id="file-input"
                 onChange={handleFileChange}
-                style={{ display: 'none' }}  // Hide the file input
+                className="company-creation-file-input"
+                hidden
               />
+              <div
+                className="company-creation-upload-text"
+                onClick={handleUploadClick}
+              >
+                <FaCloudUploadAlt />
+                {fileInputClicked ? (
+                  <div className="company-creation-file-name">{contractDocuments[0].name}</div>
+                ) : (
+                  'Drag and drop your contract document here or click to upload'
+                )}
+              </div>
               {contractDocuments.length > 0 && (
-                <div className="company-creation-file-names">
-                  <div className="company-creation-file-item">
-                    <span className="file-name">{contractDocuments[0].name}</span>
-                    <button
-                      type="button"
-                      className="company-creation-remove-file-btn"
-                      onClick={handleRemoveFile}
-                    >
-                      X
-                    </button>
-                  </div>
-                </div>
+                <button
+                  type="button"
+                  className="company-creation-remove-file"
+                  onClick={handleRemoveFile}
+                >
+                  Remove File
+                </button>
               )}
             </div>
           </div>
 
-          {/* Buttons */}
-          <div className="company-creation-button-group">
-            <button type="submit" className="company-creation-submit-button">
-              Create
+          {/* Error Message */}
+          {error && <div className="company-creation-error">{error}</div>}
+
+          {/* Submit and Cancel */}
+          <div className="company-creation-buttons">
+            <button type="submit" className="company-creation-submit">
+              Submit
             </button>
-            <button type="button" className="company-creation-cancel-button" onClick={handleCancel}>
+            <button type="button" onClick={handleCancel} className="company-creation-cancel">
               Cancel
             </button>
           </div>

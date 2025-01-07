@@ -12,6 +12,14 @@ import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
+import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
+// import Fileupload from "./components/fileuploadtestpage/file upload"
+// import Test from './components/test/test'
+// import ProfileManagement from "./components/profile management/ProfileManagement";
+// import EmployeeProfile from "./components/employee profile/EmployeeProfile";
+// import ProfileManagement from "./components/profile management/ProfileManagement";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+
 import AnnouncementCreation from "./components/AnnouncementCreation/AnnouncementCreation";
 
 import "./App.css";
@@ -167,6 +175,34 @@ function AppContent() {
           element={
             <PrivateRoute>
               <CreateUser />
+            </PrivateRoute>
+          }
+        />
+
+{/* <Route
+  path="/EmployeeProfile"
+  element={
+    <PrivateRoute>
+      
+    </PrivateRoute>
+  }
+/> */}
+
+{/* <Route
+  path="/ProfileManagement"
+  element={
+    <PrivateRoute>
+      <ProfileManagement />
+    </PrivateRoute>
+  }
+/> */}
+
+
+         <Route
+          path="/NotificationDropdown"
+          element={
+            <PrivateRoute>
+              <NotificationPage />
             </PrivateRoute>
           }
         />
