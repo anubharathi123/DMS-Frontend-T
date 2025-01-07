@@ -1,15 +1,15 @@
-.container-body{
+.announcement-creation-container-body{
   width: 100%;
   height: 100%;
   background-color: #fff;
 
 }
   
-  .announcement_title-label{
+  .announcement-creation-announcement_title-label{
     width: 100px;
     font-weight:bold ;
   }
-.container {
+.announcement-creation-container {
       max-width: 341px;
       margin: 65px auto;
       padding: 2px;
@@ -19,13 +19,13 @@
       margin-top: 90px;
   }
   
-  .announcement_title {
+  .announcement-creation-announcement_title {
     text-align: center;
     color: #333;
     display: inline;
   }
   
-  form {
+  .announcement-creation-form {
     display: flex;
     flex-direction: column;
     display: flex;
@@ -42,8 +42,8 @@
     color: #555;
   }
   
-  form input,
-  form textarea {
+  .announcement-creation-form input,
+  .announcement-creation-form textarea {
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -51,7 +51,7 @@
     font-size: 16px;
   }
   
-  form textarea {
+  .announcement-creation-form textarea {
     resize: none;
   }
   
@@ -63,7 +63,7 @@
     margin-right: 10px;
   }
   
-  button[type="submit"]:hover {
+  .announcement-creation-button[type="submit"]:hover {
     background-color: #218838;
   }
   

@@ -109,7 +109,7 @@ const ProfileManagement = () => {
           </div>
           <div className="profile-management-cameraIconContainer" onClick={handleImageClick}>
             <i className="fa fa-camera profile-management-cameraIcon"></i>
-            <span>Create your picture</span>
+            <span>Upload your picture</span>
           </div>
           <input
             ref={fileInputRef}  
@@ -198,8 +198,5 @@ const ProfileManagement = () => {
 };
 
 export default ProfileManagement;
-
-
-
 
 

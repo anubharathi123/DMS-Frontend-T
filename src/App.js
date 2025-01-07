@@ -13,8 +13,8 @@ import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import EmployeeCreation from "./components/employee creation/EmployeeCreation";
 import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
-// import Fileupload from "./components/fileuploadtestpage/file upload"
-// import Test from './components/test/test'
+import Fileupload from "./components/fileuploadtestpage/file upload"
+import Test from './components/test/test'
 // import ProfileManagement from "./components/profile management/ProfileManagement";
 // import EmployeeProfile from "./components/employee profile/EmployeeProfile";
 // import ProfileManagement from "./components/profile management/ProfileManagement";
@@ -179,23 +179,44 @@ function AppContent() {
           }
         />
 
-{/* <Route
+<Route
   path="/EmployeeProfile"
   element={
     <PrivateRoute>
-      
+      <EmployeeProfile />
     </PrivateRoute>
   }
-/> */}
+/> 
 
-{/* <Route
+ <Route
   path="/ProfileManagement"
   element={
     <PrivateRoute>
       <ProfileManagement />
     </PrivateRoute>
   }
-/> */}
+/>
+
+
+
+<Route
+  path="/Fileupload"
+  element={
+    <PrivateRoute>
+      <Fileupload />
+    </PrivateRoute>
+  }
+/>
+
+
+<Route
+  path="/Test"
+  element={
+    <PrivateRoute>
+      <Test />
+    </PrivateRoute>
+  }
+/>
 
 
          <Route
@@ -203,6 +224,24 @@ function AppContent() {
           element={
             <PrivateRoute>
               <NotificationPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/test"
+          element={
+            <PrivateRoute>
+              <Test />
+            </PrivateRoute>
+          }
+        />
+
+          <Route
+          path="/Upload"
+          element={
+            <PrivateRoute>
+              <Fileupload />
             </PrivateRoute>
           }
         />

@@ -30,11 +30,11 @@ const AnnouncementCreation = () => {
   };
 
   return (
-    <div className="container-body">
-    <div className="container">
-      <h2 className="announcement_title">Create Announcement</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="announcement_title-label">Title:</label>
+    <div className="announcement-creation-container-body">
+    <div className="announcement-creation-container">
+      <h2 className="announcement-creation-announcement_title">Create Announcement</h2>
+      <form className="announcement-creation-form" onSubmit={handleSubmit}>
+        <label className="announcement-creation-announcement_title-label">Title:</label>
         <input
           type="text"
           name="title"
