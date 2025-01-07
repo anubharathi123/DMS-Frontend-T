@@ -36,24 +36,32 @@ const UploadDocument = () => {
 
   const handleFileChange = (e, type) => {
     const selectedFiles = Array.from(e.target.files); // Convert FileList to Array
-    setFiles((prevFiles) => {
-      const updatedFiles = {
-        ...prevFiles,
-        [type]: [...prevFiles[type], ...selectedFiles],
-      };
+    if (selectedFiles.length > 0) {
+      setFiles((prevFiles) => {
+        const updatedFiles = {
+          ...prevFiles,
+          [type]: [...prevFiles[type], ...selectedFiles],
+        };
 
-      setUploaded((prevUploaded) => ({
-        ...prevUploaded,
-        [type]: updatedFiles[type].length > 0,
-      }));
-      setDisabled((prevDisabled) => ({
-        ...prevDisabled,
-        [type]: true,
-      }));
+        setUploaded((prevUploaded) => ({
+          ...prevUploaded,
+          [type]: updatedFiles[type].length > 0,
+        }));
+        setDisabled((prevDisabled) => ({
+          ...prevDisabled,
+          [type]: true,
+        }));
 
-      return updatedFiles;
-    });
-    e.target.value = ''; // Clear input for re-uploading
+        return updatedFiles;
+      });
+
+      // Simulate an upload process (execute function after upload)
+      setTimeout(() => {
+        console.log(`File(s) uploaded for ${type}:`, selectedFiles.map((file) => file.name));
+      }, 1000); // Simulated delay
+
+      e.target.value = ''; // Clear input for re-uploading
+    }
   };
 
   const handleCancelUpload = (type) => {
@@ -125,15 +133,12 @@ const UploadDocument = () => {
           placeholder="Enter 13-digit DecNum"
           className="upload-declaration-number-input"
         />
-        <button onClick={handleSearch} className="search-button" style={{ background:'none',border:'none' }}>
-        <span className="upload-arrow-icon">➜</span>
+        <button onClick={handleSearch} className="search-button" style={{ background: 'none', border: 'none' }}>
+          <span className="upload-arrow-icon">➜</span>
         </button>
       </div>
 
       <div className="upload-document-type-container">
-        <p className="upload-p">
-          <b>Document Type</b>
-        </p>
         <div className="upload-checkbox-section">
           <table>
             <tbody>
@@ -143,26 +148,30 @@ const UploadDocument = () => {
                     <label className={uploaded[key] ? 'grayed-out' : ''}>{label}</label>
                   </td>
                   <td className="file-upload">
-                    <label htmlFor={`${key}-file`} style={{ opacity: disabled[key] ? 0.5 : 1 }}>
-                      <AiOutlineUpload size={20} />
-                    </label>
+                    {!uploaded[key] && (
+                      <label htmlFor={`${key}-file`} style={{ opacity: disabled[key] ? 0.5 : 1 }}>
+                        <AiOutlineUpload size={20} />
+                      </label>
+                    )}
                     <input
                       type="file"
                       id={`${key}-file`}
                       onChange={(e) => handleFileChange(e, key)}
-                      multiple
                       disabled={disabled[key]}
                       style={{ display: 'none' }}
                     />
                   </td>
                   <td>
                     {uploaded[key] && (
-                      <button
-                        className="cancel-upload-button"
-                        onClick={() => handleCancelUpload(key)}
-                      >
-                        ⛔
-                      </button>
+                      <div className="uploaded-file-info">
+                        <span>{files[key][0]?.name}</span>
+                        <button
+                          className="cancel-upload-button"
+                          onClick={() => handleCancelUpload(key)}
+                        >
+                          ⛔
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>

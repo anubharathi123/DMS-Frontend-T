@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
-import './EmployeeCreation.css';  
+import './EmployeeCreation.css';
+import authService from '../../ApiServices/ApiServices';
 
 const EmployeeCreation = () => {
   const [employee, setEmployee] = useState({
@@ -9,7 +9,7 @@ const EmployeeCreation = () => {
     personName: '',
     mobile: '',
     email: '',
-    creationDate: '',  
+    creationDate: '',
     role: '',
     status: 'Active', // New status condition added
   });
@@ -19,10 +19,19 @@ const EmployeeCreation = () => {
     setEmployee({ ...employee, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Employee Data:', employee);
-    alert('Employee created successfully!');
+
+    try {
+      // Assuming you want to add the employee to an organization
+      const orgId = 'your-org-id'; // Replace with actual orgId
+      await authService.addEmployee(orgId, employee);  // API call to add employee
+      alert('Employee created successfully!');
+    } catch (error) {
+      alert('Error creating employee: ' + (error.message || error));
+    }
+
     // Reset form
     setEmployee({
       userName: '',
@@ -30,9 +39,9 @@ const EmployeeCreation = () => {
       personName: '',
       mobile: '',
       email: '',
-      creationDate: '', 
+      creationDate: '',
       role: '',
-      status: 'Active', 
+      status: 'Active',
     });
   };
 
@@ -161,32 +170,31 @@ const EmployeeCreation = () => {
 
           <div className="emp-creation-form-group">
             <button type="submit" className="emp-creation-submit-button">
-              Create 
+              Create
             </button>
             <button
               type="button"
               className="emp-creation-cancel-button"
               onClick={() => {
-                // Handle the cancel action, such as clearing the form or redirecting
                 setEmployee({
                   userName: '',
                   companyName: '',
                   personName: '',
                   mobile: '',
                   email: '',
-                  creationDate: '', 
+                  creationDate: '',
                   role: '',
-                  status: 'Active', 
+                  status: 'Active',
                 });
               }}
             >
               Cancel
             </button>
           </div>
-
         </form>
       </div>
     </div>
   );
 };
+
 export default EmployeeCreation;

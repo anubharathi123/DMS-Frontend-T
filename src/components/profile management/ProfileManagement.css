@@ -1,0 +1,211 @@
+/* Container Styles */
+.profile-management-body {
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  
+  .profile-management-container {
+    
+     display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  /* background-color: #f4f4f9; */
+  border-radius: 8px;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  width: 600px;
+  margin: auto;
+  /* border: 1px solid #ddd;  */
+  }
+  
+  /* Header Section */
+  .profile-management-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    margin-top: 25px;
+  }
+  
+  .profile-management-profileSection {
+    display: flex;
+    align-items: center;
+    margin-right: 0;
+    /* margin-bottom: 20px; */
+  }
+  
+  .profile-management-profilePicContainer {
+    margin-right: 40px;
+    margin-top: 30px;
+  }
+  
+  .profile-management-profilePic {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  
+  .profile-management-companyName {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .profile-management-cameraIconContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .profile-management-cameraIcon {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  
+  .profile-management-line {
+    width: 600px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    margin-top: 15px;
+  }
+  
+  /* Form Container */
+  .profile-management-formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .profile-management-formRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  .profile-management-input {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    min-width: 150px;
+    margin-left: 20px;
+  }
+  
+  .profile-management-label {
+    font-size: 14px;
+    color: #666;
+    margin-right: 20px;
+    min-width: 80px;
+  }
+  
+  /* Action Buttons */
+  .profile-management-button {
+    padding: 10px 15px;
+    background-color: #5fc3d7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  
+  .profile-management-button:hover {
+    background-color: #444;
+  }
+  
+  
+
+  /* Action Buttons */
+.profile-management-cancelButton {
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-right: 10px;
+    background-color: #5fc3d7; 
+  }
+  
+  .profile-management-cancelButton:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+  /* Modal for Image Cropping */
+.profile-management-cropperModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  
+  
+  .profile-management-cropperActions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+
+  
+ 
+  
+ 
+  
+  
+  
+  
+  
+
+
+
+  /* Modal for Image Cropping */
+
+  .profile-management-cropperModalContent {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 500px;  /* Smaller modal size */
+    position: relative;
+  }
+  
+ 
+  
+ 
+  
+ 
+  
