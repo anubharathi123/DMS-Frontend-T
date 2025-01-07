@@ -70,8 +70,8 @@ const AnnouncementCreation = () => {
           required
         />
         <div>
-          <button className="announcement-creation-button" type="submit">Create Announcement</button>
-          <button className="announcement-creation-button" type="button" onClick={handleCancel}>
+          <button type="submit">Create Announcement</button>
+          <button type="button" onClick={handleCancel}>
             Cancel
           </button>
         </div>

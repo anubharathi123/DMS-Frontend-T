@@ -67,7 +67,7 @@
     background-color: #218838;
   }
   
-  .announcement-creation-button[type="button"] {
+ form button[type="button"] {
     background-color: #dc3545;
     color: #fff;
   }
