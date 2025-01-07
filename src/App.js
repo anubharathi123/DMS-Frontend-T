@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AsideBar_Header from "./pages/Asidebar_Header";
 import UploadDocument from "./components/upload document/UploadDocument";
-import VerifyDoc from "./components/verify Document/verifydoc";
+import VerifyDoc from "./components/verify Document/verifydoc.js";
 import CompanyCreation from "./components/company creation/CompanyCreation";
 import DocumentList from "./components/document list/DocumentList";
 import Login from "./components/login/Login";
@@ -179,23 +179,6 @@ function AppContent() {
           }
         />
 
-<Route
-  path="/EmployeeProfile"
-  element={
-    <PrivateRoute>
-      <EmployeeProfile />
-    </PrivateRoute>
-  }
-/> 
-
- <Route
-  path="/ProfileManagement"
-  element={
-    <PrivateRoute>
-      <ProfileManagement />
-    </PrivateRoute>
-  }
-/>
 
 
 

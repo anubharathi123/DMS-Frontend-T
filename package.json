@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@nextui-org/react": "^2.6.10",
+    "@react-pdf-viewer/core": "^3.12.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

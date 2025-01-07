@@ -1,7 +1,6 @@
 :root {
     --dark-blue: #000b58;
     --mid-blue: #003161;
- 
     --light-teal: #fff4b7;
     --white: #ffffff;
   }
@@ -16,9 +15,9 @@
     max-width: 800px;
     /* margin: 50px auto; */
     margin-left: 250px;
-    margin-top: 100px;
+    margin-top: 41px;
     padding: 20px;
-    background-color: var(--white);
+    background-color:#f9f9f9;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
@@ -48,7 +47,7 @@
     font-size: 16px;
     color: var(--mid-blue);
     font-weight: bold;
-    margin-top: -18px;
+    margin-top: -5px;
   }
   
   .declaration-input {
@@ -71,7 +70,7 @@
     color: var(--white);
     background-color: #43bade;
     border: none;
-    margin-top: -15px;
+  
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
@@ -117,7 +116,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #43bade;
+    background-color: #156082;
     color: var(--white);
     border-radius: 50%;
     cursor: pointer;

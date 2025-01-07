@@ -145,7 +145,22 @@ const VerifyDoc = () => {
   const handleAction = (actionType) => {
     if (selectedDocument) {
       alert(`${actionType} action performed for: ${selectedDocument.FileName}`);
-      setSelectedDocument(null);
+      removeSelectedDocument(); // Remove the selected document from the table
+    }
+  };
+
+  const removeSelectedDocument = () => {
+    if (selectedDocument) {
+      const updatedDocuments = documents.filter(
+        (doc) => doc.declarationNumber !== selectedDocument.declarationNumber
+      );
+      const updatedFilteredDocuments = filteredDocuments.filter(
+        (doc) => doc.declarationNumber !== selectedDocument.declarationNumber
+      );
+  
+      setSelectedDocument(updatedDocuments); // Update the original documents
+      setFilteredDocuments(updatedFilteredDocuments); // Update the filtered documents
+      setSelectedDocument(null); // Reset selected document
     }
   };
 
