@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { NavLink } from 'react-router-dom';
 import './AsideBar.css';
 import Logo from '../../assets/images/company_logo.png';
 import Dropdown from '../../assets/images/dropdown.png';
+import authService from '../../ApiServices/ApiServices';
 import Dropup from '../../assets/images/dropup.webp';
 
 const AsideBar = () => {
-  // Retrieve the user's role from localStorage (simulated here)
+  const [role, setRole] = useState('');
 
-  localStorage.setItem("role", "PRODUCT_OWNER"); // This should be set based on the logged-in user
-const role = localStorage.getItem('role'); // Assuming role is stored in localStorage
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const details_data = await authService.details();
+        // const fetchedName = details_data.details[5].name;
+        const fetchedRole = details_data.details[5].name;
+        // console.log('fetchedName:', fetchedName);
+        console.log(fetchedRole)
+
+        // setName(fetchedName);
+        setRole(fetchedRole);
+        localStorage.setItem('role', fetchedRole);
+      } catch (error) {
+        console.error('Error fetching details:', error);
+      }
+    };
+
+    fetchDetails();
+  }, []);
 
   // State to track which dropdown is open (both main and inner dropdowns)
   const [openDropdowns, setOpenDropdowns] = useState({});
@@ -66,19 +84,19 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               <NavLink to="/Profile" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p className="profiletab">Profile</p>
               </NavLink>
-              <button onClick={() => toggleDropdown('profile')} className="dropdown-toggle">
+              <button onClick={() => toggleDropdown('profile')} className="dropdown-toggle1">
                 {renderDropdownIcon('profile')}
               </button>
               
               {openDropdowns.profile && (
-                <ul className="dropdown-menu">
-                  {(role === 'Product Owner' || role === 'Client Admin') && (
+                <ul className="dropdown-menu1">
+                  {/* {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && ( */}
                   <li>
-                    <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
+                    <NavLink to="/profilemanagement" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Profile Management
                     </NavLink>
                   </li>
-                  )} 
+                  {/* )} */}
 
                 </ul>
               )}
@@ -92,7 +110,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p style={{ marginLeft: '0px' }}>Dashboard</p>
               </NavLink>
-              <button onClick={() => toggleDropdown('dashboard')} className="dropdown-toggle">
+              <button onClick={() => toggleDropdown('dashboard')} className="dropdown-toggle1">
                 {renderDropdownIcon('dashboard')}
               </button>
               {openDropdowns.dashboard && (
@@ -108,7 +126,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
                     <NavLink to="/Document" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Document 
                     </NavLink>
-                    <button onClick={() => toggleDropdown('document',true)} className="dropdown-toggle">
+                    <button onClick={() => toggleDropdown('document',true)} className="dropdown-toggle1">
                 {renderDropdownIcon('document')}
                 </button>
                   
@@ -131,7 +149,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
                     <NavLink to="/Announcement" className={({ isActive }) => (isActive ? 'active' : '')}>
                       Announcement 
                     </NavLink>
-                    <button onClick={() => toggleDropdown('announcement',true)} className="dropdown-toggle">
+                    <button onClick={() => toggleDropdown('announcement',true)} className="dropdown-toggle1">
                 {renderDropdownIcon('announcement')}
                 </button>
 
@@ -162,7 +180,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               <NavLink to="EmployeeCreation"className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p>Create Admin</p>
               </NavLink>
-              <button onClick={() => toggleDropdown('create-admin')} className="dropdown-toggle">
+              <button onClick={() => toggleDropdown('create-admin')} className="dropdown-toggle1">
                 {renderDropdownIcon('create-admin')}
               </button>
               {openDropdowns['create-admin'] && (
@@ -184,7 +202,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p>Organization</p>
               </NavLink>
-              <button onClick={() => toggleDropdown('organization')} className="dropdown-toggle">
+              <button onClick={() => toggleDropdown('organization')} className="dropdown-toggle1">
                 {renderDropdownIcon('organization')}
               </button>
               {openDropdowns['organization'] && (
@@ -206,7 +224,7 @@ const role = localStorage.getItem('role'); // Assuming role is stored in localSt
               <NavLink to="/uploaddocument" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p>Document Upload</p>
               </NavLink>
-              <button onClick={() => toggleDropdown('uploaddocument')} className="dropdown-toggle">
+              <button onClick={() => toggleDropdown('uploaddocument')} className="dropdown-toggle1">
               {renderDropdownIcon('uploaddocument')}
               </button>
               {openDropdowns.uploaddocument && (

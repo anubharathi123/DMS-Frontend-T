@@ -6,7 +6,6 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
 }
 
 
@@ -34,11 +33,10 @@
 }
 
 .upload-checkbox-section {
-  margin-top: 5px;
+  /* margin-top: 5px; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 332px;
   
 }
 
@@ -59,7 +57,7 @@
 .file-upload {
   display: flex;
   align-items: center;
-  margin-left: 260px;
+  margin-left: 10px;
 }
 
 .file-upload input[type="file"] {
@@ -109,8 +107,8 @@
   color: black;
   width: 24px;
   height: 27px;
-  padding: 4px 4px 4px 3px;
-  font-weight: bold;
+  padding-left: 6px;
+  
   border-radius: 50%;
 }
 
@@ -165,12 +163,6 @@
   padding: 4px;
   border-radius: 5px;
 }
-
-.grayed-out {
-  color: gray;
-}
-
-
 
 
 

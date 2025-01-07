@@ -1,6 +1,7 @@
 :root {
     --dark-blue: #000b58;
     --mid-blue: #003161;
+    --teal: #006a67;
     --light-teal: #fff4b7;
     --white: #ffffff;
   }
@@ -15,9 +16,9 @@
     max-width: 800px;
     /* margin: 50px auto; */
     margin-left: 250px;
-    margin-top: 41px;
+    margin-top: 100px;
     padding: 20px;
-    background-color:#f9f9f9;
+    background-color: var(--white);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
@@ -47,7 +48,6 @@
     font-size: 16px;
     color: var(--mid-blue);
     font-weight: bold;
-    margin-top: -5px;
   }
   
   .declaration-input {
@@ -68,9 +68,8 @@
     padding: 10px 20px;
     font-size: 16px;
     color: var(--white);
-    background-color: #43bade;
+    background-color: var(--teal);
     border: none;
-  
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
@@ -82,7 +81,7 @@
   }
   
   .go-button:hover:not(:disabled) {
-    background-color:  #0f3c46;
+    background-color: var(--dark-blue);
   }
   
   .file-upload-section {
@@ -116,7 +115,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #156082;
+    background-color: var(--teal);
     color: var(--white);
     border-radius: 50%;
     cursor: pointer;
@@ -124,7 +123,7 @@
   }
   
   .upload-icon:hover {
-    background-color: #0f3c46;
+    background-color: var(--dark-blue);
   }
   
   .hidden-input {
@@ -133,7 +132,6 @@
   
   .file-name {
     font-size: 14px;
-    margin-top: 0px;
     color: var(--mid-blue);
   }
   
@@ -143,23 +141,30 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    border: none;
-    background:none;
-    color: #e03e4b;
+    background-color: #ff4b5c;
+    color: var(--white);
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
   
+  .delete-icon:hover {
+    background-color: #e03e4b;
+  }
   
   .submit-button {
     align-self: center;
     padding: 12px 30px;
     font-size: 16px;
     color: var(--white);
-    background-color: #43bade;
+    background-color: var(--teal);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
+  
+  .submit-button:hover {
+    background-color: var(--dark-blue);
+  }
+  

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import './dashboard.css';
+import { Pie, Line, Bar } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend, LineElement, BarElement, CategoryScale, LinearScale, PointElement, PieController, LineController, BarController } from 'chart.js';
 
 Chart.register(ArcElement, Tooltip, Legend, LineElement, BarElement, CategoryScale, LinearScale, PointElement, PieController, LineController, BarController);

@@ -1,250 +1,147 @@
-import React, { useState, useEffect, useRef } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "./DocumentList.css";
-import DownArrow from "../../assets/images/down-arrow.png";
-import DescSort from "../../assets/images/desc-sort.png";
+import React, { useState, useEffect, useRef } from 'react';
+import { Search } from 'lucide-react';
+import DatePicker from 'react-datepicker';
+import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
+import './DocumentList.css';
 
-const DocumentList = () => {
-   const ITEMS_PER_PAGE = 6;
-    const [currentPage, setCurrentPage] = useState(0);
-  const documents = [
-    { declarationNumber: "1234567890123",fileName: "File1.pdf",fileUrl: "https://example.com/files/File1.pdf",updatedDate: "2024-12-01",docType: "Invoice",status: "Pending",},
-    { declarationNumber: "9876543210987",fileName: "File2.pdf",fileUrl: "https://example.com/files/File2.pdf",updatedDate: "2024-11-20",docType: "Packing List",status: "Rejected",},
-    { declarationNumber: "4125364850617",fileName: "File3.pdf",fileUrl: "https://example.com/files/File3.pdf",updatedDate: "2024-10-15",docType: "Declaration",status: "Approved",},
-    { declarationNumber: "2233445566778",fileName: "File4.pdf",fileUrl: "https://example.com/files/File4.pdf",updatedDate: "2024-09-10",docType: "Delivery Order",status: "Pending", },
-    { declarationNumber: "5678901234567",fileName: "File5.pdf",fileUrl: "https://example.com/files/File5.pdf",updatedDate: "2025-01-02",docType: "Invoice",status: "Approved", },
-    { declarationNumber: "3456789033445",fileName: "File6.pdf",fileUrl: "https://example.com/files/File6.pdf",updatedDate: "2024-11-12",docType: "AWS/BOL",status: "Rejected", },
-    { declarationNumber: "2345678901234",fileName: "File7.pdf",fileUrl: "https://example.com/files/File7.pdf",updatedDate: "2024-06-11",docType: "Declaration",status: "Pending",},
-    { declarationNumber: "9134572189021",fileName: "File8.pdf",fileUrl: "https://example.com/files/File8.pdf",updatedDate: "2024-08-10",docType: "Packing List",status: "Rejected",},
-    { declarationNumber: "8134976321728",fileName: "File9.pdf",fileUrl: "https://example.com/files/File9.pdf",updatedDate: "2024-09-05",docType: "Delivery Order",status: "Approved",},
-    { declarationNumber: "9899765546112",fileName: "File10.pdf",fileUrl: "https://example.com/files/File10.pdf",updatedDate: "2024-10-06",docType: "Invoice",status: "Pending", },
-    { declarationNumber: "5676432890126",fileName: "File11.pdf",fileUrl: "https://example.com/files/File11.pdf",updatedDate: "2024-11-14",docType: "AWS/BOL",status: "Approved", },
-    { declarationNumber: "7689076512412",fileName: "File12.pdf",fileUrl: "https://example.com/files/File12.pdf",updatedDate: "2024-07-09",docType: "Declaration",status: "Rejected", },
-  ];
-
+const DocumentTable = () => {
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
-  const [isStatusDropdownVisible, setIsStatusDropdownVisible] = useState(false);
-  const [declarationInput, setDeclarationInput] = useState("");
-  const [filteredDocuments, setFilteredDocuments] = useState(documents);
-  const [filterDocType, setFilterDocType] = useState("All");
-  const [currentDocument, setCurrentDocument] = useState(null);
-  const [filterStatus, setFilterStatus] = useState("All");
-  const [suggestions, setSuggestions] = useState([]);
-  const [isAscSort, setIsAscSort] = useState(false);
-
+  const [filter, setFilter] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [actionMessage, setActionMessage] = useState('');
   const calendarRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const docTypeDropdownRef = useRef(null);
-  const containerRef = useRef(null);
-  const statusDropdownRef = useRef(null);
-
-  const applyFilters = () => {
-    let filtered = [...documents];
-
-    if (filterDate) {
-      const selectedDate = filterDate.toISOString().split("T")[0];
-      filtered = filtered.filter((doc) => doc.updatedDate === selectedDate);
-    }
-
-    if (declarationInput) {
-      filtered = filtered.filter((doc) =>
-        doc.declarationNumber.includes(declarationInput)
-      );
-    }
-
-    if (filterDocType !== "All") {
-      filtered = filtered.filter((doc) => doc.docType === filterDocType);
-    }
-
-    if (filterStatus !== "All") {
-      filtered = filtered.filter((doc) => doc.status === filterStatus);
-    }
-    setCurrentPage(0);
-    setFilteredDocuments(filtered);
-  };
 
   useEffect(() => {
-    applyFilters();
-  }, [filterDate, declarationInput, filterDocType, filterStatus]);
+    const fetchDocuments = async () => {
+      try {
+        const response = await apiServices.getDocuments();
+        const documents = response.map(doc => ({
+          declarationNumber: doc.declaration_number,
+          file: doc.current_version?.file_path,
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',
+          updatedDate: doc.updated_at,
+          documentType: doc.document_type?.name || '',
+          status: doc.status || '',
+          fileUrl: doc.fileUrl || '',
+          viewed: false,
+          version: doc.current_version?.version_number,
+        }));
 
-  const handlePageChange = (direction) => {
-    const totalItems = filteredDocuments.length; // Use filtered documents for pagination
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  
-    let newPage = currentPage;
-  
-    if (direction === "next" && currentPage < totalPages - 1) {
-      newPage += 1;
-    } else if (direction === "prev" && currentPage > 0) {
-      newPage -= 1;
-    }
-  
-    setCurrentPage(newPage);
-  };
+        setData(documents);
+        setFilteredData(documents);
 
-
-  const handleAscSort = () => {
-    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
-      a.declarationNumber.localeCompare(b.declarationNumber)
-    );
-    setFilteredDocuments(sortedDocuments);
-    setIsAscSort(true); // Set to true to indicate ascending sort is active
-  };
-
-  const handleDescSort = () => {
-    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
-      b.declarationNumber.localeCompare(a.declarationNumber)
-    );
-    setFilteredDocuments(sortedDocuments);
-    setIsAscSort(false); // Set to false to indicate descending sort is active
-  };
-
-  
-  const handleInputChange = (e) => {
-    let inputValue = e.target.value;
-  
-    // Allow only numeric input and restrict length to 13 digits
-    if (!/^\d*$/.test(inputValue)) return; // Prevent non-numeric input
-    if (inputValue.length > 13) inputValue = inputValue.slice(0, 13);
-  
-    setDeclarationInput(inputValue);
-  
-    // Filter documents only if input length is exactly 13
-    if (inputValue.length === 13) {
-      const matchingSuggestions = documents
-        .filter((doc) => doc.declarationNumber.startsWith(inputValue))
-        .map((doc) => doc.declarationNumber);
-  
-      setSuggestions(matchingSuggestions);
-    } else {
-      setSuggestions([]);
-    }
-  };
-  
-
-  const handleCalendarToggle = () => {
-    setIsCalendarOpen((prev) => {
-      if (!prev) setDocTypeDropdownVisible(false); // Close dropdown when calendar opens
-      return !prev;
-    });
-  };
-
-  const handleDropdownToggle = (type) => {
-    if (type === "docType") {
-      setDocTypeDropdownVisible((prev) => !prev);
-      setIsCalendarOpen(false);
-      setIsStatusDropdownVisible(false);
-    } else if (type === "status") {
-      setIsStatusDropdownVisible((prev) => !prev);
-      setDocTypeDropdownVisible(false);
-      setIsCalendarOpen(false);
-    }
-  };
-  
-
-  const handleClickOutside = (event) => {
-    if (
-      containerRef.current &&
-      !containerRef.current.contains(event.target) &&
-      calendarRef.current &&
-      !calendarRef.current.contains(event.target) &&
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target)
-    ) {
-      setIsCalendarOpen(true);
-      setDocTypeDropdownVisible(true);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+        if (documents.length === 0) {
+          setActionMessage('No files are available for approval.');
+        }
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+        setActionMessage('Error fetching documents. Please try again later.');
+      }
     };
+
+    fetchDocuments();
   }, []);
 
-  const resetFilters = () => {
-    setFilterDate(null);
-    setDeclarationInput("");
-    setFilterDocType("All");
-    setFilterStatus("All");
-    setFilteredDocuments(documents);
+  
+  const filteredData1 = filteredData.filter((item) => {
+    if (filter === '') {
+      return item.declarationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.updatedDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.documentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.status.toLowerCase().includes(searchTerm.toLowerCase());
+    } else {
+      return item.status === filter && (
+        item.declarationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.updatedDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.documentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.status.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+  });
+
+  useEffect(() => {
+    // Filter documents based on the selected filter date
+    const filteredDocuments = data.filter((item) => {
+      if (filterDate) {
+        const itemDate = new Date(item.updatedDate);
+        const selectedDate = new Date(filterDate);
+        // Only show items that match the selected date
+        return itemDate.toLocaleDateString() === selectedDate.toLocaleDateString();
+      }
+      return true; // If no filter date, show all items
+    });
+
+    setFilteredData(filteredDocuments);
+  }, [filterDate, data]);
+
+  const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
   };
 
-  const docTypes = [
-    "All",
-    "Declaration",
-    "Invoice",
-    "Packing List",
-    "Delivery Order",
-    "AWS/BOL",
-    "Country Of Origin",
-  ];
+  const handleFilter = (e) => {
+    setFilter(e.target.value);
+  };
 
-  const status = [
-    "All",
-    "Pending",
-    "Approved",
-    "Rejected",
-  ];
+  const handleCalendarToggle = () => {
+    setIsCalendarOpen(prev => !prev);
+  };
+
+  const handleRowsPerPage = (e) => {
+    setRowsPerPage(parseInt(e.target.value));
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
-    <div className="document-list-container">
-      <h2 className="document-list-title">Document List</h2>
-
-      {/* Declaration Number Section */}
-      <div
-        className="document-list-declaration-section"
-        style={{ textAlign: "right", marginBottom: "10px" }}
-      >
-        <label className="document-list-declaration-label">
-          <b>Declaration Number:</b>
-        </label>
-        <input
-          type="text"
-          className="document-list-declaration-input"
-          placeholder="Enter 13-digit DecNum"
-          value={declarationInput}
-          onChange={handleInputChange}
-        />
+    <div className="documenttable_container">
+      <h1 className="documentapproval_header">Document List</h1>
+      {actionMessage && <div className="documenttable_action_message">{actionMessage}</div>}
+      <div className="documenttable_controls flex justify-between mb-4">
+        <div className="documenttable_search flex items-center">
+          <Search className="documenttable_search_icon w-5 h-5 mr-2" />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search"
+            className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
+          />
+        </div>
+        <div className="documenttable_filter flex items-center">
+          <label className="documenttable_filter_label mr-2">Filter by Status:</label>
+          <select value={filter} onChange={handleFilter} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
+            <option value="">All</option>
+            <option value="PENDING">Pending</option>
+            <option value="REJECTED">Reject</option>
+            <option value="APPROVED">Approve</option>
+          </select>
+        </div>
+        <div className="documenttable_rows flex items-center">
+          <label className="documenttable_rows_label mr-2">Rows per Page:</label>
+          <select value={rowsPerPage} onChange={handleRowsPerPage} className="documenttable_rows_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
       </div>
-
-      {/* Reset Filters Button */}
-      <div style={{ marginBottom: "5px", textAlign: "right" }}>
-        <button
-          className="document-list-reset-button"
-          onClick={resetFilters}
-          style={{
-            padding: "5px 10px",
-            borderRadius: "5px",
-            border: "none",
-            backgroundColor: "#5fc3d7",
-            cursor: "pointer",
-            marginLeft: "690px",
-          }}
-        >
-          Reset Filters
-        </button>
-      </div>
-
-      {/* Table Section */}
-      <table className="document-list-table">
-        <thead>
+      <table className="documenttable_table w-full text-sm text-left text-gray-500">
+        <thead className="documenttable_thead text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th>Declaration Number
-              <button className="document-list_desc-sort" onClick={handleDescSort}>
-              <img src={DescSort} alt="DescSort" className="doc-list_desc-sortimg" />
-              </button>
-              <button className="document-list_asc-sort" onClick={handleAscSort}>
-              <img src={DescSort} alt="AscSort" className="doc-list_asc-sortimg" />
-              </button>
-            </th>
-            <th>File Name</th>
-            <th>
-              Updated Date
+            <th className="documenttable_th px-6 py-3">Declaration Number</th>
+            <th className="documenttable_th px-6 py-3">File Name</th>
+            <th className="documenttable_th px-6 py-3">Updated Date
               <button
                 className="document-list-calendarbtn"
                 onClick={handleCalendarToggle}
@@ -267,88 +164,54 @@ const DocumentList = () => {
                 </div>
               )}
             </th>
-            <th>
-  Doc Type
-  <img
-    src={DownArrow}
-    alt="Dropdown"
-    className="document-list-dropdown-icon"
-    onClick={() => handleDropdownToggle("docType")}
-  />
-  {isDocTypeDropdownVisible && (
-    <div ref={docTypeDropdownRef} className="document-dropdown-list">
-      {docTypes.map((doctype) => (
-        <div
-          key={doctype}
-          className="document-list-dropdown-item"
-          onClick={() => {
-            setFilterDocType(doctype);
-            setDocTypeDropdownVisible(false);
-          }}
-        >
-          {doctype}
-        </div>
-      ))}
-    </div>
-  )}
-</th>
-            <th>
-              Status
-              <img
-                src={DownArrow}
-                alt="Dropdown"
-                className="status-list-dropdown-icon"
-                onClick={() => handleDropdownToggle("status")}
-              />
-              {isStatusDropdownVisible && (
-                <div ref={statusDropdownRef} className="status-dropdown-list">
-                  {status.map((status) => (
-                    <div
-                      key={status}
-                      className="status-list-dropdown-item"
-                      onClick={() => {
-                        setFilterStatus(status);
-                        setIsStatusDropdownVisible(false);
-                      }}
-                    >
-                      {status}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </th>
+            <th className="documenttable_th px-6 py-3">Doc Type</th>
+            <th className="documenttable_th px-6 py-3">Status</th>
           </tr>
         </thead>
         <tbody>
-          {filteredDocuments
-          .slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE)
-          .map((row, index) => (
-            <tr key={index}>
-              <td>{row.declarationNumber}</td>
-              <td>
-                <a
-                  href={row.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+          {paginatedData.map((item, index) => (
+            <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
+              <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
+              <td className="documenttable_td px-6 py-4">{item.fileName}</td>
+              <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+              <td className="documenttable_td px-6 py-4">{item.documentType}</td>
+              <td className="documenttable_td px-6 py-4">
+                <span
+                  className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
+                    ${item.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+                    item.status === 'Reject' ? 'bg-red-100 text-red-800' : 
+                    'bg-green-100 text-green-800'}`}
                 >
-                  {row.fileName}
-                </a>
+                  {item.status}
+                </span>
               </td>
-              <td>{row.updatedDate}</td>
-              <td>{row.docType}</td>
-              <td><span className={`dl-documenttable_status text-xs font-medium dl-py-1 dl-px-2 rounded 
-                    ${row.status === 'Pending' ? 'dl-bg-yellow-100 dl-text-yellow-800' : 
-                      row.status === 'Rejected' ? 'dl-bg-red-100 dl-text-red-800' : 
-                      'dl-bg-green-100 dl-text-green-800'}`}>{row.status} </span></td>
-        </tr>
-        ))}
+            </tr>
+          ))}
         </tbody>
       </table>
-      <button className="document-list_prev-button" onClick={() => handlePageChange("prev")} disabled={currentPage === 0}>Previous</button>
-      <button className="document-list_next-button" onClick={() => handlePageChange("next")} 
-            disabled={(currentPage + 1) * ITEMS_PER_PAGE >= filteredDocuments.length}>Next</button>
+      <div className="documenttable_pagination flex justify-between mt-4">
+        <div className="documenttable_pageinfo flex items-center">
+          <p className="documenttable_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
+        </div>
+        <div className="documenttable_paging flex items-center">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="documenttable_paging_button py-2 px-4 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 mr-2"
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === Math.ceil(filteredData1.length / rowsPerPage)}
+            className="documenttable_paging_button py-2 px-4 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default DocumentList;
+export default DocumentTable;

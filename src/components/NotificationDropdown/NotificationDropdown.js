@@ -18,7 +18,7 @@ const NotificationPage = () => {
                             <div className="notification-time">{notification.time}</div>
                         </li>
                     ))}
-                </ul>   
+                </ul>
             ) : (
                 <p className="no-notifications">No notifications available</p>
             )}

@@ -1,30 +1,20 @@
 import React, { useState } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
 import './UploadDocument.css';
+import { color } from 'chart.js/helpers';
 
 const UploadDocument = () => {
-  const [declarationNumber, setDeclarationNumber] = useState('');
   const [files, setFiles] = useState({
-    declaration: [],
-    invoice: [],
-    packingList: [],
-    awsBOL: [],
-    countryOfOrigin: [],
-    deliveryOrder: [],
-    others: [],
+    declaration: null,
+    invoice: null,
+    packingList: null,
+    awsBOL: null,
+    countryOfOrigin: null,
+    deliveryOrder: null,
+    others: null,
   });
 
-  const [uploaded, setUploaded] = useState({
-    declaration: false,
-    invoice: false,
-    packingList: false,
-    awsBOL: false,
-    countryOfOrigin: false,
-    deliveryOrder: false,
-    others: false,
-  });
-
-  const [disabled, setDisabled] = useState({
+  const [uploadedFilesStatus, setUploadedFilesStatus] = useState({
     declaration: false,
     invoice: false,
     packingList: false,
@@ -35,143 +25,95 @@ const UploadDocument = () => {
   });
 
   const handleFileChange = (e, type) => {
-    const selectedFiles = Array.from(e.target.files); // Convert FileList to Array
-    if (selectedFiles.length > 0) {
-      setFiles((prevFiles) => {
-        const updatedFiles = {
-          ...prevFiles,
-          [type]: [...prevFiles[type], ...selectedFiles],
-        };
+    const selectedFile = e.target.files[0];
+    setFiles((prevFiles) => ({
+      ...prevFiles,
+      [type]: selectedFile,
+    }));
 
-        setUploaded((prevUploaded) => ({
-          ...prevUploaded,
-          [type]: updatedFiles[type].length > 0,
-        }));
-        setDisabled((prevDisabled) => ({
-          ...prevDisabled,
-          [type]: true,
-        }));
-
-        return updatedFiles;
-      });
-
-      // Simulate an upload process (execute function after upload)
-      setTimeout(() => {
-        console.log(`File(s) uploaded for ${type}:`, selectedFiles.map((file) => file.name));
-      }, 1000); // Simulated delay
-
-      e.target.value = ''; // Clear input for re-uploading
-    }
+    // Mark this file type as uploaded
+    setUploadedFilesStatus((prevState) => ({
+      ...prevState,
+      [type]: true,
+    }));
   };
 
   const handleCancelUpload = (type) => {
     setFiles((prevFiles) => ({
       ...prevFiles,
-      [type]: [],
+      [type]: null,
     }));
 
-    setUploaded((prevUploaded) => ({
-      ...prevUploaded,
-      [type]: false,
-    }));
-
-    setDisabled((prevDisabled) => ({
-      ...prevDisabled,
+    setUploadedFilesStatus((prevState) => ({
+      ...prevState,
       [type]: false,
     }));
   };
 
   const handleUpload = () => {
-    console.log('Uploaded Files:');
-    for (const [type, fileList] of Object.entries(files)) {
-      if (fileList.length > 0) {
-        console.log(`${type.charAt(0).toUpperCase() + type.slice(1)}:`);
-        fileList.forEach((file, index) => console.log(`  ${index + 1}. ${file.name}`));
+    console.log("Uploaded Files:");
+
+    for (const [type, file] of Object.entries(files)) {
+      if (file) {
+        console.log(`${type.charAt(0).toUpperCase() + type.slice(1)}:`, file.name);
       }
     }
   };
-
-  const handleDeclarationChange = (e) => {
-    const value = e.target.value;
-
-    // Allow only digits and restrict length to 13
-    if (/^\d*$/.test(value) && value.length <= 13) {
-      setDeclarationNumber(value);
-    }
-  };
-
-  const handleSearch = () => {
-    if (declarationNumber.length < 13) {
-      alert('Declaration number must contain exactly 13 digits.');
-    } else {
-      console.log('Declaration Number:', declarationNumber);
-    }
-  };
-
-  const documentTypes = [
-    { key: 'declaration', label: 'Declaration' },
-    { key: 'invoice', label: 'Invoice' },
-    { key: 'packingList', label: 'Packing List' },
-    { key: 'awsBOL', label: 'AWS/BOL' },
-    { key: 'countryOfOrigin', label: 'Country of Origin' },
-    { key: 'deliveryOrder', label: 'Delivery Order' },
-    { key: 'others', label: 'Others' },
-  ];
 
   return (
     <div className="upload-document-container">
       <h2 className="upload-h2">Upload Document</h2>
 
+      {/* Declaration Number Section */}
       <div className="upload-declaration-number-container">
-        <p className="upload-declaration-number">
-          <b>Declaration Number </b>
-        </p>
-        <input
-          type="text"
-          value={declarationNumber}
-          onChange={handleDeclarationChange}
-          placeholder="Enter 13-digit DecNum"
-          className="upload-declaration-number-input"
+        <p className="upload-declaration-number"><b>Declaration Number:</b></p>
+        <input 
+          type="text" 
+          placeholder='Enter 13-digit DecNum'
+          className="upload-declaration-number-input" 
         />
-        <button onClick={handleSearch} className="search-button" style={{ background: 'none', border: 'none' }}>
-          <span className="upload-arrow-icon">➜</span>
-        </button>
+        <span className="upload-arrow-icon">→</span>
       </div>
 
       <div className="upload-document-type-container">
+        <p className='upload-p'><b>Document Type</b></p>
         <div className="upload-checkbox-section">
           <table>
             <tbody>
-              {documentTypes.map(({ key, label }) => (
-                <tr className="upload-checkbox-item" key={key}>
+              {[
+                'declaration',
+                'invoice',
+                'packingList',
+                'AWS/BOL',
+                'countryOfOrigin',
+                'deliveryOrder',
+                'others',
+              ].map((docType) => (
+                <tr className="upload-checkbox-item" key={docType}>
                   <td>
-                    <label className={uploaded[key] ? 'grayed-out' : ''}>{label}</label>
+                    <label style={{color:"black"}}>
+                      {docType.charAt(0).toUpperCase() + docType.slice(1).replace(/([A-Z])/g, ' $1')}
+                    </label>
                   </td>
                   <td className="file-upload">
-                    {!uploaded[key] && (
-                      <label htmlFor={`${key}-file`} style={{ opacity: disabled[key] ? 0.5 : 1 }}>
-                        <AiOutlineUpload size={20} />
-                      </label>
-                    )}
+                    <label htmlFor={`${docType}-file`}>
+                      <AiOutlineUpload size={20} />
+                    </label>
                     <input
                       type="file"
-                      id={`${key}-file`}
-                      onChange={(e) => handleFileChange(e, key)}
-                      disabled={disabled[key]}
-                      style={{ display: 'none' }}
+                      id={`${docType}-file`}
+                      onChange={(e) => handleFileChange(e, docType)}
+                      disabled={uploadedFilesStatus[docType]} 
                     />
                   </td>
                   <td>
-                    {uploaded[key] && (
-                      <div className="uploaded-file-info">
-                        <span>{files[key][0]?.name}</span>
-                        <button
-                          className="cancel-upload-button"
-                          onClick={() => handleCancelUpload(key)}
-                        >
-                          ⛔
-                        </button>
-                      </div>
+                    {uploadedFilesStatus[docType] && (
+                      <button
+                        className="cancel-upload-button"
+                        onClick={() => handleCancelUpload(docType)}
+                      >
+                        ⛔
+                      </button>
                     )}
                   </td>
                 </tr>

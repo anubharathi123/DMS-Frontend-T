@@ -1,347 +1,327 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "./verifydoc.css";
-import DropDownArrow from "../../assets/images/dropdown-arrow.png";
-import DescSort from "../../assets/images/desc-sort.png";
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import { AlignCenter, Search } from 'lucide-react';
+import './verifydoc.css';
+import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
 
-const VerifyDoc = () => {
-  const ITEMS_PER_PAGE = 6;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [documents] = useState([
-    { declarationNumber: "1234567890123", FileName: "IN-345", updatedDate: "2024-12-15", documentType: "Invoice", downloadUrl: "./hello.pdf" },
-    { declarationNumber: "9876543210123", FileName: "DE-446", updatedDate: "2024-12-10", documentType: "Declaration", downloadUrl: "/downloads/sample2.xlsx" },
-    { declarationNumber: "1112233445566", FileName: "PL-12", updatedDate: "2024-12-08", documentType: "Packing List", downloadUrl: "/downloads/sample3.xlsx" },
-    { declarationNumber: "2233445566778", FileName: "DO-22", updatedDate: "2024-09-10", documentType: "Delivery Order", downloadUrl: "/downloads/sample4.pdf" },
-    { declarationNumber: "5678901234567", FileName: "IN-90", updatedDate: "2025-01-02", documentType: "Invoice", downloadUrl: "/downloads/sample5.pdf" },
-    { declarationNumber: "3456789033445", FileName: "AWS-23", updatedDate: "2024-11-12", documentType: "AWS/BOL", downloadUrl: "/downloads/sample6.pdf" },
-    { declarationNumber: "8766902314267", FileName: "PL-35", updatedDate: "2024-10-11", documentType: "Packing List", downloadUrl: "/downloads/sample7.docx" },
-    { declarationNumber: "9187654321249", FileName: "DE-96", updatedDate: "2024-06-02", documentType: "Declaration", downloadUrl: "/downloads/sample8.xlsx" },
-    { declarationNumber: "9182736456748", FileName: "IN-55", updatedDate: "2024-02-09", documentType: "Invoice", downloadUrl: "/downloads/sample9.xlsx" },
-    { declarationNumber: "8766564491237", FileName: "AWS-40", updatedDate: "2024-10-20", documentType: "AWS/BOL", downloadUrl: "/downloads/sample10.pdf" },
-    { declarationNumber: "6789012345678", FileName: "DO-90", updatedDate: "2024-08-23", documentType: "Delivery Order", downloadUrl: "/downloads/sample11.pdf" },
-    { declarationNumber: "8292351783291", FileName: "DE-23", updatedDate: "2024-07-14", documentType: "Declaration", downloadUrl: "/downloads/sample12.pdf" },
-  ]);
-
-  const [filteredDocuments, setFilteredDocuments] = useState(documents);
-  const [filterDocType, setFilterDocType] = useState("All");
-  const [isDocTypeDropdownOpen, setIsDocTypeDropdownOpen] = useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
+const DocumentApproval = () => {
+  const [data, setData] = useState([]);
+  const [filterDate, setFilterDate] = useState();
+  const [filterDoc, setFilterDoc] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [actionMessage, setActionMessage] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filter, setFilter] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [declarationInput, setDeclarationInput] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [filterDate, setFilterDate] = useState(null);
-  const [isAscSort, setIsAscSort] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState(null);
-
+  const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
+  const host = 'http://localhost:8000';
   const calendarRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const containerRef = useRef(null);
-
-  const applyFilters = () => {
-    let filtered = [...documents];
-    if (filterDocType !== "All") {
-      filtered = filtered.filter((doc) => doc.documentType === filterDocType);
-    }
-    if (filterDate) {
-      const formattedDate = filterDate.toISOString().split("T")[0];
-      filtered = filtered.filter((doc) => doc.updatedDate === formattedDate);
-    }
-    if (declarationInput) {
-      filtered = filtered.filter((doc) =>
-        doc.declarationNumber.includes(declarationInput)
-      );
-    }
-    setCurrentPage(0);
-    setFilteredDocuments(filtered);
-  };
 
   useEffect(() => {
-    applyFilters();
-  }, [filterDate, declarationInput, filterDocType]);
+    const fetchDocuments = async () => {
+      try {
+        const response = await apiServices.getDocuments();
+        console.log('Documents:', response);
+        const documents = response.map(doc => ({
+          declarationNumber: doc.declaration_number,
+          file : doc.current_version?.file_path,
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',  // Extract file name
+          updatedDate: doc.updated_at,
+          documentType: doc.document_type?.name || '',
+          status: doc.status || '',
+          fileUrl: doc.fileUrl || '',
+          viewed: false,
+          version:doc.current_version?.version_number,
+        }));
 
-  const handlePageChange = (direction) => {
-    const totalItems = filteredDocuments.length;
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+        setData(documents);
+        setFilteredData(documents);
 
-    let newPage = currentPage;
-
-    if (direction === "next" && currentPage < totalPages - 1) {
-      newPage += 1;
-    } else if (direction === "prev" && currentPage > 0) {
-      newPage -= 1;
-    }
-
-    setCurrentPage(newPage);
-  };
-
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-    if (/^\d{0,13}$/.test(inputValue)) {
-      setDeclarationInput(inputValue);
-
-      if (inputValue.length === 13) {
-        const matchingSuggestions = documents
-          .filter((doc) => doc.declarationNumber.startsWith(inputValue))
-          .map((doc) => doc.declarationNumber);
-
-        setSuggestions(matchingSuggestions);
-      } else {
-        setSuggestions([]);
-      }
-
-      if (inputValue.length === 13) {
-        applyFilters();
-      } else {
-        setFilteredDocuments(documents);
-      }
-    }
-  };
-
-  const handleAscSort = () => {
-    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
-      a.declarationNumber.localeCompare(b.declarationNumber)
-    );
-    setFilteredDocuments(sortedDocuments);
-    setIsAscSort(true); // Set to true to indicate ascending sort is active
-  };
-  const handleDescSort = () => {
-    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
-      b.declarationNumber.localeCompare(a.declarationNumber)
-    );
-    setFilteredDocuments(sortedDocuments);
-    setIsAscSort(false); // Set to false to indicate descending sort is active
-  };
-
-  const resetFilters = () => {
-    setFilterDate(null);
-    setDeclarationInput("");
-    setFilterDocType("All");
-    setFilteredDocuments(documents);
-  };
-
-  const selectSuggestion = (suggestion) => {
-    setDeclarationInput(suggestion);
-    setSuggestions([]);
-    applyFilters();
-  };
-
-  const handleDocTypeChange = (type) => {
-    setFilterDocType(type);
-    setIsDocTypeDropdownOpen(false);
-    applyFilters();
-  };
-
-  const toggleCalendar = () => {
-    setIsCalendarOpen((prev) => !prev);
-    setIsDocTypeDropdownOpen(false);
-  };
-
-  const toggleDocTypeDropdown = () => {
-    setIsDocTypeDropdownOpen((prev) => !prev);
-    setIsCalendarOpen(false);
-  };
-
-  const handleAction = (actionType) => {
-    if (selectedDocument) {
-      alert(`${actionType} action performed for: ${selectedDocument.FileName}`);
-      removeSelectedDocument(); // Remove the selected document from the table
-    }
-  };
-
-  const removeSelectedDocument = () => {
-    if (selectedDocument) {
-      const updatedDocuments = documents.filter(
-        (doc) => doc.declarationNumber !== selectedDocument.declarationNumber
-      );
-      const updatedFilteredDocuments = filteredDocuments.filter(
-        (doc) => doc.declarationNumber !== selectedDocument.declarationNumber
-      );
-  
-      setSelectedDocument(updatedDocuments); // Update the original documents
-      setFilteredDocuments(updatedFilteredDocuments); // Update the filtered documents
-      setSelectedDocument(null); // Reset selected document
-    }
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target)
-      ) {
-        setIsCalendarOpen(false);
-        setIsDocTypeDropdownOpen(false);
+        if (documents.length === 0) {
+          setActionMessage('No files are available for approval.');
+        }
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+        setActionMessage('Error fetching documents. Please try again later.');
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+
+    fetchDocuments();
   }, []);
 
+
+  const handleApproval = async (declarationNumber, newStatus) => {
+    setActionMessage('');
+    try {
+      if (newStatus === 'Approved') {
+        await apiServices.approveDocument(declarationNumber);
+      } else if (newStatus === 'Rejected') {
+        await apiServices.rejectDocument(declarationNumber);
+      }
+
+      const updatedData = data.map((item) =>
+        item.declarationNumber === declarationNumber
+          ? { ...item, status: newStatus }
+          : item
+      );
+      setData(updatedData);
+      setFilteredData(updatedData);
+      setActionMessage(`Document ${declarationNumber} has been ${newStatus}`);
+    } catch (error) {
+      console.error('Error during approval/rejection:', error);
+      setActionMessage('There was an error processing your request.');
+      setTimeout(() => {
+        setActionMessage('There was an error processing your request.');
+        setActionMessage('');
+        // setLoading(false);
+      }, 3000);
+ 
+      setActionMessage('There was an error processing your request.');
+    }
+  };
+
+  const handleCalendarToggle = () => {
+    setIsCalendarOpen((prev) => {
+      if (!prev) setDocTypeDropdownVisible(false); // Close dropdown when calendar opens
+      return !prev;
+    });
+  };
+
+  const handleFileOpen = (file) => {
+    if (file.file.toLowerCase().endsWith('.pdf')) {
+      const updatedData = data.map((item) =>
+        item.file === file.file
+          ? { ...item, viewed: true }
+          : item
+      );
+      setData(updatedData);
+      setSelectedFile(file);
+    } else {
+      const a = document.createElement('a');
+      console.log(a)
+      a.href = host+file.file;
+      console.log(file.file);
+      a.download = file.file;
+      console.log(a)
+      const updatedData = data.map((item) =>
+        item.file === file.file
+          ? { ...item, viewed: true }
+          : item
+      );
+      setData(updatedData);
+      a.click();
+    }
+  };
+
+  
+  const applyFilters = () => {
+    let filtered = [...data];
+    console.log('Filter Date:', filterDate);
+    if (filterDate) {
+        // Format the filterDate to a local date string in 'YYYY-MM-DD' format
+        const selectedDate = filterDate.toLocaleDateString('en-CA'); // 'en-CA' gives 'YYYY-MM-DD' format
+
+        filtered = filtered.filter((doc) => {
+            // Parse the updatedDate to a local date string
+            const docDate = new Date(doc.updatedDate).toLocaleDateString('en-CA');
+            return docDate === selectedDate;
+        });
+    }
+    if (filterDoc) {
+      filtered = filtered.filter((doc) => doc.documentType === filterDoc);
+    }
+
+    setCurrentPage(1);
+    setFilteredData(filtered);
+};
+
+
+  useEffect(() => {
+      applyFilters();
+    }, [filterDate, filterDoc]);
+
+    const handleDocumentTypeChange = (e) => {
+      setFilterDoc(e.target.value);
+    };
+  
+    const uniqueDocumentTypes = [...new Set(data.map(doc => doc.documentType))];
+  
+
+  useEffect(() => {
+    const results = data.filter(item =>
+      (
+        (item.declarationNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         item.fileName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         item.updatedDate?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         item.documentType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         item.status?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (filter === '' || item.status === filter)
+      )
+    );
+    setFilteredData(results);
+  }, [data, searchTerm, filter]);
+  
+
+  const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
-    <div className="verify-container">
-      <h2 className="verify-h2">Verify Document</h2>
+    <div className="documentapproval_container">
+      <h1 className="documentapproval_header">Document Approval</h1>
 
-      <div className="verify-declaration-number">
-        <label className="verify-declaration_no">
-          <b>Declaration Number: </b>
-        </label>
-        <input id="declarationNumber" type="text" className="verify-declaration-no" value={declarationInput}
-          onChange={handleInputChange}
-          placeholder="Enter 13-digit DecNum"
-        />
+      <div className="documenttable_controls flex justify-between mb-4">
+        
+        <div className="documenttable_search flex items-center">
+          <Search className="documenttable_search_icon w-5 h-5 mr-2" />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search"
+            className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
+          />
+        </div>
+        {/* <div className="documenttable_filter flex items-center">
+          <label className="documenttable_filter_label mr-2">Filter by Status:</label>
+          <select value={filter} onChange={(e) => setFilter(e.target.value)} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
+            <option value="">All</option>
+            <option value="PENDING">Pending</option>
+            <option value="REJECTED">Rejected</option>
+            <option value="APPROVED">Approved</option>
+          </select>
+        </div> */}
 
-        <button className="verify-approvebtn1" onClick={() => handleAction("Approve")} style={{ marginRight: "10px" }}>
-          Approve
-        </button>
-        <button className="verify-rejectbtn1" onClick={() => handleAction("Reject")}>
-          Reject
-        </button>
-        <button className="verifydoc-reset-btn" onClick={resetFilters}>
-          Reset Filters
-        </button>
-        {suggestions.length > 0 && (
-          <ul className="verify-suggestion-box">
-            {suggestions.map((suggestion, index) => (
-              <li key={index} onClick={() => selectSuggestion(suggestion)} className="verify-suggestion-item">
-                {suggestion}
-              </li>
+<div className="documenttable_filter flex items-center">
+          <label className="documenttable_filter_label mr-2">Filter by Document Type:</label>
+          <select value={filterDoc} onChange={handleDocumentTypeChange} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
+            <option value="">All</option>
+            {uniqueDocumentTypes.map((type, index) => (
+              <option key={index} value={type}>{type}</option>
             ))}
-          </ul>
-        )}
+          </select>
+        </div>
+        <div className="documenttable_rows flex items-center">
+          <label className="documenttable_rows_label mr-2">Rows per Page:</label>
+          <select value={rowsPerPage} onChange={(e) => setRowsPerPage(parseInt(e.target.value, 10))} className="documenttable_rows_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
       </div>
-
-      <div className="verify-form-section">
-        <table className="verify-document-table">
-          <thead>
-            <tr>
-              <th>
-                Declaration Number
-                <button className="verifydoc_desc-sort" onClick={handleDescSort}>
-              <img src={DescSort} alt="DescSort" className="verifydoc_desc-sortimg" />
-              </button>
-              <button className="verifydoc_asc-sort" onClick={handleAscSort}>
-              <img src={DescSort} alt="AscSort" className="verifydoc_asc-sortimg" />
-              </button>
-              </th>
-              <th>File Name</th>
-              <th>
-                Updated Date
-                <button className="verify-calendarbtn" onClick={toggleCalendar}>
-                  📅
-                </button>
-                {isCalendarOpen && (
-                  <div ref={calendarRef} style={{ zIndex: 1000 }}>
-                    <DatePicker selected={filterDate} onChange={(date) => { setFilterDate(date); setIsCalendarOpen(false);
-                        applyFilters();
-                      }}
-                      inline
-                    />
-                  </div>
-                )}
-              </th>
-              <th>
-                Document Type
+      {actionMessage && (
+        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+          {actionMessage}
+        </div>
+      )}
+      {/* {filteredData.length === 0 ? (
+        <div className="documentapproval_no_data text-center text-gray-500 py-4">
+          No files are available for approval.
+        </div>
+      ) : ( */}
+        <>
+          <table className="documentapproval_table w-full text-sm text-left text-gray-500">
+            <thead className="documentapproval_thead text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th className="documentapproval_th px-6 py-3">Declaration Number</th>
+                <th className="documentapproval_th px-6 py-3">File Name</th>
+                {/* <th className="documentapproval_th px-6 py-3">Version</th> */}
+                <th className="documentapproval_th px-6 py-3">Updated Date
                 <button
-                  className="verify-show-doc-type-btn"
-                  onClick={toggleDocTypeDropdown}
-                >
-                  <img
-                    src={DropDownArrow}
-                    alt="dropdown-arrow"
-                    className="verify-dropdown-arrow"
-                  />
-                </button>
-                {isDocTypeDropdownOpen && (
-                  <div ref={dropdownRef} className="verifydoc-dropdown-list">
-                    <ul className="verify-doc-list">
-                      <li
-                        onClick={() => handleDocTypeChange("All")}
-                        className="verify-allbtn"
-                      >
-                        All
-                      </li>
-                      <li
-                        onClick={() => handleDocTypeChange("Declaration")}
-                        className="verify-declaration"
-                      >
-                        Declaration
-                      </li>
-                      <li
-                        onClick={() => handleDocTypeChange("Invoice")}
-                        className="verify-invoice"
-                      >
-                        Invoice
-                      </li>
-                      <li
-                        onClick={() => handleDocTypeChange("Packing List")}
-                        className="verify-packing-list"
-                      >
-                        Packing List
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredDocuments
-              .slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE)
-              .map((doc, index) => (
-                <tr key={index}>
-                  <td>{doc.declarationNumber}</td>
-                  <td>
-                    <a
-                      href={doc.downloadUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="verify-file-link"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedDocument(doc);
-                      }}
+                className="document-list-calendarbtn"
+                onClick={handleCalendarToggle}
+              >
+                📅
+              </button>
+              {isCalendarOpen && (
+                              <div
+                                style={{ position: "absolute", zIndex: 1000 }}
+                                ref={calendarRef}
+                              >
+                                <DatePicker
+                                  selected={filterDate}
+                                  onChange={(date) => {
+                                    setFilterDate(date);
+                                    setIsCalendarOpen(false);
+                                  }}
+                                  inline
+                                />
+                              </div>
+                            )}
+                </th>
+                <th className="documentapproval_th px-6 py-3">Doc Type</th>
+                {/* <th className="documentapproval_th px-6 py-3">Status</th> */}
+                <th className="documentapproval_th px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((item, index) => (
+                <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
+                  <td className="documentapproval_td px-6 py-4" style={{textAlignLast:"left", position: "relative", left: '20px'}}>{item.declarationNumber}</td>
+                  <td className="documentapproval_td documentapproval_td_name px-6 py-4">
+                    <button
+                      className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
+                      onClick={() => handleFileOpen(item)}
+                      aria-label={`View ${item.fileName}`}
                     >
-                      {doc.FileName || "View Document"}
-                    </a>
+                      {item.fileName}
+                    </button>
+                    {item.viewed && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
                   </td>
-                  <td>{doc.updatedDate}</td>
-                  <td>{doc.documentType}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedRows.includes(index)}
-                      onChange={() =>
-                        setSelectedRows((prev) =>
-                          prev.includes(index)
-                            ? prev.filter((i) => i !== index)
-                            : [...prev, index]
-                        )
-                      }
-                    />
+                  {/* <td className="documentapproval_td px-6 py-4" style={{textAlignLast: 'center'}}>{item.version}.0</td> */}
+                  <td className="documentapproval_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                  <td className="documentapproval_td px-6 py-4">{item.documentType}</td>
+                  {/* <td className="documentapproval_td px-6 py-4">
+                    <span className={`documentapproval_status_badge px-2 py-1 rounded text-sm ${item.status.toLowerCase() === 'approved' ? 'bg-green-100 text-green-800' : item.status.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                      {item.status}
+                    </span>
+                  </td> */}
+                  <td className="documentapproval_td documentapproval_approvalbtn px-6 py-4">
+                    <button className="documentapproval_action_button bg-green-500 text-white px-4 py-2 rounded mr-2" onClick={() => handleApproval(item.declarationNumber, 'Approved')}>Approve</button>
+                    <button className="documentapproval_action_button bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleApproval(item.declarationNumber, 'Rejected')}>Reject</button>
                   </td>
                 </tr>
               ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+          <div className="documenttable_pagination flex justify-between mt-4">
+        <div className="documenttable_pageinfo flex items-center">
+          <p className="documenttable_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData.length / rowsPerPage)}</p>
+        </div>
+        <div className="documenttable_paging flex items-center">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="documenttable_paging_button py-2 px-4 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 mr-2"
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === Math.ceil(filteredData.length / rowsPerPage)}
+            className="documenttable_paging_button py-2 px-4 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600"
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <button
-        className="verifydoc_prev-button"
-        onClick={() => handlePageChange("prev")}
-        disabled={currentPage === 0}
-      >
-        Previous
-      </button>
-      <button className="verifydoc_next-button" onClick={() => handlePageChange("next")} 
-            disabled={(currentPage + 1) * ITEMS_PER_PAGE >= filteredDocuments.length}>
-          Next
-        </button>
+        </>
+      {/* ) */}
+      {/* } */}
     </div>
   );
 };
 
-export default VerifyDoc;
-       
+export default DocumentApproval;

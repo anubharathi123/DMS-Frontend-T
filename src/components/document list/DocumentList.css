@@ -1,306 +1,202 @@
-/* DocumentList.css */
-
-/* Basic container styles */
-.document-list-container {
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: -webkit-fill-available;
-  /* width: 90%; */
-   height: 495px; 
-  /* position:absolute; */
+/* Container */
+.documenttable_container{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 75%;
   margin-left: 250px;
-  margin-top: 65px;
-  justify-items: center;
-  width: -webkit-fill-available;
+  position: absolute;
+  top: 130px;
+}
+
+/* Search and Filters */
+.documenttable_controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.documenttable_search
+{
+  flex-direction: row-reverse;
+}
+.documenttable_search,
+.documenttable_filter,
+.documenttable_rows {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   
 }
 
-/* Title Styles */
-.document-list-title {
-  color: #333;
+.documenttable_search_input{
+  width: 260px;
+}
+.documenttable_filter_select,
+.documenttable_rows_select {
+  width: 200px;
+}
+
+
+/* General Table Styling */
+.documenttable_td {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.documenttable_status {
+  display: inline-block;
   text-align: center;
-  margin-bottom: 15px;
 }
 
-/* Declaration Section Styles */
-.document-list-declaration-section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  justify-content: center;
+/* Status-Specific Styles */
+.bg-yellow-100 {
+  background-color: #fef3c7;
+}
+.text-yellow-800 {
+  color: #854d0e;
 }
 
-.document-list-declaration-label {
-  font-size: 1.1em;
-  margin-right: 6px;
-  margin-left: -100px;
-  color: #101010;
-  margin-bottom: -2px;
+.bg-red-100 {
+  background-color: #fee2e2;
+}
+.text-red-800 {
+  color: #991b1b;
 }
 
-.document-list-declaration-input {
-  padding: 5px;
-  /* font-size: 1em; */
-  border-radius: 5px;
-  border: 1px solid #444;
-  /* margin-right: 32%; */
-   margin-bottom: -5px; 
-  width: 180px;
-  max-width: 100%;
+.bg-green-100 {
+  background-color: #d1fae5;
+}
+.text-green-800 {
+  color: #064e3b;
 }
 
-/* Table Styles */
-.document-list-table {
+
+/* Table */
+.documenttable_table {
   width: 100%;
   border-collapse: collapse;
-  border-width: 1px;
-  margin-top: 10px;
 }
 
-.document-list-table th {
-  background-color: #156082;
-  color: white;
+.documenttable_thead {
+  background-color: #f3f4f6;
+  color: #000b58;
+}
+
+.documenttable_th {
   padding: 16px;
-
+  text-align: left;
+  font-weight: bold;
 }
 
-.document-list-table td {
+.documenttable_row {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.documenttable_td {
   padding: 16px;
-  text-align: center;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  border-bottom: 1px solid #ddd;
+  text-align: left;
 }
 
-.document-list-table tr:nth-child(even) {
-  background-color: #e9f7e9;
-}
-
-.document-list_desc-sort {
-  background:none;
-  border:none;
-  cursor: pointer;
-  margin-left: 5px;
-
-}
-
-.doc-list_desc-sortimg{
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-  margin-top: 4px;
-  margin-left: -5px;
-  margin-bottom: -2px;
-}
-
-.doc-list_asc-sortimg{
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-  margin-top: 4px;
-  margin-left: -5px;
-  margin-bottom: -2px;
-  transform: rotate(180deg);
-}
-
-.document-list_asc-sort {
-  background: none;
-  border:none;
-  cursor: pointer;
-  margin-left: -5px;
-
-}
-
-
-.document-list-calendarbtn {
-  background: none;
-  border:none;
-  cursor: pointer;
-}
-
-/* Style for the dropdown icon */
-.document-list-dropdown-icon {
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-  margin-left: 10px;
-  margin-bottom: -2px;
-  filter: invert(1);
-}
-
-/* Dropdown container styles */
-.document-dropdown-list {
-  position: fixed;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 5px;
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Style for each item in the dropdown */
-.document-list-dropdown-item {
-  padding: 8px;
-  cursor: pointer;
-  color: #333;
-}
-
-.document-list-dropdown-item:hover {
-  background-color: #f0f0f0;
-}
-
-.status-list-dropdown-icon {
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-  margin-left: 10px;
-  margin-bottom: -2px;
-  filter: invert(1);
-}
-
-/* Dropdown container styles */
-.status-dropdown-list {
- position:fixed;
-  background-color: white;
-  border: 1px solid #ddd;
-  width: 150px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  margin-top: 10px;
-  right: 23px;
-}
-
-/* Style for each item in the dropdown */
-.status-list-dropdown-item {
-  padding: 8px;
-  cursor: pointer;
-  color: #333;
-}
-
-.status-list-dropdown-item:hover {
-  background-color: #f0f0f0;
-}
-
-/* Adjustments for dropdown position */
-/* .document-table th {
-  position: relative;
-} */
-
-/* .document-list-container {
-  position: initial;
-} */
-
-
-.declaration-section {
-  position: inherit;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 10px;
-  align-items: center;
-}
-
-.declaration-input {
-  width: 200px;
-  padding: 8px;
-}
-
-.filtered-declarations {
-  position: absolute;
-  top: 100%; 
-  /* left: 0; */
-  right: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  max-height: 150px;
-  overflow-y: auto;
-  width: 200px;
-  z-index: 10;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
-}
-
-.filtered-declaration-item {
-  padding: 8px;
-  cursor: pointer;
-}
-
-.filtered-declaration-item:hover {
-  background-color: #f0f0f0;
-}
-
-.filtered-declaration-item.selected {
-  background-color: #f0f0f0;
-  border-radius: 4px;
-}
-.dl-documenttable_status {
+.documenttable_status {
   display: inline-block;
   text-align: center;
   width: fit-content;
 }
-.dl-bg-yellow-100 {
-  background-color: #f7da66;
-}
-.dl-text-yellow-800 {
-  color: #73850e;
+
+/* Pagination */
+.documenttable_pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-.dl-bg-red-100 {
-  background-color: #fee2e2;
-}
-.dl-text-red-800 {
-  color: #991b1b;
+.documenttable_pageinfo_text {
+  font-size: 14px;
 }
 
-.dl-bg-green-100 {
-  background-color: #d1fae5;
-}
-.dl-text-green-800 {
-  color: #064e3b;
-}
-.dl-py-1 {
-  padding-top: .25rem !important;
-  padding-bottom: .25rem !important;
-}
-.dl-px-2 {
-  padding-right: .5rem !important;
-  padding-left: .5rem !important;
-}
-
-.document-list_next-button {
-  background-color: #43bade;
-  color: black;
-  padding: 5px 15px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 20px;
-
-}
-
-.document-list_next-button:hover {
-  background: #0f3c46;
+.documenttable_paging_button {
+  background-color: #000b58;
   color: white;
-}
-
-.document-list_prev-button {
-  background-color: #43bade;
-  color: black;
-  padding: 5px 15px;
-  margin-top: 10px;
-  border: none;
   border-radius: 5px;
+  padding: 8px 16px;
+  margin-right: 40px; 
   cursor: pointer;
-  margin-left: 850px;
-  
 }
 
-.document-list_prev-button:hover {
-  background: #0f3c46;
-  color: white;
+.documenttable_paging_button:disabled {
+  margin-right: 40px;
+  background-color: #e5e7eb;
+  color: #495057;
+  cursor: not-allowed;
+}
+
+.py-2{
+  border-radius:7px;
+}
+
+/* .documenttable_controls{
+  z-index: -1;
+} */
+
+/* svg{
+  margin-left: -35px;
+} */
+
+.py-4 {
+  padding-top: 1.5rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
+.py-3 {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+tbody, td, tfoot, th, thead, tr {
+border-color: inherit;
+border-style: solid;
+border-width: 0;
+}
+
+.mb-4 {
+margin-bottom: 1.5rem !important;
+}
+
+.py-2 {
+padding-top: .5rem !important;
+padding-bottom: .5rem !important;
+}
+
+.px-4 {
+padding-right: 1.5rem !important;
+padding-left: 1.5rem !important;
+}
+
+button, input, optgroup, select, textarea {
+margin: 0;
+font-family: inherit;
+font-size: inherit;
+line-height: inherit;
+}
+
+
+tbody, td, tfoot, th, thead, tr {
+border-color: inherit;
+border-style: solid;
+border-width: 0;
+}
+
+.rounded {
+border-radius:  0.375rem !important;
+}
+.py-1 {
+padding-top: .25rem !important;
+padding-bottom: .25rem !important;
+}
+.px-2 {
+padding-right: .5rem !important;
+padding-left: .5rem !important;
 }

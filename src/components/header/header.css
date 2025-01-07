@@ -4,9 +4,10 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  background-color: #000B58 !important; /* Updated to Light Blue */
   gap: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  position: relative; /* Ensure the dropdown is positioned correctly */
+  position: relative;
 }
 
 /* Search Bar */
@@ -14,24 +15,21 @@
   position: relative;
   display: flex;
   align-items: center;
-  /* background-color: #0b3041; */
+  /* background-color: #003161; */
   border-radius: 4px;
   padding: 5px;
   width: 250px;
-  margin-right: -1%;
-}     
-
-
+  margin-right: -3%;
+}
 
 .search-input {
   height: 30px;
   width: 80% !important;
   padding: 5px !important;
-  border: 1px solid #ddd !important;
+  border: 1px solid #006A67 !important; /* Updated to Teal */
   border-radius: 8px !important;
   font-size: 14px !important;
   color: #333;
-  margin-left: 27px;
 }
 
 .search_icon {
@@ -40,7 +38,7 @@
   position: absolute;
   right: 10px;
   cursor: pointer;
-  left: 82%;
+  left: 70%;
 }
 
 .search-suggestions {
@@ -53,11 +51,11 @@
   list-style: none;
   max-height: 150px;
   overflow-y: auto;
-  border: 1px solid #ddd;
+  border: 1px solid #006A67; /* Updated to Teal */
   border-radius: 4px;
-  background: #fff;
+  background: #FFF4B7; /* Updated to Light Teal */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1; /* Ensure suggestions are above other content */
+  z-index: 1;
 }
 
 .suggestion-item {
@@ -68,7 +66,7 @@
 }
 
 .suggestion-item:hover {
-  background-color: #f0f0f0;
+  background-color: #006A67; /* Updated to Teal */
 }
 
 .no-suggestions {
@@ -89,14 +87,13 @@
 }
 
 .notificationbtn:hover {
-  background: #43bade;
+  background: #66ccec; /* Updated to a light blue tone */
 }
 
 .notification-icon {
   width: 25px;
   height: 25px;
   filter: invert(1);
-  margin-left: -2px;
 }
 
 /* Notification Dropdown */
@@ -104,20 +101,19 @@
   position: absolute;
   top: 60px;
   right: 20px;
-  background: white;
+  background: #FFF4B7; /* Updated to Light Teal */
   width: 300px;
   padding: 10px;
   height: auto;
   max-height: 300px;
-  /* overflow-y: auto; */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
+  border: 1px solid #006A67; /* Updated to Teal */
   z-index: 2;
 }
 
 .close-button {
-  background: rgb(150, 143, 143);
+  background: #000B58; /* Updated to Dark Blue */
   border: none;
   font-size: 20px;
   border-radius: 25px;
@@ -127,7 +123,7 @@
 }
 
 .close-button:hover {
-  background: rgb(75, 71, 71);
+  background: #003161; /* Updated to Light Blue */
   color: white;
 }
 
@@ -142,7 +138,7 @@
 }
 
 .profilebtn:hover {
-  background: #43bade;
+  background: #66ccec; /* Updated to a light blue tone */
 }
 
 .profile-image {
@@ -153,10 +149,10 @@
 
 .profile-dropdown {
   position: absolute;
-  top: 70px; /* Adjust based on profile button position */
-  right: 10px; /* Adjust to align with the button */
-  background: white;
-  border: 1px solid #ccc;
+  top: 70px;
+  right: 10px;
+  background: #FFF4B7; /* Updated to Light Teal */
+  border: 1px solid #006A67; /* Updated to Teal */
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -181,7 +177,6 @@
 .signout-button:hover {
   background: #c82333;
 }
-
 
 @media screen and (max-width: 931px) {
   .Asidebar-header-mobile {

@@ -72,6 +72,8 @@ const Login = () => {
       alert('OTP Verified!');
       const details_data = await authService.details();
       console.log(details_data)
+      const name = details_data.details[5].name
+      console.log(name)
       const role = details_data.details[1].name
       console.log(role)
       localStorage.setItem('role', role);
@@ -85,7 +87,6 @@ const Login = () => {
     }
   };
 
-  
   const handleResendOtp = async () => {
     try {
       setCounter(30);

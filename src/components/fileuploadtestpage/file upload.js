@@ -60,9 +60,9 @@ const FileUploadPage = () => {
       const mockResponse = {
         files: {
           declaration: null,
-          invoice: null,
+          invoice: { name: 'invoice_sample.pdf', alreadyUploaded: true },
           packingList: null,
-          awsBol: null,
+          awsBol: { name: 'awsBol_sample.pdf', alreadyUploaded: true },
           countryOfOrigin: null,
           deliveryOrder: null,
         },
@@ -140,7 +140,7 @@ const FileUploadPage = () => {
   return (
     <div className="file-upload-page-outer">
     <div className="file-upload-page">
-      <h1 className="page-title">File Upload</h1>
+      <h1 className="page-title">File Upload Portal</h1>
       <form onSubmit={handleSubmit} className="upload-form">
         <div className="declaration-section">
           <label htmlFor="declarationNumber" className="declaration-label">
@@ -153,7 +153,7 @@ const FileUploadPage = () => {
             value={declarationNumber}
             onChange={handleDeclarationNumberChange}
             maxLength={13}
-            placeholder="Enter 13-digit DecNum"
+            placeholder="Enter Declaration Number"
           />
           <button
             type="button"
@@ -161,7 +161,7 @@ const FileUploadPage = () => {
             onClick={handleGoClick}
             disabled={declarationNumber.length !== 13}
           >
-            ➜
+            Go
           </button>
         </div>
 
@@ -196,7 +196,7 @@ const FileUploadPage = () => {
                           className="delete-icon"
                           onClick={() => handleFileDelete(item.key)}
                         >
-                          ✖
+                          <FaTrash />
                         </button>
                       )}
                     </>
