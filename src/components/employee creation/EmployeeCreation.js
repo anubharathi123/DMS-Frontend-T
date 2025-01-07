@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import './EmployeeCreation.css';
-import authService from '../../ApiServices/ApiServices';
+import './EmployeeCreation.css';  // Importing the combined CSS for this component
 
 const EmployeeCreation = () => {
   const [employee, setEmployee] = useState({
@@ -9,7 +8,6 @@ const EmployeeCreation = () => {
     personName: '',
     mobile: '',
     email: '',
-    creationDate: '',
     role: '',
     status: 'Active', // New status condition added
   });
@@ -19,19 +17,10 @@ const EmployeeCreation = () => {
     setEmployee({ ...employee, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Employee Data:', employee);
-
-    try {
-      // Assuming you want to add the employee to an organization
-      const orgId = 'your-org-id'; // Replace with actual orgId
-      await authService.addEmployee(orgId, employee);  // API call to add employee
-      alert('Employee created successfully!');
-    } catch (error) {
-      alert('Error creating employee: ' + (error.message || error));
-    }
-
+    alert('Employee created successfully!');
     // Reset form
     setEmployee({
       userName: '',
@@ -39,9 +28,8 @@ const EmployeeCreation = () => {
       personName: '',
       mobile: '',
       email: '',
-      creationDate: '',
       role: '',
-      status: 'Active',
+      status: 'Active', // Resetting new condition
     });
   };
 
@@ -130,22 +118,6 @@ const EmployeeCreation = () => {
             />
           </div>
 
-          {/* Creation Date */}
-          <div className="emp-creation-form-group">
-            <label htmlFor="creationDate" className="emp-creation-label">
-              Creation Date <span className="emp-creation-mandatory">*</span>
-            </label>
-            <input
-              type="date"
-              id="creationDate"
-              name="creationDate"
-              value={employee.creationDate}
-              onChange={handleChange}
-              className="emp-creation-input"
-              required
-            />
-          </div>
-
           {/* Role */}
           <div className="emp-creation-form-group">
             <label htmlFor="role" className="emp-creation-label">
@@ -163,28 +135,28 @@ const EmployeeCreation = () => {
                 Select Role
               </option>
               <option value="Compiler">Compiler</option>
-              <option value="Approver">Approver</option>
+              <option value="Reviewer">Reviewer</option>
               <option value="Viewer">Viewer</option>
             </select>
           </div>
 
-          <div className="emp-creation-form-group">
+          <div className="emp-creation-form-group emp-creation-form-group-btn">
             <button type="submit" className="emp-creation-submit-button">
-              Create
+              Create 
             </button>
             <button
               type="button"
               className="emp-creation-cancel-button"
               onClick={() => {
+                // Handle the cancel action, such as clearing the form or redirecting
                 setEmployee({
                   userName: '',
                   companyName: '',
                   personName: '',
                   mobile: '',
                   email: '',
-                  creationDate: '',
                   role: '',
-                  status: 'Active',
+                  status: 'Active', // Resetting new condition
                 });
               }}
             >

@@ -1,108 +1,93 @@
 /* Container Styles */
 .company-creation-container {
   width: 100%;
-  margin-top: -26px;
-  background-color: #ffffff;
-  height: 110vh;
-  justify-items: left;
-  margin-top: -20px;
-}
-
-.company-creation-inner-container {
-  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  margin-left: 250px; /* Adjusted for the AsideBar width */
   margin-top: 100px;
-  max-width: 716px;
-  margin-left: 250px;
 }
 
-/* Title Styles */
+/* Inner Container */
+.company-creation-inner-container {
+  background-color: #D4EBF8; /* Light Blue */
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Title */
 .company-creation-title {
+  color: #003161; /* Light Blue */
   text-align: center;
-  font-size: 24px;
-  margin-left: 225px;
+  margin-bottom: 1.5rem;
 }
 
-/* Form Styles */
+/* Form Styling */
 .company-creation-form {
   display: flex;
   flex-direction: column;
-  margin-left: 250px;
 }
 
 .company-creation-form-group {
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
+}
+
+.company-creation-form-group-btn {
   display: flex;
-  text-align: left;
+  gap: 30px !important;
 }
 
+/* Labels */
 .company-creation-label {
-  font-size: 12px;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #006A67; /* Teal */
   font-weight: bold;
-  color: #333;
-  margin-bottom: 8px;
-  min-width: 105px;
-  text-align: left;
-  margin-top: 5px;
 }
 
+/* Mandatory Field Indicator */
 .company-creation-mandatory {
   color: red;
-  font-size: 18px;
-  margin-left: 1px;
 }
 
-/* Input Field Styles */
+/* Inputs */
 .company-creation-input {
-  width: 58%;
-  padding: 5px;
-  font-size: 13px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  height: fit-content;
-  margin-top: 8px;
-  margin-left: 26px;
-}
-
-.company-creation-date-group {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Fix for Creation Date Input */
-.company-creation-date-input {
-  width: 58%;
-  padding: 5px;
-  font-size: 13px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 8px;
-  margin-left: 26px;
-}
-
-/* File Upload Styles */
-.company-creation-upload-container {
-  display: flex;
-  align-items: center;
-  width: 58%; /* Same width as other fields */
-  border: 1px dashed #ccc;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #003161; /* Dark Blue */
   border-radius: 5px;
-  height: 63px;
+  background-color: #fff;
+  color: #003161; /* Dark Blue */
+  font-size: 1rem;
+}
+
+.company-creation-input:focus {
+  outline: none;
+  border-color: #006A67; /* Teal */
+  box-shadow: 0 0 5px rgba(0, 106, 103, 0.5);
+}
+
+/* File Upload Area */
+.company-creation-upload-container {
+  border: 2px dashed #003161; /* Dark Blue */
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
   position: relative;
-  margin-left: 10px;
+}
+
+.company-creation-upload-container.dragging {
+  background-color: rgba(0, 106, 103, 0.1); /* Light Teal */
 }
 
 .company-creation-upload-icon {
-  font-size: 30px;
-  margin-left: 10px;
-}
-
-.company-creation-upload-text {
-  margin-left: 10px;
-  font-size: 14px;
-  color: #333;
-  cursor: pointer;
+  font-size: 50px;
+  color: #003161; /* Dark Blue */
+  margin-bottom: 10px;
 }
 
 .company-creation-file-names {
@@ -113,66 +98,73 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  background-color: #D4EBF8; /* Light Blue */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
-.file-name {
-  margin-left: 9px;
+.company-creation-file-item .file-name {
+  color: #003161; /* Dark Blue */
   font-size: 14px;
-  color: #333;
-  margin-top: -10px;
-  flex-grow: 1;
 }
 
 .company-creation-remove-file-btn {
-  background: transparent;
+  background: none;
+  color: #FF4B7F; /* Light Purple */
   border: none;
-  color: #fa4242;
-  font-size: 18px;
-  cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.company-creation-button-group {
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-  gap: 25px;
-  margin-left: 60px;
-}
-
-.company-creation-submit-button,
-.company-creation-cancel-button {
-  padding: 9px 19px;
   font-size: 14px;
   cursor: pointer;
-  border-radius: 5px;
-  border: none;
 }
 
+.company-creation-remove-file-btn:hover {
+  text-decoration: underline;
+}
+
+/* Buttons */
 .company-creation-submit-button {
-  background-color: #5eb6d2;
-  color: white;
-}
-
-.company-creation-cancel-button {
-  background-color: #5eb6d2;
-  color: white;
+  background-color: #006A67; /* Teal */
+  color: #FFF4B7; /* Light Teal */
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
 }
 
 .company-creation-submit-button:hover {
-  background-color: #4ba3bf;
+  background-color: #003161; /* Dark Blue */
+}
+
+.company-creation-cancel-button {
+  background-color: #FFF4B7; /* Light Teal */
+  color: #006A67; /* Teal */
+  padding: 0.75rem;
+  border: 1px solid #006A67; /* Teal */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
 }
 
 .company-creation-cancel-button:hover {
-  background-color: #5eb6d2;
+  background-color: #006A67; /* Teal */
+  color: #FFF4B7; /* Light Teal */
 }
 
-/* Dragging styles */
-.company-creation-upload-container.dragging {
-  border-color: #258feb;
-  background-color: #f8f9fa;
+.company-creation-button-group{
+  display: flex;
+    column-gap: 30px;
+    align-self: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .company-creation-form-group {
+    width: 100%;
+  }
+  .company-creation-date-group {
+    flex-direction: column;
+  }
 }

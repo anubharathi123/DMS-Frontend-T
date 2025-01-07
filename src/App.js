@@ -178,30 +178,14 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-
-
-
-
-<Route
-  path="/Fileupload"
-  element={
-    <PrivateRoute>
-      <Fileupload />
-    </PrivateRoute>
-  }
-/>
-
-
-<Route
-  path="/Test"
-  element={
-    <PrivateRoute>
-      <Test />
-    </PrivateRoute>
-  }
-/>
-
-
+  <Route
+    path="/Test"
+    element={
+      <PrivateRoute>
+        <Test />
+      </PrivateRoute>
+     }
+    />
          <Route
           path="/NotificationDropdown"
           element={
@@ -211,15 +195,7 @@ function AppContent() {
           }
         />
 
-        <Route
-          path="/test"
-          element={
-            <PrivateRoute>
-              <Test />
-            </PrivateRoute>
-          }
-        />
-
+      
           <Route
           path="/Upload"
           element={
