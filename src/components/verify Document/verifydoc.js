@@ -105,7 +105,6 @@ const VerifyDoc = () => {
     setFilteredDocuments(sortedDocuments);
     setIsAscSort(true); // Set to true to indicate ascending sort is active
   };
-
   const handleDescSort = () => {
     const sortedDocuments = [...filteredDocuments].sort((a, b) =>
       b.declarationNumber.localeCompare(a.declarationNumber)

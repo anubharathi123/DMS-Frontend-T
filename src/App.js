@@ -179,23 +179,44 @@ function AppContent() {
           }
         />
 
-{/* <Route
+<Route
   path="/EmployeeProfile"
   element={
     <PrivateRoute>
-      
+      <EmployeeProfile />
     </PrivateRoute>
   }
-/> */}
+/> 
 
-{/* <Route
+ <Route
   path="/ProfileManagement"
   element={
     <PrivateRoute>
       <ProfileManagement />
     </PrivateRoute>
   }
-/> */}
+/>
+
+
+
+<Route
+  path="/Fileupload"
+  element={
+    <PrivateRoute>
+      <Fileupload />
+    </PrivateRoute>
+  }
+/>
+
+
+<Route
+  path="/Test"
+  element={
+    <PrivateRoute>
+      <Test />
+    </PrivateRoute>
+  }
+/>
 
 
          <Route
