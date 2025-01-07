@@ -190,6 +190,23 @@ const VerifyDoc = () => {
     }
   };
 
+
+
+  const handleAscSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      a.declarationNumber.localeCompare(b.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(true); // Set to true to indicate ascending sort is active
+  };
+  const handleDescSort = () => {
+    const sortedDocuments = [...filteredDocuments].sort((a, b) =>
+      b.declarationNumber.localeCompare(a.declarationNumber)
+    );
+    setFilteredDocuments(sortedDocuments);
+    setIsAscSort(false); // Set to false to indicate descending sort is active
+  };
+
   const resetFilters = () => {
     setFilterDate(null);
     setDeclarationInput("");
