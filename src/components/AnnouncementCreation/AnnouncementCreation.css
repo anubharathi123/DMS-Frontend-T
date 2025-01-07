@@ -67,7 +67,7 @@
     background-color: #218838;
   }
   
- form button[type="button"] {
+ .announcement_cancelbtn {
     background-color: #dc3545;
     color: #fff;
   }
