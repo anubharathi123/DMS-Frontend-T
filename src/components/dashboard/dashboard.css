@@ -1,46 +1,38 @@
-/* .App {
-  text-align: center;
-  padding-top: 250px; 
-  padding-left: 250px; 
+:root {
+  --dark-blue: #000b58;
+  --deep-blue: #003161;
+  --teal: #006a67;
+  --light-teal: #67fff4;
+  --beige: #f4b7;
 }
 
-.App-logo {
-  height: 60vmin;
-  pointer-events: none;
-} */
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
+/* General Dashboard Container */
 .dashboard-container {
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* background-color: #f3f4f6; */
   margin-top: 8vh;
   margin-left: 250px;
 
   @media (max-width: 768px) {
     margin-left: 0;
-    padding-left: 0; /* Remove sidebar space on small screens */
-  }
-  
-  @media (max-width: 768px) {
-    .dashboard-container {
-      margin-top: 5vh;
-    }
+    padding-left: 0;
   }
 }
 
+@media (max-width: 768px) {
+  .dashboard-container {
+    margin-top: 5vh;
+  }
+}
+
+/* Dashboard Section */
 .dashboard {
   border-style: ridge;
   border-width: 2px;
-  border-color: black;
+  border-color: var(--dark-blue);
   width: 75%;
   margin: 20px auto;
   padding: 20px;
@@ -50,12 +42,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Header */
 h1 {
   margin-bottom: 20px;
   font-size: 2em;
-  color: #333;
+  color: var(--dark-blue);
 }
 
+/* Card Section */
 .cards-container {
   display: flex;
   justify-content: space-around;
@@ -69,14 +63,14 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 10px;
-  width: 200px;
+  width: 190px;
   text-align: center;
 }
 
 .card h2 {
   margin-bottom: 10px;
   font-size: 1.5em;
-  color: #333;
+  color: var(--dark-blue);
 }
 
 .card p {
@@ -84,6 +78,7 @@ h1 {
   color: #666;
 }
 
+/* Chart Section */
 .chart-container {
   display: flex;
   justify-content: space-around;
@@ -97,11 +92,37 @@ h1 {
   margin: 20px 0;
 }
 
+/* Media Queries for Mobile */
 @media (max-width: 768px) {
   .chart {
     width: 100%;
   }
 }
+
+/* Dashboard Container Adjustment for Small Screens */
 .dashboard-container {
-  margin-top: 55vh; /* Increase top margin */
+  margin-top: 210vh;
+}
+
+/* Styles for the Pie, Line, and   Bar Charts */
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 10px;
+  /* background-color: var(--beige); */
+}
+
+.chart {
+  padding: 20px;
+  background-color: var(--beige);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 }

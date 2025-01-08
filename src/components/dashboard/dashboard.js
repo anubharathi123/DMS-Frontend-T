@@ -77,10 +77,10 @@ const App = () => {
     <div className='dashboard-container'>
       <Dashboard />
       <div className="cards-container">
-        <Card title="Total Sales" value="$1,234,567" />
-        <Card title="Total Users" value="12,345" />
-        <Card title="Total Orders" value="1,234" />
-        <Card title="Total Revenue" value="$123,456" />
+        <Card className='dashboard-card' title="Total Sales" value="$1,234,567" />
+        <Card className='dashboard-card' title="Total Users" value="12,345" />
+        <Card className='dashboard-card' title="Total Orders" value="1,234" />
+        <Card className='dashboard-card' title="Total Revenue" value="$123,456" />
       </div>
       <div className="chart-container">
         <div className="chart">

@@ -30,7 +30,7 @@ const ProfileManagementPage = () => {
   return (
     <div className="col-xl-7 mx-auto">
       {/* Profile Picture */}
-      <div className='card'>
+      <div className='Profile-card'>
         <div className="card-body">
                   <img className="user_image" alt="Profile" src={avatar}/> 
                    </div>
