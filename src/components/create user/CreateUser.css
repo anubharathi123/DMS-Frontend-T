@@ -1,17 +1,20 @@
-
+:root {
+    --teal: #006a67;
+  }
   
 
   /* CompanyCreation.css */
 
 .company-register-container {
     width: 600px;
+    height: 450px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #D4EBF8;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-  }
-  
+    margin-left: 200px;
+    margin-top: 60px;
+}
   .company-register-title {
     text-align: center;
     color: #333;
@@ -57,7 +60,7 @@
   }
   
   .btn-submit, .btn-cancel {
-    background-color: #5fc3d7;
+    background-color: var(--teal);
     color: white;
     padding: 10px 20px;
     font-size: 1rem;
@@ -66,82 +69,7 @@
     cursor: pointer;
     transition: background-color 0.3s;
     margin-top: 10px;
-  }
-  
-  .btn-submit:hover, .btn-cancel:hover {
-    background-color: #34727f;
-  }
-  
-  
-
-
-
-
-  /* CompanyCreation.css */
-
-.company-register-container {
-    width: 600px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-  }
-  
-  .company-register-title {
-    text-align: center;
-    color: #333;
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .company-form-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .company-label {
-    font-weight: bold;
-    font-size: 12px;
-    color: #555;
-    margin-right: 15px;
-    width: 150px;
-  }
-  
-  .mandatory {
-    color: red;
-  }
-  
-  .company-input {
-    flex-grow: 1;
-    height: 30px;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  
-  .company-input:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-  
-  .button-group {
-    text-align: center;
-  }
-  
-  .btn-submit, .btn-cancel {
-    background-color: #5fc3d7;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
+    margin-left: 20px;
   }
   
   .btn-submit:hover, .btn-cancel:hover {

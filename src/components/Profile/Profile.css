@@ -1,28 +1,33 @@
 .card-container {
 	background-color: white;
 	min-width: 350px;
-	max-width: 600px;
+	width: 600px;
 	height: auto;
 	border-radius: 14px;
 	box-shadow: 0px 10px 30px hsl(185, 75%, 35%);
+	margin-top: 50px;
+	margin-left: 200px;
 }
 
 .profile-header {
-	background-image: url("../../assets/images/bg-pattern-card.svg");
-	background-position: 0px 0px;
+	background-image: url("../../assets/images/bg_vdart.png");
+	background-color:#D4EBF8;
+	background-position: 141px 3px;
 	background-repeat: no-repeat;
-	background-size: contain;
+	background-size:275px;
 	text-align: center;
 	border-top-left-radius: 14px;
 	border-top-right-radius: 14px;
+
 }
 
 .profile_img {
 	margin: auto;
 	width: 100px;
-	border: solid white 4px;
+	border: solid black 2px;
 	border-radius: 50%;
 	margin-top: 75px;
+	margin-right: 10px;
 }
 
 .bold-text {
@@ -35,7 +40,7 @@
 .normal-text {
 	font-weight: normal;
 	font-size: 0.95rem;
-	color: hsl(0, 0%, 50%);
+	color:black;
 	text-align: center;
 	padding-bottom: 10px;
 }

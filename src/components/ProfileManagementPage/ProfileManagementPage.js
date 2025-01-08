@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
 import './ProfileManagementPage.css';
+import { BiMobile } from 'react-icons/bi';
 
 const ProfileManagementPage = () => {
   // State for form inputs
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-    city: '',
-    country: '',
-    zip: '',
-    primaryAddress: false,
-    publicProfile: true,
-    showEmail: false,
+    UserName: '',
+    PersonName: '',
+    MailID: '',
+    Mobile: '',
   });
 
   // Handle input change
@@ -59,13 +53,11 @@ const ProfileManagementPage = () => {
         </div>
       </div>
       {/* Contact Information Form */}
-      <div className="mb-5">
-        <h5 className="mb-0">Contact Information</h5>
-      </div>
+     
       <form className="mb-6" onSubmit={handleSubmit}>
         <div className="row mb-5">
           <div className="col-md-6">
-            <label className="form-label" htmlFor="firstName">First Name</label>
+            <label className="form-label" htmlFor="firstName">Username</label>
             <input
               type="text"
               className="form-control"
@@ -75,7 +67,7 @@ const ProfileManagementPage = () => {
             />
           </div>
           <div className="col-md-6">
-            <label className="form-label" htmlFor="lastName">Last Name</label>
+            <label className="form-label" htmlFor="lastName">Person Name</label>
             <input
               type="text"
               className="form-control"
@@ -87,7 +79,7 @@ const ProfileManagementPage = () => {
         </div>
         <div className="row g-5">
           <div className="col-md-6">
-            <label className="form-label" htmlFor="email">Email</label>
+            <label className="form-label" htmlFor="email">Mail ID</label>
             <input
               type="email"
               className="form-control"
@@ -97,7 +89,7 @@ const ProfileManagementPage = () => {
             />
           </div>
           <div className="col-md-6">
-            <label className="form-label" htmlFor="phoneNumber">Phone Number</label>
+            <label className="form-label" htmlFor="phoneNumber">Mobile</label>
             <input
               type="tel"
               className="form-control"
@@ -106,68 +98,10 @@ const ProfileManagementPage = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="col-12">
-            <label className="form-label" htmlFor="address">Address</label>
-            <input
-              type="text"
-              className="form-control"
-              id="address"
-              value={formData.address}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label" htmlFor="city">City</label>
-            <input
-              type="text"
-              className="form-control"
-              id="city"
-              value={formData.city}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label" htmlFor="country">Country</label>
-            <select
-              className="form-select"
-              id="country"
-              value={formData.country}
-              onChange={handleChange}
-            >
-              <option value="">Country</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
-          <div className="col-md-2">
-            <label className="form-label" htmlFor="zip">ZIP</label>
-            <input
-              type="tel"
-              className="form-control"
-              id="zip"
-              value={formData.zip}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-12">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="primaryAddress"
-                checked={formData.primaryAddress}
-                onChange={handleChange}
-              />
-              <label className="form-check-label" htmlFor="primaryAddress">
-                Make this my default address
-              </label>
-            </div>
-          </div>
-        </div>
         <div className="text-end">
           <button type="button" className="btn btn-sm btn-neutral me-2">Cancel</button>
           <button type="submit" className="btn btn-sm btn-primary">Save</button>
+        </div>
         </div>
       </form>
       <hr className="my-10" />

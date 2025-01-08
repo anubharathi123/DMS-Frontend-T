@@ -7,16 +7,19 @@ body {
   }
   
   .col-xl-7 {
-    width: 58.33333%;
+    width: 58%;
     margin: 0 auto;
   }
   
   .card {
     background-color: #fff;
     border-radius: 10px;
+    width: 50%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-left: 390px;
+    margin-top: 10px;
+    margin-bottom: -220px;
   }
   
   .card-body {

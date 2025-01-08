@@ -11,7 +11,6 @@ const CreateUser = () => {
     mobile: '',
     email: '',
     accessCreationDate: '',
-    accessExpiryDate: '',
     role: ''
   });
 
@@ -51,7 +50,6 @@ const CreateUser = () => {
       mobile: '',
       email: '',
       accessCreationDate: '',
-      accessExpiryDate: '',
       role: ''
     });
   };
@@ -64,7 +62,6 @@ const CreateUser = () => {
       mobile: '',
       email: '',
       accessCreationDate: '',
-      accessExpiryDate: '',
       role: ''
     });
   };
@@ -195,21 +192,6 @@ const CreateUser = () => {
             type="date"
             name="accessCreationDate"
             value={formData.accessCreationDate}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
-
-        {/* Access Expiry Date */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Access Expiry Date <span className="mandatory">*</span>
-          </label>
-          <input
-            type="date"
-            name="accessExpiryDate"
-            value={formData.accessExpiryDate}
             onChange={handleChange}
             className="company-input"
             required

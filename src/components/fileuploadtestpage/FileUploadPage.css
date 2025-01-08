@@ -141,17 +141,15 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #ff4b5c;
-    color: var(--white);
+    background:none;
+    border: none;
+    color: red;
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
   
-  .delete-icon:hover {
-    background-color: #e03e4b;
-  }
-  
+ 
   .submit-button {
     align-self: center;
     padding: 12px 30px;

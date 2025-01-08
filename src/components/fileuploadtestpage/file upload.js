@@ -196,7 +196,7 @@ const FileUploadPage = () => {
                           className="delete-icon"
                           onClick={() => handleFileDelete(item.key)}
                         >
-                          <FaTrash />
+                          🇽
                         </button>
                       )}
                     </>
