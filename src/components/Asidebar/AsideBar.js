@@ -13,6 +13,7 @@ const AsideBar = () => {
     const fetchDetails = async () => {
       try {
         const details_data = await authService.details();
+        console.log('details_data:', details_data);
         // const fetchedName = details_data.details[5].name;
         const fetchedRole = details_data.details[5].name;
         // console.log('fetchedName:', fetchedName);
@@ -21,6 +22,7 @@ const AsideBar = () => {
         // setName(fetchedName);
         setRole(fetchedRole);
         localStorage.setItem('role', fetchedRole);
+        localStorage.setItem('Company_name', details_data.details[7].company_name);
       } catch (error) {
         console.error('Error fetching details:', error);
       }
@@ -177,7 +179,7 @@ const AsideBar = () => {
           {role === 'PRODUCT_OWNER' && (
 
             <li className={`dropdown ${openDropdowns['create-admin'] ? 'open' : ''}`}>
-              <NavLink to="EmployeeCreation"className={({ isActive }) => (isActive ? 'active' : '')}>
+              <NavLink to="/createuser"className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p>Create Admin</p>
               </NavLink>
               <button onClick={() => toggleDropdown('create-admin')} className="dropdown-toggle1">
@@ -242,7 +244,7 @@ const AsideBar = () => {
           {/* Create User */}
           {(role === '#' || role === 'ADMIN') && (
             <li>
-              <NavLink to="/EmployeeCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
+              <NavLink to="/createuser" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p >Create User</p>
               </NavLink>
             </li>

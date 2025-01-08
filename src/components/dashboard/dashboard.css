@@ -1,13 +1,13 @@
-.App {
+/* .App {
   text-align: center;
-  padding-top: 250px; /* Space for the header */
-  padding-left: 250px; /* Space for the sidebar */
+  padding-top: 250px; 
+  padding-left: 250px; 
 }
 
 .App-logo {
   height: 60vmin;
   pointer-events: none;
-}
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -16,13 +16,13 @@
 }
 
 .dashboard-container {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   /* background-color: #f3f4f6; */
-  margin-top: 10vh;
+  margin-top: 8vh;
   margin-left: 250px;
 
   @media (max-width: 768px) {

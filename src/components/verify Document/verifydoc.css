@@ -6,7 +6,7 @@
   width: 75%;
   margin-left: 200px;
   position: absolute;
-  top: 130px;
+  top: 100px;
   padding: 20px;
 }
 
@@ -68,7 +68,7 @@
 .documentapproval_td {
   padding: 10px;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   text-align-last: center;
 }
 

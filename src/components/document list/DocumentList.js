@@ -178,8 +178,8 @@ const DocumentTable = () => {
               <td className="documenttable_td px-6 py-4">
                 <span
                   className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
-                    ${item.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
-                    item.status === 'Reject' ? 'bg-red-100 text-red-800' : 
+                    ${item.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 
+                    item.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 
                     'bg-green-100 text-green-800'}`}
                 >
                   {item.status}

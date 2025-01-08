@@ -93,15 +93,15 @@ const DocumentApproval = () => {
   };
 
   const handleFileOpen = (file) => {
-    if (file.file.toLowerCase().endsWith('.pdf')) {
-      const updatedData = data.map((item) =>
-        item.file === file.file
-          ? { ...item, viewed: true }
-          : item
-      );
-      setData(updatedData);
-      setSelectedFile(file);
-    } else {
+    // if (file.file.toLowerCase().endsWith('.pdf')) {
+    //   const updatedData = data.map((item) =>
+    //     item.file === file.file
+    //       ? { ...item, viewed: true }
+    //       : item
+    //   );
+    //   setData(updatedData);
+    //   setSelectedFile(file);
+    // } else {
       const a = document.createElement('a');
       console.log(a)
       a.href = host+file.file;
@@ -114,8 +114,9 @@ const DocumentApproval = () => {
           : item
       );
       setData(updatedData);
-      a.click();
-    }
+      
+      window.open(host + file.file, '_blank');  
+    // }
   };
 
   
@@ -204,7 +205,7 @@ const DocumentApproval = () => {
         </div> */}
 
 <div className="documenttable_filter flex items-center">
-          <label className="documenttable_filter_label mr-2">Filter by Document Type:</label>
+          <label className="documenttable_filter_label mr-2">Document Type:</label>
           <select value={filterDoc} onChange={handleDocumentTypeChange} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
             <option value="">All</option>
             {uniqueDocumentTypes.map((type, index) => (

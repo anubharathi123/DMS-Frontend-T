@@ -1,18 +1,24 @@
 
 import React, { useState, useEffect } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri";  // Import the dropdown icon
+import { Link, useNavigate } from 'react-router-dom';
 import './CreateUser.css';
+import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
+
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
     username: '',
-    companyName: '',
-    personName: '',
+    companyname: localStorage.getItem('Company_name') || '',
+    name: '',
     mobile: '',
     email: '',
-    accessCreationDate: '',
+    created_at: '',
     role: ''
   });
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  
 
   const [roleOptions, setRoleOptions] = useState(["Compiler", "Approver", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -39,29 +45,44 @@ const CreateUser = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(formData);
+  //   alert('User created successfully!');
+  //   setFormData({
+  //     username: '',
+  //     companyname: '',
+  //     name: '',
+  //     mobile: '',
+  //     email: '',
+  //     created_at: '',
+  //     role: ''
+  //   });
+  // };
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert('User created successfully!');
-    setFormData({
-      username: '',
-      companyName: '',
-      personName: '',
-      mobile: '',
-      email: '',
-      accessCreationDate: '',
-      role: ''
-    });
+    try {
+      
+      const response = await apiServices.register(formData);
+      setMessage('User registered successfully!');
+      navigate('/');
+    } catch (error) {
+      console.error('Error registering user:', error);
+      setMessage('Error registering user. Please try again later.');
+    }
   };
 
   const handleCancel = () => {
     setFormData({
       username: '',
-      companyName: '',
-      personName: '',
+      companyname: '',
+      name: '',
       mobile: '',
       email: '',
-      accessCreationDate: '',
+      created_at: '',
       role: ''
     });
   };
@@ -106,6 +127,7 @@ const CreateUser = () => {
 
   return (
     <div className="company-register-container">
+      {message && <div className="createuser_message">{message}</div>}
       <h2 className="company-register-title">User Register</h2>
       <form onSubmit={handleSubmit}>
         {/* Username */}
@@ -130,11 +152,12 @@ const CreateUser = () => {
           </label>
           <input
             type="text"
-            name="companyName"
-            value={formData.companyName}
+            name="companyname"
+            value={formData.companyname}
             onChange={handleChange}
             className="company-input"
             required
+            readOnly 
           />
         </div>
 
@@ -145,8 +168,8 @@ const CreateUser = () => {
           </label>
           <input
             type="text"
-            name="personName"
-            value={formData.personName}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             className="company-input"
             required
@@ -190,8 +213,8 @@ const CreateUser = () => {
           </label>
           <input
             type="date"
-            name="accessCreationDate"
-            value={formData.accessCreationDate}
+            name="created_at"
+            value={formData.created_at}
             onChange={handleChange}
             className="company-input"
             required

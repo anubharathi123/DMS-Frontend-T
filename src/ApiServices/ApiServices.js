@@ -50,15 +50,16 @@ const handleResponse = async (request) => {
 const authService = {
   // Authentication APIs
   register: async (userData) => {
-    if (!userData.email || !userData.password) {
-      throw new Error('Email and password are required.');
-    }
+    // if (!userData.email || !userData.password) {
+    //   throw new Error('Email and password are required.');
+    // }
     return handleResponse(apiClient.post('auth/register/', userData));
   },
   login: async (credentials) => {
     if (!credentials.username || !credentials.password) {
       throw new Error('Email and password are required for login.');
     }
+    localStorage.removeItem('token');
     const response = await handleResponse(apiClient.post('auth/login/', credentials));
     if (response.token) {
       localStorage.setItem('token', response.token);
@@ -82,9 +83,11 @@ const authService = {
     return handleResponse(apiClient.get('details/'));
   },
   resetPassword: async (data) => {
-    if (!data.email) {
+
+    if (!data) {
       throw new Error('Email, OTP, and new password are required for password reset.');
     }
+    localStorage.removeItem('token');
     const response = await handleResponse(apiClient.post('auth/reset/', data));
     if (response.token) {
       localStorage.setItem('token', response.token);
@@ -109,12 +112,12 @@ const authService = {
 
   // Organization APIs
   createOrganization: async (data) => {
-    if (!data.name || !data.owner_email) {
-      throw new Error('Organization name and owner email are required.');
-    }
-    return handleResponse(apiClient.post('organizations/', data));
+    // if (!data.name || !data.owner_email) {
+    //   throw new Error('Organization name and owner email are required.');
+    // }
+    return handleResponse(apiClient.post('organization/', data));
   },
-  getOrganizations: async () => handleResponse(apiClient.get('organizations/')),
+  getOrganizations: async () => handleResponse(apiClient.get('organization/')),
   getOrganizationById: async (orgId) => {
     if (!orgId) {
       throw new Error('Organization ID is required.');

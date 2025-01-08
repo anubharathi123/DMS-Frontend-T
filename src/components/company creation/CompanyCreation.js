@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CompanyCreation.css';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import authService from '../../ApiServices/ApiServices';
@@ -14,10 +15,12 @@ const CompanyCreation = () => {
     accessExpiryDate: '',
   });
 
-  const [contractDocuments, setContractDocuments] = useState([]);
+  const [contractDocuments, setContractDocuments] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [fileInputClicked, setFileInputClicked] = useState(false);
   const [error, setError] = useState(null); // For error handling
+  const navigate = useNavigate();
+  
 
   // Handles input changes
   const handleChange = (e) => {
@@ -29,7 +32,7 @@ const CompanyCreation = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Only take the first file
     if (file) {
-      setContractDocuments([file]); // Replace the previous files with the selected one
+      setContractDocuments(file); // Store the selected file
       setFileInputClicked(true); // Mark that a file is selected
     }
   };
@@ -53,37 +56,36 @@ const CompanyCreation = () => {
     setDragging(false);
     const file = e.dataTransfer.files[0]; // Only take the first dropped file
     if (file) {
-      setContractDocuments([file]); // Replace the previous files with the selected one
+      setContractDocuments(file); // Replace the previous files with the selected one
       setFileInputClicked(true); // Mark that a file is selected
     }
   };
 
   // Removes a specific file without triggering the file input dialog
   const handleRemoveFile = () => {
-    setContractDocuments([]); // Remove the file
+    setContractDocuments(null); // Remove the file
     setFileInputClicked(false); // Prevent the file input dialog from popping up
   };
 
   // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = { ...company, contractDocuments };
+    const formData = new FormData();
+    // Append company details to FormData
+    Object.keys(company).forEach((key) => {
+      formData.append(key, company[key]);
+    });
+
+    if (contractDocuments) {
+      formData.append('contractDocuments', contractDocuments); // Append file to FormData
+    }
 
     try {
-      await authService.createCompany(formData); // Call the API service
+      await authService.createOrganization(formData); // Call the API service
       alert('Company registered successfully!');
       // Reset the form after successful submission
-      setCompany({
-        username: 'AE-', 
-        companyName: '',
-        personName: '',
-        mobile: '',
-        email: '',
-        accessCreationDate: '',
-        accessExpiryDate: '',
-      });
-      setContractDocuments([]);
-      setFileInputClicked(false);
+      navigate('/');
+
     } catch (error) {
       setError(error.message || 'Something went wrong.'); // Display error if API call fails
     }
@@ -92,7 +94,7 @@ const CompanyCreation = () => {
   // Handles cancel action
   const handleCancel = () => {
     setCompany({
-      username: 'AE-', 
+      username: 'AE-',
       companyName: '',
       personName: '',
       mobile: '',
@@ -100,7 +102,7 @@ const CompanyCreation = () => {
       accessCreationDate: '',
       accessExpiryDate: '',
     });
-    setContractDocuments([]);
+    setContractDocuments(null);
     setFileInputClicked(false);
   };
 
@@ -231,7 +233,7 @@ const CompanyCreation = () => {
                 <FaCloudUploadAlt />
                 {fileInputClicked ? (
                   <div className="company-creation-file-name">
-                    {contractDocuments[0].name}
+                    {contractDocuments.name}
                     {/* Cross button to remove the file */}
                     <span
                       className="company-creation-remove-icon"
@@ -241,9 +243,7 @@ const CompanyCreation = () => {
                     </span>
                   </div>
                 ) : (
-                  <>
-                    Drag and drop or browse&nbsp;<a href="#!" onClick={handleUploadClick}> here</a>
-                  </>
+                  <p>Drag and drop or browse&nbsp;<a href="#!" onClick={handleUploadClick}>here</a></p>
                 )}
               </div>
             </div>
