@@ -17,6 +17,7 @@ import Fileupload from "./components/fileuploadtestpage/file upload"
 import Test from './components/test/test'
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
+import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -155,6 +156,15 @@ function AppContent() {
           element={
             <PrivateRoute>
               <CompanyCreation />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/OrganizationList"
+          element={
+            <PrivateRoute>
+              <OrganizationList />
             </PrivateRoute>
           }
         />

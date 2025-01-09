@@ -43,7 +43,7 @@
 }
 
 /* Header */
-h1 {
+.dashboard-h1 {
   margin-bottom: 20px;
   font-size: 2em;
   color: var(--dark-blue);

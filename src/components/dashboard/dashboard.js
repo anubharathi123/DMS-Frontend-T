@@ -100,7 +100,7 @@ const App = () => {
 const Dashboard = () => {
   return (
     <div className="dashboard">
-      <h1>
+      <h1 className='dashboard-h1'>
         <center>Dashboard</center>
       </h1>
       <p>

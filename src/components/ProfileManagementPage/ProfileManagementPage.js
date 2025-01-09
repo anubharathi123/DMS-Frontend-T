@@ -32,18 +32,18 @@ const ProfileManagementPage = () => {
       {/* Profile Picture */}
       <div className='Profile-card'>
         <div className="card-body">
+                  <span className='circle'></span>
                   <img className="user_image" alt="Profile" src={avatar}/> 
                    </div>
       
       {/* Contact Information Form */}
       
       <form className="mb-6" onSubmit={handleSubmit}>
-        
-          
-            <label className="user-name_label" htmlFor="firstName">Username</label>
-            <br></br>
-            <input className='user-name_input' type="text" id="firstName" value={formData.firstName} onChange={handleChange} />
-          
+        <div className='username-container'>
+            <label className="user-name_label1" htmlFor="firstName">Username</label>
+            <label className="user-name_label2" >AE22374926</label>
+            </div>
+            
           <div className="col-md-6">
             <label className="person-name_label" htmlFor="lastName">Person Name</label>
             <br></br>
@@ -68,7 +68,7 @@ const ProfileManagementPage = () => {
             />
             <br></br>
             <label className="mobile-label" htmlFor="phoneNumber">Mobile</label>
-            
+            <br></br>
             <input
               type="tel"
               className="mobile_input"
