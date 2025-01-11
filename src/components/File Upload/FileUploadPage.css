@@ -74,6 +74,10 @@
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
+
+  .file-name-exist{
+    margin-bottom: 15px;
+  }
   
   .go-button:disabled {
     background-color: #ccc;
@@ -87,7 +91,8 @@
   .file-upload-section {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    /* gap: 15px; */
+    gap: 20px;
   }
   
   .file-upload-item {

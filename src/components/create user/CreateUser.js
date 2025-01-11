@@ -4,7 +4,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";  // Import the dropdown ic
 import { Link, useNavigate } from 'react-router-dom';
 import './CreateUser.css';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
-
+import Loader from "react-js-loader";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ const CreateUser = () => {
   });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  
+  const [isLoading, setIsLoading] = useState(false);  
 
   const [roleOptions, setRoleOptions] = useState(["Compiler", "Approver", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -45,40 +45,35 @@ const CreateUser = () => {
     });
   };
 
-  
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(formData);
-  //   alert('User created successfully!');
-  //   setFormData({
-  //     username: '',
-  //     companyname: '',
-  //     name: '',
-  //     mobile: '',
-  //     email: '',
-  //     created_at: '',
-  //     role: ''
-  //   });
-  // };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       
       const response = await apiServices.register(formData);
       setMessage('User registered successfully!');
       navigate('/');
     } catch (error) {
-      console.error('Error registering user:', error);
-      setMessage('Error registering user. Please try again later.');
+      // setIsLoading(false);
+      const errorMessage = error.response?.data?.error || error.error;
+      console.log('Error registering user:', errorMessage);
+      // console.error('Error registering user:', error);
+      setMessage(`Error: ${errorMessage}`);
+      setTimeout(() => {
+        setMessage(`Error: ${errorMessage}`);
+        setMessage(``);
+        // setLoading(false);
+      }, 3000);
+    }
+    finally {
+      setIsLoading(false); // End loading
     }
   };
 
   const handleCancel = () => {
     setFormData({
       username: '',
-      companyname: '',
       name: '',
       mobile: '',
       email: '',
@@ -127,8 +122,14 @@ const CreateUser = () => {
 
   return (
     <div className="company-register-container">
-      {message && <div className="createuser_message">{message}</div>}
+      
+      {/* {message && <div className="createuser_message">{message}</div>} */}
       <h2 className="company-register-title">User Register</h2>
+      {message && (
+        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+          {message}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         {/* Username */}
         <div className="company-form-group">
@@ -264,6 +265,14 @@ const CreateUser = () => {
           <button type="submit" className="btn-submit">Create</button>
         </div>
       </form>
+      {isLoading && (
+        <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

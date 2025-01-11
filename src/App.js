@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AsideBar_Header from "./pages/Asidebar_Header";
 import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
-import UploadDocument from "./components/upload document/UploadDocument";
 import VerifyDoc from "./components/verify Document/verifydoc";
 import CompanyCreation from "./components/company creation/CompanyCreation";
 import DocumentList from "./components/document list/DocumentList";
@@ -12,9 +11,7 @@ import Dashboard from "./components/dashboard/dashboard";
 import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
-import EmployeeCreation from "./components/employee creation/EmployeeCreation";
-import Fileupload from "./components/fileuploadtestpage/file upload"
-import Test from './components/test/test'
+import Fileupload from "./components/File Upload/file upload"
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
 import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -76,9 +73,7 @@ function AppContent() {
       <Routes>
         {/* Route for Login */}
         <Route path="/login" element={<Login />} />
-        <Route path="/upload" element={<Fileupload />} />
-        <Route path="/test" element={<Test />} />
-        {/* Reset Password (Unrestricted Access) */}
+
         <Route path="/resetpassword" element={<ResetPassword />} />
 
         {/* Change Password (Token Only) */}
@@ -93,18 +88,18 @@ function AppContent() {
 
         {/* Protected Routes */}
         <Route
-          path="/"
+          path="/upload"
           element={
             <PrivateRoute>
-              <DocumentList />
+              <Fileupload />
             </PrivateRoute>
           }
         />
         <Route
-          path="/UploadDocument"
+          path="/"
           element={
             <PrivateRoute>
-              <UploadDocument />
+              <DocumentList />
             </PrivateRoute>
           }
         />
@@ -126,20 +121,6 @@ function AppContent() {
 				followers="80K"
 				likes="803K"
 				photos="1.4K" />
-            </PrivateRoute>
-          }
-        />
-        {/* <Route
-          path="/logout"
-          element={
-            handleLogout()
-          }
-        /> */}
-        <Route
-          path="/EmployeeCreation"
-          element={
-            <PrivateRoute>
-              <EmployeeCreation />
             </PrivateRoute>
           }
         />

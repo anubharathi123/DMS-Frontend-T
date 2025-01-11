@@ -131,8 +131,8 @@ const Header = () => {
             {/* Profile Dropdown */}
             {activeDropdown === "profile" && (
                 <div className="profile-dropdown">
-                    <p><b>Name:</b> John Doe</p>
-                    <p><b>Email:</b> john.doe@example.com</p>
+                    <p><b>Name:</b> {localStorage.getItem('name')}</p>
+                    <p><b>Email:</b> {localStorage.getItem('email')}</p>
                     <button
                         type="button"
                         className="signout-button"

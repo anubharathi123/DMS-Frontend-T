@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CompanyCreation.css';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import Loader from "react-js-loader";
 import authService from '../../ApiServices/ApiServices';
 
 const CompanyCreation = () => {
@@ -20,6 +21,7 @@ const CompanyCreation = () => {
   const [fileInputClicked, setFileInputClicked] = useState(false);
   const [error, setError] = useState(null); // For error handling
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);  
   
 
   // Handles input changes
@@ -75,7 +77,7 @@ const CompanyCreation = () => {
     Object.keys(company).forEach((key) => {
       formData.append(key, company[key]);
     });
-
+    setIsLoading(true);
     if (contractDocuments) {
       formData.append('contractDocuments', contractDocuments); // Append file to FormData
     }
@@ -88,6 +90,14 @@ const CompanyCreation = () => {
 
     } catch (error) {
       setError(error.message || 'Something went wrong.'); // Display error if API call fails
+      setTimeout(() => {
+        setError(error.message || 'Something went wrong.');
+        setError(``);
+        // setLoading(false);
+      }, 3000);
+    }
+    finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -117,6 +127,11 @@ const CompanyCreation = () => {
     <div className="company-creation-container">
       <div className="company-creation-inner-container">
         <h2 className="company-creation-title">Company Register</h2>
+        {error && (
+        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+          {error}
+        </div>
+      )}
         <form className="company-creation-form" onSubmit={handleSubmit}>
           {/* Username */}
           <div className="company-creation-form-group">
@@ -250,7 +265,7 @@ const CompanyCreation = () => {
           </div>
 
           {/* Error Message */}
-          {error && <div className="company-creation-error">{error}</div>}
+          {/* {error && <div className="company-creation-error">{error}</div>} */}
 
           {/* Submit and Cancel */}
           <div className="company-creation-buttons">
@@ -263,6 +278,14 @@ const CompanyCreation = () => {
           </div>
         </form>
       </div>
+      {isLoading && (
+        <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

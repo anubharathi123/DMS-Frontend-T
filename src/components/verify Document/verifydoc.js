@@ -3,8 +3,9 @@ import DatePicker from "react-datepicker";
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { AlignCenter, Search } from 'lucide-react';
+import Loader from "react-js-loader";
 import './verifydoc.css';
-import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
+import apiServices from '../../ApiServices/ApiServices'; 
 
 const DocumentApproval = () => {
   const [data, setData] = useState([]);
@@ -12,9 +13,11 @@ const DocumentApproval = () => {
   const [filterDoc, setFilterDoc] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [actionMessage, setActionMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState('');  
+  const [isLoading, setIsLoading] = useState(false);  
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -25,19 +28,24 @@ const DocumentApproval = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
+    setIsLoading(true);
         const response = await apiServices.getDocuments();
         console.log('Documents:', response);
-        const documents = response.map(doc => ({
+        const documents = response
+        .filter(doc => doc.status?.toLowerCase() === 'pending') // Filter documents with status 'pending'
+        .map(doc => ({
+          file_id: doc.id,
           declarationNumber: doc.declaration_number,
-          file : doc.current_version?.file_path,
+          file: doc.current_version?.file_path,
           fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',  // Extract file name
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
           fileUrl: doc.fileUrl || '',
           viewed: false,
-          version:doc.current_version?.version_number,
+          version: doc.current_version?.version_number,
         }));
+
 
         setData(documents);
         setFilteredData(documents);
@@ -47,7 +55,10 @@ const DocumentApproval = () => {
         }
       } catch (error) {
         console.error('Error fetching documents:', error);
-        setActionMessage('Error fetching documents. Please try again later.');
+        setErrorMessage('Error fetching documents. Please try again later.');
+      }
+      finally {
+        setIsLoading(false); // End loading
       }
     };
 
@@ -57,11 +68,14 @@ const DocumentApproval = () => {
 
   const handleApproval = async (declarationNumber, newStatus) => {
     setActionMessage('');
+    setIsLoading(true);
+
     try {
+      console.log('Approval:', declarationNumber, newStatus);
       if (newStatus === 'Approved') {
-        await apiServices.approveDocument(declarationNumber);
+        await apiServices.verifyDocument(declarationNumber, {approval_status:'Approved'});
       } else if (newStatus === 'Rejected') {
-        await apiServices.rejectDocument(declarationNumber);
+        await apiServices.verifyDocument(declarationNumber, {approval_status:'Rejected'});
       }
 
       const updatedData = data.map((item) =>
@@ -72,16 +86,25 @@ const DocumentApproval = () => {
       setData(updatedData);
       setFilteredData(updatedData);
       setActionMessage(`Document ${declarationNumber} has been ${newStatus}`);
-    } catch (error) {
-      console.error('Error during approval/rejection:', error);
-      setActionMessage('There was an error processing your request.');
       setTimeout(() => {
-        setActionMessage('There was an error processing your request.');
+        setActionMessage(`Document ${declarationNumber} has been ${newStatus}`);
         setActionMessage('');
         // setLoading(false);
       }, 3000);
+      
+    } catch (error) {
+      console.error('Error during approval/rejection:', error);
+      setErrorMessage('There was an error processing your request.');
+      setTimeout(() => {
+        setErrorMessage('There was an error processing your request.');
+        setErrorMessage('');
+        // setLoading(false);
+      }, 3000);
  
-      setActionMessage('There was an error processing your request.');
+      // setActionMessage('There was an error processing your request.');
+    }
+    finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -204,7 +227,7 @@ const DocumentApproval = () => {
           </select>
         </div> */}
 
-<div className="documenttable_filter flex items-center">
+      <div className="documenttable_filter flex items-center">
           <label className="documenttable_filter_label mr-2">Document Type:</label>
           <select value={filterDoc} onChange={handleDocumentTypeChange} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
             <option value="">All</option>
@@ -223,8 +246,13 @@ const DocumentApproval = () => {
         </div>
       </div>
       {actionMessage && (
-        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+        <div className="documentapproval_message bg-green-100 text-green-800 px-4 py-2 rounded mb-4" role="alert">
           {actionMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+          {errorMessage}
         </div>
       )}
       {/* {filteredData.length === 0 ? (
@@ -290,8 +318,8 @@ const DocumentApproval = () => {
                     </span>
                   </td> */}
                   <td className="documentapproval_td documentapproval_approvalbtn px-6 py-4">
-                    <button className="documentapproval_action_button bg-green-500 text-white px-4 py-2 rounded mr-2" onClick={() => handleApproval(item.declarationNumber, 'Approved')}>Approve</button>
-                    <button className="documentapproval_action_button bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleApproval(item.declarationNumber, 'Rejected')}>Reject</button>
+                    <button className="documentapproval_action_button bg-green-500 text-white px-4 py-2 rounded mr-2" onClick={() => handleApproval(item.file_id, 'Approved')}>Approve</button>
+                    <button className="documentapproval_action_button bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleApproval(item.file_id, 'Rejected')}>Reject</button>
                   </td>
                 </tr>
               ))}
@@ -319,8 +347,14 @@ const DocumentApproval = () => {
         </div>
       </div>
         </>
-      {/* ) */}
-      {/* } */}
+        {isLoading && (
+        <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={80} />
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

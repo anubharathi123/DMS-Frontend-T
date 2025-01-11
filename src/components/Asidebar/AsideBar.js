@@ -16,6 +16,8 @@ const AsideBar = () => {
         console.log('details_data:', details_data);
         // const fetchedName = details_data.details[5].name;
         const fetchedRole = details_data.details[5].name;
+        localStorage.setItem('name', details_data.details[1].first_name);
+        localStorage.setItem('email', details_data.details[1].email);
         // console.log('fetchedName:', fetchedName);
         console.log(fetchedRole)
 
@@ -78,215 +80,203 @@ const AsideBar = () => {
         </a>
       </div>
       <nav style={{ marginBottom: '14px' }}>
-
-        <ul>
-          {/* Profile Dropdown */}
-          {(role === 'PRODUCT_OWNER' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
-            <li className={`dropdown ${openDropdowns.profile ? 'open' : ''}`}>
-              <NavLink to="/Profile" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p className="profiletab">Profile</p>
-              </NavLink>
-              <button onClick={() => toggleDropdown('profile')} className="dropdown-toggle1">
-                {renderDropdownIcon('profile')}
-              </button>
-              
-              {openDropdowns.profile && (
-                <ul className="dropdown-menu1">
-                  {/* {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && ( */}
-                  <li>
-                    <NavLink to="/profilemanagement" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Profile Management
-                    </NavLink>
-                  </li>
-                  {/* )} */}
-
-                </ul>
-              )}
-            </li>
-          )}
-
-          {/* Dashboard Dropdown */}
-          {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
-            <li className={`dropdown ${openDropdowns.dashboard ? 'open' : ''}`}>
-              
-              <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p style={{ marginLeft: '0px' }}>Dashboard</p>
-              </NavLink>
-              <button onClick={() => toggleDropdown('dashboard')} className="dropdown-toggle1">
-                {renderDropdownIcon('dashboard')}
-              </button>
-              {openDropdowns.dashboard && (
-                  
-                <ul className="dropdown-menu1">
-                  <li>
-                    <NavLink to="/audit-log" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Audit Log
-                    </NavLink>
-                  </li>
-                  
-                  <li>
-                    <NavLink to="/Document" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Document 
-                    </NavLink>
-                    <button onClick={() => toggleDropdown('document',true)} className="dropdown-toggle1">
-                {renderDropdownIcon('document')}
-                </button>
-                  
-                    {openDropdowns.document && (
-                      <ul className="dropdown-menu1">
-                        <li>
-                          <NavLink to="/document-creation" className={({ isActive }) => (isActive ? 'active' : '')}>
-                            Document Creation
-                          </NavLink>
-                        </li>
-                        <li>
-                          <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
-                            Document List
-                          </NavLink>
-                        </li>
-                      </ul>
-                    )}
-                  </li>
-                  <li>
-                    <NavLink to="/Announcement" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Announcement 
-                    </NavLink>
-                    <button onClick={() => toggleDropdown('announcement',true)} className="dropdown-toggle1">
-                {renderDropdownIcon('announcement')}
-                </button>
-
-                    {openDropdowns.announcement && (
-                      <ul className="dropdown-menu1">
-                        <li>
-                          <NavLink to="/announcement-creation" className={({ isActive }) => (isActive ? 'active' : '')}>
-                            Announcement Creation
-                          </NavLink>
-                        </li>
-                        <li>
-                          <NavLink to="/announcement-list" className={({ isActive }) => (isActive ? 'active' : '')}>
-                            Announcement List
-                          </NavLink>
-                        </li>
-                      </ul>
-                    )}
-                  </li>
-                </ul>
-              )}
-            </li>
-          )}
-
-          {/* Create Admin Dropdown */}
-          {role === 'PRODUCT_OWNER' && (
-
-            <li className={`dropdown ${openDropdowns['create-admin'] ? 'open' : ''}`}>
-              <NavLink to="/createuser"className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p>Create Admin</p>
-              </NavLink>
-              <button onClick={() => toggleDropdown('create-admin')} className="dropdown-toggle1">
-                {renderDropdownIcon('create-admin')}
-              </button>
-              {openDropdowns['create-admin'] && (
-                <ul className="dropdown-menu1">
-                  <li>
-                    <NavLink to="/admin-list" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Admin List
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
-          )}
-
-          {/* Organization Dropdown */}
-          {(role === 'PRODUCT_OWNER' || role === '#') && (
-
-            <li className={`dropdown ${openDropdowns['organization'] ? 'open' : ''}`}>
-              <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p>Organization</p>
-              </NavLink>
-              <button onClick={() => toggleDropdown('organization')} className="dropdown-toggle1">
-                {renderDropdownIcon('organization')}
-              </button>
-              {openDropdowns['organization'] && (
-                <ul className="dropdown-menu1">
-                  <li>
-                    <NavLink to="/organization-list" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Organization List
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
-          )}
-
-          {/* Document Upload Dropdown */}
-          {(role === 'UPLOADER' || role === '#') && (
-
-            <li className={`dropdown ${openDropdowns['UploadDocument'] ? 'open' : ''}`}>
-              <NavLink to="/uploaddocument" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p>Document Upload</p>
-              </NavLink>
-              <button onClick={() => toggleDropdown('uploaddocument')} className="dropdown-toggle1">
-              {renderDropdownIcon('uploaddocument')}
-              </button>
-              {openDropdowns.uploaddocument && (
-                <ul className="dropdown-menu1">
-                  <li>
-                    <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Document List
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
-          )}
-
-          {/* Create User */}
-          {(role === '#' || role === 'ADMIN') && (
-            <li>
-              <NavLink to="/createuser" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p >Create User</p>
-              </NavLink>
-            </li>
-          )}
-
-          {/* Document View */}
-          {(role === 'VIEWER' || role === 'ADMIN') && (
-            <li>
-              <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p >Document View</p>
-              </NavLink>
-            </li>
-          )}
-
-          {/* Verify Document */}
-          {(role === 'REVIEWER' || role === '#') && (
-
-            <li className={`dropdown ${openDropdowns['verifydocument'] ? 'open' : ''}`}>
-              <NavLink to="/verifydocument" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p>Verify Document</p>
-              </NavLink>
-              {openDropdowns.VerifyDoc && (
-                <ul className="dropdown-menu1">
-                  <li>
-                    <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
-                      Document List
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
-          )}
-
-          {/* Settings */}
-          {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
-            <li>
-              <NavLink to="/settings" className={({ isActive }) => (isActive ? 'active' : '')}>
-                <p style={{ marginLeft: '0px' }}>Settings</p>
-              </NavLink>
-            </li>
-          )}
+      <ul>
+  {/* Profile Dropdown */}
+  {(role === 'PRODUCT_OWNER' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
+    <li className={`dropdown ${openDropdowns.profile ? 'open' : ''}`}>
+      <NavLink to="/Profile" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="profiletab asidebar_p_tag">Profile</p>
+      </NavLink>
+      <button onClick={() => toggleDropdown('profile')} className="dropdown-toggle1">
+        {renderDropdownIcon('profile')}
+      </button>
+      
+      {openDropdowns.profile && (
+        <ul className="dropdown-menu1">
+          <li>
+            <NavLink to="/profilemanagement" className={({ isActive }) => (isActive ? 'active' : '')}>
+            <p className="asidebar_p_tag">Profile Management</p>
+            </NavLink>
+          </li>
         </ul>
+      )}
+    </li>
+  )}
+
+  {/* Dashboard Dropdown */}
+  {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
+    <li className={`dropdown ${openDropdowns.dashboard ? 'open' : ''}`}>
+      <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag">Dashboard</p>
+      </NavLink>
+      <button onClick={() => toggleDropdown('dashboard')} className="dropdown-toggle1">
+        {renderDropdownIcon('dashboard')}
+      </button>
+      {openDropdowns.dashboard && (
+        <ul className="dropdown-menu1">
+          <li>
+            <NavLink to="/audit-log" className={({ isActive }) => (isActive ? 'active' : '')}>
+            <p className="asidebar_p_tag">Audit Log</p>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/Document" className={({ isActive }) => (isActive ? 'active' : '')}>
+              <p className="asidebar_p_tag">Document</p>
+            </NavLink>
+            <button onClick={() => toggleDropdown('document', true)} className="dropdown-toggle1">
+              {renderDropdownIcon('document')}
+            </button>
+            {openDropdowns.document && (
+              <ul className="dropdown-menu1">
+                <li>
+                  <NavLink to="/document-creation" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  <p className="asidebar_p_tag">Document Creation</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  <p className="asidebar_p_tag">Document List</p>
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+          <li>
+            <NavLink to="/Announcement" className={({ isActive }) => (isActive ? 'active' : '')}>
+              <p className="asidebar_p_tag">Announcement</p>
+            </NavLink>
+            <button onClick={() => toggleDropdown('announcement', true)} className="dropdown-toggle1">
+              {renderDropdownIcon('announcement')}
+            </button>
+            {openDropdowns.announcement && (
+              <ul className="dropdown-menu1">
+                <li>
+                  <NavLink to="/announcement-creation" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  <p className="asidebar_p_tag" style={{'height':'30px'}}>Announcement Creation</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/announcement-list" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  <p className="asidebar_p_tag">Announcement List</p>
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+        </ul>
+      )}
+    </li>
+  )}
+
+  {/* Create Admin Dropdown */}
+  {role === 'PRODUCT_OWNER' && (
+    <li className={`dropdown ${openDropdowns['create-admin'] ? 'open' : ''}`}>
+      <NavLink to="/createuser" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag">Create Admin</p>
+      </NavLink>
+      <button onClick={() => toggleDropdown('create-admin')} className="dropdown-toggle1">
+        {renderDropdownIcon('create-admin')}
+      </button>
+      {openDropdowns['create-admin'] && (
+        <ul className="dropdown-menu1">
+          <li>
+            <NavLink to="/admin-list" className={({ isActive }) => (isActive ? 'active' : '')}>
+            <p className="asidebar_p_tag">Admin List</p>
+            </NavLink>
+          </li>
+        </ul>
+      )}
+    </li>
+  )}
+
+  {/* Organization Dropdown */}
+  {(role === 'PRODUCT_OWNER' || role === '#') && (
+    <li className={`dropdown ${openDropdowns['organization'] ? 'open' : ''}`}>
+      <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag">Organization</p>
+      </NavLink>
+      <button onClick={() => toggleDropdown('organization')} className="dropdown-toggle1">
+        {renderDropdownIcon('organization')}
+      </button>
+      {openDropdowns['organization'] && (
+        <ul className="dropdown-menu1">
+          <li>
+            <NavLink to="/organization-list" className={({ isActive }) => (isActive ? 'active' : '')}>
+            <p className="asidebar_p_tag">Organization List</p>
+            </NavLink>
+          </li>
+        </ul>
+      )}
+    </li>
+  )}
+
+  {/* Document Upload Dropdown */}
+  {(role === 'UPLOADER' || role === '#') && (
+    <li className={`dropdown ${openDropdowns['UploadDocument'] ? 'open' : ''}`}>
+      <NavLink to="/upload" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag">Document Upload</p>
+      </NavLink>
+      <button onClick={() => toggleDropdown('uploaddocument')} className="dropdown-toggle1">
+        {renderDropdownIcon('uploaddocument')}
+      </button>
+      {openDropdowns.uploaddocument && (
+        <ul className="dropdown-menu1">
+          <li>
+            <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
+            <p className="asidebar_p_tag">Document List</p>
+            </NavLink>
+          </li>
+        </ul>
+      )}
+    </li>
+  )}
+
+  {/* Create User */}
+  {(role === '#' || role === 'ADMIN') && (
+    <li>
+      <NavLink to="/createuser" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag">Create User</p>
+      </NavLink>
+    </li>
+  )}
+
+  {/* Document View */}
+  {(role === 'VIEWER' || role === 'ADMIN') && (
+    <li>
+      <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag">Document View</p>
+      </NavLink>
+    </li>
+  )}
+
+  {/* Verify Document */}
+  {(role === 'REVIEWER' || role === '#') && (
+    <li className={`dropdown ${openDropdowns['verifydocument'] ? 'open' : ''}`}>
+      <NavLink to="/verifydoc" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag">Verify Document</p>
+      </NavLink>
+      {openDropdowns.VerifyDoc && (
+        <ul className="dropdown-menu1">
+          <li>
+            <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
+            <p className="asidebar_p_tag"> Document List</p>
+            </NavLink>
+          </li>
+        </ul>
+      )}
+    </li>
+  )}
+
+  {/* Settings */}
+  {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
+    <li>
+      <NavLink to="/settings" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <p className="asidebar_p_tag" >Settings</p>
+      </NavLink>
+    </li>
+  )}
+</ul>
+
       </nav>
     </aside>
   );

@@ -55,7 +55,7 @@
     color: red;
 }
 .react-datepicker {
-    position:fixed;
+    position:absolute;
     margin-left: -181px;
     margin-top: 23px;
 }

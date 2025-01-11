@@ -9,6 +9,11 @@
   top: 130px;
 }
 
+
+.document-list-calendarbtn{
+  background: transparent;
+    border: none;
+}
 /* Search and Filters */
 .documenttable_controls {
   display: flex;

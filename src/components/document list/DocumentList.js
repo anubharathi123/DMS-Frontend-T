@@ -3,6 +3,8 @@ import { Search } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
 import './DocumentList.css';
+import Loader from "react-js-loader";
+
 
 const DocumentTable = () => {
   const [data, setData] = useState([]);
@@ -14,11 +16,15 @@ const DocumentTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [actionMessage, setActionMessage] = useState('');
-  const calendarRef = useRef(null);
+  const calendarRef = useRef(null);  
+  const [isLoading, setIsLoading] = useState(false);  
+  
 
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
+    setIsLoading(true);
+
         const response = await apiServices.getDocuments();
         const documents = response.map(doc => ({
           declarationNumber: doc.declaration_number,
@@ -41,6 +47,9 @@ const DocumentTable = () => {
       } catch (error) {
         console.error('Error fetching documents:', error);
         setActionMessage('Error fetching documents. Please try again later.');
+      }
+      finally {
+        setIsLoading(false); // End loading
       }
     };
 
@@ -210,6 +219,14 @@ const DocumentTable = () => {
           </button>
         </div>
       </div>
+      {isLoading && (
+        <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
