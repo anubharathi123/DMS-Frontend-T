@@ -61,6 +61,9 @@ const FileUploadPage = () => {
                 case 'packinglist':
                   mappedKey = 'packingList';
                   break;
+                case 'packing list':
+                  mappedKey = 'packingList';
+                  break;
                 case 'awsbol':
                   mappedKey = 'awsBol';
                   break;
@@ -70,6 +73,15 @@ const FileUploadPage = () => {
                 case 'deliveryorder':
                   mappedKey = 'deliveryOrder';
                   break;
+                  case 'aws/bol':
+                    mappedKey = 'awsBol';
+                    break;
+                  case 'country of origin':
+                    mappedKey = 'countryOfOrigin';
+                    break;
+                  case 'delivery order':
+                    mappedKey = 'deliveryOrder';
+                    break;
                 default:
                   break;
               }
