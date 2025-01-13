@@ -50,6 +50,7 @@ const FileUploadPage = () => {
               const docTypeName = document.document_type.name.toLowerCase();
   
               let mappedKey = null;
+              console.log('docTypeName:', docTypeName);
               switch (docTypeName) {
                 case 'declaration':
                   mappedKey = 'declaration';
@@ -57,16 +58,16 @@ const FileUploadPage = () => {
                 case 'invoice':
                   mappedKey = 'invoice';
                   break;
-                case 'packing list':
+                case 'packinglist':
                   mappedKey = 'packingList';
                   break;
-                case 'aws/bol':
+                case 'awsbol':
                   mappedKey = 'awsBol';
                   break;
-                case 'country of origin':
+                case 'countryoforigin':
                   mappedKey = 'countryOfOrigin';
                   break;
-                case 'delivery order':
+                case 'deliveryorder':
                   mappedKey = 'deliveryOrder';
                   break;
                 default:
