@@ -29,32 +29,48 @@
 }
 
 /* Dashboard Section */
+
+
 .dashboard {
-  border-style: ridge;
-  border-width: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-style: ridge; */
+  border-width: 1px;
   border-color: var(--dark-blue);
-  width: 75%;
-  margin: 20px auto;
+  width: 940px;
+  margin-bottom: 20px;
+  margin-top: 140px;
   padding: 20px;
-  height: auto;
+  height: 50px;
   border-radius: 30px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-/* Header */
 .dashboard-h1 {
-  margin-bottom: 20px;
-  font-size: 2em;
   color: var(--dark-blue);
+  font-size: 1.5em;
+  text-align: center;
 }
+
+
+
+
+
+
+
+
+
+
 
 /* Card Section */
 .cards-container {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  width: 100%;
 }
 
 .card {
@@ -62,20 +78,20 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin: 10px;
+  /* margin: 10px; */
   width: 190px;
   text-align: center;
 }
 
 .card h2 {
   margin-bottom: 10px;
-  font-size: 1.5em;
+  font-size: 0.8rem;;
   color: var(--dark-blue);
 }
 
 .card p {
-  font-size: 1.2em;
-  color: #666;
+  font-size: 12px;
+  color: #000b58;
 }
 
 /* Chart Section */
@@ -99,10 +115,6 @@
   }
 }
 
-/* Dashboard Container Adjustment for Small Screens */
-.dashboard-container {
-  margin-top: 210vh;
-}
 
 /* Styles for the Pie, Line, and   Bar Charts */
 canvas {
@@ -126,3 +138,74 @@ canvas {
   gap: 20px;
   padding: 20px;
 }
+
+
+
+
+
+.card-title {
+  display: flex;           
+  align-items: center;     
+  justify-content: space-evenly;
+}
+
+.card-icon {
+  font-size: 30px;         
+  margin-right: 15px;      
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;  
+  text-align: left;       
+}
+
+
+
+
+
+
+/* Chart Section */
+.chart-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 20px;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.chart {
+  width: 100%;
+  max-width: 25%;
+  margin: 20px 0;
+  background-color: var(--chart-bg-color);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 10px;
+}
+
+/* Media Queries for Mobile */
+@media (max-width: 768px) {
+  .chart {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+

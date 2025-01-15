@@ -1,7 +1,10 @@
+
 import React, { useEffect, useRef } from 'react';
 import './dashboard.css';
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend, LineElement, BarElement, CategoryScale, LinearScale, PointElement, PieController, LineController, BarController } from 'chart.js';
+import { IoPeople } from "react-icons/io5";
+import { HiBuildingOffice2 } from "react-icons/hi2";
 
 Chart.register(ArcElement, Tooltip, Legend, LineElement, BarElement, CategoryScale, LinearScale, PointElement, PieController, LineController, BarController);
 
@@ -72,15 +75,15 @@ const sampleBarData = {
   ],
 };
 
-const App = () => {
+const DashboardApp = () => {
   return (
     <div className='dashboard-container'>
       <Dashboard />
       <div className="cards-container">
-        <Card className='dashboard-card' title="Total Sales" value="$1,234,567" />
-        <Card className='dashboard-card' title="Total Users" value="12,345" />
-        <Card className='dashboard-card' title="Total Orders" value="1,234" />
-        <Card className='dashboard-card' title="Total Revenue" value="$123,456" />
+        <Card className='dashboard-card' title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} />
+        <Card className='dashboard-card' title="Active Companies" value="22,345" icon={<HiBuildingOffice2 />} />
+        <Card className='dashboard-card' title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 />} />
+        <Card className='dashboard-card' title="Client Admin" value="23,456" icon={<IoPeople />} />
       </div>
       <div className="chart-container">
         <div className="chart">
@@ -101,20 +104,25 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <h1 className='dashboard-h1'>
-        <center>Dashboard</center>
+        Dashboard
       </h1>
-      <p>
-        <strong>Number Of Companies</strong>
-      </p>
     </div>
   );
 };
 
-const Card = ({ title, value }) => {
+const Card = ({ title, value, icon }) => {
   return (
     <div className="card">
-      <h2>{title}</h2>
-      <p>{value}</p>
+      <div className="card-title">
+        {/* Icon passed as a prop */}
+        <div className="card-icon">{icon}</div>
+
+        {/* Title and value aligned to the right */}
+        <div className="card-info">
+          <h2>{title}</h2>
+          <p>{value}</p>
+        </div>
+      </div>
     </div>
   );
 };
@@ -170,4 +178,4 @@ const BarChart = () => {
   return <canvas ref={chartRef}></canvas>;
 };
 
-export default App;
+export default DashboardApp;
