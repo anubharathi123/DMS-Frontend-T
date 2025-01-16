@@ -3,6 +3,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './OrganizationList.css';
 import { CiTextAlignLeft } from 'react-icons/ci';
+import { MdDeleteOutline } from "react-icons/md";
+
 
 const OrganizationList = () => {
     const data = [
@@ -106,7 +108,8 @@ const OrganizationList = () => {
                                         className="organization-delete"
                                         onClick={() => handleDelete((currentPage - 1) * itemsPerPage + index)}
                                     >
-                                        Delete
+                                        <MdDeleteOutline />
+
                                     </button>
                                 </td>
                             </tr>

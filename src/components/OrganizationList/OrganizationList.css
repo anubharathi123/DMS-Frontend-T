@@ -52,7 +52,8 @@
     border: none;
     background: none;
     cursor:pointer;
-    color: red;
+    font-size: 18px;
+    color: rgb(193, 17, 17);
 }
 .react-datepicker {
     position:absolute;
