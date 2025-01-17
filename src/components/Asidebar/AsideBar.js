@@ -252,7 +252,7 @@ const AsideBar = () => {
   {/* Verify Document */}
   {(role === 'REVIEWER' || role === '#') && (
     <li className={`dropdown ${openDropdowns['verifydocument'] ? 'open' : ''}`}>
-      <NavLink to="/verifydoc" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <NavLink to="/verifydocument" className={({ isActive }) => (isActive ? 'active' : '')}>
         <p className="asidebar_p_tag">Verify Document</p>
       </NavLink>
       {openDropdowns.VerifyDoc && (

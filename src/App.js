@@ -12,7 +12,7 @@ import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
 import Fileupload from "./components/fileuploadtestpage/file upload"
-import Test from './components/test/test'
+// import Test from './components/test/test'
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
 import OrganizationList from "./components/OrganizationList/OrganizationList";
