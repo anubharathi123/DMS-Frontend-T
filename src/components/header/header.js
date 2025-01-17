@@ -57,6 +57,7 @@ const Header = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("access_status");
         localStorage.removeItem("role");
+        localStorage.removeItem("Company_name")
         Navigate('/login');
 
     }

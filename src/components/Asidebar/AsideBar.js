@@ -223,7 +223,7 @@ const AsideBar = () => {
           {(role === 'UPLOADER' || role === '#') && (
 
             <li className={`dropdown ${openDropdowns['UploadDocument'] ? 'open' : ''}`}>
-              <NavLink to="/uploaddocument" className={({ isActive }) => (isActive ? 'active' : '')}>
+              <NavLink to="/upload" className={({ isActive }) => (isActive ? 'active' : '')}>
                 <p>Document Upload</p>
               </NavLink>
               <button onClick={() => toggleDropdown('uploaddocument')} className="dropdown-toggle1">

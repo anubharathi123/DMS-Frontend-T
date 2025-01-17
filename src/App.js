@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AsideBar_Header from "./pages/Asidebar_Header";
 import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
-import UploadDocument from "./components/upload document/UploadDocument";
 import VerifyDoc from "./components/verify Document/verifydoc";
 import CompanyCreation from "./components/company creation/CompanyCreation";
 import DocumentList from "./components/document list/DocumentList";
@@ -12,7 +11,6 @@ import Dashboard from "./components/dashboard/dashboard";
 import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
-import EmployeeCreation from "./components/employee creation/EmployeeCreation";
 import Fileupload from "./components/fileuploadtestpage/file upload"
 import Test from './components/test/test'
 import Profile from "./components/Profile/Profile";
@@ -99,14 +97,7 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/UploadDocument"
-          element={
-            <PrivateRoute>
-              <UploadDocument />
-            </PrivateRoute>
-          }
-        />
+        
         <Route
           path="/profilemanagement"
           element={
@@ -128,22 +119,8 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-        {/* <Route
-          path="/logout"
-          element={
-            handleLogout()
-          }
-        /> */}
         <Route
-          path="/EmployeeCreation"
-          element={
-            <PrivateRoute>
-              <EmployeeCreation />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/verifydoc"
+          path="/verifydocument"
           element={
             <PrivateRoute>
               <VerifyDoc />

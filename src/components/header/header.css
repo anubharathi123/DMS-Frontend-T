@@ -101,7 +101,7 @@
   position: absolute;
   top: 60px;
   right: 20px;
-  background: #FFF4B7; /* Updated to Light Teal */
+  background: #f9f9f9; /* Updated to Light Teal */
   width: 300px;
   padding: 10px;
   height: auto;
@@ -151,7 +151,7 @@
   position: absolute;
   top: 70px;
   right: 10px;
-  background: #FFF4B7; /* Updated to Light Teal */
+  background: #f9f9f9; /* Updated to Light Teal */
   border: 1px solid #006A67; /* Updated to Teal */
   border-radius: 5px;
   padding: 10px;
