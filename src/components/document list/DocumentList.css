@@ -6,7 +6,7 @@
   width: 75%;
   margin-left: 250px;
   position: absolute;
-  top: 130px;
+  top: 80px;
 }
 
 /* Search and Filters */
@@ -40,7 +40,7 @@
 
 /* General Table Styling */
 .documenttable_td {
-  padding: 1rem;
+  /* padding: 1rem; */
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -84,9 +84,10 @@
 }
 
 .documenttable_th {
-  padding: 16px;
+  padding: 0;
   text-align: left;
   font-weight: bold;
+  text-align: center;
 }
 
 .documenttable_row {
@@ -95,7 +96,7 @@
 }
 
 .documenttable_td {
-  padding: 16px;
+  padding: 15px;
   text-align: left;
 }
 
@@ -146,8 +147,8 @@
 } */
 
 .py-4 {
-  padding-top: 1.5rem !important;
-  padding-bottom: 1.5rem !important;
+  /* padding-top: 1.5rem !important; */
+  /* padding-bottom: 1.5rem !important; */
 }
 
 .py-3 {

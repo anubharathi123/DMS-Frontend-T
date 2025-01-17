@@ -149,7 +149,7 @@ const FileUploadPage = () => {
           <input
             type="text"
             id="declarationNumber"
-            className="declaration-input"
+            className="filedeclaration-input"
             value={declarationNumber}
             onChange={handleDeclarationNumberChange}
             maxLength={13}
