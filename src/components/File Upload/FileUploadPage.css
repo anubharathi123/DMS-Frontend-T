@@ -24,10 +24,11 @@
   }
   
   .page-title {
-    font-size: 28px;
+    font-size: 25px;
     color: var(--dark-blue);
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 0;
     place-self: center;
 
   }
@@ -41,20 +42,21 @@
   .declaration-section {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
   }
   
   .declaration-label {
-    font-size: 16px;
+    font-size: 14px;
     color: var(--mid-blue);
     font-weight: bold;
   }
   
   .declaration-input {
     flex: 1;
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid var(--mid-blue);
+    padding: 5px;
+    padding-left: 10px;
+    font-size: 14px;
+    border: 1.5px solid var(--mid-blue);
     border-radius: 6px;
     outline: none;
   }
@@ -65,8 +67,8 @@
   }
   
   .go-button {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 8px 20px;
+    font-size: 14px;
     color: var(--white);
     background-color: var(--teal);
     border: none;
