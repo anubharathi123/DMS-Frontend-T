@@ -1,0 +1,112 @@
+.organization-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+
+.organization-h1 {
+    font-size: 1.5rem;
+    color: #000b58;
+    margin-left: 150px;
+}
+
+.organization-table {
+    margin-top: 15px;
+  border-collapse: collapse;
+  width: 100%;
+  margin-left: 22%;
+}
+
+.organization-table-header {
+    font-weight: bold;
+  font-size: 0.9rem !important;
+  color: #000b58;
+  background-color: #f3f4f6;
+  text-align: center;
+}
+
+.organization-table-th{
+    width: 240px;
+    padding: 16px;
+    font-size: 0.7rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.organization-table-td {
+    padding: 16px;
+    width: 200px;
+    text-align: center;
+    font-size: 0.9rem !important;
+}
+
+.organization-calendarbtn {
+    border: none;
+    background: none;
+    cursor:pointer;
+}
+
+.organization-delete {
+    border: none;
+    background: none;
+    cursor:pointer;
+    font-size: 18px;
+    color: rgb(193, 17, 17);
+}
+.react-datepicker {
+    position:absolute;
+    margin-left: -181px;
+    margin-top: 23px;
+}
+.prev-next-container {
+    display: flex;
+    justify-content: space-between; /* Space between page number and buttons */
+    align-items: center; /* Vertically align items */
+    margin: 10px 0; /* Adjust the margin as needed */
+    width: 100%; /* Ensure it spans the table width */
+}
+
+.prev-next-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Adds spacing between buttons */
+    margin-left: 5%; /* Align with the table's right margin */
+}
+.prev-button {
+    border: none;
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    background-color: #e5e7eb;
+    color: #495057;
+    cursor: pointer;
+    font-size: 0.7rem !important;
+    border-color:#aaabae;
+    border-width: 1px;
+    border-style: solid;
+   
+}
+
+.next-button {
+    margin-left: 20px;
+    background-color: #000b58;
+    color: white;
+    border: solid 1px #545454;
+    border-radius: 7px;
+    font-size: 0.7rem !important;
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    cursor: pointer;
+}
+
+
+.pageno {
+    font-size: 0.9rem; 
+    margin-left: 15%; /* Align with the table's left margin */
+}

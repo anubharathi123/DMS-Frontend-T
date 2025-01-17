@@ -1,7 +1,17 @@
+
 import React, { useEffect, useRef } from 'react';
 import './dashboard.css';
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend, LineElement, BarElement, CategoryScale, LinearScale, PointElement, PieController, LineController, BarController } from 'chart.js';
+import { IoPeople } from "react-icons/io5";
+import { HiBuildingOffice2 } from "react-icons/hi2";
+import { IoMdCloudUpload } from "react-icons/io";
+import { IoIosCheckmarkCircle } from "react-icons/io";
+import { MdPending } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
+
+
+
 
 Chart.register(ArcElement, Tooltip, Legend, LineElement, BarElement, CategoryScale, LinearScale, PointElement, PieController, LineController, BarController);
 
@@ -72,15 +82,33 @@ const sampleBarData = {
   ],
 };
 
-const App = () => {
+const DashboardApp = () => {
+  const role = localStorage.getItem('role'); // Get the role of the user from localStorage
+
+  // Conditionally render the dashboard based on the role
   return (
     <div className='dashboard-container'>
-      <Dashboard />
+      <Dashboard role={role} />
       <div className="cards-container">
-        <Card className='dashboard-card' title="Total Sales" value="$1,234,567" />
-        <Card className='dashboard-card' title="Total Users" value="12,345" />
-        <Card className='dashboard-card' title="Total Orders" value="1,234" />
-        <Card className='dashboard-card' title="Total Revenue" value="$123,456" />
+        {role === 'PRODUCT_OWNER' && (
+          <>
+            <Card className='dashboard-card' title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} />
+            <Card className='dashboard-card' title="Active Companies" value="22,345" icon={<HiBuildingOffice2 />} />
+            <Card className='dashboard-card' title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 />} />
+            <Card className='dashboard-card' title="Client Admin" value="23,456" icon={<IoPeople />} />
+
+          </>
+        )}
+        {role === 'ADMIN' && (
+          <>
+          <Card className='dashboard-card' title="Total Uploads" value="21,234" icon={<IoMdCloudUpload />} />
+          <Card className='dashboard-card' title="Accepted" value="18,234" icon={<IoIosCheckmarkCircle />} />
+          <Card className='dashboard-card' title="Pending" value="1,000" icon={<MdPending />} />
+          <Card className='dashboard-card' title="Rejected" value="2,000" icon={<MdCancel />} />
+
+          </>
+        )}
+        
       </div>
       <div className="chart-container">
         <div className="chart">
@@ -97,24 +125,28 @@ const App = () => {
   );
 };
 
-const Dashboard = () => {
+const Dashboard = ({ role }) => {
   return (
     <div className="dashboard">
-      <h1>
-        <center>Dashboard</center>
+      <h1 className='dashboard-h1'>
+        {role === 'PRODUCT_OWNER' && 'Product Owner Dashboard'}
+        {role === 'ADMIN' && 'Admin Dashboard'}
+        
       </h1>
-      <p>
-        <strong>Number Of Companies</strong>
-      </p>
     </div>
   );
 };
 
-const Card = ({ title, value }) => {
+const Card = ({ title, value, icon }) => {
   return (
     <div className="card">
-      <h2>{title}</h2>
-      <p>{value}</p>
+      <div className="card-title">
+        <div className="card-icon">{icon}</div>
+        <div className="card-info">
+          <h2>{title}</h2>
+          <p>{value}</p>
+        </div>
+      </div>
     </div>
   );
 };
@@ -170,4 +202,4 @@ const BarChart = () => {
   return <canvas ref={chartRef}></canvas>;
 };
 
-export default App;
+export default DashboardApp;

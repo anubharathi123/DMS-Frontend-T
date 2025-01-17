@@ -18,13 +18,13 @@
   /* background-color: #003161; */
   border-radius: 4px;
   padding: 5px;
-  width: 250px;
-  margin-right: -3%;
+  width: 220px;
+  /* margin-right: -3%; */
 }
 
 .search-input {
   height: 30px;
-  width: 80% !important;
+  width: 100% !important;
   padding: 5px !important;
   border: 1px solid #006A67 !important; /* Updated to Teal */
   border-radius: 8px !important;
@@ -38,7 +38,7 @@
   position: absolute;
   right: 10px;
   cursor: pointer;
-  left: 70%;
+  /* left: 70%; */
 }
 
 .search-suggestions {

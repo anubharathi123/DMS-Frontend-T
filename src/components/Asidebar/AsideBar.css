@@ -53,13 +53,16 @@ nav ul li {
 }
 
 nav ul li:last-child {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 nav ul li .active {
   background-color: #006A67; /* Updated to Teal */
 }
 
+nav ul li .active .asidebar_p_tag{
+  margin-left: 10px;
+}
 nav ul li img {
   width: 25px;
   height: 25px;
@@ -90,6 +93,7 @@ nav ul li .dropdown-menu1 li a {
   align-items: center;
   margin-top: -7px;
   margin-bottom: 0px;
+  width: 170px;
   margin-left: 20px !important;
 }
 
@@ -170,9 +174,9 @@ nav::-webkit-scrollbar-thumb:hover {
   background: none;
   border: none;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  padding: 0;
+  /* padding: 0; */
   margin-left: auto;
   cursor: pointer;
 }

@@ -4,7 +4,7 @@ import avatar from "../../assets/images/candidate-profile.png";
 
 function ProfileCard(props) {
 	return (
-		<div className="card-container">
+		<><h1 className="profile-title">Profile</h1><div className="card-container">
 			<header className="profile-header">
 				<img className="profile_img" src={avatar} alt={props.name} />
 			</header>
@@ -14,7 +14,7 @@ function ProfileCard(props) {
 			<h2 className="normal-text">Role: Compiler</h2>
 			<h2 className="normal-text">Mail ID: rita.correia1233@gmail.com</h2>
 			<h2 className="normal-text">Mobile: 9877685436</h2>
-			</div>
+		</div></>
 	);
 }
 

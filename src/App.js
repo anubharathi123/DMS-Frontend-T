@@ -15,6 +15,7 @@ import Fileupload from "./components/fileuploadtestpage/file upload"
 import Test from './components/test/test'
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
+import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -73,9 +74,7 @@ function AppContent() {
       <Routes>
         {/* Route for Login */}
         <Route path="/login" element={<Login />} />
-        <Route path="/upload" element={<Fileupload />} />
-        <Route path="/test" element={<Test />} />
-        {/* Reset Password (Unrestricted Access) */}
+
         <Route path="/resetpassword" element={<ResetPassword />} />
 
         {/* Change Password (Token Only) */}
@@ -90,10 +89,10 @@ function AppContent() {
 
         {/* Protected Routes */}
         <Route
-          path="/"
+          path="/upload"
           element={
             <PrivateRoute>
-              <DocumentList />
+              <Fileupload />
             </PrivateRoute>
           }
         />
@@ -132,6 +131,15 @@ function AppContent() {
           element={
             <PrivateRoute>
               <CompanyCreation />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/OrganizationList"
+          element={
+            <PrivateRoute>
+              <OrganizationList />
             </PrivateRoute>
           }
         />

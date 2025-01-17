@@ -169,23 +169,23 @@ const authService = {
 
   // Document APIs
   uploadDocument: async (data) => {
-    if (!data.file || !data.metadata) {
-      throw new Error('File and metadata are required to upload a document.');
-    }
+    // console.log('data:', data); 
     return handleResponse(apiClient.post('documents/upload/', data));
   },
   getDocuments: async () => handleResponse(apiClient.get('documents/')),
+  checkdeclarationdoc: async (declaration) => handleResponse(apiClient.get(`documents/${Number(declaration)}/`)),
+
   getDocumentById: async (docId) => {
     if (!docId) {
       throw new Error('Document ID is required.');
     }
     return handleResponse(apiClient.get(`documents/${docId}/`));
   },
-  verifyDocument: async (docId) => {
+  verifyDocument: async (docId,data) => {
     if (!docId) {
       throw new Error('Document ID is required to verify a document.');
     }
-    return handleResponse(apiClient.post(`documents/${docId}/verify/`));
+    return handleResponse(apiClient.post(`documents/${docId}/verify/`,data));
   },
   reuploadDocument: async (docId, data) => {
     if (!docId || !data.file) {
@@ -202,9 +202,9 @@ const authService = {
     return handleResponse(apiClient.post(`documents/${docId}/approve/`));
   },
   rejectDocument: async (docId, reason) => {
-    if (!docId || !reason) {
-      throw new Error('Document ID and rejection reason are required.');
-    }
+    // if (!docId || !reason) {
+    //   throw new Error('Document ID and rejection reason are required.');
+    // }
     return handleResponse(apiClient.post(`documents/${docId}/reject/`, { reason }));
   },
   // Notifications APIs

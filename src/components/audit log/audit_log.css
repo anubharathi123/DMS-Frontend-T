@@ -13,38 +13,80 @@
 
 .audit-h1{
   font-family:'Times New Roman', Times, serif;
-  text-align: center;
+  color: var(--dark-blue);
+  margin-left: 150px;
+  margin-top: -90px;
 }
 
-.audit-actions {
-
+.audit-mail-id_label{
+  font-weight: 600;
+  margin-right: 15px;
+  margin-left: 260px;
 }
 
-.audit_from-date {
-  margin-left: 15px;
-  width: 250px;
+.audit-mail-id_input {
+  width: 260px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  font-size: small;
+  border-radius: 7px;;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
 }
 
-.audit_to-date {
-  margin-left: 15px;
-  width: 250px;
-}
-
-.from-date {
+.audit-actions_label{
+  font-weight: 600;
   margin-right: 15px;
 }
 
-.to-date {
-  margin-left: 25px;
+.audit-actions_input {
+  width: 260px;
+  font-size: small;
+  border-radius: 7px;;
+  margin-right: 15px;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
+}
+
+.audit-from-date_input {
+  width: 260px;
+  margin-left: 15px;
+  font-size: small;
+  border-radius: 7px;;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
+}
+
+.audit-to-date_input {
+  width: 260px;
+  margin-left: 49px;
+  font-size: small;
+  border-radius: 7px;;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
+}
+
+.audit-from-date_label {
+  font-weight: 600;
+}
+
+.audit-to-date_label {
+  font-weight: 600;
+  margin-left: 260px;
 }
 
 .apply-filterbtn {
-  margin-left: 30%;
+  margin-left: 50%;
   width: 110px;
   border: none;
-  background: #5fc3d7;
-  border-radius: 3px;
-  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--teal);
+  color: white;
+  padding: 10px;
   cursor: pointer;
 }
 
@@ -55,22 +97,24 @@
 
 
 .audit-table {
+  margin-top: 15px;
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 40%;
-  margin-left: 30%;
+  margin-left: 40%;
 }
 
-/* th {
+
+.audit-table-header{
+  font-weight: bold;
+  font-size: 0.9rem !important;
+  color: #000b58;
+  background-color:#f3f4f6;
   text-align: center;
-  padding: 10px;
-} */
+}
 
-.editbtn {
-  border: none;
-  background:none;
-  cursor: pointer;
-
+.audit-table-th {
+  padding: 16px;
 }
 
 @media (prefers-reduced-motion: no-preference) {

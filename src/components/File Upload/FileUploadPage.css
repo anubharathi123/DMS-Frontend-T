@@ -28,8 +28,8 @@
     color: var(--dark-blue);
     text-align: center;
     margin-bottom: 20px;
-    place-self: center;
     margin-top: 0;
+    place-self: center;
 
   }
   
@@ -42,7 +42,7 @@
   .declaration-section {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
   }
   
   .declaration-label {
@@ -51,16 +51,17 @@
     font-weight: bold;
   }
   
-  .filedeclaration-input {
+  .declaration-input {
     flex: 1;
-    padding: 6px;
+    padding: 5px;
+    padding-left: 10px;
     font-size: 14px;
     border: 1.5px solid var(--mid-blue);
     border-radius: 6px;
     outline: none;
   }
   
-  .filedeclaration-input:focus {
+  .declaration-input:focus {
     border-color: var(--teal);
     box-shadow: 0 0 8px rgba(0, 106, 103, 0.3);
   }
@@ -75,6 +76,10 @@
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
+
+  .file-name-exist{
+    margin-bottom: 15px;
+  }
   
   .go-button:disabled {
     background-color: #ccc;
@@ -88,7 +93,8 @@
   .file-upload-section {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    /* gap: 15px; */
+    gap: 20px;
   }
   
   .file-upload-item {
@@ -99,9 +105,9 @@
   
   .file-upload-label {
     flex: 1;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--dark-blue);
-    /* font-weight: bold; */
+    font-weight: bold;
   }
   
   .file-actions {
@@ -114,8 +120,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 25px;
-    height: 25px;
+    width: 40px;
+    height: 40px;
     background-color: var(--teal);
     color: var(--white);
     border-radius: 50%;
@@ -154,7 +160,7 @@
   .submit-button {
     align-self: center;
     padding: 12px 30px;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--white);
     background-color: var(--teal);
     border: none;
