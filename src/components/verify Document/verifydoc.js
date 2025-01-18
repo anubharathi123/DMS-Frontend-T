@@ -5,7 +5,11 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import { AlignCenter, Search } from 'lucide-react';
 import Loader from "react-js-loader";
 import './verifydoc.css';
-import apiServices from '../../ApiServices/ApiServices'; 
+import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
+import { MdCancel } from "react-icons/md";
+import { IoIosCheckmarkCircle } from "react-icons/io";
+
+
 
 const DocumentApproval = () => {
   const [data, setData] = useState([]);
@@ -298,7 +302,7 @@ const DocumentApproval = () => {
             <tbody>
               {paginatedData.map((item, index) => (
                 <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
-                  <td className="documentapproval_td px-6 py-4" style={{textAlignLast:"left", position: "relative", left: '20px'}}>{item.declarationNumber}</td>
+                  <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
                   <td className="documentapproval_td documentapproval_td_name px-6 py-4">
                     <button
                       className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
@@ -318,8 +322,9 @@ const DocumentApproval = () => {
                     </span>
                   </td> */}
                   <td className="documentapproval_td documentapproval_approvalbtn px-6 py-4">
-                    <button className="documentapproval_action_button bg-green-500 text-white px-4 py-2 rounded mr-2" onClick={() => handleApproval(item.file_id, 'Approved')}>Approve</button>
-                    <button className="documentapproval_action_button bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleApproval(item.file_id, 'Rejected')}>Reject</button>
+                    <button className="documentapproval_action_button" onClick={() => handleApproval(item.declarationNumber, 'Approved')}><IoIosCheckmarkCircle />
+                    </button>
+                    <button className="documentreject_action_button" onClick={() => handleApproval(item.declarationNumber, 'Rejected')}><MdCancel /></button>
                   </td>
                 </tr>
               ))}
