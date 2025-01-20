@@ -2,12 +2,22 @@
 .documenttable_container{
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   width: 75%;
   margin-left: 250px;
   position: absolute;
-  top: 80px;
+  top: 65px;
 }
+
+.documentlist_header{
+  font-size: 25px;
+  font-weight: bold;
+  color: #000b58;
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
 
 
 .document-list-calendarbtn{
@@ -101,7 +111,7 @@
 }
 
 .documenttable_td {
-  padding: 15px;
+  padding: 10px;
   text-align: left;
 }
 
@@ -117,6 +127,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  /* margin-bottom: 10px; */
 }
 
 .documenttable_pageinfo_text {
@@ -168,7 +179,7 @@ border-width: 0;
 }
 
 .mb-4 {
-margin-bottom: 1.5rem !important;
+margin-bottom: 0.5rem !important;
 }
 
 .py-2 {
@@ -205,4 +216,66 @@ padding-bottom: .25rem !important;
 .px-2 {
 padding-right: .5rem !important;
 padding-left: .5rem !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Make sure the table is properly styled */
+.documenttable_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style the header */
+.documenttable_thead {
+  /* position: sticky; */
+  top: 0;
+  z-index: 10;
+  background-color: #f9fafb;
+}
+
+/* Add a scrollbar to the table */
+.documenttable_tbody {
+  display: block;
+  max-height: 300px; /* Adjust based on desired height */
+  overflow-y: auto;
+}
+
+/* Keep the table header fixed */
+.documenttable_thead, .documenttable_row {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.documenttable_row {
+  display: table-row;
+}
+
+.documenttable_tbody td {
+  width: 20%;
+  word-wrap: break-word;
+}
+
+/* Optional: Add more styles for scrollbar and overflow */
+.documenttable_tbody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.documenttable_tbody::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.documenttable_tbody::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }

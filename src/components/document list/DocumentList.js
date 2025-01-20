@@ -1,10 +1,11 @@
+
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
 import './DocumentList.css';
 import Loader from "react-js-loader";
-
 
 const DocumentTable = () => {
   const [data, setData] = useState([]);
@@ -16,14 +17,13 @@ const DocumentTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [actionMessage, setActionMessage] = useState('');
-  const calendarRef = useRef(null);  
-  const [isLoading, setIsLoading] = useState(false);  
-  
+  const calendarRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-    setIsLoading(true);
+        setIsLoading(true);
 
         const response = await apiServices.getDocuments();
         const documents = response.map(doc => ({
@@ -47,8 +47,7 @@ const DocumentTable = () => {
       } catch (error) {
         console.error('Error fetching documents:', error);
         setActionMessage('Error fetching documents. Please try again later.');
-      }
-      finally {
+      } finally {
         setIsLoading(false); // End loading
       }
     };
@@ -56,7 +55,6 @@ const DocumentTable = () => {
     fetchDocuments();
   }, []);
 
-  
   const filteredData1 = filteredData.filter((item) => {
     if (filter === '') {
       return item.declarationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,7 +112,7 @@ const DocumentTable = () => {
 
   return (
     <div className="documenttable_container">
-      <h1 className="documentapproval_header">Document List</h1>
+      <h1 className="documentlist_header">Document List</h1>
       {actionMessage && <div className="documenttable_action_message">{actionMessage}</div>}
       <div className="documenttable_controls flex justify-between mb-4">
         <div className="documenttable_search flex items-center">
@@ -177,7 +175,7 @@ const DocumentTable = () => {
             <th className="documenttable_th px-6 py-3">Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="documenttable_tbody">
           {paginatedData.map((item, index) => (
             <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>

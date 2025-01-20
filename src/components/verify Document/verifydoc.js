@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import DatePicker from "react-datepicker";
 import { Worker, Viewer } from '@react-pdf-viewer/core';
@@ -8,7 +9,6 @@ import './verifydoc.css';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
 import { MdCancel } from "react-icons/md";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-
 
 
 const DocumentApproval = () => {
@@ -32,24 +32,23 @@ const DocumentApproval = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-    setIsLoading(true);
+        setIsLoading(true);
         const response = await apiServices.getDocuments();
         console.log('Documents:', response);
         const documents = response
-        .filter(doc => doc.status?.toLowerCase() === 'pending') // Filter documents with status 'pending'
-        .map(doc => ({
-          file_id: doc.id,
-          declarationNumber: doc.declaration_number,
-          file: doc.current_version?.file_path,
-          fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',  // Extract file name
-          updatedDate: doc.updated_at,
-          documentType: doc.document_type?.name || '',
-          status: doc.status || '',
-          fileUrl: doc.fileUrl || '',
-          viewed: false,
-          version: doc.current_version?.version_number,
-        }));
-
+          .filter(doc => doc.status?.toLowerCase() === 'pending') // Filter documents with status 'pending'
+          .map(doc => ({
+            file_id: doc.id,
+            declarationNumber: doc.declaration_number,
+            file: doc.current_version?.file_path,
+            fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',  // Extract file name
+            updatedDate: doc.updated_at,
+            documentType: doc.document_type?.name || '',
+            status: doc.status || '',
+            fileUrl: doc.fileUrl || '',
+            viewed: false,
+            version: doc.current_version?.version_number,
+          }));
 
         setData(documents);
         setFilteredData(documents);
@@ -60,8 +59,7 @@ const DocumentApproval = () => {
       } catch (error) {
         console.error('Error fetching documents:', error);
         setErrorMessage('Error fetching documents. Please try again later.');
-      }
-      finally {
+      } finally {
         setIsLoading(false); // End loading
       }
     };
@@ -91,23 +89,16 @@ const DocumentApproval = () => {
       setFilteredData(updatedData);
       setActionMessage(`Document ${declarationNumber} has been ${newStatus}`);
       setTimeout(() => {
-        setActionMessage(`Document ${declarationNumber} has been ${newStatus}`);
         setActionMessage('');
-        // setLoading(false);
       }, 3000);
       
     } catch (error) {
       console.error('Error during approval/rejection:', error);
       setErrorMessage('There was an error processing your request.');
       setTimeout(() => {
-        setErrorMessage('There was an error processing your request.');
         setErrorMessage('');
-        // setLoading(false);
       }, 3000);
- 
-      // setActionMessage('There was an error processing your request.');
-    }
-    finally {
+    } finally {
       setIsLoading(false); // End loading
     }
   };
@@ -120,45 +111,27 @@ const DocumentApproval = () => {
   };
 
   const handleFileOpen = (file) => {
-    // if (file.file.toLowerCase().endsWith('.pdf')) {
-    //   const updatedData = data.map((item) =>
-    //     item.file === file.file
-    //       ? { ...item, viewed: true }
-    //       : item
-    //   );
-    //   setData(updatedData);
-    //   setSelectedFile(file);
-    // } else {
-      const a = document.createElement('a');
-      console.log(a)
-      a.href = host+file.file;
-      console.log(file.file);
-      a.download = file.file;
-      console.log(a)
-      const updatedData = data.map((item) =>
-        item.file === file.file
-          ? { ...item, viewed: true }
-          : item
-      );
-      setData(updatedData);
-      
-      window.open(host + file.file, '_blank');  
-    // }
+    const a = document.createElement('a');
+    a.href = host + file.file;
+    a.download = file.file;
+    const updatedData = data.map((item) =>
+      item.file === file.file
+        ? { ...item, viewed: true }
+        : item
+    );
+    setData(updatedData);
+    
+    window.open(host + file.file, '_blank');  
   };
 
-  
   const applyFilters = () => {
     let filtered = [...data];
-    console.log('Filter Date:', filterDate);
     if (filterDate) {
-        // Format the filterDate to a local date string in 'YYYY-MM-DD' format
-        const selectedDate = filterDate.toLocaleDateString('en-CA'); // 'en-CA' gives 'YYYY-MM-DD' format
-
-        filtered = filtered.filter((doc) => {
-            // Parse the updatedDate to a local date string
-            const docDate = new Date(doc.updatedDate).toLocaleDateString('en-CA');
-            return docDate === selectedDate;
-        });
+      const selectedDate = filterDate.toLocaleDateString('en-CA');
+      filtered = filtered.filter((doc) => {
+        const docDate = new Date(doc.updatedDate).toLocaleDateString('en-CA');
+        return docDate === selectedDate;
+      });
     }
     if (filterDoc) {
       filtered = filtered.filter((doc) => doc.documentType === filterDoc);
@@ -166,19 +139,17 @@ const DocumentApproval = () => {
 
     setCurrentPage(1);
     setFilteredData(filtered);
-};
-
+  };
 
   useEffect(() => {
-      applyFilters();
-    }, [filterDate, filterDoc]);
+    applyFilters();
+  }, [filterDate, filterDoc]);
 
-    const handleDocumentTypeChange = (e) => {
-      setFilterDoc(e.target.value);
-    };
-  
-    const uniqueDocumentTypes = [...new Set(data.map(doc => doc.documentType))];
-  
+  const handleDocumentTypeChange = (e) => {
+    setFilterDoc(e.target.value);
+  };
+
+  const uniqueDocumentTypes = [...new Set(data.map(doc => doc.documentType))];
 
   useEffect(() => {
     const results = data.filter(item =>
@@ -193,7 +164,6 @@ const DocumentApproval = () => {
     );
     setFilteredData(results);
   }, [data, searchTerm, filter]);
-  
 
   const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
@@ -207,7 +177,7 @@ const DocumentApproval = () => {
 
   return (
     <div className="documentapproval_container">
-      <h1 className="documentapproval_header">Document Approval</h1>
+      <h1 className="verifydocument_header">Document Approval</h1>
 
       <div className="documenttable_controls flex justify-between mb-4">
         
@@ -221,17 +191,8 @@ const DocumentApproval = () => {
             className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
           />
         </div>
-        {/* <div className="documenttable_filter flex items-center">
-          <label className="documenttable_filter_label mr-2">Filter by Status:</label>
-          <select value={filter} onChange={(e) => setFilter(e.target.value)} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
-            <option value="">All</option>
-            <option value="PENDING">Pending</option>
-            <option value="REJECTED">Rejected</option>
-            <option value="APPROVED">Approved</option>
-          </select>
-        </div> */}
 
-      <div className="documenttable_filter flex items-center">
+        <div className="documenttable_filter flex items-center">
           <label className="documenttable_filter_label mr-2">Document Type:</label>
           <select value={filterDoc} onChange={handleDocumentTypeChange} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
             <option value="">All</option>
@@ -240,6 +201,7 @@ const DocumentApproval = () => {
             ))}
           </select>
         </div>
+
         <div className="documenttable_rows flex items-center">
           <label className="documenttable_rows_label mr-2">Rows per Page:</label>
           <select value={rowsPerPage} onChange={(e) => setRowsPerPage(parseInt(e.target.value, 10))} className="documenttable_rows_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
@@ -249,6 +211,7 @@ const DocumentApproval = () => {
           </select>
         </div>
       </div>
+
       {actionMessage && (
         <div className="documentapproval_message bg-green-100 text-green-800 px-4 py-2 rounded mb-4" role="alert">
           {actionMessage}
@@ -259,78 +222,67 @@ const DocumentApproval = () => {
           {errorMessage}
         </div>
       )}
-      {/* {filteredData.length === 0 ? (
-        <div className="documentapproval_no_data text-center text-gray-500 py-4">
-          No files are available for approval.
-        </div>
-      ) : ( */}
-        <>
-          <table className="documentapproval_table w-full text-sm text-left text-gray-500">
-            <thead className="documentapproval_thead text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th className="documentapproval_th px-6 py-3">Declaration Number</th>
-                <th className="documentapproval_th px-6 py-3">File Name</th>
-                {/* <th className="documentapproval_th px-6 py-3">Version</th> */}
-                <th className="documentapproval_th px-6 py-3">Updated Date
-                <button
+
+      <table className="documenttable_table w-full text-sm text-left text-gray-500">
+        <thead className="documentapproval_thead text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th className="documentapproval_th px-6 py-3">Declaration Number</th>
+            <th className="documentapproval_th px-6 py-3">File Name</th>
+            <th className="documentapproval_th px-6 py-3">Updated Date
+              <button
                 className="document-list-calendarbtn"
                 onClick={handleCalendarToggle}
               >
                 📅
               </button>
               {isCalendarOpen && (
-                              <div
-                                style={{ position: "absolute", zIndex: 1000 }}
-                                ref={calendarRef}
-                              >
-                                <DatePicker
-                                  selected={filterDate}
-                                  onChange={(date) => {
-                                    setFilterDate(date);
-                                    setIsCalendarOpen(false);
-                                  }}
-                                  inline
-                                />
-                              </div>
-                            )}
-                </th>
-                <th className="documentapproval_th px-6 py-3">Doc Type</th>
-                {/* <th className="documentapproval_th px-6 py-3">Status</th> */}
-                <th className="documentapproval_th px-6 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedData.map((item, index) => (
-                <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
-                  <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
-                  <td className="documentapproval_td documentapproval_td_name px-6 py-4">
-                    <button
-                      className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
-                      onClick={() => handleFileOpen(item)}
-                      aria-label={`View ${item.fileName}`}
-                    >
-                      {item.fileName}
-                    </button>
-                    {item.viewed && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
-                  </td>
-                  {/* <td className="documentapproval_td px-6 py-4" style={{textAlignLast: 'center'}}>{item.version}.0</td> */}
-                  <td className="documentapproval_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                  <td className="documentapproval_td px-6 py-4">{item.documentType}</td>
-                  {/* <td className="documentapproval_td px-6 py-4">
-                    <span className={`documentapproval_status_badge px-2 py-1 rounded text-sm ${item.status.toLowerCase() === 'approved' ? 'bg-green-100 text-green-800' : item.status.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                      {item.status}
-                    </span>
-                  </td> */}
-                  <td className="documentapproval_td documentapproval_approvalbtn px-6 py-4">
-                    <button className="documentapproval_action_button" onClick={() => handleApproval(item.declarationNumber, 'Approved')}><IoIosCheckmarkCircle />
-                    </button>
-                    <button className="documentreject_action_button" onClick={() => handleApproval(item.declarationNumber, 'Rejected')}><MdCancel /></button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="documenttable_pagination flex justify-between mt-4">
+                <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
+                  <DatePicker
+                    selected={filterDate}
+                    onChange={(date) => {
+                      setFilterDate(date);
+                      setIsCalendarOpen(false);
+                    }}
+                    inline
+                  />
+                </div>
+              )}
+            </th>
+            <th className="documentapproval_th px-6 py-3">Doc Type</th>
+            <th className="documentapproval_th px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody className="documentlist-table overflow-y-auto max-h-80">
+          {paginatedData.map((item, index) => (
+            <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
+              <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
+              <td className="documentapproval_td documentapproval_td_name px-6 py-4">
+                <button
+                  className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
+                  onClick={() => handleFileOpen(item)}
+                  aria-label={`View ${item.fileName}`}
+                >
+                  {item.fileName}
+                </button>
+                {item.viewed && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
+              </td>
+              <td className="documentapproval_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+              <td className="documentapproval_td px-6 py-4">{item.documentType}</td>
+              <td className="documentapproval_td documentapproval_approvalbtn px-6 py-4">
+                <button className="documentapproval_action_button" onClick={() => handleApproval(item.declarationNumber, 'Approved')}>
+                  <IoIosCheckmarkCircle />
+                </button>
+                <button className="documentreject_action_button" onClick={() => handleApproval(item.declarationNumber, 'Rejected')}>
+                  <MdCancel />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="documenttable_pagination flex justify-between mt-4">
         <div className="documenttable_pageinfo flex items-center">
           <p className="documenttable_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData.length / rowsPerPage)}</p>
         </div>
@@ -351,8 +303,8 @@ const DocumentApproval = () => {
           </button>
         </div>
       </div>
-        </>
-        {isLoading && (
+
+      {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">
             <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={80} />

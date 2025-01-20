@@ -2,20 +2,21 @@
 .documentapproval_container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   width: 75%;
   margin-left: 200px;
   position: absolute;
   top: 50px;
-  padding: 20px;
+  padding: 8px;
 }
 
-.documentapproval_header {
+.verifydocument_header {
   font-size: 25px;
   font-weight: bold;
   color: #000b58;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 /* Action Message Styling */
@@ -66,9 +67,10 @@
 
 .documentapproval_th,
 .documentapproval_td {
-  padding: 15px;
-  text-align: center;
-  font-size: 14px;
+  padding: 10px;
+  text-align: left;
+  /* text-align: center; */
+  font-size: 12px;
   /* text-align-last: center; */
 }
 
@@ -77,7 +79,7 @@
 }
 
 .text-sm {
-  font-size: 14px !important;
+  font-size: 12px !important;
 }
 .documentapproval_row {
   background-color: #fff;
@@ -96,6 +98,7 @@
   cursor: pointer;
   background: transparent;
     border: navajowhite;
+    text-align: left;
 }
 
 .documentapproval_file_link:hover {
@@ -341,15 +344,15 @@
 /* Download File Button Styling */
 .documentapproval_download_file_btn {
   display: flex;
-  background-color: #000b58; /* Main button color */
-  color: white; /* Text color */
-  font-size: 0.85rem; /* Font size */
-  font-weight: 500; /* Font weight */
-  padding: 10px 15px; /* Padding for size */
-  border: none; /* Remove default border */
-  cursor: pointer; /* Pointer cursor on hover */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition effects */
+  background-color: #000b58; 
+  color: white;
+  font-size: 0.85rem; 
+  font-weight: 500; 
+  padding: 10px 15px; 
+  border: none; 
+  cursor: pointer; 
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease; 
   align-items: center;
     width: 100px;
     margin: 25px 10px 25px 50px;
@@ -357,8 +360,8 @@
 
 /* Hover Effect */
 .documentapproval_download_file_btn:hover {
-  background-color: #2c5f7d; /* Darker shade for hover */
-  transform: scale(1.05); /* Slight scale effect on hover */
+  background-color: #2c5f7d; 
+  transform: scale(1.05); 
 }
 
 .documentreject_action_button{
@@ -379,3 +382,103 @@
 
 
 
+
+
+
+
+
+
+
+
+/* Common styles for the scrollable table body */
+.documentapproval_table tbody,
+.documenttable_table tbody {
+  display: block;
+  max-height: 400px; 
+  overflow-y: auto;
+  width: 100%;
+}
+
+.documentapproval_table thead,
+.documenttable_table thead,
+.documentapproval_table tbody tr,
+.documenttable_table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.documentapproval_table,
+.documenttable_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.documentapproval_table th,
+.documenttable_table th {
+  background-color: #f1f1f1; 
+  padding: 8px;
+  text-align: left;
+  /* text-align-last: left; */
+}
+
+.documentapproval_table td,
+.documenttable_table td {
+  padding: 8px;
+  text-align: left;
+}
+
+.documentapproval_table tbody tr:hover,
+.documenttable_table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+.documentapproval_table .documentapproval_row,
+.documenttable_table .documenttable_row {
+  transition: background-color 0.2s ease-in-out;
+}
+
+
+
+.documentapproval_tbody::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.documentapproval_tbody::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+
+
+
+
+
+
+
+
+
+/* Scrollable table with border-radius for scrollbar */
+.documentlist-table {
+  max-height: 300px; 
+  overflow-y: auto;
+}
+
+.documentlist-table::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.documentlist-table::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px; /* Apply border radius to the scrollbar */
+}
+
+.documentlist-table::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.documentlist-table::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 4px; 
+}
