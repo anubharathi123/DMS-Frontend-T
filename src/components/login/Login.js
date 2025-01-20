@@ -79,7 +79,7 @@ const Login = () => {
       localStorage.setItem('role', role);
       localStorage.setItem('access_status', true);
 
-      navigate('/');
+      navigate('/DocumentList');
     } catch (error) {
       console.error('OTP verification error:', error.message || error);
       setMessages([error.message || 'Invalid OTP. Please try again.']);

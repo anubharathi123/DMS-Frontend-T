@@ -394,7 +394,7 @@
 .documentapproval_table tbody,
 .documenttable_table tbody {
   display: block;
-  max-height: 400px; 
+  max-height: 240px; 
   overflow-y: auto;
   width: 100%;
 }
