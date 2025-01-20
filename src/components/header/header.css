@@ -66,10 +66,10 @@
 }
 
 .suggestion-item:hover {
-  background-color: #006A67; /* Updated to Teal */
-}
-
-.no-suggestions {
+  background-color: #006A67; 
+} */
+ 
+ .no-suggestions {
   font-size: 14px;
   color: #aaa;
   text-align: center;
@@ -135,10 +135,11 @@
   background: none;
   border-radius: 20px;
   cursor: pointer;
+  color: #f9f9f9;
 }
 
 .profilebtn:hover {
-  background: #66ccec; /* Updated to a light blue tone */
+  background: #66ccec;
 }
 
 .profile-image {
@@ -184,3 +185,26 @@
     position-area: y-end;
   }
 }
+.name-input-container {
+  margin-right: 10px;
+}
+
+.name-input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* .icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  background-color: lightgray; 
+} */
