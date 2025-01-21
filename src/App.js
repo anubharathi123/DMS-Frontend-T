@@ -15,6 +15,9 @@ import Fileupload from "./components/File Upload/file upload"
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
 import OrganizationList from "./components/OrganizationList/OrganizationList";
+import Login1 from "./components/login1/login1";
+import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
+import ChangePassword1 from "./components/changepassword1/changepassword1";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -62,7 +65,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -73,17 +76,22 @@ function AppContent() {
       <Routes>
         {/* Route for Login */}
         <Route path="/login" element={<Login />} />
+        <Route path="/login1" element={<Login1 />} />
 
         <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/resetpassword1" element={<Forgot_Pwd1 />} />
 
         {/* Change Password (Token Only) */}
         <Route
           path="/ChangePassword"
           element={
-            <TokenRoute>
               <ChangePassword />
-            </TokenRoute>
           }
+        />
+
+        <Route
+          path="/ChangePassword1"
+          element={ <ChangePassword1 /> }
         />
 
         {/* Protected Routes */}
@@ -142,6 +150,7 @@ function AppContent() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/DocumentList"
           element={
