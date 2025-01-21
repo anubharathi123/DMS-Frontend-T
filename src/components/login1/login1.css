@@ -10,6 +10,22 @@ body {
   margin-top: -40px;
 }
 
+.login1-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #5fc3d7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login1-btn:hover {
+  background-color: #4e00b0;
+}
+
 .login1-container {
   height: 100vh;
   width: 100%;
@@ -101,7 +117,7 @@ body {
   width: 100%;
   padding: 10px;
   border: none;
-  background-color: #006a67;
+  background-color: #5fc3d7;
   color: white;
   border-radius: 5px;
   font-size: 16px;
@@ -110,7 +126,7 @@ body {
 }
 
 .btn-signin:hover {
-  background-color: #004d4b;
+  background-color: #4e00b0;
 }
 
 .login1-with {
@@ -148,6 +164,14 @@ body {
 .login1_main_alignment {
   display: flex;
   justify-content: center;
+}
+
+.login1_footer {
+  width: 100xp;
+  height:50xp;
+  border: 2px solid black;
+  margin-top: -60px;
+  position: relative;
 }
 
 /* Media Queries for Responsiveness */
