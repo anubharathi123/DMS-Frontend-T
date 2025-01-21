@@ -127,13 +127,15 @@ const DocumentTable = () => {
         </div>
         <div className="documenttable_filter flex items-center">
           <label className="documenttable_filter_label mr-2">Filter by Status:</label>
-          <select value={filter} onChange={handleFilter} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
+          <select value={filter} onChange={handleFilter} className="documenttable_filter_select py-2 pl-10 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
             <option value="">All</option>
             <option value="PENDING">Pending</option>
             <option value="REJECTED">Reject</option>
             <option value="APPROVED">Approve</option>
           </select>
         </div>
+                
+
         <div className="documenttable_rows flex items-center">
           <label className="documenttable_rows_label mr-2">Rows per Page:</label>
           <select value={rowsPerPage} onChange={handleRowsPerPage} className="documenttable_rows_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">

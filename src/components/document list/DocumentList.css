@@ -279,3 +279,8 @@ padding-left: .5rem !important;
 .documenttable_tbody::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
+
+
+.documenttable_filter_select {
+  font-size: 12px !important; 
+}
