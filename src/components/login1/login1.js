@@ -183,12 +183,15 @@ const Login1 = () => {
                   )}
         
                   <div className="login-div-alignment">
-                    <button className="login-btn" type="submit">
+                    <button className="login1-btn" type="submit">
                       {isOtpVisible ? 'Verify OTP' : 'Login'}
                     </button>
                   </div>
                 </form>
+               
       </div>
+      <div className='login1_footer'>
+    </div>
     </div>
   );
 };

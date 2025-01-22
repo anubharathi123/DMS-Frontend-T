@@ -167,7 +167,7 @@ body {
     height: 50px;
     padding: 8px;
     align-self: center;
-    background-color: #006a67; /* Teal */
+    background-color: #5fc3d7;
     color: white;
     border: none;
     border-radius: 5px;
@@ -176,7 +176,7 @@ body {
   }
   
   .forgot_submitbtn:hover {
-    background-color: #004d4b !important;
+    background-color: #4e00b0;
   }
   
   .back-to-login1 {
