@@ -193,5 +193,51 @@ body {
     color: red;
     font-size: 12px;
   }
+
+  .forgot_footer {
+    position: fixed; /* Change to absolute to stay within the container */
+  bottom: 0; /* Align at the bottom of the container */
+  left: -130px;
+    top: 405px;; /* Move to the horizontal center */
+  
+  width: auto; /* Adjust width to fit content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  z-index: 3; /* Higher than other elements to display on top */
+  }
+  
+  .c_logo1{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .lin_logo1{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .i_logo1 {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .fb_logo1 {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .t_logo1 {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  
+  .forgot_text {
+  position: fixed;
+    top: 354px;
+    left: -205px;
+}
   
  

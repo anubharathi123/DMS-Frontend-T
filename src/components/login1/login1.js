@@ -3,6 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import './login1.css';
 import logo from '../../assets/images/vdart-logo.png';
 import authService from '../../ApiServices/ApiServices';
+import LinLogo from '../../assets/images/linkedin_logo.png';
+import TLogo from '../../assets/images/t_logo.png';
+import ILogo from '../../assets/images/ins_logo.png';
+import CLogo from '../../assets/images/internet_logo.png';
+import FbLogo from '../../assets/images/fb_logo.webp';
+
+
 
 const Login1 = () => {
   const [username, setUsername] = useState('');
@@ -191,7 +198,23 @@ const Login1 = () => {
                
       </div>
       <div className='login1_footer'>
-    </div>
+        <p className='login1_text'>© VDart 2025. All Rights Reserved.| <a href='https://www.vdart.com/contact-us/'>Contact Us</a></p>
+          <a href='https://www.vdart.com/'>
+          <img className='c_logo' src={CLogo} alt='CLogo'/>
+          </a>
+          <a href='https://www.facebook.com/VDartIncs/'>
+          <img className='fb_logo' src={FbLogo} alt='FbLogo'/>
+          </a>
+          <a href='https://x.com/VDartInc'>
+          <img className='t_logo' src={TLogo} alt='TLogo'/>
+          </a>
+          <a href='https://www.linkedin.com/company/vdart/'>
+          <img className='lin_logo' src={LinLogo} alt='LinLogo'/>
+          </a>
+          <a href='https://www.instagram.com/vdartinc/'>
+          <img className='i_logo' src={ILogo} alt='ILogo'/>
+          </a>
+        </div>
     </div>
   );
 };
