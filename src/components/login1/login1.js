@@ -39,9 +39,9 @@ const Login1 = () => {
     }
 
     try {
-      // const loginResponse = await authService.login({ username, password });
-      // console.log('Login successful:', loginResponse);
-      // setIsLoginSuccessful(true);
+      const loginResponse = await authService.login({ username, password });
+      console.log('Login successful:', loginResponse);
+      setIsLoginSuccessful(true);
       setIsOtpVisible(true);
       setCounter(30);
       setIsResendEnabled(false);
@@ -146,7 +146,7 @@ const Login1 = () => {
                   </div>
         
                   <div className="forgot-password-link">
-                    <Link to="/ResetPassword1">Forgot Password?</Link>
+                    <Link to="/ResetPassword">Forgot Password?</Link>
                   </div>
                   <br/>
                   {isOtpVisible && (

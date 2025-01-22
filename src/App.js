@@ -65,7 +65,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -75,23 +75,26 @@ function AppContent() {
       {/* Main Content */}
       <Routes>
         {/* Route for Login */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/login1" element={<Login1 />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<Login1 />} />
 
-        <Route path="/resetpassword" element={<ResetPassword />} />
-        <Route path="/resetpassword1" element={<Forgot_Pwd1 />} />
+        {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
+        <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
 
         {/* Change Password (Token Only) */}
-        <Route
+        {/* <Route
           path="/ChangePassword"
           element={
               <ChangePassword />
           }
-        />
+        /> */}
 
         <Route
-          path="/ChangePassword1"
-          element={ <ChangePassword1 /> }
+          path="/changepassword"
+          element={ 
+            <PrivateRoute>
+            <ChangePassword1 />
+          </PrivateRoute> }
         />
 
         {/* Protected Routes */}
@@ -134,7 +137,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/CompanyCreation"
+          path="/companycreation"
           element={
             <PrivateRoute>
               <CompanyCreation />
@@ -143,7 +146,7 @@ function AppContent() {
         />
 
         <Route
-          path="/OrganizationList"
+          path="/organizationlist"
           element={
             <PrivateRoute>
               <OrganizationList />
@@ -152,7 +155,7 @@ function AppContent() {
         />
 
         <Route
-          path="/DocumentList"
+          path="/documentlist"
           element={
             <PrivateRoute>
               <DocumentList />
@@ -168,7 +171,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/AuditLog"
+          path="/auditlog"
           element={
             <PrivateRoute>
               <AuditLog />
@@ -176,7 +179,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/CreateUser"
+          path="/createuser"
           element={
             <PrivateRoute>
               <CreateUser />
@@ -184,7 +187,7 @@ function AppContent() {
           }
         />
          <Route
-          path="/NotificationDropdown"
+          path="/notificationdropdown"
           element={
             <PrivateRoute>
               <NotificationPage />
@@ -193,7 +196,7 @@ function AppContent() {
         />
 
         {/* Fallback route for unmatched paths */}
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<Login1 />} />
       </Routes>
     </div>
   );
