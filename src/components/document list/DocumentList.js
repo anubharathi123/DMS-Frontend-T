@@ -134,7 +134,6 @@ const DocumentTable = () => {
             <option value="APPROVED">Approve</option>
           </select>
         </div>
-                
 
         <div className="documenttable_rows flex items-center">
           <label className="documenttable_rows_label mr-2">Rows per Page:</label>
@@ -191,7 +190,7 @@ const DocumentTable = () => {
                     item.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 
                     'bg-green-100 text-green-800'}`}
                 >
-                  {item.status}
+                  {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
                 </span>
               </td>
             </tr>

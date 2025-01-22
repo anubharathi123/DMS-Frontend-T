@@ -12,42 +12,33 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  margin-top: 8vh;
   margin-left: 250px;
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    padding-left: 0;
-  }
 }
 
-@media (max-width: 768px) {
+  /* @media (max-width: 768px) {
+    margin-left: 0;
+    padding-left: 0;
+  } */
+
+
+/* @media (max-width: 768px) {
   .dashboard-container {
     margin-top: 5vh;
   }
-}
+} */
 
 /* Dashboard Section */
 
 
 .dashboard {
-  font-size: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border-style: ridge; */
-  border-width: 1px;
-  border-color: var(--dark-blue);
-  width: 940px;
-  /* margin-bottom: 10px; */
+  /* width: 940px; */
+  /* margin-bottom: 20px; */
   margin-top: 50px;
   padding: 20px;
   height: 50px;
-  border-radius: 30px;
-  background-color: #f9f9f9;
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
 }
 
 .dashboard-h1 {
@@ -69,7 +60,7 @@
 /* Card Section */
 .cards-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   width: 100%;
 }
@@ -110,11 +101,11 @@
 }
 
 /* Media Queries for Mobile */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .chart {
     width: 100%;
   }
-}
+} */
 
 
 /* Styles for the Pie, Line, and   Bar Charts */
@@ -194,19 +185,52 @@ canvas {
 }
 
 /* Media Queries for Mobile */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .chart {
     width: 100%;
     max-width: 100%;
   }
+} */
+
+
+
+
+.ProductOwner-h1{
+  color: var(--dark-blue);
+  font-size: 25px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.Admin-h1{
+  color: var(--dark-blue);
+  font-size: 25px;
+  margin-bottom: 0;
+}
+
+.Uploader-h1{
+  color: var(--dark-blue);
+  font-size: 25px;
+  margin-bottom: 0;
+
+}
+
+.Approver-h1{
+  color: var(--dark-blue);
+  font-size: 25px;
+  margin-bottom: 0;
+
+}
+
+.Reviewer-h1{
+  color: var(--dark-blue);
+  font-size: 25px;
+  margin-bottom: 0;
+
 }
 
 
-
-
-
-
-
-
-
-
+.dashboard-body{
+  width: 100%;
+  height: 100%;
+}

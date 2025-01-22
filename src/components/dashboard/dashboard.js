@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import './dashboard.css';
 import { Pie, Line, Bar } from 'react-chartjs-2';
@@ -100,19 +101,43 @@ const roleData = {
   ],
 };
 
+const Dashboard = ({ role }) => {
+  return (
+    <div className="dashboard">
+      {role === 'PRODUCT_OWNER' && (
+        <h1 className='ProductOwner-h1'>Product Owner Dashboard</h1>
+      )}
+      {role === 'ADMIN' && (
+        <h1 className='Admin-h1'>Admin Dashboard</h1>
+      )}
+      {role === 'UPLOADER' && (
+        <h1 className='Uploader-h1'>Uploader Dashboard</h1>
+      )}
+      {role === 'REVIEWER' && (
+        <h1 className='Reviewer-h1'>Reviewer Dashboard</h1>
+      )}
+      {role === 'APPROVER' && (
+        <h1 className='Approver-h1'>Approver Dashboard</h1>
+      )}
+    </div>
+  );
+};
+
 const DashboardApp = () => {
   const role = localStorage.getItem('role'); // Get the role of the user from localStorage
 
   return (
-    <div className='dashboard-container'>
-      <Dashboard role={role} />
-      <div className="cards-container">
+    <div className='dashboard-body'>
+      <div className='dashboard-container'>
+        <Dashboard role={role} />
         {role === 'PRODUCT_OWNER' && (
           <>
-            <Card className='dashboard-card' title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} />
-            <Card className='dashboard-card' title="Active Companies" value="22,345" icon={<HiBuildingOffice2 style={{ color: 'green' }}/>} />
-            <Card className='dashboard-card' title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }}/>} />
-            <Card className='dashboard-card' title="Client Admin" value="23,456" icon={<IoPeople />} />
+            <div className="cards-container">
+              <Card role={role} className='dashboard-card' title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} />
+              <Card role={role} className='dashboard-card' title="Active Companies" value="22,345" icon={<HiBuildingOffice2 style={{ color: 'green' }}/>} />
+              <Card role={role} className='dashboard-card' title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }}/>} />
+              <Card role={role} className='dashboard-card' title="Client Admin" value="23,456" icon={<IoPeople />} />
+            </div>
             <div className="chart-container">
               <div className="chart">
                 <PieChart />
@@ -126,16 +151,29 @@ const DashboardApp = () => {
             </div>
           </>
         )}
+
         {role === 'ADMIN' && (
           <>
-            <Card className='dashboard-card' title="Total Document" value="21,234" icon={<IoMdCloudUpload />} />
-            <Card className='dashboard-card' title="Accepted Document" value="18,234" icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} />
-            <Card className='dashboard-card' title="Pending Document" value="1,000" icon={<MdPending style={{ color: '#dd651b' }} />} />
-            <Card className='dashboard-card' title="Rejected Document" value="2,000" icon={<MdCancel style={{ color: '#b22d2d' }} />} />
-              <div className="chart">
-                <RoleBarChart />  {/* This will only be rendered for ADMIN */}
-              </div>
-            
+            <div className="cards-container">
+              <Card role={role} className='dashboard-card' title="Total Document" value="21,234" icon={<IoMdCloudUpload />} />
+              <Card role={role} className='dashboard-card' title="Accepted Document" value="18,234" icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} />
+              <Card role={role} className='dashboard-card' title="Pending Document" value="1,000" icon={<MdPending style={{ color: '#dd651b' }} />} />
+              <Card role={role} className='dashboard-card' title="Rejected Document" value="2,000" icon={<MdCancel style={{ color: '#b22d2d' }} />} />
+            </div>
+            <div className="chart">
+              <RoleBarChart />
+            </div>
+          </>
+        )}
+
+        {['UPLOADER', 'REVIEWER', 'APPROVER'].includes(role) && (
+          <>
+            <div className="cards-container">
+              <Card role={role} className='dashboard-card' title="Total Document" value="21,234" icon={<IoMdCloudUpload />} />
+              <Card role={role} className='dashboard-card' title="Accepted Document" value="18,234" icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} />
+              <Card role={role} className='dashboard-card' title="Pending Document" value="1,000" icon={<MdPending style={{ color: '#dd651b' }} />} />
+              <Card role={role} className='dashboard-card' title="Rejected Document" value="2,000" icon={<MdCancel style={{ color: '#b22d2d' }} />} />
+            </div>
           </>
         )}
       </div>
@@ -143,20 +181,18 @@ const DashboardApp = () => {
   );
 };
 
-const Dashboard = ({ role }) => {
-  return (
-    <div className="dashboard">
-      <h1 className='dashboard-h1'>
-        {role === 'PRODUCT_OWNER' && 'Product Owner Dashboard'}
-        {role === 'ADMIN' && 'Admin Dashboard'}
-      </h1>
-    </div>
-  );
-};
+const Card = ({ title, value, icon, role }) => {
+  let cardStyle;
+  if (role === 'APPROVER') {
+    cardStyle = { backgroundColor: '#DDF3FB' };
+  } else if (role === 'UPLOADER') {
+    cardStyle = { backgroundColor: '#DDF3FB' };
+  } else if (role === 'REVIEWER') {
+    cardStyle = { backgroundColor: '#DDF3FB' };
+  }
 
-const Card = ({ title, value, icon }) => {
   return (
-    <div className="card">
+    <div className="card" style={cardStyle}>
       <div className="card-title">
         <div className="card-icon">{icon}</div>
         <div className="card-info">
@@ -219,9 +255,6 @@ const BarChart = () => {
   return <canvas ref={chartRef}></canvas>;
 };
 
-
-
-
 const RoleBarChart = () => {
   const chartRef = useRef(null);
 
@@ -251,7 +284,6 @@ const RoleBarChart = () => {
             beginAtZero: true,
           },
         },
-        // Remove the legend by setting it to false
         plugins: {
           legend: {
             display: false, // This will remove the legend
@@ -269,13 +301,4 @@ const RoleBarChart = () => {
   return <canvas ref={chartRef} width="800" height="600"></canvas>;
 };
 
-
 export default DashboardApp;
-
-
-
-
-
-
-
-
