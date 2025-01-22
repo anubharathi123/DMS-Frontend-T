@@ -86,7 +86,7 @@ const CompanyCreation = () => {
       await authService.createOrganization(formData); // Call the API service
       alert('Company registered successfully!');
       // Reset the form after successful submission
-      navigate('/');
+      navigate('/dashboard');
 
     } catch (error) {
       setError(error.message || 'Something went wrong.'); // Display error if API call fails

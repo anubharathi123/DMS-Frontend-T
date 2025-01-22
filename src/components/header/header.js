@@ -39,6 +39,12 @@ const Header = () => {
     const getRandomColor = () => {
         return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
     };
+    const handleLogout = () =>
+    {
+        localStorage.removeItem('access_status')
+        localStorage.removeItem('token')
+        Navigate('/')
+    }
 
     // Set a random color for the profile icon on component mount
     useEffect(() => {
@@ -130,6 +136,7 @@ const Header = () => {
                     <button
                         type="button"
                         className="signout-button"
+                        onClick={() =>handleLogout()}
                     >
                         LogOut
                     </button>
