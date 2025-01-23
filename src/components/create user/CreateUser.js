@@ -53,7 +53,7 @@ const CreateUser = () => {
       
       const response = await apiServices.register(formData);
       setMessage('User registered successfully!');
-      navigate('/');
+      navigate('/Dashboard');
     } catch (error) {
       // setIsLoading(false);
       const errorMessage = error.response?.data?.error || error.error;

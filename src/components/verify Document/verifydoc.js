@@ -30,44 +30,42 @@ const DocumentApproval = () => {
   const calendarRef = useRef(null);
 
   useEffect(() => {
-    const fetchDocuments = async () => {
-      try {
-        setIsLoading(true);
-        const response = await apiServices.getDocuments();
-        console.log('Documents:', response);
-        const documents = response
-          .filter(doc => doc.status?.toLowerCase() === 'pending') // Filter documents with status 'pending'
-          .map(doc => ({
-            file_id: doc.id,
-            declarationNumber: doc.declaration_number,
-            file: doc.current_version?.file_path,
-            fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',  // Extract file name
-            updatedDate: doc.updated_at,
-            documentType: doc.document_type?.name || '',
-            status: doc.status || '',
-            fileUrl: doc.fileUrl || '',
-            viewed: false,
-            version: doc.current_version?.version_number,
-          }));
-
-        setData(documents);
-        setFilteredData(documents);
-
-        if (documents.length === 0) {
-          setActionMessage('No files are available for approval.');
-        }
-      } catch (error) {
-        console.error('Error fetching documents:', error);
-        setErrorMessage('Error fetching documents. Please try again later.');
-      } finally {
-        setIsLoading(false); // End loading
-      }
-    };
-
     fetchDocuments();
   }, []);
 
+  const fetchDocuments = async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiServices.getDocuments();
+      console.log('Documents:', response);
+      const documents = response
+        .filter(doc => doc.status?.toLowerCase() === 'pending') // Filter documents with status 'pending'
+        .map(doc => ({
+          file_id: doc.id,
+          declarationNumber: doc.declaration_number,
+          file: doc.current_version?.file_path,
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',  // Extract file name
+          updatedDate: doc.updated_at,
+          documentType: doc.document_type?.name || '',
+          status: doc.status || '',
+          fileUrl: doc.fileUrl || '',
+          viewed: false,
+          version: doc.current_version?.version_number,
+        }));
 
+      setData(documents);
+      setFilteredData(documents);
+
+      if (documents.length === 0) {
+        setActionMessage('No files are available for approval.');
+      }
+    } catch (error) {
+      console.error('Error fetching documents:', error);
+      setErrorMessage('Error fetching documents. Please try again later.');
+    } finally {
+      setIsLoading(false); // End loading
+    }
+  };
   const handleApproval = async (declarationNumber, newStatus) => {
     setActionMessage('');
     setIsLoading(true);
@@ -91,6 +89,7 @@ const DocumentApproval = () => {
       setTimeout(() => {
         setActionMessage('');
       }, 3000);
+      fetchDocuments();
       
     } catch (error) {
       console.error('Error during approval/rejection:', error);

@@ -73,11 +73,33 @@ const Login1 = () => {
       alert('OTP Verified!');
       const details_data = await authService.details();
       console.log(details_data)
-      const name = details_data.details[5].name
-      console.log(name)
-      const role = details_data.details[1].name
-      console.log(role)
-      localStorage.setItem('role', role);
+      // eslint-disable-next-line no-cond-assign
+      if (details_data.type === "User") {
+        console.log('user')
+        const name = details_data.details[5].name
+        console.log(name)
+        localStorage.setItem('name', name);
+        const role = details_data.details[1].name
+        console.log(role)
+        localStorage.setItem('role', role);
+      }
+      // eslint-disable-next-line no-cond-assign
+      if (details_data.type === "Organization") {
+        console.log('Org')
+        const name = details_data.details[1].company_name
+        console.log(name)
+        localStorage.setItem('name', name);
+        const role = details_data.details[3].name
+        console.log(role)
+        if (role === 'ADMIN'){
+          localStorage.setItem('role', role);
+        }
+        if (role === 'Organization Admin'){
+          localStorage.setItem('role', 'ADMIN');
+        }
+        // localStorage.setItem('role', role);
+      }
+      
       localStorage.setItem('access_status', true);
 
       navigate('/DocumentList');
