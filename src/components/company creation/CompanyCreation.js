@@ -118,9 +118,7 @@ const CompanyCreation = () => {
 
   // Triggers file input dialog when clicking anywhere on the upload area
   const handleUploadClick = () => {
-    if (!fileInputClicked) { // Only trigger file input if no file is selected
-      document.getElementById("file-input").click();
-    }
+    document.getElementById("file-input").click();
   };
 
   return (
@@ -230,38 +228,33 @@ const CompanyCreation = () => {
             <label className="company-creation-label">
               Contract Document <span className="company-creation-mandatory">*</span>
             </label>
-            <div
-              className={`company-creation-upload-area ${dragging ? 'dragging' : ''}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={handleUploadClick} // Trigger file dialog on click anywhere in the area
-            >
-              <input
-                type="file"
-                id="file-input"
-                onChange={handleFileChange}
-                className="company-creation-file-input"
-                hidden
-              />
-              <div className="company-creation-upload-text">
-                <FaCloudUploadAlt />
-                {fileInputClicked ? (
-                  <div className="company-creation-file-name">
-                    {contractDocuments.name}
-                    {/* Cross button to remove the file */}
-                    <span
-                      className="company-creation-remove-icon"
-                      onClick={handleRemoveFile}
-                    >
-                      &#10005;
-                    </span>
-                  </div>
-                ) : (
-                  <p>Drag and drop or browse&nbsp;<a href="#!" onClick={handleUploadClick}>here</a></p>
-                )}
-              </div>
+            <div className={`company-creation-upload-area ${dragging ? 'dragging' : ''}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={handleUploadClick} // Trigger file dialog on single click
+>
+            <input type="file" id="file-input" onChange={handleFileChange} className="company-creation-file-input"
+              hidden />
+            <div className="company-creation-upload-text">
+              <FaCloudUploadAlt />
+              {fileInputClicked ? (
+              <div className="company-creation-file-name">
+              {contractDocuments.name}
+              {/* Cross button to remove the file */}
+              <span className="company-creation-remove-icon" onClick={handleRemoveFile}>
+              &#10005;
+              </span>
             </div>
+          ) : (
+        <p> Drag and drop or browse&nbsp;
+        <a href="#!" onClick={handleUploadClick}>
+          here
+        </a>
+      </p>
+    )}
+  </div>
+</div>
           </div>
 
           {/* Error Message */}

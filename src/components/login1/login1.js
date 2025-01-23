@@ -8,8 +8,8 @@ import TLogo from '../../assets/images/t_logo.png';
 import ILogo from '../../assets/images/ins_logo.png';
 import CLogo from '../../assets/images/internet_logo.png';
 import FbLogo from '../../assets/images/fb_logo.webp';
-
-
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 const Login1 = () => {
   const [username, setUsername] = useState('');
@@ -21,6 +21,7 @@ const Login1 = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [counter, setCounter] = useState(30);
   const [isResendEnabled, setIsResendEnabled] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State for password visibility
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,7 +57,6 @@ const Login1 = () => {
       const otpResponse = await authService.sendOTP();
       console.log('OTP sent successfully:', otpResponse);
 
-      
       setMessages([]);
     } catch (error) {
       console.error('Login error:', error.message || error);
@@ -101,7 +101,6 @@ const Login1 = () => {
       setIsResendEnabled(false);
       const resendResponse = await authService.resendOTP();
       console.log('OTP resent successfully:', resendResponse);
-
       
       setMessages(['OTP resent successfully.']);
     } catch (error) {
@@ -110,6 +109,9 @@ const Login1 = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <div className="login1-container">
@@ -117,104 +119,110 @@ const Login1 = () => {
         <img src={logo} alt="logo" className='login_logo'/>
         <h1 className='login1_title'>Lorem Ipsum</h1>
         <h1 className='login1-h1'>
-        Streamline Your Documents with <br/> Our DMS Solution
+          Streamline Your Documents with <br/> Our DMS Solution
         </h1>
       </div>
       <div className="login1-right">
         <form onSubmit={handleLoginSubmit}>
-                  <div className="form-group">
-                  <h1 className="login-h2"><center>Login</center></h1>
-                    <label htmlFor="username">
-                      Username/Email Id <span className="required">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="username"
-                      className="login-input"
-                      name="username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                    />
-                  </div>
-        
-                  <div className="form-group">
-                    <label htmlFor="password">
-                      Password <span className="required">*</span>
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      className="login-input"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-        
-                  <div className="forgot-password-link">
-                    <Link to="/ResetPassword">Forgot Password?</Link>
-                  </div>
-                  <br/>
-                  {isOtpVisible && (
-                    <div className="form-group">
-                      <label htmlFor="otp">
-                        OTP <span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="login-input"
-                        id="otp"
-                        name="otp"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
-                        required
-                      />
-                      <div className="otp-timer">
-                        {isResendEnabled ? (
-                          <a
-                            href="#"
-                            className="resend-otp-link"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleResendOtp();
-                            }}
-                          >
-                            Resend OTP
-                          </a>
-                        ) : (
-                          <p>Resend OTP in {counter} seconds</p>
-                        )}
-                      </div>
-                    </div>
-                  )}
-        
-                  <div className="login-div-alignment">
-                    <button className="login1-btn" type="submit">
-                      {isOtpVisible ? 'Verify OTP' : 'Login'}
-                    </button>
-                  </div>
-                </form>
-               
+          <div className="form-group">
+            <h1 className="login-h2"><center>Login</center></h1>
+            <label htmlFor="username">
+              Username/Email Id <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="login-input"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">
+              Password <span className="required">*</span>
+            </label>
+            <input
+              type={isPasswordVisible ? 'text' : 'password'} // Toggle password visibility
+              id="password"
+              className="login-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
+            <button
+              type="button"
+              className="login1_vpwd"
+              onClick={togglePasswordVisibility} // Toggle password visibility on click
+            >
+              {isPasswordVisible ? <IoEyeOff /> : <IoEye />}
+            </button>
+          </div>
+
+          <div className="forgot-password-link">
+            <Link to="/ResetPassword">Forgot Password?</Link>
+          </div>
+          <br />
+          {isOtpVisible && (
+            <div className="form-group">
+              <label htmlFor="otp">
+                OTP <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                className="login-input"
+                id="otp"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+              />
+              <div className="otp-timer">
+                {isResendEnabled ? (
+                  <a
+                    href="#"
+                    className="resend-otp-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleResendOtp();
+                    }}
+                  >
+                    Resend OTP
+                  </a>
+                ) : (
+                  <p>Resend OTP in {counter} seconds</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="login-div-alignment">
+            <button className="btn-signin" type="submit">
+              {isOtpVisible ? 'Verify OTP' : 'Login'}
+            </button>
+          </div>
+        </form>
       </div>
       <div className='login1_footer'>
         <p className='login1_text'>© VDart 2025. All Rights Reserved.| <a href='https://www.vdart.com/contact-us/'>Contact Us</a></p>
-          <a href='https://www.vdart.com/'>
+        <a href='https://www.vdart.com/'>
           <img className='c_logo' src={CLogo} alt='CLogo'/>
-          </a>
-          <a href='https://www.facebook.com/VDartIncs/'>
+        </a>
+        <a href='https://www.facebook.com/VDartIncs/'>
           <img className='fb_logo' src={FbLogo} alt='FbLogo'/>
-          </a>
-          <a href='https://x.com/VDartInc'>
+        </a>
+        <a href='https://x.com/VDartInc'>
           <img className='t_logo' src={TLogo} alt='TLogo'/>
-          </a>
-          <a href='https://www.linkedin.com/company/vdart/'>
+        </a>
+        <a href='https://www.linkedin.com/company/vdart/'>
           <img className='lin_logo' src={LinLogo} alt='LinLogo'/>
-          </a>
-          <a href='https://www.instagram.com/vdartinc/'>
+        </a>
+        <a href='https://www.instagram.com/vdartinc/'>
           <img className='i_logo' src={ILogo} alt='ILogo'/>
-          </a>
-        </div>
+        </a>
+      </div>
     </div>
   );
 };

@@ -8,6 +8,8 @@ import TLogo from '../../assets/images/t_logo.png';
 import ILogo from '../../assets/images/ins_logo.png';
 import CLogo from '../../assets/images/internet_logo.png';
 import FbLogo from '../../assets/images/fb_logo.webp';
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 const ChangePassword1 = () => {
 
@@ -16,6 +18,7 @@ const ChangePassword1 = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State for password visibility
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   // Handle form submission
@@ -54,6 +57,10 @@ const ChangePassword1 = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
   return (
     <div className='changepwd_main'>
         <div className="changepwd-container">
@@ -82,7 +89,14 @@ const ChangePassword1 = () => {
                            value={password}
                            onChange={(e) => setpassword(e.target.value)}
                            required />
-                </label>
+                          <button
+                            type="button"
+                            className="changepwd_vpwd1"
+                            onClick={togglePasswordVisibility} // Toggle password visibility on click
+                          >
+                  {isPasswordVisible ? <IoEyeOff /> : <IoEye /> }
+                          </button>
+                  </label>
                 </div>
           <div className="changepwd-group">
           <label htmlFor="confirm-password"> Confirm Password:
@@ -91,7 +105,13 @@ const ChangePassword1 = () => {
                  id="confirm-password"
                  value={confirmPassword}
                  onChange={(e) => setConfirmPassword(e.target.value)}
-                 required /> </label>
+                 required />
+                 <button type="button" className="changepwd_vpwd" 
+                    onClick={togglePasswordVisibility} // Toggle password visibility on click
+                  >
+                  {isPasswordVisible ? <IoEyeOff /> : <IoEye /> }
+                  </button> 
+            </label>
           </div>
             <br/>
           <button type="submit" className="changepwd_submitbtn">Submit</button>
