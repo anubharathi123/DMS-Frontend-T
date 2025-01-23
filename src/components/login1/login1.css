@@ -102,6 +102,15 @@ body {
   transition: border-color 0.3s ease-in-out;
 }
 
+.login1_vpwd {
+  position: fixed;
+  bottom: 117px;
+  right: 60px;
+  border: none;
+  background: none;
+  cursor:pointer;
+}
+
 .form1-footer {
   display: flex;
   justify-content: space-between;
@@ -115,7 +124,7 @@ body {
 }
 
 .btn-signin {
-  width: 100%;
+  width: 110px;
   padding: 10px;
   border: none;
   background-color: #5fc3d7;
@@ -127,7 +136,7 @@ body {
 }
 
 .btn-signin:hover {
-  background-color: #4e00b0;
+  background-color: #006a67;
 }
 
 .login1-with {

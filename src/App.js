@@ -139,7 +139,7 @@ function AppContent() {
         <Route
           path="/companycreation"
           element={
-            <PrivateRoute>
+           <PrivateRoute>
               <CompanyCreation />
             </PrivateRoute>
           }
