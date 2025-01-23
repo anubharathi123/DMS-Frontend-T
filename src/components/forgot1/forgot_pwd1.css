@@ -164,8 +164,7 @@ body {
   
   .forgot_submitbtn {
     width: 110px;
-    height: 50px;
-    padding: 8px;
+    padding: 10px;
     align-self: center;
     background-color: #5fc3d7;
     color: white;
@@ -176,7 +175,7 @@ body {
   }
   
   .forgot_submitbtn:hover {
-    background-color: #4e00b0;
+    background-color: #006a67;
   }
   
   .back-to-login1 {
@@ -193,5 +192,51 @@ body {
     color: red;
     font-size: 12px;
   }
+
+  .forgot_footer {
+    position: fixed; /* Change to absolute to stay within the container */
+  bottom: 0; /* Align at the bottom of the container */
+  left: -174px;
+    top: 403px; /* Move to the horizontal center */
+  
+  width: auto; /* Adjust width to fit content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  z-index: 3; /* Higher than other elements to display on top */
+  }
+  
+  .c_logo1{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .lin_logo1{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .i_logo1 {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .fb_logo1 {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  .t_logo1 {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  
+  .forgot_text {
+  position: fixed;
+    top: 360px;
+    left: -245px;
+}
   
  

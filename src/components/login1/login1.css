@@ -34,7 +34,7 @@ body {
 
 .login1-left {
   flex: 1;
-  background: linear-gradient(to right, rgba(51, 108, 201), rgba(102, 145, 214),rgba(153, 181, 228)),
+  background: linear-gradient(to right, rgba(51, 108, 201), rgba(102, 145, 214), rgba(153, 181, 228)),
     url('https://via.placeholder.com/600') no-repeat center center/cover;
   color: white;
   height: 83%;
@@ -99,7 +99,17 @@ body {
   border: 1px solid #006a67;
   border-radius: 6px;
   box-sizing: border-box;
-  transition: border-color 0.3s ease-in-out;}
+  transition: border-color 0.3s ease-in-out;
+}
+
+.login1_vpwd {
+  position: fixed;
+  bottom: 117px;
+  right: 60px;
+  border: none;
+  background: none;
+  cursor:pointer;
+}
 
 .form1-footer {
   display: flex;
@@ -114,7 +124,7 @@ body {
 }
 
 .btn-signin {
-  width: 100%;
+  width: 110px;
   padding: 10px;
   border: none;
   background-color: #5fc3d7;
@@ -126,7 +136,7 @@ body {
 }
 
 .btn-signin:hover {
-  background-color: #4e00b0;
+  background-color: #006a67;
 }
 
 .login1-with {
@@ -141,7 +151,7 @@ body {
   font-size: 12px;
 }
 
-.forgot_pwd{
+.forgot_pwd {
   text-align: right;
   margin-top: 10px;
 }
@@ -167,11 +177,46 @@ body {
 }
 
 .login1_footer {
-  width: 100xp;
-  height:50xp;
-  border: 2px solid black;
-  margin-top: -60px;
-  position: relative;
+  position: fixed;
+  left: 50px;
+  bottom:0px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  z-index: 3; /* Higher than other elements to display on top */
+}
+
+.c_logo{
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+.lin_logo{
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+.i_logo{
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+.fb_logo{
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+.t_logo {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+.login1_text {
+position: fixed;
+bottom: 27px;
 }
 
 /* Media Queries for Responsiveness */
@@ -204,6 +249,11 @@ body {
 
   .login1-form {
     max-width: 280px; /* Adjust form size for smaller screens */
+  }
+
+  .login1_footer {
+    flex-wrap: wrap;
+    padding: 15px;
   }
 }
 

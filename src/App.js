@@ -90,11 +90,11 @@ function AppContent() {
         /> */}
 
         <Route
-          path="/changepassword"
+          path="/ChangePassword1"
           element={ 
-            <PrivateRoute>
+      
             <ChangePassword1 />
-          </PrivateRoute> }
+           }
         />
 
         {/* Protected Routes */}
@@ -139,7 +139,7 @@ function AppContent() {
         <Route
           path="/companycreation"
           element={
-            <PrivateRoute>
+           <PrivateRoute>
               <CompanyCreation />
             </PrivateRoute>
           }
