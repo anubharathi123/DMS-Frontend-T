@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import './dashboard.css';
 import { Pie, Line, Bar } from 'react-chartjs-2';
@@ -160,8 +159,8 @@ const DashboardApp = () => {
               <Card role={role} className='dashboard-card' title="Pending Document" value="1,000" icon={<MdPending style={{ color: '#dd651b' }} />} />
               <Card role={role} className='dashboard-card' title="Rejected Document" value="2,000" icon={<MdCancel style={{ color: '#b22d2d' }} />} />
             </div>
-            <div className="chart">
-              <RoleBarChart />
+            <div className="rolePieChart">
+              <RolePieChart /> {/* Updated to render RolePieChart */}
             </div>
           </>
         )}
@@ -184,11 +183,11 @@ const DashboardApp = () => {
 const Card = ({ title, value, icon, role }) => {
   let cardStyle;
   if (role === 'APPROVER') {
-    cardStyle = { backgroundColor: '#DDF3FB' };
+    cardStyle = { backgroundColor: '#CCDAF1' };
   } else if (role === 'UPLOADER') {
-    cardStyle = { backgroundColor: '#DDF3FB' };
+    cardStyle = { backgroundColor: '#CCDAF1' };
   } else if (role === 'REVIEWER') {
-    cardStyle = { backgroundColor: '#DDF3FB' };
+    cardStyle = { backgroundColor: '#CCDAF1' };
   }
 
   return (
@@ -255,42 +254,33 @@ const BarChart = () => {
   return <canvas ref={chartRef}></canvas>;
 };
 
-const RoleBarChart = () => {
+// Create the RolePieChart component for ADMIN
+const RolePieChart = () => {
   const chartRef = useRef(null);
 
   useEffect(() => {
     const chart = new Chart(chartRef.current, {
-      type: 'bar',
+      type: 'pie',
       data: roleData,
       options: {
         responsive: true,
         plugins: {
           datalabels: {
-            anchor: 'end', // Position the label at the end of the bar
-            align: 'top',  // Align the label to the top of the bar
-            color: 'black', // Set the label color
+            anchor: 'center',
+            align: 'center',
+            color: 'black',
             font: {
-              weight: 'bold', // Make the font bold
-              size: 12, // Set the font size
+              weight: 'bold',
+              size: 12,
             },
-            formatter: (value) => value, // Use the value itself as the label
-          },
-        },
-        scales: {
-          x: {
-            beginAtZero: true,
-          },
-          y: {
-            beginAtZero: true,
-          },
-        },
-        plugins: {
-          legend: {
-            display: false, // This will remove the legend
+            formatter: (value, context) => {
+              const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+              const percentage = ((value / total) * 100).toFixed(1) + '%';
+              return `${value} (${percentage})`; // Show both number and percentage
+            },
           },
         },
       },
-      plugins: [ChartDataLabels],  // Register the plugin (even though labels are hidden)
     });
 
     return () => {

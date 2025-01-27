@@ -31,7 +31,7 @@ const FileUploadPage = () => {
     setIsLoading(true);
 
         const response = await apiServices.checkdeclarationdoc(declarationNumber);
-  
+        console.log(response)
         if (response) {
           const updatedDocuments = {
             declaration: null,
@@ -160,7 +160,7 @@ const FileUploadPage = () => {
       // const data = await response.json(); // Handling the response properly
       // console.log('API response:', data);
       alert('Files submitted successfully!');
-      navigate('/');
+      navigate('/documentlist');
     } catch (error) {
       console.error('Error:', error);
       alert('Failed to submit files.');

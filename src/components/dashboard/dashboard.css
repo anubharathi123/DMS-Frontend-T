@@ -97,7 +97,7 @@
 .chart {
   width: 100%;
   max-width: 45%;
-  margin: 20px 0;
+  /* margin: 20px 0; */
 }
 
 /* Media Queries for Mobile */
@@ -117,7 +117,7 @@ canvas {
 }
 
 .chart {
-  padding: 20px;
+  /* padding: 20px; */
   background-color: var(--beige);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -128,7 +128,7 @@ canvas {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 
@@ -171,11 +171,11 @@ canvas {
 .chart {
   width: 100%;
   max-width: 25%;
-  margin: 20px 0;
+  /* margin: 20px 0; */
   background-color: var(--chart-bg-color);
   border-radius: 10px;
   box-shadow: var(--card-shadow);
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 canvas {
@@ -198,8 +198,8 @@ canvas {
 .ProductOwner-h1{
   color: var(--dark-blue);
   font-size: 25px;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 0
 }
 
 .Admin-h1{
@@ -234,3 +234,21 @@ canvas {
   width: 100%;
   height: 100%;
 }
+
+
+
+.rolePieChart{
+  height: 250px;
+  width: 250px;
+  margin-top: 25px;
+}
+
+
+
+
+
+
+
+
+
+

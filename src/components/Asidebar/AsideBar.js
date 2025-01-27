@@ -15,16 +15,48 @@ const AsideBar = () => {
         const details_data = await authService.details();
         console.log('details_data:', details_data);
         // const fetchedName = details_data.details[5].name;
-        const fetchedRole = details_data.details[5].name;
-        localStorage.setItem('name', details_data.details[1].first_name);
+        // const fetchedRole = details_data.details[5].name;
+        // localStorage.setItem('name', details_data.details[1].first_name);
         localStorage.setItem('email', details_data.details[1].email);
         // console.log('fetchedName:', fetchedName);
-        console.log(fetchedRole)
+        // console.log(fetchedRole)
 
         // setName(fetchedName);
-        setRole(fetchedRole);
-        localStorage.setItem('role', fetchedRole);
-        localStorage.setItem('Company_name', details_data.details[7].company_name);
+        // setRole(fetchedRole);
+        // localStorage.setItem('role', fetchedRole);
+        // localStorage.setItem('Company_name', details_data.details[7].company_name);
+        if (details_data.type === "User") {
+          console.log('user')
+          const name = details_data.details[1].first_name
+          console.log(name)
+          localStorage.setItem('name', name);
+          const fetchedRole = details_data.details[5].name
+          console.log(fetchedRole)
+          localStorage.setItem('role', fetchedRole);
+          setRole(fetchedRole);
+        }
+        // eslint-disable-next-line no-cond-assign
+        if (details_data.type === "Organization") {
+          console.log('Org')
+          const name = details_data.details[1].company_name
+          console.log(name)
+          localStorage.setItem('name', name);
+          const fetchedRole = details_data.details[3].name
+          localStorage.setItem('Company_name', name);
+          // console.log(fetchedRole)
+          if (fetchedRole === 'ADMIN'){
+            localStorage.setItem('role', fetchedRole);
+            setRole(fetchedRole);
+          }
+          if (fetchedRole === 'Organization Admin'){
+            localStorage.setItem('role', 'ADMIN');
+            setRole('ADMIN');
+          }
+          // localStorage.setItem('role', role);
+          
+          // console.log("role : ",fetchedRole)
+        }
+    
       } catch (error) {
         console.error('Error fetching details:', error);
       }
