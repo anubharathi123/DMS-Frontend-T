@@ -8,17 +8,16 @@ import TLogo from '../../assets/images/t_logo.png';
 import ILogo from '../../assets/images/ins_logo.png';
 import CLogo from '../../assets/images/internet_logo.png';
 import FbLogo from '../../assets/images/fb_logo.webp';
-import { IoEye } from "react-icons/io5";
-import { IoEyeOff } from "react-icons/io5";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const ChangePassword1 = () => {
-
- const [oldPassword, setOldPassword] = useState('');
-  const [password, setpassword] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State for password visibility
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // State for new password visibility
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false); // State for confirm password visibility
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   // Handle form submission
@@ -40,12 +39,10 @@ const ChangePassword1 = () => {
 
     // Call API to change the password
     try {
-      await authService.changePassword({
-        password
-      });
+      await authService.changePassword({ password });
       setSuccessMessage('Password changed successfully!');
       setOldPassword('');
-      setpassword('');
+      setPassword('');
       setConfirmPassword('');
 
       // Navigate to the login page after a short delay
@@ -57,85 +54,92 @@ const ChangePassword1 = () => {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
   return (
     <div className='changepwd_main'>
-        <div className="changepwd-container">
-
+      <div className="changepwd-container">
         <div className="changepwd-left">
-                   <img src={logo} alt="logo" className='changepwd_logo'/>
-            <h1 className='changepwd_title'>Lorem Ipsum</h1>
-            <h1 className='changepwd-h1'>
-                Streamline Your Documents with <br/> Our DMS Solution
-            </h1>
+          <img src={logo} alt="logo" className='changepwd_logo' />
+          <h1 className='changepwd_title'>Lorem Ipsum</h1>
+          <h1 className='changepwd-h1'>
+            Streamline Your Documents with <br /> Our DMS Solution
+          </h1>
         </div>
-       
-         <div className="changepwd-right">
-        
-            <form className="changepwd-form" onSubmit={handleSubmit}>
-            {errorMessage && <p className="changepwd-error">{errorMessage}</p>}
-        {successMessage && <p className="changepwd-success">{successMessage}</p>}
 
-                <h2>Change Password</h2>
-                <div className="changepwd-group">
-                <label htmlFor="new-password">
-                    New Password:
-                    <input type="password"
-                           id="new-password"
-                           className="changepwd-input"
-                           value={password}
-                           onChange={(e) => setpassword(e.target.value)}
-                           required />
-                          <button
-                            type="button"
-                            className="changepwd_vpwd1"
-                            onClick={togglePasswordVisibility} // Toggle password visibility on click
-                          >
-                  {isPasswordVisible ? <IoEyeOff /> : <IoEye /> }
-                          </button>
-                  </label>
-                </div>
-          <div className="changepwd-group">
-          <label htmlFor="confirm-password"> Confirm Password:
-          <input type="password"
-                 className="changepwd-input"
-                 id="confirm-password"
-                 value={confirmPassword}
-                 onChange={(e) => setConfirmPassword(e.target.value)}
-                 required />
-                 <button type="button" className="changepwd_vpwd" 
-                    onClick={togglePasswordVisibility} // Toggle password visibility on click
-                  >
-                  {isPasswordVisible ? <IoEyeOff /> : <IoEye /> }
-                  </button> 
-            </label>
+        <div className="changepwd-right">
+          <form className="changepwd-form" onSubmit={handleSubmit}>
+            {errorMessage && <p className="changepwd-error">{errorMessage}</p>}
+            {successMessage && <p className="changepwd-success">{successMessage}</p>}
+
+            <h2>Change Password</h2>
+
+            {/* New Password Field */}
+            <div className="changepwd-group">
+              <label htmlFor="new-password">
+                New Password:
+                <input
+                  type={isPasswordVisible ? 'text' : 'password'} // Toggle type based on visibility state
+                  id="new-password"
+                  className="changepwd-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="changepwd_vpwd1"
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)} // Toggle visibility
+                >
+                  {isPasswordVisible ? <IoEyeOff /> : <IoEye />}
+                </button>
+              </label>
+            </div>
+
+            {/* Confirm Password Field */}
+            <div className="changepwd-group">
+              <label htmlFor="confirm-password">
+                Confirm Password:
+                <input
+                  type={isConfirmPasswordVisible ? 'text' : 'password'} // Toggle type based on visibility state
+                  id="confirm-password"
+                  className="changepwd-input"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="changepwd_vpwd"
+                  onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} // Toggle visibility
+                >
+                  {isConfirmPasswordVisible ? <IoEyeOff /> : <IoEye />}
+                </button>
+              </label>
+            </div>
+
+            <br />
+            <button type="submit" className="changepwd_submitbtn">Submit</button>
+          </form>
+
+          <div className='changepwd_footer'>
+            <p className='changepwd_text'>© VDart 2025. All Rights Reserved.| <a href='https://www.vdart.com/contact-us/'>Contact Us</a></p>
+            <a href='https://www.vdart.com/'>
+              <img className='c_logo2' src={CLogo} alt='CLogo' />
+            </a>
+            <a href='https://www.facebook.com/VDartIncs/'>
+              <img className='fb_logo2' src={FbLogo} alt='FbLogo' />
+            </a>
+            <a href='https://x.com/VDartInc'>
+              <img className='t_logo2' src={TLogo} alt='TLogo' />
+            </a>
+            <a href='https://www.linkedin.com/company/vdart/'>
+              <img className='lin_logo2' src={LinLogo} alt='LinLogo' />
+            </a>
+            <a href='https://www.instagram.com/vdartinc/'>
+              <img className='i_logo2' src={ILogo} alt='ILogo' />
+            </a>
           </div>
-            <br/>
-          <button type="submit" className="changepwd_submitbtn">Submit</button>
-        </form>
-        <div className='changepwd_footer'>
-        <p className='changepwd_text'>© VDart 2025. All Rights Reserved.| <a href='https://www.vdart.com/contact-us/'>Contact Us</a></p>
-          <a href='https://www.vdart.com/'>
-          <img className='c_logo2' src={CLogo} alt='CLogo'/>
-          </a>
-          <a href='https://www.facebook.com/VDartIncs/'>
-          <img className='fb_logo2' src={FbLogo} alt='FbLogo'/>
-          </a>
-          <a href='https://x.com/VDartInc'>
-          <img className='t_logo2' src={TLogo} alt='TLogo'/>
-          </a>
-          <a href='https://www.linkedin.com/company/vdart/'>
-          <img className='lin_logo2' src={LinLogo} alt='LinLogo'/>
-          </a>
-          <a href='https://www.instagram.com/vdartinc/'>
-          <img className='i_logo2' src={ILogo} alt='ILogo'/>
-          </a>
         </div>
       </div>
-    </div>
     </div>
   );
 };

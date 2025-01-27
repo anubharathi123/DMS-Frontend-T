@@ -184,13 +184,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
   z-index: 3; /* Higher than other elements to display on top */
 }
 
 .c_logo{
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   margin-right: 10px;
 }
 .lin_logo{
@@ -199,18 +199,18 @@ body {
   margin-right: 10px;
 }
 .i_logo{
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   margin-right: 10px;
 }
 .fb_logo{
-  width: 25px;
-  height: 25px;
+  width: 32px;
+  height: 32px;
   margin-right: 10px;
 }
 .t_logo {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   margin-right: 10px;
 }
 

@@ -13,13 +13,24 @@ body {
   
   .col-xl-7 {
     width: 58%;
-    margin: 0 auto;
+    margin-bottom: 125px;
   }
+
 
   .profile_heading {
     font-weight: 600;
-    margin-left: 400px;
-    margin-top: 70px;
+    position: relative;
+    left: 13%;
+    bottom: 225px;
+    font-size: 1.5rem;
+    color: #000b58;
+  }
+
+  .profile_heading1 {
+    font-weight: 600;
+    position: relative;
+    left: 13%;
+    bottom: 243px;
     font-size: 1.5rem;
     color: #000b58;
   }
@@ -32,7 +43,8 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 10px;
     margin-left: 170px;
-    margin-bottom: 15px;
+    position: relative;
+    top: 35%;
   }
   
   .card-body {
@@ -41,14 +53,6 @@ body {
   
   /* Profile Picture */
 
-  .organization-search {
-    border-radius: 18px;
-    padding-left: 5px;
-    padding-top: .5rem !important;
-    padding-bottom: .5rem !important;
-    width: 200px;
-    font-size: 0.75rem !important;
-  }
   .circle {
     /* border-radius: 50%; */
     /* border:solid black 2px; */
@@ -108,7 +112,10 @@ body {
     cursor: pointer;
     padding: 10px 15px;
     margin-left: 250px;
-    
+  }
+
+  .profile_cancelbtn:hover {
+    background: #003635;
   }
 
   .profile_save {
@@ -120,6 +127,10 @@ body {
     cursor: pointer;
     padding: 10px 20px;
     margin-left: 20px;
+  }
+
+  .profile_save:hover {
+    background: #003635;
   }
   
   .align-items-center {
@@ -153,6 +164,14 @@ body {
   }
   
   /* Form styling */
+  .mb-6 {
+    position: relative;
+    bottom: 90px;
+    width: 100%;
+    height: 100%;
+    margin-left: 23%;
+  }
+  /* Product Owner */
   
 .username-container {
   display: flex;
@@ -190,7 +209,6 @@ body {
     border-radius: 18px;
 
   }
-
 
   .person-name_input:focus {
     outline: none;
@@ -231,7 +249,7 @@ body {
   .mobile_input {
     font-size: 0.8rem;
     margin-top: 10px;
-    margin-left: 73px;
+    margin-left: 61px;
     margin-bottom: 10px;
     padding: 7px;
     height: 14px;
@@ -314,16 +332,83 @@ body {
     }
   }
   
+ .form-input {
+  font-size: 0.8rem;
+  margin-top: 10px;
+  margin-left: 73px;
+  margin-bottom: 10px;
+  padding: 7px;
+  height: 14px;
+  width: 400px;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+ }
 
+/* Client Admin */
 
-
+.mail_id_container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px
+}
  
+.mail_id_label1 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 61px;
+}
 
+.mail_id_label2 {
+  font-size: 0.8rem;
+  margin-left: 60px;
+}
 
+.role_label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 61px;
+}
 
+.role-input {
+  font-size: 0.8rem;
+  margin-top: 10px;
+  margin-left: 73px;
+  margin-bottom: 10px;
+  padding: 7px;
+  height: 14px;
+  width: 400px;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+}
 
+.role-input:focus {
+  outline: none;
+  border-color: var(--dark-blue);
+}
 
-  
+.mobile_label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 61px;
+}
+
+.mobile-input {
+  font-size: 0.8rem;
+  margin-top: 10px;
+  margin-left: 74px;
+  margin-bottom: 10px;
+  padding: 7px;
+  height: 14px;
+  width: 400px;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+}
+
+.mobile-input:focus {
+  outline: none;
+  border-color: var(--dark-blue);
+}
+
   /* Modal for Image Cropping */
 .profile-management-cropperModal {
   position: fixed;
@@ -338,16 +423,6 @@ body {
   z-index: 1000;
 }
 
-
-
-
-
-
-
-
-
-
-  
   /* Action Buttons */
   .profile-management-button {
     padding: 10px 15px;

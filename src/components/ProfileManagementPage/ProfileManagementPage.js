@@ -1,10 +1,8 @@
-
-
 import React, { useState, useRef } from 'react';
 import './ProfileManagementPage.css';
 import avatar from "../../assets/images/candidate-profile.png";
 import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css'; // Ensure cropper styles are imported
+import 'cropperjs/dist/cropper.css';
 
 const ProfileManagementPage = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +10,7 @@ const ProfileManagementPage = () => {
     PersonName: '',
     MailID: '',
     Mobile: '',
+    Role: '',
   });
 
   const [profileImage, setProfileImage] = useState(avatar);
@@ -22,13 +21,12 @@ const ProfileManagementPage = () => {
   const fileInputRef = useRef();
   const cropperRef = useRef();
 
+  const role = localStorage.getItem('role'); // Dynamically fetch role
+
   // Handle input change
   const handleChange = (e) => {
-    const { id, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [id]: type === 'checkbox' ? checked : value,
-    });
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
   };
 
   // Handle form submission
@@ -48,19 +46,12 @@ const ProfileManagementPage = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageToCrop(reader.result);  
-        setCropperVisible(true);  
+        setImageToCrop(reader.result);
+        setCropperVisible(true);
       };
       reader.readAsDataURL(file);
-
-      // Reset the file input so the user can select the same file again
-      resetFileInput();
+      fileInputRef.current.value = ''; // Reset file input
     }
-  };
-
-  // Reset the file input to allow re-selection of the same file
-  const resetFileInput = () => {
-    fileInputRef.current.value = '';  
   };
 
   // Handle cropping
@@ -68,41 +59,35 @@ const ProfileManagementPage = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
       const croppedCanvas = cropper.getCroppedCanvas();
-      setCroppedImage(croppedCanvas.toDataURL());  // Set the cropped image
+      if (croppedCanvas) {
+        setCroppedImage(croppedCanvas.toDataURL()); // Set the cropped image
+        setProfileImage(croppedCanvas.toDataURL());
+      }
     }
-    setCropperVisible(false);  // Close the cropper modal after saving
+    setCropperVisible(false); // Close cropper
   };
 
   // Cancel cropping
   const handleCancelCrop = () => {
-    setCropperVisible(false);  // Close the cropper without saving changes
-  };
-
-  // Handle profile image click (opens the file input dialog)
-  const handleImageClick = () => {
-    fileInputRef.current.click();  // Trigger the file input click
+    setCropperVisible(false);
   };
 
   return (
     <div className="col-xl-7 mx-auto">
-      <h1 className="profile_heading">Profile Management</h1>
       {/* Profile Picture */}
       <div className="Profile-card">
-        <input type="text" className="organization-search" placeholder="Search Organization" />
         <div className="card-body">
           <span className="circle"></span>
           <img
             className="user_image"
             alt="Profile"
-            src={croppedImage || profileImage} // Show cropped image if available, otherwise show default
-            onClick={handleImageClick}  // Trigger file input on image click
+            src={croppedImage || profileImage} // Show cropped image if available
           />
           <button className="create-photo" onClick={handlePhotoUpload}>
             📸
           </button>
           <p className="text1">Create Your Picture</p>
         </div>
-        {/* Hidden file input */}
         <input
           type="file"
           ref={fileInputRef}
@@ -110,59 +95,138 @@ const ProfileManagementPage = () => {
           accept="image/*"
           onChange={handleImageChange}
         />
+      </div>
 
-        {/* Contact Information Form */}
-        <form className="mb-6" onSubmit={handleSubmit}>
-          <div className="username-container">
-            <label className="user-name_label1" htmlFor="UserName">Username</label>
-            <label className="user-name_label2">AE22374926</label>
-          </div>
-          <div className="col-md-6">
-            <label className="person-name_label" htmlFor="PersonName">Person Name</label>
+      {/* Contact Information Form */}
+      {role === 'PRODUCT OWNER' && (
+        <div className="po_container">
+          <h1 className="profile_heading">
+            <center>Profile Management</center>
+          </h1>
+          <form className="mb-6" onSubmit={handleSubmit}>
+            <div className="username-container">
+              <label className="user-name_label1" htmlFor="UserName">
+                Username
+              </label>
+              <p className="user-name_label1">AE22374926</p>
+            </div>
+
+            <label className="person-name_label" htmlFor="PersonName">
+              Person Name
+            </label>
             <input
               type="text"
-              className="person-name_input"
               id="PersonName"
               value={formData.PersonName}
               onChange={handleChange}
+              className="person-name_input"
             />
-          </div>
-          <label className="email-label" htmlFor="MailID">Mail ID</label>
-          <input
-            type="email"
-            className="email-input"
-            id="MailID"
-            value={formData.MailID}
-            onChange={handleChange}
-          />
-          <label className="mobile-label" htmlFor="Mobile">Mobile</label>
-          <input
-            type="tel"
-            className="mobile_input"
-            id="Mobile"
-            value={formData.Mobile}
-            onChange={handleChange}
-          />
-          <button type="button" className="profile_cancelbtn">Cancel</button>
-          <button type="submit" className="profile_save">Save</button>
-        </form>
-      </div>
+
+            <br />
+
+            <label className="email-label" htmlFor="MailID">
+              Mail ID
+            </label>
+            <input
+              type="email"
+              id="MailID"
+              value={formData.MailID}
+              onChange={handleChange}
+              className="email-input"
+            />
+
+            <br />
+
+            <label className="mobile-label" htmlFor="Mobile">
+              Mobile
+            </label>
+            <input
+              type="tel"
+              id="Mobile"
+              value={formData.Mobile}
+              onChange={handleChange}
+              className="mobile-input"
+            />
+
+            <div className="form-actions">
+              <button type="button" className="profile_cancelbtn">
+                Cancel
+              </button>
+              <button type="submit" className="profile_save">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {role === 'CLIENT ADMIN' && (
+        <div className="ca_container">
+          <h1 className="profile_heading1">
+            <center>Profile Management</center>
+          </h1>
+          <form className="mb-6" onSubmit={handleSubmit}>
+            <div className="mail_id_container">
+              <label className="mail_id_label1" htmlFor="MailID">
+                Mail ID
+              </label>
+              <p className="mail_id_label2">abcd12345@gmail.com</p>
+            </div>
+
+            <label className="role_label" htmlFor="Role">
+              Role
+            </label>
+            <input
+              type="text"
+              id="Role"
+              value={formData.Role}
+              onChange={handleChange}
+              className="role-input"
+            />
+
+            <br />
+
+            <label className="mobile_label" htmlFor="Mobile">
+              Mobile
+            </label>
+            <input
+              type="tel"
+              id="Mobile"
+              value={formData.Mobile}
+              onChange={handleChange}
+              className="mobile_input"
+            />
+
+            <div className="form-actions">
+              <button type="button" className="profile_cancelbtn">
+                Cancel
+              </button>
+              <button type="submit" className="profile_save">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Image Cropping Modal */}
       {cropperVisible && (
-        <div className="profile-management-cropperModal">
-          <div className="profile-management-cropperModalContent">
+        <div className="cropper-modal">
+          <div className="cropper-modal-content">
             <Cropper
-              src={imageToCrop}  // Use the image to crop, not the cropped image
+              src={imageToCrop}
               ref={cropperRef}
-              style={{ height: 250, width: '100%' }}  // Adjust cropper size
-              aspectRatio={1}  // Enforces a square crop
-              guides={false}  // Disables guides in the cropper
-              className='cropper-image'
+              style={{ height: 250, width: '100%' }}
+              aspectRatio={1}
+              guides={false}
             />
-            <div className="profile-management-cropperActions">
-              <button onClick={handleSaveCrop} className="profile-management-button">Save Changes</button>
-              <button onClick={handleCancelCrop} className="profile-management-cancelButton">Cancel</button>
+            <div className="cropper-actions">
+              <button onClick={handleSaveCrop} className="btn-save-crop">
+                Save Changes
+              </button>
+              <button onClick={handleCancelCrop} className="btn-cancel-crop">
+                Cancel
+              </button>
             </div>
           </div>
         </div>
