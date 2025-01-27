@@ -127,6 +127,7 @@ const ProfileManagementPage = () => {
               onChange={handleChange}
             />
           </div>
+          
           <label className="email-label" htmlFor="MailID">Mail ID</label>
           <input
             type="email"
