@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import './ProfileManagementPage.css';
 import avatar from "../../assets/images/candidate-profile.png";
 import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
+import 'cropperjs/dist/cropper.css'; // Ensure cropper styles are imported
 
 const ProfileManagementPage = () => {
   const [formData, setFormData] = useState({
@@ -59,10 +59,7 @@ const ProfileManagementPage = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
       const croppedCanvas = cropper.getCroppedCanvas();
-      if (croppedCanvas) {
-        setCroppedImage(croppedCanvas.toDataURL()); // Set the cropped image
-        setProfileImage(croppedCanvas.toDataURL());
-      }
+      setCroppedImage(croppedCanvas.toDataURL()); // Set the cropped image
     }
     setCropperVisible(false); // Close cropper
   };
@@ -74,6 +71,8 @@ const ProfileManagementPage = () => {
 
   return (
     <div className="col-xl-7 mx-auto">
+      
+
       {/* Profile Picture */}
       <div className="Profile-card">
         <div className="card-body">
@@ -99,73 +98,70 @@ const ProfileManagementPage = () => {
 
       {/* Contact Information Form */}
       {role === 'PRODUCT OWNER' && (
-        <div className="po_container">
+        <form className="mb-6" onSubmit={handleSubmit}>
           <h1 className="profile_heading">
-            <center>Profile Management</center>
-          </h1>
-          <form className="mb-6" onSubmit={handleSubmit}>
-            <div className="username-container">
-              <label className="user-name_label1" htmlFor="UserName">
-                Username
-              </label>
-              <p className="user-name_label1">AE22374926</p>
-            </div>
-
-            <label className="person-name_label" htmlFor="PersonName">
-              Person Name
+        <center>Profile Management</center>
+      </h1>
+          <div className="username-container">
+            <label className="user-name_label1" htmlFor="UserName">
+              Username
             </label>
-            <input
-              type="text"
-              id="PersonName"
-              value={formData.PersonName}
-              onChange={handleChange}
-              className="person-name_input"
-            />
+            <p className="user-name_label1">AE22374926</p>
+          </div>
 
-            <br />
+          <label className="person-name_label" htmlFor="PersonName">
+            Person Name
+          </label>
+          <input
+            type="text"
+            id="PersonName"
+            value={formData.PersonName}
+            onChange={handleChange}
+            className="person-name_input"
+          />
 
-            <label className="email-label" htmlFor="MailID">
-              Mail ID
-            </label>
-            <input
-              type="email"
-              id="MailID"
-              value={formData.MailID}
-              onChange={handleChange}
-              className="email-input"
-            />
+          <br />
 
-            <br />
+          <label className="email-label" htmlFor="MailID">
+            Mail ID
+          </label>
+          <input
+            type="email"
+            id="MailID"
+            value={formData.MailID}
+            onChange={handleChange}
+            className="email-input"
+          />
 
-            <label className="mobile-label" htmlFor="Mobile">
-              Mobile
-            </label>
-            <input
-              type="tel"
-              id="Mobile"
-              value={formData.Mobile}
-              onChange={handleChange}
-              className="mobile-input"
-            />
+          <br />
 
-            <div className="form-actions">
-              <button type="button" className="profile_cancelbtn">
-                Cancel
-              </button>
-              <button type="submit" className="profile_save">
-                Save
-              </button>
-            </div>
-          </form>
-        </div>
+          <label className="mobile-label" htmlFor="Mobile">
+            Mobile
+          </label>
+          <input
+            type="tel"
+            id="Mobile"
+            value={formData.Mobile}
+            onChange={handleChange}
+            className="mobile-input"
+          />
+
+          <div className="form-actions">
+            <button type="button" className="profile_cancelbtn">
+              Cancel
+            </button>
+            <button type="submit" className="profile_save">
+              Save
+            </button>
+          </div>
+        </form>
       )}
 
       {role === 'CLIENT ADMIN' && (
-        <div className="ca_container">
-          <h1 className="profile_heading1">
-            <center>Profile Management</center>
-          </h1>
-          <form className="mb-6" onSubmit={handleSubmit}>
+         <><h1 className="profile_heading1">
+          <center>Profile Management</center>
+        </h1><form className="mb-6_1" onSubmit={handleSubmit}>
+            
             <div className="mail_id_container">
               <label className="mail_id_label1" htmlFor="MailID">
                 Mail ID
@@ -181,8 +177,7 @@ const ProfileManagementPage = () => {
               id="Role"
               value={formData.Role}
               onChange={handleChange}
-              className="role-input"
-            />
+              className="role-input" />
 
             <br />
 
@@ -194,8 +189,7 @@ const ProfileManagementPage = () => {
               id="Mobile"
               value={formData.Mobile}
               onChange={handleChange}
-              className="mobile_input"
-            />
+              className="mobile_input" />
 
             <div className="form-actions">
               <button type="button" className="profile_cancelbtn">
@@ -205,8 +199,7 @@ const ProfileManagementPage = () => {
                 Save
               </button>
             </div>
-          </form>
-        </div>
+          </form></>
       )}
 
       {/* Image Cropping Modal */}
