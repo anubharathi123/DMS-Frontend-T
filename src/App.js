@@ -18,6 +18,7 @@ import OrganizationList from "./components/OrganizationList/OrganizationList";
 import Login1 from "./components/login1/login1";
 import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
 import ChangePassword1 from "./components/changepassword1/changepassword1";
+// import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -80,7 +81,8 @@ function AppContent() {
 
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
-
+        <Route path="/" element={<OrganizationList />} />
+        <Route path="/profile-management" element={<ProfileManagementPage />} />
         {/* Change Password (Token Only) */}
         {/* <Route
           path="/ChangePassword"
@@ -191,6 +193,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <NotificationPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/OrganizationList"
+          element={
+            <PrivateRoute>
+              <OrganizationList />
             </PrivateRoute>
           }
         />
