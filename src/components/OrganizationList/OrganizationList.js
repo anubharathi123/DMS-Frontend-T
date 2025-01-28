@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './OrganizationList.css';
@@ -8,16 +8,16 @@ import { TiEdit } from "react-icons/ti";
 
 const OrganizationList = () => {
     const data = [
-        { username: 'org1user', name: 'Organization 1', createdDate: '2025-01-05', status: 'Inactive' },
-        { username: 'org2user', name: 'Organization 2', createdDate: '2025-01-19', status: 'Active' },
-        { username: 'org3user', name: 'Organization 3', createdDate: '2025-02-01', status: 'Active' },
-        { username: 'org4user', name: 'Organization 4', createdDate: '2025-02-15', status: 'Inactive' },
-        { username: 'org5user', name: 'Organization 5', createdDate: '2025-03-01', status: 'Active' },
-        { username: 'org6user', name: 'Organization 6', createdDate: '2025-03-15', status: 'Inactive' },
-        { username: 'org7user', name: 'Organization 7', createdDate: '2025-04-01', status: 'Inactive' },
-        { username: 'org8user', name: 'Organization 8', createdDate: '2025-04-15', status: 'Active' },
-        { username: 'org9user', name: 'Organization 9', createdDate: '2025-05-01', status: 'Active' },
-        { username: 'org10user', name: 'Organization 10', createdDate: '2025-05-15', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 1', createdDate: '2025-01-05', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 2', createdDate: '2025-01-19', status: 'Active' },
+        { username: 'AE', name: 'Organization 3', createdDate: '2025-02-01', status: 'Active' },
+        { username: 'AE', name: 'Organization 4', createdDate: '2025-02-15', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 5', createdDate: '2025-03-01', status: 'Active' },
+        { username: 'AE', name: 'Organization 6', createdDate: '2025-03-15', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 7', createdDate: '2025-04-01', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 8', createdDate: '2025-04-15', status: 'Active' },
+        { username: 'AE', name: 'Organization 9', createdDate: '2025-05-01', status: 'Active' },
+        { username: 'AE', name: 'Organization 10', createdDate: '2025-05-15', status: 'Inactive' },
     ];
 
     const [startDate, setStartDate] = useState(null);
@@ -28,7 +28,7 @@ const OrganizationList = () => {
     const [orgNameFilter, setOrgNameFilter] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const itemsPerPage = 5;
-    const navigate = useNavigate();  // Initialize useNavigate
+    const navigate = useNavigate();
 
     const handleDateChange = (date) => {
         setStartDate(date);
@@ -68,7 +68,6 @@ const OrganizationList = () => {
     };
 
     const handleEdit = (org) => {
-        // When the edit icon is clicked, navigate to ProfileManagementPage
         navigate('/profile-management');
     };
 
@@ -93,23 +92,26 @@ const OrganizationList = () => {
         <div className="organization-container">
             <h1 className="organization-h1">Organization List</h1>
 
-            {/* Search Box */}
-            <div className="organization-search-container">
+            {/* Search Row */}
+            <div className="organization-search-row">
                 <input
+                    className="organization-search-input"
                     type="text"
-                    placeholder="Search by Username"
+                    placeholder="Search"
                     value={usernameFilter}
                     onChange={(e) => setUsernameFilter(e.target.value)}
                     onKeyUp={handleSearch}
                 />
                 <input
+                    className="organization-search-input"
                     type="text"
-                    placeholder="Search by Organization Name"
+                    placeholder="Organization Name"
                     value={orgNameFilter}
                     onChange={(e) => setOrgNameFilter(e.target.value)}
                     onKeyUp={handleSearch}
                 />
                 <select
+                    className="organization-search-select"
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                     onBlur={handleSearch}
@@ -123,7 +125,7 @@ const OrganizationList = () => {
             <table className="organization-table">
                 <thead>
                     <tr className="organization-table-header">
-                        <th className="organization-table-th">UserName</th>
+                        <th className="organization-table-th">Username</th>
                         <th className="organization-table-th">Organization Name</th>
                         <th className="organization-table-th">
                             Created Date
@@ -142,7 +144,7 @@ const OrganizationList = () => {
                                 />
                             )}
                         </th>
-                        <th className="organization-table-th">Active / Inactive</th>
+                        <th className="organization-table-th">Status</th>
                         <th className="organization-table-th">Actions</th>
                     </tr>
                 </thead>
@@ -150,14 +152,14 @@ const OrganizationList = () => {
                     {paginatedData.length > 0 ? (
                         paginatedData.map((org, index) => (
                             <tr key={index} className="organization-table-row">
-                                <td className="organization-table-td">{org.name}</td>
                                 <td className="organization-table-td">{org.username}</td>
+                                <td className="organization-table-td">{org.name}</td>
                                 <td className="organization-table-td">{org.createdDate}</td>
                                 <td className="organization-table-td">{org.status}</td>
                                 <td className="organization-table-td">
                                     <button
                                         className="organization-edit"
-                                        onClick={() => handleEdit(org)}  // Trigger the edit functionality
+                                        onClick={() => handleEdit(org)}
                                     >
                                         <TiEdit />
                                     </button>
