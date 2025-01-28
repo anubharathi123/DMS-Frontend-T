@@ -110,15 +110,6 @@ function AppContent() {
         />
         
         <Route
-          path="/profilemanagement"
-          element={
-            
-              <ProfileManagementPage />
-            
-          }
-        />
-
-        <Route
           path="/profile"
           element={
             <PrivateRoute>
@@ -134,9 +125,8 @@ function AppContent() {
         <Route
           path="/verifydocument"
           element={
-            <PrivateRoute>
+            
               <VerifyDoc />
-            </PrivateRoute>
           }
         />
         <Route
@@ -151,18 +141,18 @@ function AppContent() {
         <Route
           path="/organizationlist"
           element={
-            <PrivateRoute>
+            
               <OrganizationList />
-            </PrivateRoute>
+        
           }
         />
 
         <Route
           path="/documentlist"
           element={
-            <PrivateRoute>
+         
               <DocumentList />
-            </PrivateRoute>
+    
           }
         />
         <Route
