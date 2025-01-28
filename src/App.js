@@ -18,6 +18,9 @@ import OrganizationList from "./components/OrganizationList/OrganizationList";
 import Login1 from "./components/login1/login1";
 import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
 import ChangePassword1 from "./components/changepassword1/changepassword1";
+import { ProfileImageProvider } from "./context/ProfileImageContext"; 
+// import Header from "./components/Header";
+import AdminCreation from "./components/Admin Creation/AdminCreation";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -47,9 +50,11 @@ const TokenRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ProfileImageProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ProfileImageProvider>
   );
 }
 
@@ -110,9 +115,9 @@ function AppContent() {
         <Route
           path="/profilemanagement"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <ProfileManagementPage />
-            </PrivateRoute>
+            // </PrivateRoute> 
           }
         />
         <Route
@@ -139,9 +144,9 @@ function AppContent() {
         <Route
           path="/companycreation"
           element={
-           <PrivateRoute>
+          //  <PrivateRoute>
               <CompanyCreation />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
 
@@ -181,9 +186,9 @@ function AppContent() {
         <Route
           path="/createuser"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <CreateUser />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
          <Route
@@ -192,6 +197,14 @@ function AppContent() {
             <PrivateRoute>
               <NotificationPage />
             </PrivateRoute>
+          }
+        />
+         <Route
+          path="/admincreation"
+          element={
+            // <PrivateRoute>
+              <AdminCreation/>
+            // </PrivateRoute>
           }
         />
 

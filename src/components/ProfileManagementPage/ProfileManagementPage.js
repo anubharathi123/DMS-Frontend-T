@@ -1,40 +1,39 @@
-
-
-import React, { useState, useRef } from 'react';
-import './ProfileManagementPage.css';
+import React, { useState, useRef } from "react";
+import { useProfileImage } from "../../context/ProfileImageContext";
+import "./ProfileManagementPage.css";
 import avatar from "../../assets/images/candidate-profile.png";
-import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css'; // Ensure cropper styles are imported
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 const ProfileManagementPage = () => {
   const [formData, setFormData] = useState({
-    UserName: '',
-    PersonName: '',
-    MailID: '',
-    Mobile: '',
+    UserName: "",
+    PersonName: "",
+    MailID: "",
+    Mobile: "",
   });
 
-  const [profileImage, setProfileImage] = useState(avatar);
   const [imageToCrop, setImageToCrop] = useState(null);
   const [cropperVisible, setCropperVisible] = useState(false);
   const [croppedImage, setCroppedImage] = useState(null);
 
   const fileInputRef = useRef();
   const cropperRef = useRef();
+  const { setProfileImage } = useProfileImage(); // Access the setProfileImage function from the context
 
   // Handle input change
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [id]: type === 'checkbox' ? checked : value,
+      [id]: type === "checkbox" ? checked : value,
     });
   };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
+    console.log("Form Data:", formData);
   };
 
   // Handle "Create Photo" button click
@@ -48,19 +47,17 @@ const ProfileManagementPage = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageToCrop(reader.result);  
-        setCropperVisible(true);  
+        setImageToCrop(reader.result);
+        setCropperVisible(true);
       };
       reader.readAsDataURL(file);
-
-      // Reset the file input so the user can select the same file again
-      resetFileInput();
+      resetFileInput(); // Reset file input to allow re-selection
     }
   };
 
   // Reset the file input to allow re-selection of the same file
   const resetFileInput = () => {
-    fileInputRef.current.value = '';  
+    fileInputRef.current.value = "";
   };
 
   // Handle cropping
@@ -68,45 +65,48 @@ const ProfileManagementPage = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
       const croppedCanvas = cropper.getCroppedCanvas();
-      setCroppedImage(croppedCanvas.toDataURL());  // Set the cropped image
+      const croppedImageDataUrl = croppedCanvas.toDataURL();
+      setCroppedImage(croppedImageDataUrl); // Set the cropped image
+      setProfileImage(croppedImageDataUrl); // Update the shared profile image context
     }
-    setCropperVisible(false);  // Close the cropper modal after saving
+    setCropperVisible(false); // Close the cropper modal after saving
   };
 
   // Cancel cropping
   const handleCancelCrop = () => {
-    setCropperVisible(false);  // Close the cropper without saving changes
-  };
-
-  // Handle profile image click (opens the file input dialog)
-  const handleImageClick = () => {
-    fileInputRef.current.click();  // Trigger the file input click
+    setCropperVisible(false); // Close the cropper without saving changes
   };
 
   return (
     <div className="col-xl-7 mx-auto">
       <h1 className="profile_heading">Profile Management</h1>
+
       {/* Profile Picture */}
       <div className="Profile-card">
-        <input type="text" className="organization-search" placeholder="Search Organization" />
+        <input
+          type="text"
+          className="organization-search"
+          placeholder="Search Organization"
+        />
         <div className="card-body">
           <span className="circle"></span>
           <img
             className="user_image"
             alt="Profile"
-            src={croppedImage || profileImage} // Show cropped image if available, otherwise show default
-            onClick={handleImageClick}  // Trigger file input on image click
+            src={croppedImage || avatar} // Show cropped image if available, otherwise show default
+            onClick={handlePhotoUpload} // Trigger file input on image click
           />
           <button className="create-photo" onClick={handlePhotoUpload}>
             📸
           </button>
           <p className="text1">Create Your Picture</p>
         </div>
+
         {/* Hidden file input */}
         <input
           type="file"
           ref={fileInputRef}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           accept="image/*"
           onChange={handleImageChange}
         />
@@ -114,11 +114,15 @@ const ProfileManagementPage = () => {
         {/* Contact Information Form */}
         <form className="mb-6" onSubmit={handleSubmit}>
           <div className="username-container">
-            <label className="user-name_label1" htmlFor="UserName">Username</label>
+            <label className="user-name_label1" htmlFor="UserName">
+              Username
+            </label>
             <label className="user-name_label2">AE22374926</label>
           </div>
           <div className="col-md-6">
-            <label className="person-name_label" htmlFor="PersonName">Person Name</label>
+            <label className="person-name_label" htmlFor="PersonName">
+              Person Name
+            </label>
             <input
               type="text"
               className="person-name_input"
@@ -127,7 +131,9 @@ const ProfileManagementPage = () => {
               onChange={handleChange}
             />
           </div>
-          <label className="email-label" htmlFor="MailID">Mail ID</label>
+          <label className="email-label" htmlFor="MailID">
+            Mail ID
+          </label>
           <input
             type="email"
             className="email-input"
@@ -135,7 +141,9 @@ const ProfileManagementPage = () => {
             value={formData.MailID}
             onChange={handleChange}
           />
-          <label className="mobile-label" htmlFor="Mobile">Mobile</label>
+          <label className="mobile-label" htmlFor="Mobile">
+            Mobile
+          </label>
           <input
             type="tel"
             className="mobile_input"
@@ -143,8 +151,12 @@ const ProfileManagementPage = () => {
             value={formData.Mobile}
             onChange={handleChange}
           />
-          <button type="button" className="profile_cancelbtn">Cancel</button>
-          <button type="submit" className="profile_save">Save</button>
+          <button type="button" className="profile_cancelbtn">
+            Cancel
+          </button>
+          <button type="submit" className="profile_save">
+            Save
+          </button>
         </form>
       </div>
 
@@ -153,16 +165,26 @@ const ProfileManagementPage = () => {
         <div className="profile-management-cropperModal">
           <div className="profile-management-cropperModalContent">
             <Cropper
-              src={imageToCrop}  // Use the image to crop, not the cropped image
+              src={imageToCrop} // Use the image to crop
               ref={cropperRef}
-              style={{ height: 250, width: '100%' }}  // Adjust cropper size
-              aspectRatio={1}  // Enforces a square crop
-              guides={false}  // Disables guides in the cropper
-              className='cropper-image'
+              style={{ height: 250, width: "100%" }}
+              aspectRatio={1} // Enforce a square crop
+              guides={false} // Disable guides
+              className="cropper-image"
             />
             <div className="profile-management-cropperActions">
-              <button onClick={handleSaveCrop} className="profile-management-button">Save Changes</button>
-              <button onClick={handleCancelCrop} className="profile-management-cancelButton">Cancel</button>
+              <button
+                onClick={handleSaveCrop}
+                className="profile-management-button"
+              >
+                Save Changes
+              </button>
+              <button
+                onClick={handleCancelCrop}
+                className="profile-management-cancelButton"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
