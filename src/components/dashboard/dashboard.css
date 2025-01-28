@@ -15,19 +15,7 @@
   margin-left: 250px;
 }
 
-  /* @media (max-width: 768px) {
-    margin-left: 0;
-    padding-left: 0;
-  } */
-
-
-/* @media (max-width: 768px) {
-  .dashboard-container {
-    margin-top: 5vh;
-  }
-} */
-
-/* Dashboard Section */
+  
 
 
 .dashboard {
@@ -86,50 +74,6 @@
   color: #000b58;
 }
 
-/* Chart Section */
-.chart-container {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin-top: 0;
-}
-
-.chart {
-  width: 100%;
-  max-width: 45%;
-  /* margin: 20px 0; */
-}
-
-/* Media Queries for Mobile */
-/* @media (max-width: 768px) {
-  .chart {
-    width: 100%;
-  }
-} */
-
-
-/* Styles for the Pie, Line, and   Bar Charts */
-canvas {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 10px;
-  /* background-color: var(--beige); */
-}
-
-.chart {
-  /* padding: 20px; */
-  background-color: var(--beige);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.chart-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
-  /* padding: 20px; */
-}
 
 
 
@@ -157,26 +101,6 @@ canvas {
 
 
 
-/* Chart Section */
-.chart-container {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  gap: 20px;
-  padding: 0 20px;
-  width: 100%;
-}
-
-.chart {
-  width: 100%;
-  max-width: 25%;
-  /* margin: 20px 0; */
-  background-color: var(--chart-bg-color);
-  border-radius: 10px;
-  box-shadow: var(--card-shadow);
-  /* padding: 20px; */
-}
 
 canvas {
   width: 100% !important;
@@ -184,13 +108,7 @@ canvas {
   border-radius: 10px;
 }
 
-/* Media Queries for Mobile */
-/* @media (max-width: 768px) {
-  .chart {
-    width: 100%;
-    max-width: 100%;
-  }
-} */
+
 
 
 
@@ -237,18 +155,46 @@ canvas {
 
 
 
-.rolePieChart{
-  height: 250px;
-  width: 250px;
-  margin-top: 25px;
+
+
+
+
+
+.charts-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+  height: 300px;
+  margin-top: 30px;
+  justify-content: space-evenly;
+
 }
 
+.bar-chart {
+  padding: 10px;
+  height: 220px;
+  width: 250px;
+}
 
+.doughnut-chart {
+  padding: 10px;
+  height: 220px;
+  width: 220px;
+}
 
+.line-chart {
+  padding: 10px;
+  height: 220px;
+  width: 250px;
+}
 
+.pie-chart{
+  padding: 10px;
+  height: 220px;
+  width: 220px;
+}
 
-
-
-
-
-
+.dashboard-year-selector{
+  font-size: 14px;
+}
