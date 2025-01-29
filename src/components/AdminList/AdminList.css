@@ -1,0 +1,132 @@
+/* Container */
+.adminlist_container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 75%;
+    margin-left: 250px;
+    position: absolute;
+    top: 65px;
+  }
+  
+  .adminlist_header {
+    font-size: 25px;
+    font-weight: bold;
+    color: #000b58;
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 10px;
+  }
+  
+  /* Search and Filters */
+  .adminlist_controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .adminlist_search {
+    flex-direction: row-reverse;
+  }
+  
+  .adminlist_search,
+  .adminlist_filter,
+  .adminlist_rows {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .adminlist_search_input {
+    width: 260px;
+  }
+  
+  .adminlist_filter_select,
+  .adminlist_rows_select {
+    width: 200px;
+  }
+  
+  /* Table Styling */
+  .adminlist_table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .adminlist_thead {
+    background-color: #f3f4f6;
+    color: #000b58;
+  }
+  
+  .adminlist_th {
+    padding: 0;
+    text-align: left;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .adminlist_row {
+    background-color: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .adminlist_td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Pagination Styling */
+  .adminlist_pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .adminlist_pageinfo_text {
+    font-size: 12px;
+  }
+  
+  .adminlist_paging_button {
+    background-color: #000b58;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 16px;
+    margin-right: 40px;
+    cursor: pointer;
+  }
+  
+  .adminlist_paging_button:disabled {
+    background-color: #e5e7eb;
+    color: #495057;
+    cursor: not-allowed;
+  }
+  
+  .adminlist_filter_select {
+    font-size: 12px !important;
+  }
+  
+  /* Status-Specific Styles */
+  .bg-yellow-100 {
+    background-color: #fef3c7;
+  }
+  
+  .text-yellow-800 {
+    color: #854d0e;
+  }
+  
+  .bg-red-100 {
+    background-color: #fee2e2;
+  }
+  
+  .text-red-800 {
+    color: #991b1b;
+  }
+  
+  .bg-green-100 {
+    background-color: #d1fae5;
+  }
+  
+  .text-green-800 {
+    color: #064e3b;
+  }
+  

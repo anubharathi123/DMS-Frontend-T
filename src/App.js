@@ -18,9 +18,13 @@ import OrganizationList from "./components/OrganizationList/OrganizationList";
 import Login1 from "./components/login1/login1";
 import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
 import ChangePassword1 from "./components/changepassword1/changepassword1";
+import AdminList from "./components/AdminList/AdminList";
+
 import { ProfileImageProvider } from "./context/ProfileImageContext"; 
 // import Header from "./components/Header";
 import AdminCreation from "./components/Admin Creation/AdminCreation";
+
+// import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -82,10 +86,12 @@ function AppContent() {
         {/* Route for Login */}
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/login" element={<Login1 />} />
+        {/* <Route path="/" element={<Login1 />} /> */}
 
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
-
+        <Route path="/" element={<OrganizationList />} />
+        <Route path="/profile-management" element={<ProfileManagementPage />} />
         {/* Change Password (Token Only) */}
         {/* <Route
           path="/ChangePassword"
@@ -118,19 +124,21 @@ function AppContent() {
             // <PrivateRoute>
               <ProfileManagementPage />
             // </PrivateRoute> 
+
           }
         />
+
         <Route
           path="/profile"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <Profile name="Rita Correia"
 				age="32"
 				city="London"
 				followers="80K"
 				likes="803K"
 				photos="1.4K" />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
         <Route
@@ -153,18 +161,18 @@ function AppContent() {
         <Route
           path="/organizationlist"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <OrganizationList />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
 
         <Route
           path="/documentlist"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <DocumentList />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
         <Route
@@ -205,6 +213,25 @@ function AppContent() {
             // <PrivateRoute>
               <AdminCreation/>
             // </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/OrganizationList"
+          element={
+            <PrivateRoute>
+              <OrganizationList />
+            </PrivateRoute>
+          }
+        />
+
+       <Route
+          path="/AdminList"
+          element={
+            // <PrivateRoute>
+              <AdminList/>
+            // </PrivateRoute> 
+
           }
         />
 
