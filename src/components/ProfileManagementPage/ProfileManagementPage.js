@@ -36,9 +36,11 @@ const ProfileManagementPage = () => {
     console.log("Form Data:", formData);
   };
 
-  // Handle "Create Photo" button click
+  // Handle "Create Photo" button click (trigger file input)
   const handlePhotoUpload = () => {
-    fileInputRef.current.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Opens the file input dialog
+    }
   };
 
   // Handle image upload
@@ -47,11 +49,12 @@ const ProfileManagementPage = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageToCrop(reader.result);
-        setCropperVisible(true);
+        setImageToCrop(reader.result); // Set the image for cropping
+        setCropperVisible(true); // Show the cropping modal
       };
       reader.readAsDataURL(file);
       resetFileInput(); // Reset file input to allow re-selection
+      e.target.value = ''; // Reset file input to allow re-upload
     }
   };
 
@@ -77,118 +80,198 @@ const ProfileManagementPage = () => {
     setCropperVisible(false); // Close the cropper without saving changes
   };
 
+  // Render cropping modal
+  const renderCropperModal = () => (
+    cropperVisible && (
+      <div className="cropper-modal">
+        <div className="cropper-modal-content">
+          <h2 className="cropper-header">Crop Your Photo</h2>
+          <Cropper
+            src={imageToCrop}
+            ref={cropperRef}
+            style={{ height: '300px', width: '100%' }}
+            aspectRatio={1} // Keep aspect ratio 1:1 for square crop
+            guides={true}
+          />
+          <div className="cropper-actions">
+            <button onClick={handleSaveCrop} className="btn-save-crop">
+              Save Changes
+            </button>
+            <button onClick={handleCancelCrop} className="btn-cancel-crop">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  );
+
   return (
     <div className="col-xl-7 mx-auto">
-      <h1 className="profile_heading">Profile Management</h1>
-
-      {/* Profile Picture */}
-      <div className="Profile-card">
-        <input
-          type="text"
-          className="organization-search"
-          placeholder="Search Organization"
-        />
-        <div className="card-body">
-          <span className="circle"></span>
-          <img
-            className="user_image"
-            alt="Profile"
-            src={croppedImage || avatar} // Show cropped image if available, otherwise show default
-            onClick={handlePhotoUpload} // Trigger file input on image click
-          />
-          <button className="create-photo" onClick={handlePhotoUpload}>
-            📸
-          </button>
-          <p className="text1">Create Your Picture</p>
-        </div>
-
-        {/* Hidden file input */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-
-        {/* Contact Information Form */}
-        <form className="mb-6" onSubmit={handleSubmit}>
-          <div className="username-container">
-            <label className="user-name_label1" htmlFor="UserName">
-              Username
-            </label>
-            <label className="user-name_label2">AE22374926</label>
+      {role === 'PRODUCT OWNER' && (
+        <>
+        <h1 className="profile_heading">
+              <center>Profile Management</center>
+            </h1>
+          <div className="Profile-card">
+          
+            <div className="card-body">
+              <span className="circle"></span>
+              <img
+                className="user_image"
+                alt="Profile"
+                src={croppedImage || profileImage} // Show cropped image if available
+              />
+              <button 
+                className="create-photo" 
+                onClick={handlePhotoUpload}
+                style={{ cursor: 'pointer' }} // Ensure pointer cursor on hover
+              >
+                📸
+              </button>
+              <p className="text1">Create Your Picture</p>
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }} // Hide the file input
+              accept="image/*"
+              onChange={handleImageChange} 
+            />
           </div>
-          <div className="col-md-6">
+
+          {/* Contact Information Form */}
+          <form className="mb-6" onSubmit={handleSubmit}>
+            
+            <div className="username-container">
+              <label className="user-name_label1" htmlFor="UserName">
+                Username
+              </label>
+              <p className="user-name_label1">AE22374926</p>
+            </div>
+
             <label className="person-name_label" htmlFor="PersonName">
               Person Name
             </label>
             <input
               type="text"
-              className="person-name_input"
               id="PersonName"
               value={formData.PersonName}
               onChange={handleChange}
-            />
-          </div>
-          <label className="email-label" htmlFor="MailID">
-            Mail ID
-          </label>
-          <input
-            type="email"
-            className="email-input"
-            id="MailID"
-            value={formData.MailID}
-            onChange={handleChange}
-          />
-          <label className="mobile-label" htmlFor="Mobile">
-            Mobile
-          </label>
-          <input
-            type="tel"
-            className="mobile_input"
-            id="Mobile"
-            value={formData.Mobile}
-            onChange={handleChange}
-          />
-          <button type="button" className="profile_cancelbtn">
-            Cancel
-          </button>
-          <button type="submit" className="profile_save">
-            Save
-          </button>
-        </form>
-      </div>
+              className="person-name_input" />
 
-      {/* Image Cropping Modal */}
-      {cropperVisible && (
-        <div className="profile-management-cropperModal">
-          <div className="profile-management-cropperModalContent">
-            <Cropper
-              src={imageToCrop} // Use the image to crop
-              ref={cropperRef}
-              style={{ height: 250, width: "100%" }}
-              aspectRatio={1} // Enforce a square crop
-              guides={false} // Disable guides
-              className="cropper-image"
-            />
-            <div className="profile-management-cropperActions">
-              <button
-                onClick={handleSaveCrop}
-                className="profile-management-button"
-              >
-                Save Changes
-              </button>
-              <button
-                onClick={handleCancelCrop}
-                className="profile-management-cancelButton"
-              >
+            <br />
+
+            <label className="email-label" htmlFor="MailID">
+              Mail ID
+            </label>
+            <input
+              type="email"
+              id="MailID"
+              value={formData.MailID}
+              onChange={handleChange}
+              className="email-input" />
+
+            <br />
+
+            <label className="mobile-label" htmlFor="Mobile">
+              Mobile
+            </label>
+            <input
+              type="tel"
+              id="Mobile"
+              value={formData.Mobile}
+              onChange={handleChange}
+              className="mobile-input" />
+
+            <div className="form-actions">
+              <button type="button" className="profile_cancelbtn">
                 Cancel
               </button>
+              <button type="submit" className="profile_save">
+                Save
+              </button>
             </div>
-          </div>
-        </div>
+          </form>
+        </>
       )}
+
+      {role === 'CLIENT ADMIN' && (
+        <>
+         <h1 className="profile_heading1">
+              <center>Profile Management</center>
+            </h1>
+          <div className="Profile-card1">
+            <div className="card-body1">
+              <span className="circle1"></span>
+              <img
+                className="user_image1"
+                alt="Profile"
+                src={croppedImage || profileImage} // Show cropped image if available
+              />
+              <button 
+                className="create-photo1" 
+                onClick={handlePhotoUpload}
+                style={{ cursor: 'pointer' }} // Ensure pointer cursor on hover
+              >
+                📸
+              </button>
+              <p className="text2">Create Your Picture</p>
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }} // Hide the file input
+              accept="image/*"
+              onChange={handleImageChange} 
+            />
+          </div>
+
+          <form className="mb-6_1" onSubmit={handleSubmit}>
+           
+            <div className="mail_id_container">
+              <label className="mail_id_label1" htmlFor="MailID">
+                Mail ID
+              </label>
+              <p className="mail_id_label2">abcd12345@gmail.com</p>
+            </div>
+
+            <label className="role_label" htmlFor="Role">
+              Role
+            </label>
+            <input
+              type="text"
+              id="Role"
+              value={formData.Role}
+              onChange={handleChange}
+              className="role-input" />
+
+            <br />
+
+            <label className="mobile_label" htmlFor="Mobile">
+              Mobile
+            </label>
+            <input
+              type="tel"
+              id="Mobile"
+              value={formData.Mobile}
+              onChange={handleChange}
+              className="mobile_input" />
+
+            <div className="form-actions">
+              <button type="button" className="profile_cancelbtn">
+                Cancel
+              </button>
+              <button type="submit" className="profile_save">
+                Save
+              </button>
+            </div>
+          </form>
+        </>
+      )}
+
+      {/* Render Cropper Modal */}
+      {renderCropperModal()}
     </div>
   );
 };

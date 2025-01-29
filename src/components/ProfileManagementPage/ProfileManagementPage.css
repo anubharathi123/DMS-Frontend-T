@@ -18,8 +18,18 @@ body {
 
   .profile_heading {
     font-weight: 600;
-    margin-left: 400px;
-    margin-top: 70px;
+    position: relative;
+    bottom: 140px;
+    right: 8%;
+    font-size: 1.5rem;
+    color: #000b58;
+  }
+
+  .profile_heading1 {
+    font-weight: 600;
+    position: relative;
+    left: 13%;
+    bottom: 243px;
     font-size: 1.5rem;
     color: #000b58;
   }
@@ -28,11 +38,13 @@ body {
     background-color: #D4EBF8;
     border-radius: 10px;
     width: 650px;
-    height: 400px;
+    height: 410px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 10px;
     margin-left: 170px;
     margin-bottom: 15px;
+    position: relative;
+    top: 27%;
   }
   
   .card-body {
@@ -92,7 +104,6 @@ body {
     /* overflow: hidden; */
     object-fit: cover;
     /* border-radius: 50%; */
-    cursor: pointer;
     display: flex;
     border-radius: 50%;
     border: solid black 1px;
@@ -153,11 +164,20 @@ body {
   }
   
   /* Form styling */
+  .mb-6 {
+    position: relative;
+    bottom: 75px;
+    height: 30%;
+    width: 100%;
+    margin-left: 23%;
+  }
+
+  
+  /* Product Owner */
   
 .username-container {
   display: flex;
   align-items: center;
-  margin-top: 30px;
   margin-bottom: 10px
 }
   .user-name_label1 {
@@ -323,7 +343,89 @@ body {
 
 
 
-  
+.Profile-card1 {
+  background-color: #D4EBF8;
+  border-radius: 10px;
+  width: 650px;
+  height: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-left: 170px;
+  position: relative;
+  top: 20%;
+}
+
+.profile_heading1 {
+  font-weight: 600;
+  position: relative;
+  left: 14%;
+  top: 18%;
+  font-size: 1.5rem;
+  color: #000b58;
+}
+
+.card-body1 {
+  padding: 5px;
+}
+
+/* Profile Picture */
+
+.circle1 {
+  /* border-radius: 50%; */
+  /* border:solid black 2px; */
+  background: none;
+  /* width: 98px; */
+  /* height: 98px; */
+  /* display: inline-block; */
+  /* margin-left: 280px; */
+  /* margin-top: 10px; */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.create-photo1 {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 380px;
+  margin-top: -10px;
+}
+
+.text2 {
+  margin-block: -18px;
+  padding: 0;
+  font-size: 0.9rem;
+  margin-left: 415px;
+}
+
+.user_image1 {
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* margin-left: 280px; */
+  /* margin-top: 10px; */
+  margin: 0 auto;
+  height: 98px;
+  width: 98px;
+  /* overflow: hidden; */
+  object-fit: cover;
+  /* border-radius: 50%; */
+  cursor: pointer;
+  display: flex;
+  border-radius: 50%;
+  border: solid black 1px;
+}
+
+.mb-6_1 {
+  position: fixed;
+  bottom: 110px;
+  width: 100%;
+  height: 30%;
+  left: 35%;
+}
+
   /* Modal for Image Cropping */
 .profile-management-cropperModal {
   position: fixed;
@@ -349,118 +451,42 @@ body {
 
   
   /* Action Buttons */
-  .profile-management-button {
-    padding: 10px 15px;
-    background-color: #5fc3d7;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-top: 10px;
+  .cropper-modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00000000 !important;
+    opacity: 1 !important;
+    z-index: 1000;
   }
   
-  .profile-management-button:hover {
-    background-color: #444;
+  .cropper-modal-content {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .cropper-header {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    text-align: center;
+  }  
+  
+  .cropper-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
   }
   
-  
-
-  /* Action Buttons */
-.profile-management-cancelButton {
-    padding: 10px 15px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-top: 10px;
-    margin-right: 10px;
-    background-color: #5fc3d7; 
-  }
-  
-  
-
-
-
-
-
-
-
-
-/* Modal for Image Cropping */
-
-.profile-management-cropperModalContent {
-  background-color: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 500px;  /* Smaller modal size */
-  position: relative;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* CSS Update for Image Cropping Modal */
-.profile-management-cropperModalContent {
-  background-color: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 500px;  /* Smaller modal size */
-  position: relative;
-  overflow: hidden;  /* Ensures the cropper stays inside the container */
-}
-
-/* This should ensure the cropper image stays inside the container */
-.profile-management-cropperModalContent .cropper-image {
-  width: 100%;   
-  height: auto; 
-  display: block; 
-}
-
-/* Action buttons container */
-.profile-management-cropperActions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-/* Action buttons */
-.profile-management-button {
-  padding: 10px 15px;
-  background-color: #5fc3d7;
-  color: white;
+  .btn-save-crop, .btn-cancel-crop {
+    padding: 8px 16px;
   border: none;
   border-radius: 5px;
+  color: white;
+  background: #006a67;
   cursor: pointer;
-  font-size: 12px;
-  margin-top: 10px;
-}
-
-.profile-management-button:hover {
-  background-color: #444;
-}
-
-
-.profile-management-cancelButton:hover {
-  background-color: #444; 
-}
-
-
-
-
-
-
-
-
+   }

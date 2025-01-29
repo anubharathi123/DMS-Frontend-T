@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './OrganizationList.css';
@@ -18,6 +19,16 @@ const OrganizationList = () => {
         { name: 'Organization 8', createdDate: '2025-04-15', status: 'Active' },
         { name: 'Organization 9', createdDate: '2025-05-01', status: 'Active' },
         { name: 'Organization 10', createdDate: '2025-05-15', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 1', createdDate: '2025-01-05', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 2', createdDate: '2025-01-19', status: 'Active' },
+        { username: 'AE', name: 'Organization 3', createdDate: '2025-02-01', status: 'Active' },
+        { username: 'AE', name: 'Organization 4', createdDate: '2025-02-15', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 5', createdDate: '2025-03-01', status: 'Active' },
+        { username: 'AE', name: 'Organization 6', createdDate: '2025-03-15', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 7', createdDate: '2025-04-01', status: 'Inactive' },
+        { username: 'AE', name: 'Organization 8', createdDate: '2025-04-15', status: 'Active' },
+        { username: 'AE', name: 'Organization 9', createdDate: '2025-05-01', status: 'Active' },
+        { username: 'AE', name: 'Organization 10', createdDate: '2025-05-15', status: 'Inactive' },
     ];
 
     const [startDate, setStartDate] = useState(null);
@@ -25,6 +36,7 @@ const OrganizationList = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
+    const navigate = useNavigate();
 
     const handleDateChange = (date) => {
         setStartDate(date);
@@ -92,7 +104,7 @@ const OrganizationList = () => {
                                 />
                             )}
                         </th>
-                        <th className="organization-table-th">Active / Inactive</th>
+                        <th className="organization-table-th">Status</th>
                         <th className="organization-table-th">Actions</th>
                     </tr>
                 </thead>

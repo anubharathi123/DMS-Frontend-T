@@ -144,9 +144,8 @@ function AppContent() {
         <Route
           path="/verifydocument"
           element={
-            <PrivateRoute>
+            
               <VerifyDoc />
-            </PrivateRoute>
           }
         />
         <Route
@@ -161,9 +160,9 @@ function AppContent() {
         <Route
           path="/organizationlist"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <OrganizationList />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
 
