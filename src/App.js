@@ -121,9 +121,9 @@ function AppContent() {
         <Route
           path="/profilemanagement"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <ProfileManagementPage />
-            // </PrivateRoute> 
+             </PrivateRoute> 
 
           }
         />

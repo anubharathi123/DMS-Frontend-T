@@ -18,21 +18,19 @@ body {
 
   .profile_heading {
     font-weight: 600;
+    margin-left: 400px;
+    margin-top: 70px;
+    font-size: 1.5rem;
+    color: #000b58;
+  
     position: relative;
-    bottom: 140px;
-    right: 8%;
+   top:27%;
+   left: 14%;
     font-size: 1.5rem;
     color: #000b58;
   }
 
-  .profile_heading1 {
-    font-weight: 600;
-    position: relative;
-    left: 13%;
-    bottom: 243px;
-    font-size: 1.5rem;
-    color: #000b58;
-  }
+  
   
   .Profile-card {
     background-color: #D4EBF8;
@@ -42,9 +40,8 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 10px;
     margin-left: 170px;
-    margin-bottom: 15px;
     position: relative;
-    top: 27%;
+    top: 35%;
   }
   
   .card-body {
