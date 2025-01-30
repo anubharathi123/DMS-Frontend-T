@@ -47,6 +47,16 @@ h3 {
   flex-direction: column;
 }
 
+.notification-close {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: red;
+  margin-left: 260px;
+  position: relative;
+  bottom: 20px;
+}
+
 .popup-header {
   display: flex;
   justify-content: space-between;

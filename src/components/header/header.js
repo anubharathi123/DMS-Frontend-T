@@ -1,32 +1,40 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import Notification from "../../assets/images/notification-icon.png";
 import CandidateProfile from "../../assets/images/candidate-profile.png";
 import SearchIcon from "../../assets/images/search_icon.png";
 import NotificationPage from "../NotificationDropdown/NotificationDropdown";
-import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
+import { FaBullseye } from "react-icons/fa6";
 
 const Header = () => {
-  const [query, setQuery] = useState(""); // State for search input
-  const [suggestions, setSuggestions] = useState([]); // State for suggestions
-  const [activeDropdown, setActiveDropdown] = useState(null); // Tracks which dropdown is open
-  const [iconColor, setIconColor] = useState("#000"); // State for dynamic icon color
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const [profileImage, setProfileImage] = useState(
-    sessionStorage.getItem("profileImage") || CandidateProfile
-);
-
+    localStorage.getItem("profileImage") || CandidateProfile
+  );
   const [imageToCrop, setImageToCrop] = useState(null);
   const [cropperVisible, setCropperVisible] = useState(false);
-  const [croppedImage, setCroppedImage] = useState(null);
-  
 
   const fileInputRef = useRef();
   const cropperRef = useRef();
+  const profileButtonRef = useRef();
+  const profileDropdownRef = useRef();
+  const notificationDropdownRef = useRef();
+  const notificationButtonRef = useRef();
+  const navigate = useNavigate();
+  const name = localStorage.getItem("name") || "User";
 
-  const Navigate = useNavigate();
-  const name = localStorage.getItem("name");
+  const getInitials = (name) => {
+    if (!name.trim()) return "U";
+    return name
+      .split(" ")
+      .map((n) => n.charAt(0).toUpperCase())
+      .join("");
+  };
 
   const allSuggestions = [
     "Find Company",
@@ -37,86 +45,68 @@ const Header = () => {
     "Announcement List",
     "Audit Log",
     "Settings",
-  ]; // Define allSuggestions
+  ];
+
+  // Updates profile image if it changes in localStorage
   useEffect(() => {
-    // Function to update the profile image
-    const updateProfileImage = () => {
-        setProfileImage(localStorage.getItem("profileImage") || CandidateProfile);
+    const handleClickOutside = (event) => {
+      if (
+        profileDropdownRef.current?.contains(event.target) ||
+        notificationDropdownRef.current?.contains(event.target) ||
+        profileButtonRef.current?.contains(event.target) ||
+        notificationButtonRef.current?.contains(event.target)
+      ) {
+        return;
+      }
+      setActiveDropdown();
     };
 
-    // Listen for changes from ProfileManagementPage
-    window.addEventListener("profileImageUpdated", updateProfileImage);
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-        window.removeEventListener("profileImageUpdated", updateProfileImage);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-}, []);
-  // Function to extract initials
-  const getInitials = (fullName) => {
-    if (!fullName) return "";
-    const nameParts = fullName.split(" ");
-    return nameParts
-      .map((part) => part.charAt(0).toUpperCase())
-      .slice(0, 2) // Take only the first two initials
-      .join("");
-  };
+  }, []);
 
-  // Function to generate a random color
-  const getRandomColor = () => {
-    return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+  const handleNotificationClick = (event) => {
+    event.stopPropagation(); // Prevents unwanted event bubbling
+
+    if (activeDropdown !== "notification") {
+      setActiveDropdown("notification"); // Open notification dropdown
+    }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('access_status')
-    localStorage.removeItem('token')
-    Navigate('/')
-  }
-
-  // Set a random color for the profile icon on component mount
-  useEffect(() => {
-    setIconColor(getRandomColor());
-  }, []);
-
-  // Handle image upload
-  const handlePhotoUpload = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click(); // Opens the file input dialog
-    }
+    localStorage.removeItem("access_status");
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
-  // Handle image change and cropping
+  const handlePhotoUpload = () => fileInputRef.current?.click();
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageToCrop(reader.result); // Set the image for cropping
-        setCropperVisible(true); // Show the cropping modal
-      };
-      reader.readAsDataURL(file);
-      e.target.value = ''; // Reset file input to allow re-upload
-    }
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImageToCrop(reader.result);
+      setCropperVisible(true);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
   };
 
-  // Handle cropping and saving image
   const handleSaveCrop = () => {
     const cropper = cropperRef.current?.cropper;
-    if (cropper) {
-      const croppedCanvas = cropper.getCroppedCanvas();
-      const croppedDataUrl = croppedCanvas.toDataURL();
-      setCroppedImage(croppedDataUrl); // Save cropped image
-      setProfileImage(croppedDataUrl); // Set profile image
-      setCropperVisible(false); // Close cropping modal
-    }
-  };
+    if (!cropper) return;
 
-  // Cancel cropping
-  const handleCancelCrop = () => {
+    const croppedDataUrl = cropper.getCroppedCanvas().toDataURL();
+    setProfileImage(croppedDataUrl);
+    localStorage.setItem("profileImage", croppedDataUrl);
     setCropperVisible(false);
   };
 
-  // Render cropping modal
-  const renderCropperModal = () => (
+  const renderCropperModal = () =>
     cropperVisible && (
       <div className="cropper-modal">
         <div className="cropper-modal-content">
@@ -124,22 +114,24 @@ const Header = () => {
           <Cropper
             src={imageToCrop}
             ref={cropperRef}
-            style={{ height: '300px', width: '100%' }}
-            aspectRatio={1} // Keep aspect ratio 1:1 for square crop
+            style={{ height: "300px", width: "100%" }}
+            aspectRatio={1}
             guides={true}
           />
           <div className="cropper-actions">
             <button onClick={handleSaveCrop} className="btn-save-crop">
               Save Changes
             </button>
-            <button onClick={handleCancelCrop} className="btn-cancel-crop">
+            <button
+              onClick={() => setCropperVisible(false)}
+              className="btn-cancel-crop"
+            >
               Cancel
             </button>
           </div>
         </div>
       </div>
-    )
-  );
+    );
 
   return (
     <div className="header-container">
@@ -150,14 +142,13 @@ const Header = () => {
           onChange={(e) => {
             const value = e.target.value;
             setQuery(value);
-            if (value) {
-              const filteredSuggestions = allSuggestions.filter((item) =>
-                item.toLowerCase().includes(value.toLowerCase())
-              );
-              setSuggestions(filteredSuggestions);
-            } else {
-              setSuggestions([]);
-            }
+            setSuggestions(
+              value
+                ? allSuggestions.filter((item) =>
+                    item.toLowerCase().includes(value.toLowerCase())
+                  )
+                : []
+            );
           }}
           className="search-input"
           placeholder="Search..."
@@ -169,10 +160,7 @@ const Header = () => {
               <li
                 key={index}
                 className="suggestion-item"
-                onClick={() => {
-                  setQuery(suggestion);
-                  setSuggestions([]);
-                }}
+                onClick={() => setQuery(suggestion)}
               >
                 {suggestion}
               </li>
@@ -190,8 +178,14 @@ const Header = () => {
         className="notificationbtn"
         onClick={() =>
           setActiveDropdown(activeDropdown === "notification" ? null : "notification")
+          
         }
       >
+        {activeDropdown === "notification" && (
+        <div className="notification-dropdown" ref={notificationDropdownRef}>
+          <NotificationPage />
+        </div>
+      )}
         <img src={Notification} alt="Notifications" className="notification-icon" />
       </button>
 
@@ -199,19 +193,24 @@ const Header = () => {
       <button
         type="button"
         className="profilebtn"
-        style={{ background: iconColor }} // Use the dynamic icon color
-        onClick={() => setActiveDropdown(activeDropdown === "profile" ? null : "profile")}
+        onClick={() =>
+          setActiveDropdown(activeDropdown === "profile" ? null : "profile")
+        }
+        ref={profileButtonRef}
       >
         {profileImage ? (
-        <img src={profileImage} alt="Profile" className="profile-icon1" />
-    ) : (
-        <div className="profile-icon">{getInitials(name)}</div>
-    )}
+          <img src={profileImage} alt="Profile" className="profile-icon1" />
+        ) : (
+          <div className="profile-icon">{getInitials(name)}</div>
+        )}
       </button>
+
+      {/* Notification Dropdown */}
+      
 
       {/* Profile Dropdown */}
       {activeDropdown === "profile" && (
-        <div className="profile-dropdown">
+        <div className="profile-dropdown" ref={profileDropdownRef}>
           <p>
             <b>Name:</b> {name}
           </p>
@@ -221,14 +220,13 @@ const Header = () => {
           <button
             type="button"
             className="signout-button"
-            onClick={() => handleLogout()}
+            onClick={handleLogout}
           >
             LogOut
           </button>
         </div>
       )}
 
-      {/* Render Cropper Modal */}
       {renderCropperModal()}
     </div>
   );

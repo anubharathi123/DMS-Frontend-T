@@ -3,15 +3,12 @@
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-    margin: 136px;
-    padding: 13px;
 }
 
 .organization-h1 {
     font-size: 1.5rem;
     color: #000b58;
     margin-left: 150px;
-    margin-top: 43px;
 }
 
 .organization-table {
@@ -35,7 +32,6 @@
     font-size: 0.7rem;
     text-align: center;
     font-weight: bold;
-    font-size: 12px;
 }
 
 .organization-table-td {
@@ -67,6 +63,10 @@
 
 .prev-next-container {
     display: flex;
+    justify-content: space-between; /* Space between page number and buttons */
+    align-items: center; /* Vertically align items */
+    margin: 10px 0; /* Adjust the margin as needed */
+    width: 100%; /* Ensure it spans the table width */
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
@@ -76,6 +76,8 @@
 .prev-next-buttons {
     display: flex;
     align-items: center;
+    gap: 20px; /* Adds spacing between buttons */
+    margin-left: 5%; /* Align with the table's right margin */
     gap: 20px;
     margin-left: 5%;
 }
@@ -110,6 +112,11 @@
     cursor: pointer;
 }
 
+
+.pageno {
+    font-size: 0.9rem; 
+    margin-left: 15%; /* Align with the table's left margin */
+}
 /* Search Section - Updated Styles */
 .organization-search-row {
     display: flex;

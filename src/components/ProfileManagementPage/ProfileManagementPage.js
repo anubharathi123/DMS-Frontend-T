@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './ProfileManagementPage.css';
 import avatar from "../../assets/images/candidate-profile.png";
 import Cropper from 'react-cropper';
@@ -23,6 +23,14 @@ const ProfileManagementPage = () => {
 
   const role = localStorage.getItem('role'); // Dynamically fetch role
 
+  // Check for saved profile image in localStorage
+  useEffect(() => {
+    const savedProfileImage = localStorage.getItem("profileImage");
+    if (savedProfileImage) {
+      setProfileImage(savedProfileImage);
+    }
+  }, []);
+
   // Handle input change
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -32,7 +40,10 @@ const ProfileManagementPage = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
+    console.log("Form Data:", formData);
+  
+    // Show confirmation alert for profile save
+    alert("Your profile has been successfully saved.");
   };
 
   // Handle "Create Photo" button click (trigger file input)
@@ -60,20 +71,22 @@ const ProfileManagementPage = () => {
   const handleSaveCrop = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
-        const croppedCanvas = cropper.getCroppedCanvas();
-        const croppedDataUrl = croppedCanvas.toDataURL();
+      const croppedCanvas = cropper.getCroppedCanvas();
+      const croppedDataUrl = croppedCanvas.toDataURL();
 
-        setCroppedImage(croppedDataUrl); 
-        setProfileImage(croppedDataUrl); 
-        localStorage.setItem("profileImage", croppedDataUrl);
+      setCroppedImage(croppedDataUrl);
+      setProfileImage(croppedDataUrl);
+      localStorage.setItem("profileImage", croppedDataUrl); // Save to localStorage
 
-        // Dispatch an event to notify Header
-        window.dispatchEvent(new Event("profileImageUpdated"));
+      // Dispatch an event to notify Header and other pages
+      window.dispatchEvent(new Event("profileImageUpdated"));
 
-        setCropperVisible(false);
+      setCropperVisible(false);
+
+      // Show success message
+      alert("Profile image has been successfully changed.");
     }
-};
-
+  };
 
   // Cancel cropping
   const handleCancelCrop = () => {
@@ -108,7 +121,7 @@ const ProfileManagementPage = () => {
 
   return (
     <div className="col-xl-7 mx-auto">
-      {role && (
+      {role === 'PRODUCT_OWNER' && (
         <>
           <h1 className="profile_heading">
             <center>Profile Management</center>
@@ -180,6 +193,80 @@ const ProfileManagementPage = () => {
               id="Mobile"
               value={formData.Mobile}
               onChange={handleChange}
+              className="mobile_input" />
+
+            <div className="form-actions">
+              <button type="button" className="profile_cancelbtn">
+                Cancel
+              </button>
+              <button type="submit" className="profile_save">
+                Save
+              </button>
+            </div>
+          </form>
+        </>
+      )}
+
+{role === 'ADMIN' && (
+        <>
+          <h1 className="profile_heading">
+            <center>Profile Management</center>
+          </h1>
+          <div className="Profile-card">
+            <div className="card-body">
+              <span className="circle"></span>
+              <img
+                className="user_image"
+                alt="Profile"
+                src={croppedImage || profileImage} // Show cropped image if available
+              />
+              <button
+                className="create-photo"
+                onClick={handlePhotoUpload}
+                style={{ cursor: 'pointer' }} // Ensure pointer cursor on hover
+              >
+                📸
+              </button>
+              <p className="text1">Create Your Picture</p>
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }} // Hide the file input
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </div>
+
+          {/* Contact Information Form */}
+          <form className="mb-6" onSubmit={handleSubmit}>
+            <div className="username-container">
+              <label className="mail-id_label1" htmlFor="UserName">
+                Mail ID
+              </label>
+              <p className="mail-id_label2">abcdefg12345@gmail.com</p>
+            </div>
+
+            <label className="role_label" htmlFor="PersonName">
+              Role
+            </label>
+            <input
+              type="text"
+              id="PersonName"
+              value={formData.PersonName}
+              onChange={handleChange}
+              className="role_input" />
+
+            <br />
+
+            <label className="mobile_label" htmlFor="Mobile">
+              Mobile
+            </label>
+            <input
+              type="tel"
+              id="Mobile"
+              value={formData.Mobile}
+              onChange={handleChange}
               className="mobile-input" />
 
             <div className="form-actions">
@@ -193,6 +280,7 @@ const ProfileManagementPage = () => {
           </form>
         </>
       )}
+
 
       {/* Render Cropper Modal */}
       {renderCropperModal()}

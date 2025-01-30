@@ -7,7 +7,7 @@ import authService from '../../ApiServices/ApiServices';
 import Dropup from '../../assets/images/dropup.webp';
 
 const AsideBar = () => {
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('VIEWER');
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -119,17 +119,21 @@ const AsideBar = () => {
       <NavLink to="/Profile" className={({ isActive }) => (isActive ? 'active' : '')}>
         <p className="profiletab asidebar_p_tag">Profile</p>
       </NavLink>
+      {role !== 'UPLOADER' && role !== 'REVIEWER' && role !== 'VIEWER' &&  (
       <button onClick={() => toggleDropdown('profile')} className="dropdown-toggle1">
         {renderDropdownIcon('profile')}
       </button>
+      )}
       
       {openDropdowns.profile && (
         <ul className="dropdown-menu1">
+          {role !== 'UPLOADER' && (
           <li>
             <NavLink to="/profilemanagement" className={({ isActive }) => (isActive ? 'active' : '')}>
             <p className="asidebar_p_tag">Profile Management</p>
             </NavLink>
           </li>
+          )}
         </ul>
       )}
     </li>
@@ -158,18 +162,20 @@ const AsideBar = () => {
             <button onClick={() => toggleDropdown('document', true)} className="dropdown-toggle1">
               {renderDropdownIcon('document')}
             </button>
-            {openDropdowns.document && (
+            {openDropdowns.document && (role == 'PRODUCT_OWNER'|| role === 'ADMIN') && (
               <ul className="dropdown-menu1">
                 <li>
-                  <NavLink to="/document-creation" className={({ isActive }) => (isActive ? 'active' : '')}>
-                  <p className="asidebar_p_tag">Document Creation</p>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  <NavLink to="/document-list" className={({ isActive }) => (isActive ? 'active' : '')}>
                   <p className="asidebar_p_tag">Document List</p>
                   </NavLink>
                 </li>
+                {(role !== 'PRODUCT_OWNER'||role == 'ADMIN') && (
+                <li>
+                  <NavLink to="/DocumentCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  <p className="asidebar_p_tag">Document Creation</p>
+                  </NavLink>
+                </li>
+                )}
               </ul>
             )}
           </li>
