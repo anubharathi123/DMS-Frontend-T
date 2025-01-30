@@ -13,15 +13,19 @@ body {
   
   .col-xl-7 {
     width: 58%;
-    margin-bottom: 125px;
+    position: relative;
+    bottom: 88px;
   }
-
 
   .profile_heading {
     font-weight: 600;
+    margin-left: 400px;
+    margin-top: 70px;
+    font-size: 1.5rem;
+    color: #000b58;
     position: relative;
-   top:27%;
-   left: 14%;
+   top:24%;
+   right: 10%;
     font-size: 1.5rem;
     color: #000b58;
   }
@@ -37,7 +41,7 @@ body {
     padding: 10px;
     margin-left: 170px;
     position: relative;
-    top: 27%;
+    top: 25%;
   }
   
   .card-body {
@@ -46,6 +50,14 @@ body {
   
   /* Profile Picture */
 
+  .organization-search {
+    border-radius: 18px;
+    padding-left: 5px;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    width: 200px;
+    font-size: 0.75rem !important;
+  }
   .circle {
     /* border-radius: 50%; */
     /* border:solid black 2px; */
@@ -104,10 +116,7 @@ body {
     cursor: pointer;
     padding: 10px 15px;
     margin-left: 250px;
-  }
-
-  .profile_cancelbtn:hover {
-    background: #003635;
+    
   }
 
   .profile_save {
@@ -119,10 +128,6 @@ body {
     cursor: pointer;
     padding: 10px 20px;
     margin-left: 20px;
-  }
-
-  .profile_save:hover {
-    background: #003635;
   }
   
   .align-items-center {
@@ -158,7 +163,7 @@ body {
   /* Form styling */
   .mb-6 {
     position: relative;
-    bottom: 75px;
+    bottom: 88px;
     height: 30%;
     width: 100%;
     margin-left: 23%;
@@ -203,6 +208,7 @@ body {
 
   }
 
+
   .person-name_input:focus {
     outline: none;
     border-color: var(--dark-blue);
@@ -242,7 +248,7 @@ body {
   .mobile_input {
     font-size: 0.8rem;
     margin-top: 10px;
-    margin-left: 61px;
+    margin-left: 73px;
     margin-bottom: 10px;
     padding: 7px;
     height: 14px;
@@ -324,43 +330,6 @@ body {
       
     }
   }
-  
- .form-input {
-  font-size: 0.8rem;
-  margin-top: 10px;
-  margin-left: 73px;
-  margin-bottom: 10px;
-  padding: 7px;
-  height: 14px;
-  width: 400px;
-  border: 1px solid #ddd;
-  border-radius: 18px;
- }
-
-/* Client Admin */
-
-.mail_id_container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px
-}
- 
-.mail_id_label1 {
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-left: 61px;
-}
-
-.mail_id_label2 {
-  font-size: 0.8rem;
-  margin-left: 60px;
-}
-
-.role_label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-left: 61px;
-}
 
 .role_input {
   font-size: 0.8rem;
@@ -499,43 +468,54 @@ body {
   z-index: 1000;
 }
 
-  /* Action Buttons */
-  .cropper-modal {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #00000000 !important;
-    opacity: 1 !important;
-    z-index: 1000;
-  }
-  
-  .cropper-modal-content {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
+.cropper-modal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent !important;
+  opacity: 1 !important;
+  z-index: 1000;
+  pointer-events: auto; 
+}
 
-  .cropper-header {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
-    text-align: center;
-  }  
-  
-  .cropper-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-  }
-  
-  .btn-save-crop, .btn-cancel-crop {
-    padding: 8px 16px;
+.cropper-modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1001; 
+}
+
+.cropper-header {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.cropper-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.btn-save-crop,
+.btn-cancel-crop {
+  padding: 10px 16px;
   border: none;
   border-radius: 5px;
   color: white;
-  background: #006a67;
-  cursor: pointer;
-   }
+  background: var(--teal);
+  cursor: pointer !important; /* Ensure pointer */
+  font-size: 1rem;
+  transition: background 0.3s;
+  z-index: 1001; /* Make sure it's above any other elements */
+}
+
+.btn-save-crop:hover,
+.btn-cancel-crop:hover {
+  background: #004d4a;
+}

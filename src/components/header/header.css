@@ -10,16 +10,21 @@
   position: relative;
 }
 
+.header-profile-image {
+  /* width: 100%;         */
+  height: 100%;       
+  border-radius: 50%; 
+  /* object-fit: cover;   */
+}
+
 /* Search Bar */
 .search-bar-container {
   position: relative;
   display: flex;
   align-items: center;
-  /* background-color: #003161; */
   border-radius: 4px;
   padding: 5px;
   width: 220px;
-  /* margin-right: -3%; */
 }
 
 .search-input {
@@ -38,7 +43,6 @@
   position: absolute;
   right: 10px;
   cursor: pointer;
-  /* left: 70%; */
 }
 
 .search-suggestions {
@@ -67,9 +71,9 @@
 
 .suggestion-item:hover {
   background-color: #006A67; 
-} */
- 
- .no-suggestions {
+}
+
+.no-suggestions {
   font-size: 14px;
   color: #aaa;
   text-align: center;
@@ -136,18 +140,25 @@
   border-radius: 20px;
   cursor: pointer;
   color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Profile Image */
+.profile-image {
+  width: 30px;
+  height: 30px;
+  object-fit: cover; /* Ensures the image covers the circular button */
+  border-radius: 50%;
+}
+
+/* Profile Button Hover Effect */
 .profilebtn:hover {
   background: #66ccec;
 }
 
-.profile-image {
-  width: 25px;
-  height: 25px;
-  filter: invert(1);
-}
-
+/* Profile Dropdown */
 .profile-dropdown {
   position: absolute;
   top: 70px;
@@ -185,6 +196,7 @@
     position-area: y-end;
   }
 }
+
 .name-input-container {
   margin-right: 10px;
 }
@@ -198,12 +210,9 @@
 
 .profile-icon1 {
   width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    position: relative;
-    right: 6px;
-    bottom: 1px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 /* .icon {
