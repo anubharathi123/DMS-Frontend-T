@@ -1,8 +1,9 @@
-// ProfileImageContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState, useContext } from "react";
 
+// Create context
 const ProfileImageContext = createContext();
 
+// ProfileImageProvider to wrap the app and provide context
 export const ProfileImageProvider = ({ children }) => {
   const [profileImage, setProfileImage] = useState(null);
 
@@ -13,10 +14,7 @@ export const ProfileImageProvider = ({ children }) => {
   );
 };
 
+// Custom hook to use the profile image context
 export const useProfileImage = () => {
-  const context = useContext(ProfileImageContext);
-  if (!context) {
-    throw new Error('useProfileImage must be used within a ProfileImageProvider');
-  }
-  return context;
+  return useContext(ProfileImageContext);
 };

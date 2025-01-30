@@ -228,22 +228,7 @@ const Login1 = () => {
         </form>
       </div>
       <div className='login1_footer'>
-        <p className='login1_text'>© VDart 2025. All Rights Reserved.| <a href='https://www.vdart.com/contact-us/'>Contact Us</a></p>
-        <a href='https://www.vdart.com/'>
-          <img className='c_logo' src={CLogo} alt='CLogo'/>
-        </a>
-        <a href='https://www.facebook.com/VDartIncs/'>
-          <img className='fb_logo' src={FbLogo} alt='FbLogo'/>
-        </a>
-        <a href='https://x.com/VDartInc'>
-          <img className='t_logo' src={TLogo} alt='TLogo'/>
-        </a>
-        <a href='https://www.linkedin.com/company/vdart/'>
-          <img className='lin_logo' src={LinLogo} alt='LinLogo'/>
-        </a>
-        <a href='https://www.instagram.com/vdartinc/'>
-          <img className='i_logo' src={ILogo} alt='ILogo'/>
-        </a>
+        <p className='login1_text'><center>© VDart 2025. All Rights Reserved.</center></p>
       </div>
     </div>
   );
