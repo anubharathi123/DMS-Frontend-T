@@ -209,7 +209,7 @@ return (
               { key: 'invoice', label: 'Invoice' },
               { key: 'packingList', label: 'Packing List' },
               { key: 'awsBol', label: 'AWS/BOL' },
-              { key: 'countryOfOrigin', label: 'Country Of Origin' },
+              { key: 'countryOfOrigin', label: 'Certificate Of Origin' },
               { key: 'deliveryOrder', label: 'Delivery Order' },
             ].map((item) => (
               <div className="file-upload-item" key={item.key}>

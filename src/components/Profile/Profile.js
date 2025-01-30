@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import avatar from "../../assets/images/candidate-profile.png";
 
 function ProfileCard(props) {
+	const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage") || avatar);
+	useEffect(() => {
+        const updateProfileImage = () => {
+            const newProfileImage = localStorage.getItem("profileImage") || avatar;
+            setProfileImage(newProfileImage);
+        };
+
+        window.addEventListener("profileImageUpdated", updateProfileImage);
+        return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
+    }, []);
 	return (
 		<><h1 className="profile-title">Profile</h1><div className="card-container">
 			<header className="profile-header">
-				<img className="profile_img" src={avatar} alt={props.name} />
+				<img className="profile_img" src={profileImage}  alt={props.name} />
 			</header>
 			<h1 className="bold-text">
 				{props.name}

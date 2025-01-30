@@ -362,7 +362,7 @@ body {
   margin-left: 61px;
 }
 
-.role-input {
+.role_input {
   font-size: 0.8rem;
   margin-top: 10px;
   margin-left: 73px;
@@ -374,7 +374,7 @@ body {
   border-radius: 18px;
 }
 
-.role-input:focus {
+.role_input:focus {
   outline: none;
   border-color: var(--dark-blue);
 }
