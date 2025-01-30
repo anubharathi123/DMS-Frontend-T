@@ -18,11 +18,11 @@ import OrganizationList from "./components/OrganizationList/OrganizationList";
 import Login1 from "./components/login1/login1";
 import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
 import ChangePassword1 from "./components/changepassword1/changepassword1";
-import AdminList from "./components/AdminList/AdminList";
-
+// import AdminList from "./components/AdminList/AdminList";
 import { ProfileImageProvider } from "./context/ProfileImageContext"; 
 // import Header from "./components/Header";
-import AdminCreation from "./components/Admin Creation/AdminCreation";
+// import AdminCreation from "./components/AdminCreation/AdminCreation";
+
 
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
@@ -206,14 +206,14 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-         <Route
+         {/* <Route
           path="/admincreation"
           element={
             // <PrivateRoute>
               <AdminCreation/>
             // </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/OrganizationList"
@@ -224,7 +224,7 @@ function AppContent() {
           }
         />
 
-       <Route
+       {/* <Route
           path="/AdminList"
           element={
             // <PrivateRoute>
@@ -232,7 +232,7 @@ function AppContent() {
             // </PrivateRoute> 
 
           }
-        />
+        /> */}
 
         {/* Fallback route for unmatched paths */}
         <Route path="*" element={<Login1 />} />

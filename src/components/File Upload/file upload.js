@@ -29,7 +29,7 @@ const FileUploadPage = () => {
     if (declarationNumber.length === 13) {
       try {
     setIsLoading(true);
-
+        console.log(declarationNumber)
         const response = await apiServices.checkdeclarationdoc(declarationNumber);
         console.log(response)
         if (response) {
