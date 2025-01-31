@@ -18,10 +18,10 @@ import OrganizationList from "./components/OrganizationList/OrganizationList";
 import Login1 from "./components/login1/login1";
 import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
 import ChangePassword1 from "./components/changepassword1/changepassword1";
-// import AdminList from "./components/AdminList/AdminList";
+import AdminList from "./components/AdminList/AdminList";
 import { ProfileImageProvider } from "./context/ProfileImageContext"; 
 // import Header from "./components/Header";
-// import AdminCreation from "./components/AdminCreation/AdminCreation";
+import AdminCreation from "./components/AdminCreation/AdminCreation";
 
 
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -121,9 +121,9 @@ function AppContent() {
         <Route
           path="/profilemanagement"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <ProfileManagementPage />
-             </PrivateRoute> 
+            //  </PrivateRoute> 
 
           }
         />
@@ -160,9 +160,9 @@ function AppContent() {
         <Route
           path="/organizationlist"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <OrganizationList />
-            </PrivateRoute>
+            // {/* </PrivateRoute> */}
           }
         />
 
@@ -218,9 +218,9 @@ function AppContent() {
         <Route
           path="/OrganizationList"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <OrganizationList />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
 

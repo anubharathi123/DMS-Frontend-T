@@ -7,7 +7,7 @@ import authService from '../../ApiServices/ApiServices';
 import Dropup from '../../assets/images/dropup.webp';
 
 const AsideBar = () => {
-  const [role, setRole] = useState('PRODUCT_OWNER');
+  const [role, setRole] = useState('ADMIN')
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -140,21 +140,28 @@ const AsideBar = () => {
   )}
 
   {/* Dashboard Dropdown */}
-  {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
-    <li className={`dropdown ${openDropdowns.dashboard ? 'open' : ''}`}>
-      <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
-        <p className="asidebar_p_tag">Dashboard</p>
-      </NavLink>
+ {/* Dashboard Dropdown */}
+{(role === 'PRODUCT_OWNER' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
+  <li className={`dropdown ${openDropdowns.dashboard ? 'open' : ''}`}>
+    <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <p className="asidebar_p_tag">Dashboard</p>
+    </NavLink>
+
+    {/* Only show toggle button if role allows submenu items */}
+    {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
       <button onClick={() => toggleDropdown('dashboard')} className="dropdown-toggle1">
         {renderDropdownIcon('dashboard')}
       </button>
-      {openDropdowns.dashboard && (
-        <ul className="dropdown-menu1">
-          <li>
-            <NavLink to="/audit-log" className={({ isActive }) => (isActive ? 'active' : '')}>
+    )}
+
+    {openDropdowns.dashboard && (role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
+      <ul className="dropdown-menu1">
+        <li>
+          <NavLink to="/audit-log" className={({ isActive }) => (isActive ? 'active' : '')}>
             <p className="asidebar_p_tag">Audit Log</p>
-            </NavLink>
-          </li>
+          </NavLink>
+        </li>
+
           <li>
             <NavLink to="/Document" className={({ isActive }) => (isActive ? 'active' : '')}>
               <p className="asidebar_p_tag">Document</p>

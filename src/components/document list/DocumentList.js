@@ -45,8 +45,8 @@ const DocumentTable = () => {
           setActionMessage('No files are available for approval.');
         }
       } catch (error) {
-        console.error('Error fetching documents:', error);
-        setActionMessage('Error fetching documents. Please try again later.');
+        // console.error('Error fetching documents:', error);
+        // setActionMessage('Error fetching documents. Please try again later.');
       } finally {
         setIsLoading(false); // End loading
       }
