@@ -178,18 +178,19 @@ body {
 
 .login1_footer {
   position: fixed;
-  bottom:3px;
+  bottom:1px;
   width: 100%;
   display: flex;
   background: black;
   justify-content: center;
+  height: 20px;
   align-items: center;
   z-index: 3; /* Higher than other elements to display on top */
 }
 
 .login1_text {
   color: white;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 /* Media Queries for Responsiveness */
