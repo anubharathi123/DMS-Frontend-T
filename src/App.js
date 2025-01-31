@@ -206,14 +206,14 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-         {/* <Route
+         <Route
           path="/admincreation"
           element={
             // <PrivateRoute>
               <AdminCreation/>
             // </PrivateRoute>
           }
-        /> */}
+        />
 
         <Route
           path="/OrganizationList"
@@ -224,7 +224,7 @@ function AppContent() {
           }
         />
 
-       {/* <Route
+       <Route
           path="/AdminList"
           element={
             // <PrivateRoute>
@@ -232,7 +232,7 @@ function AppContent() {
             // </PrivateRoute> 
 
           }
-        /> */}
+        />
 
         {/* Fallback route for unmatched paths */}
         <Route path="*" element={<Login1 />} />

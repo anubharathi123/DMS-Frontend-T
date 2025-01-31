@@ -7,7 +7,7 @@ import authService from '../../ApiServices/ApiServices';
 import Dropup from '../../assets/images/dropup.webp';
 
 const AsideBar = () => {
-  const [role, setRole] = useState('VIEWER');
+  const [role, setRole] = useState('PRODUCT_OWNER');
 
   useEffect(() => {
     const fetchDetails = async () => {
