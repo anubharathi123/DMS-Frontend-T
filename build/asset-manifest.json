@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.4e36deab.css",
+    "main.js": "/static/js/main.60ca4637.js",
+    "static/js/453.c8f240c9.chunk.js": "/static/js/453.c8f240c9.chunk.js",
+    "static/media/t_logo.png": "/static/media/t_logo.faadfcd1f5331009f772.png",
+    "static/media/vdart-logo.png": "/static/media/vdart-logo.365b031c4b5449af49e5.png",
+    "static/media/ins_logo.png": "/static/media/ins_logo.1c40e3090580fc92ff69.png",
+    "static/media/linkedin_logo.png": "/static/media/linkedin_logo.1f66700ab0adbe0462a5.png",
+    "static/media/internet_logo.png": "/static/media/internet_logo.6ecce2e0507c1729f552.png",
+    "static/media/search_icon.png": "/static/media/search_icon.63eacaf2faf1ef8a7d7e.png",
+    "static/media/fb_logo.webp": "/static/media/fb_logo.0383209874e2c95734be.webp",
+    "static/media/dropup.webp": "/static/media/dropup.5802e8a412b0ba7f3634.webp",
+    "index.html": "/index.html",
+    "main.4e36deab.css.map": "/static/css/main.4e36deab.css.map",
+    "main.60ca4637.js.map": "/static/js/main.60ca4637.js.map",
+    "453.c8f240c9.chunk.js.map": "/static/js/453.c8f240c9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4e36deab.css",
+    "static/js/main.60ca4637.js"
+  ]
+}

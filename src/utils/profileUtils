@@ -1,0 +1,3 @@
+export const setProfileImage = (image) => {
+  localStorage.setItem('profileImage', image);
+};

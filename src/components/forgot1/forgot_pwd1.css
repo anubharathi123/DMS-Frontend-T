@@ -194,49 +194,18 @@ body {
   }
 
   .forgot_footer {
-    position: fixed; /* Change to absolute to stay within the container */
-  bottom: 0; /* Align at the bottom of the container */
-  left: -174px;
-    top: 402px; /* Move to the horizontal center */
-  
-  width: auto; /* Adjust width to fit content */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  z-index: 3; /* Higher than other elements to display on top */
+    position: absolute;
+    bottom: 120px;
+    right:0;
+    width: 100%;
+    background: black;
+   
+   /* Higher than other elements to display on top */
   }
   
-  .c_logo1{
-    width: 28px;
-    height: 28px;
-    margin-right: 10px;
-  }
-  .lin_logo1{
-    width: 25px;
-    height: 25px;
-    margin-right: 10px;
-  }
-  .i_logo1 {
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
-  }
-  .fb_logo1 {
-    width: 32px;
-    height: 32px;
-    margin-right: 10px;
-  }
-  .t_logo1 {
-    width: 22px;
-    height: 22px;
-    margin-right: 10px;
-  }
   
   .forgot_text {
-  position: fixed;
-    top: 360px;
-    left: -245px;
+ color: white;
 }
   
  

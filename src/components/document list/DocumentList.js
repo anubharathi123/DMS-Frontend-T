@@ -1,13 +1,16 @@
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import DatePicker from 'react-datepicker';
-import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
+import apiServices from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
 
 const DocumentTable = () => {
+  const initialState = {
+    documents: [],
+    loading: false,
+  };
+
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState(null);
@@ -33,6 +36,7 @@ const DocumentTable = () => {
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
+          rejectionReason: doc.rejectionReason,
           fileUrl: doc.fileUrl || '',
           viewed: false,
           version: doc.current_version?.version_number,
@@ -48,7 +52,7 @@ const DocumentTable = () => {
         console.error('Error fetching documents:', error);
         setActionMessage('Error fetching documents. Please try again later.');
       } finally {
-        setIsLoading(false); // End loading
+        setIsLoading(false);
       }
     };
 
@@ -74,15 +78,13 @@ const DocumentTable = () => {
   });
 
   useEffect(() => {
-    // Filter documents based on the selected filter date
     const filteredDocuments = data.filter((item) => {
       if (filterDate) {
         const itemDate = new Date(item.updatedDate);
         const selectedDate = new Date(filterDate);
-        // Only show items that match the selected date
         return itemDate.toLocaleDateString() === selectedDate.toLocaleDateString();
       }
-      return true; // If no filter date, show all items
+      return true;
     });
 
     setFilteredData(filteredDocuments);
@@ -185,12 +187,14 @@ const DocumentTable = () => {
               <td className="documenttable_td px-6 py-4">{item.documentType}</td>
               <td className="documenttable_td px-6 py-4">
                 <span
+                  data-tip={item.rejectionReason} 
                   className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
                     ${item.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 
                     item.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 
                     'bg-green-100 text-green-800'}`}
                 >
                   {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
+                  <div className="tooltip">{item.rejectionReason}</div>
                 </span>
               </td>
             </tr>
@@ -221,7 +225,7 @@ const DocumentTable = () => {
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">
-            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={100} />
             <p>Loading...</p>
           </div>
         </div>
