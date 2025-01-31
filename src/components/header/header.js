@@ -7,6 +7,7 @@ import SearchIcon from "../../assets/images/search_icon.png";
 import NotificationPage from "../NotificationDropdown/NotificationDropdown";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import avatar from "../../assets/images/candidate-profile.png";
 import { FaBullseye } from "react-icons/fa6";
 
 const Header = () => {
@@ -27,6 +28,15 @@ const Header = () => {
   const notificationButtonRef = useRef();
   const navigate = useNavigate();
   const name = localStorage.getItem("name") || "User";
+
+  useEffect(() => {
+    const updateProfileImage = () => {
+      setProfileImage(localStorage.getItem("profileImage") || avatar);
+    };
+
+    window.addEventListener("profileImageUpdated", updateProfileImage);
+    return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
+  }, []);
 
   const getInitials = (name) => {
     if (!name.trim()) return "U";

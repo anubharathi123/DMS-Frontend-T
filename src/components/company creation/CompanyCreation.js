@@ -247,8 +247,8 @@ const CompanyCreation = () => {
               </span>
             </div>
           ) : (
-        <p> Drag and drop or browse&nbsp;
-        <a href="#!" onClick={handleUploadClick}>
+        <p> Drag and drop or browse
+        <a href="#!">
           here
         </a>
       </p>

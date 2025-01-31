@@ -125,25 +125,10 @@ const Forgot_pwd1 = () => {
             <a href="/Login1" className="back-to-login1-link">Back to Login</a>
             </div>
         </form>
-        <div className='forgot_footer'>
-        <p className='forgot_text'>© VDart 2025. All Rights Reserved.| <a href='https://www.vdart.com/contact-us/'>Contact Us</a></p>
-          <a href='https://www.vdart.com/'>
-          <img className='c_logo1' src={CLogo} alt='CLogo'/>
-          </a>
-          <a href='https://www.facebook.com/VDartIncs/'>
-          <img className='fb_logo1' src={FbLogo} alt='FbLogo'/>
-          </a>
-          <a href='https://x.com/VDartInc'>
-          <img className='t_logo1' src={TLogo} alt='TLogo'/>
-          </a>
-          <a href='https://www.linkedin.com/company/vdart/'>
-          <img className='lin_logo1' src={LinLogo} alt='LinLogo'/>
-          </a>
-          <a href='https://www.instagram.com/vdartinc/'>
-          <img className='i_logo1' src={ILogo} alt='ILogo'/>
-          </a>
-        </div>
       </div>
+      <div className='forgot_footer'>
+        <p className='forgot_text'><center>© VDart 2025. All Rights Reserved</center></p>
+        </div>
     </div>
     </div>
   );
