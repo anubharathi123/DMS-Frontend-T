@@ -104,9 +104,9 @@ const AsideBar = () => {
             alt="Company Logo"
             style={{
               width: '100px',
-              marginTop: '-50px',
+              marginTop: '-30px',
+              marginBottom: '30px',
               height: 'auto',
-              filter: 'drop-shadow(2px 1px 0 rgb(255, 255, 255)) drop-shadow(-1px -1px 0 rgb(255, 255, 255)) drop-shadow(1px 1px 1px rgb(255, 255, 255))',
             }}
           />
         </a>

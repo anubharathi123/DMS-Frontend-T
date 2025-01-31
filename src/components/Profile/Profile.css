@@ -31,13 +31,29 @@
 
 }
 
+.edit_photo {
+	background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: -10px;
+}
+
 .profile_img {
-	margin: auto;
 	width: 100px;
 	border: solid black 2px;
 	border-radius: 50%;
 	margin-top: 75px;
-	margin-right: 10px;
+	margin-left: 30px;
+}
+
+.profile_edit {
+	width: 37px;
+    height: 21px;
+    position: relative;
+    right: 30px;
+    bottom: 5px;
+	cursor: pointer;
+    filter: invert(1);
 }
 
 .bold-text {
