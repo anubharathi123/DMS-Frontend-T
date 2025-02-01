@@ -142,7 +142,6 @@ const ProfileManagementPage = () => {
                     id="PersonName"
                     value={formData.PersonName}
                     onChange={handleChange}
-                    placeholder='Person Name'
                     className="person-name_input"
                   />
                 {/* </div> */}
@@ -156,7 +155,6 @@ const ProfileManagementPage = () => {
                     id="MailID"
                     value={formData.MailID}
                     onChange={handleChange}
-                    placeholder='Mail ID'
                     className="email-input"
                   />
                 </div>
@@ -170,7 +168,6 @@ const ProfileManagementPage = () => {
                     id="Mobile"
                     value={formData.Mobile}
                     onChange={handleChange}
-                    placeholder='Mobile Number'
                     className="mobile_input"
                   />
                 </div>
