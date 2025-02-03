@@ -251,7 +251,7 @@ const DashboardApp = () => {
     datasets: [
       {
         data: [50000, 10000, 5000],
-        backgroundColor: ['#336CC9', '#99B5E4', '#6691D6'],
+        backgroundColor: ['#336CC9', '#f0ec05', '#ff0101'],
         borderWidth: 3,
         cutout: '70%',
       },

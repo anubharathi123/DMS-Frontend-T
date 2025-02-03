@@ -90,7 +90,7 @@ function AppContent() {
 
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
-        <Route path="/" element={<OrganizationList />} />
+        <Route path="/OrganizationList" element={<OrganizationList />} />
         <Route path="/profile-management" element={<ProfileManagementPage />} />
         {/* Change Password (Token Only) */}
         {/* <Route

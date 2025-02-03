@@ -12,6 +12,8 @@ function ProfileCard(props) {
   const fileInputRef = useRef();
   const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage") || avatar);
 
+  const role = localStorage.getItem('role');
+
   useEffect(() => {
     const updateProfileImage = () => {
       setProfileImage(localStorage.getItem("profileImage") || avatar);
@@ -51,35 +53,69 @@ function ProfileCard(props) {
     }
   };
 
+  const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER'].includes(role);
+
   return (
     <>
-      <h1 className="profile-title">Profile</h1>
-      <div className="card-container">
-        <header className="profile-header">
-          <img className="profile_img" src={profileImage} alt="Profile" />
-          <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
-            <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
-            <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
-          </button>
-        </header>
-        <h1 className="bold-text">{props.name}</h1>
-        <h2 className="normal-text">Role: Compiler</h2>
-        <h2 className="normal-text">Mail ID: rita.correia1233@gmail.com</h2>
-        <h2 className="normal-text">Mobile: 9877685436</h2>
+      { role === "PRODUCT_OWNER" && (
+      <><h1 className="profile-title">Profile</h1><div className="card-container">
+          <header className="profile-header">
+            <img className="profile_img" src={profileImage} alt="Profile" />
+            <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
+              <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
+              <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
+            </button>
+          </header>
+          <h1 className="bold-text">{props.name}</h1>
+          <h2 className="normal-text">Role: Compiler</h2>
+          <h2 className="normal-text">Mail ID: rita.correia1233@gmail.com</h2>
+          <h2 className="normal-text">Mobile: 9877685436</h2>
 
-        {cropperVisible && (
-          <div className="cropper-modal">
-            <div className="cropper-modal-content">
-              <h2 className="cropper-header">Crop Your Photo</h2>
-              <Cropper src={imageToCrop} ref={cropperRef} style={{ height: "300px", width: "100%" }} aspectRatio={1} guides={true} />
-              <div className="cropper-actions">
-                <button onClick={handleSaveCrop} className="btn-save-crop">Save Changes</button>
-                <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">Cancel</button>
+          {cropperVisible && (
+            <div className="cropper-modal">
+              <div className="cropper-modal-content">
+                <h2 className="cropper-header">Crop Your Photo</h2>
+                <Cropper src={imageToCrop} ref={cropperRef} style={{ height: "300px", width: "100%" }} aspectRatio={1} guides={true} />
+                <div className="cropper-actions">
+                  <button onClick={handleSaveCrop} className="btn-save-crop">Save Changes</button>
+                  <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">Cancel</button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div></>
+    )}
+
+{(isAdminOrDocumentRole) && (
+      <><h1 className="profile-title">Profile</h1><div className="card-container">
+          <header className="profile-header">
+            <img className="profile_img" src={profileImage} alt="Profile" />
+            <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
+              <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
+              <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
+            </button>
+          </header>
+          <h1 className="bold-text">{props.name}</h1>
+          <h2 className="normal-text">Role: Admin</h2>
+          <h2 className="normal-text">Mail ID: rita.correia1233@gmail.com</h2>
+          <h2 className="normal-text">Mobile: 9877685436</h2>
+
+          {cropperVisible && (
+            <div className="cropper-modal">
+              <div className="cropper-modal-content">
+                <h2 className="cropper-header">Crop Your Photo</h2>
+                <Cropper src={imageToCrop} ref={cropperRef} style={{ height: "300px", width: "100%" }} aspectRatio={1} guides={true} />
+                <div className="cropper-actions">
+                  <button onClick={handleSaveCrop} className="btn-save-crop">Save Changes</button>
+                  <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">Cancel</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div></>
+    )}
+
+
     </>
   );
 }

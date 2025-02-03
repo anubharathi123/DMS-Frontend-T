@@ -1,50 +1,157 @@
-.organization-container {
+.organization-main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
 }
 
 .organization-h1 {
-    font-size: 1.5rem;
+    font-size: 25px;
     color: #000b58;
     margin-left: 150px;
+    padding-bottom: 20px;
+}
+
+.organization-container_controls {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-left: 17%;
+
+}
+
+.organization-search_container {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 5px;
+}
+
+.organization-search {
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border: 1px solid black;
+    border-radius: 7px;
+    width: 260px;
+    font-size: 12px !important;
+}
+
+.organization-filter_container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.organization_filter-label {
+    font-size: 14px;
+}
+
+.organization-status_filter {
+    font-size: 12px !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    width: 200px;
+}
+
+.organization_row_container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.organization_rows_label {
+    font-size: 14px;
+}
+.organization_rows_select {
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    width: 200px;
+}
+
+.organization-table-container {
+    width: 90%;
+    display: flex;
+    justify-content: center; /* Centers the table */
+    overflow-x: auto; /* Ensures responsiveness */
+    margin-left: 20%;
+    padding: 0 10px; /* Adjust side padding */
+}
+
+.organization_table-body_container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.organization_table-body_container::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+}
+
+.organization_table-body_container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
 }
 
 .organization-table {
     margin-top: 15px;
     border-collapse: collapse;
-    width: 100%;
-    margin-left: 22%;
+    width: 97%; /* Make it fully responsive */
+    max-width: 1200px; /* Set a max-width for better alignment */
 }
 
 .organization-table-header {
     font-weight: bold;
     font-size: 0.9rem !important;
     color: #000b58;
-    background-color: #f3f4f6;
+    background-color: #f1f1f1;
     text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Ensures it stays above scrolling content */
+}
+.organization_table-body_container {
+    width: 295%;
+    padding: 0;
+    margin: 0;
+    margin-left: 18%;
 }
 
 .organization-table-th {
-    width: 240px;
-    padding: 16px;
-    font-size: 0.7rem;
+    width: 200px;
+    padding: 10px;
+    font-size: 12px;
     text-align: center;
     font-weight: bold;
+   
 }
 
 .organization-table-td {
-    padding: 11px;
+    padding: 10px;
     width: 200px;
     text-align: center;
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
+
+.organization-table-td{
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    font-size: 14px !important;
+}
+
 
 .organization-calendarbtn {
     border: none;
     background: none;
     cursor: pointer;
+}
+
+.organization-edit {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    position: relative;
+    bottom: 1px;
 }
 
 .organization-delete {
@@ -69,7 +176,6 @@
     width: 100%; /* Ensure it spans the table width */
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0;
     width: 100%;
 }
 
