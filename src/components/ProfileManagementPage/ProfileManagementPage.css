@@ -380,7 +380,7 @@ body {
   margin-bottom: 10px;
   padding: 7px;
   height: 14px;
-  width: 300px;
+  width: 370px;
   border: 1px solid #ddd;
   border-radius: 7px;
 }
@@ -403,7 +403,7 @@ body {
   margin-bottom: 10px;
   padding: 7px;
   height: 14px;
-  width: 300px;
+  width: 370px;
   border: 1px solid #ddd;
   border-radius: 7px;
 }
@@ -493,7 +493,7 @@ body {
   bottom: 70px;
   height: 30%;
   width: 100%;
-  margin-left: 31%;
+  margin-left: 27%;
 }
 
   /* Modal for Image Cropping */

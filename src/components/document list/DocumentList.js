@@ -184,7 +184,7 @@ const DocumentTable = () => {
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documenttable_td px-6 py-4">{item.fileName}</td>
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              <td className="documenttable_td px-6 py-4">{item.documentType}</td>
+              <td className="documenttable_td px-6 py-4">{item.documentType.charAt(0).toUpperCase() + item.documentType.slice(1).toLowerCase()}</td>
               <td className="documenttable_td px-6 py-4">
                 <span
                   data-tip={item.rejectionReason} 

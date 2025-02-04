@@ -23,15 +23,15 @@ const FileUploadPage = () => {
 
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);  
+  const [isLoading, setIsLoading] = useState(false); 
+  const requiredFiles = ['declaration', 'invoice', 'packingList', 'awsBol', 'certificateOfOrigin', 'deliveryOrder'];
+  const isSubmitDisabled = !requiredFiles.every((key) => files[key] !== null); 
 
   const handleGoClick = async () => {
     if (declarationNumber.length === 13) {
       try {
-    setIsLoading(true);
-        console.log(declarationNumber)
+        setIsLoading(true);
         const response = await apiServices.checkdeclarationdoc(declarationNumber);
-        console.log(response)
         if (response) {
           const updatedDocuments = {
             declaration: null,
@@ -39,66 +39,35 @@ const FileUploadPage = () => {
             packingList: null,
             awsBol: null,
             countryOfOrigin: null,
-            deliveryOrder: null
+            deliveryOrder: null,
           };
-          setFiles(updatedDocuments);
+  
           Object.keys(response).forEach((key) => {
             const document = response[key];
-            // console.log('document:', document);
-            
-            if (document && document.document_type && document.document_type.name) {
+            if (document?.document_type?.name) {
               const docTypeName = document.document_type.name.toLowerCase();
+              const mappings = {
+                'declaration': 'declaration',
+                'invoice': 'invoice',
+                'packinglist': 'packingList',
+                'awsbol': 'awsBol',
+                'countryoforigin': 'certificateOfOrigin',
+                'deliveryorder': 'deliveryOrder',
+              };
   
-              let mappedKey = null;
-              console.log('docTypeName:', docTypeName);
-              switch (docTypeName) {
-                case 'declaration':
-                  mappedKey = 'declaration';
-                  break;
-                case 'invoice':
-                  mappedKey = 'invoice';
-                  break;
-                case 'packinglist':
-                  mappedKey = 'packingList';
-                  break;
-                case 'packing list':
-                  mappedKey = 'packingList';
-                  break;
-                case 'awsbol':
-                  mappedKey = 'awsBol';
-                  break;
-                case 'countryoforigin':
-                  mappedKey = 'countryOfOrigin';
-                  break;
-                case 'deliveryorder':
-                  mappedKey = 'deliveryOrder';
-                  break;
-                  case 'aws/bol':
-                    mappedKey = 'awsBol';
-                    break;
-                  case 'country of origin':
-                    mappedKey = 'countryOfOrigin';
-                    break;
-                  case 'delivery order':
-                    mappedKey = 'deliveryOrder';
-                    break;
-                default:
-                  break;
-              }
-  
+              const mappedKey = mappings[docTypeName];
               if (mappedKey) {
                 const filePath = document.current_version?.file_path || '';
-                // console.log('filePath:', filePath);
-                const fileName = filePath.split('/').pop(); // Extract the file name
-                // console.log('fileName:', fileName);
-                
+                const fileName = filePath.split('/').pop();
+                const status = document.status; // Fetching document status
+  
                 updatedDocuments[mappedKey] = {
-                  fileName:fileName, // Add fileName to the document object
-                  alreadyUploaded: true
+                  fileName,
+                  alreadyUploaded: true,
+                  status, // Store document status (approved/rejected)
                 };
               }
             }
-            // console.log('updatedDocuments:', updatedDocuments);
           });
   
           setFiles(updatedDocuments);
@@ -110,18 +79,14 @@ const FileUploadPage = () => {
       } catch (error) {
         console.error('Error:', error);
         alert('Error validating declaration number. Please try again.');
-      }
-      finally {
-        setIsLoading(false); // End loading
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert('Declaration number must be 13 digits long.');
     }
   };
   
-  
-  
-
   const handleFileChange = (e, type) => {
     setFiles((prevFiles) => ({ ...prevFiles, [type]: e.target.files[0] }));
   };
@@ -130,45 +95,44 @@ const FileUploadPage = () => {
     setFiles((prevFiles) => ({ ...prevFiles, [type]: null }));
   };
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Prepare the payload with only newly uploaded files
+    // Count the number of files that are either not already uploaded or newly uploaded
+    const uploadedFileCount = Object.values(files).filter(file => file && !file.alreadyUploaded).length;
+  
+    if (uploadedFileCount < requiredFiles.length) {
+      alert('All files should be uploaded.');
+      return;
+    }
+  
     const formData = new FormData();
     formData.append('declaration_Number', declarationNumber);
   
-    // Add only the newly uploaded files to FormData
     Object.keys(files).forEach((key) => {
       if (files[key] && !files[key].alreadyUploaded) {
-        formData.append(key, files[key]); // Append the file to FormData
+        formData.append(key, files[key]);
       }
     });
   
-    console.log('Payload to be sent:', formData);
-  
     if (formData.has('declaration_Number') && formData.size === 1) {
-      // If no files to upload, exit early
       alert('No new files to upload.');
       return;
     }
   
     try {
-    setIsLoading(true);
-      const response = await apiServices.uploadDocument(formData); // Send the FormData directly
-      // const data = await response.json(); // Handling the response properly
-      // console.log('API response:', data);
+      setIsLoading(true);
+      await apiServices.uploadDocument(formData);
       alert('Files submitted successfully!');
       navigate('/documentlist');
     } catch (error) {
       console.error('Error:', error);
       alert('Failed to submit files.');
-    }
-    finally {
-      setIsLoading(false); // End loading
+    } finally {
+      setIsLoading(false);
     }
   };
+  
   
 
 
@@ -246,7 +210,7 @@ return (
             </div>
 
             ))}
-            <button type="submit" className="submit-button">
+            <button type="submit" className="submit-button" >
               Submit
             </button>
           </div>

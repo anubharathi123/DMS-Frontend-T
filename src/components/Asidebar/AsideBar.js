@@ -177,11 +177,15 @@ const AsideBar = () => {
                   </NavLink>
                 </li>
                 {(role !=='ADMIN'||role == 'PRODUCT_OWNER') && (
-                <li>
-                  <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
-                  <p className="asidebar_p_tag">Contract Document</p>
-                  </NavLink>
-                </li>
+                <><li>
+                            <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+                              <p className="asidebar_p_tag">Contract Document</p>
+                            </NavLink>
+                          </li><li>
+                              <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? 'active' : '')}>
+                                <p className="asidebar_p_tag">Document List</p>
+                              </NavLink>
+                            </li></>
                 )}
                 {(role !== 'PRODUCT_OWNER'||role == 'ADMIN') && (
                 <li>

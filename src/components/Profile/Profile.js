@@ -17,6 +17,15 @@ function ProfileCard(props) {
   const fileInputRef = useRef();
   const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage") || avatar);
 
+  const RoleName = {
+    PRODUCT_OWNER: "Product Owner",
+    ADMIN: "Admin",
+    UPLOADER: "Uploader",
+    APPROVER: "Approver",
+    REVIEWER: "Reviewer",
+    VIEWER: "Viewer",
+  };
+
 
   useEffect(() => {
     const updateProfileImage = () => {
@@ -70,7 +79,8 @@ function ProfileCard(props) {
     }
   };
 
-  const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER'].includes(role);
+  const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
+  
 
   return (
     <>
@@ -113,9 +123,10 @@ function ProfileCard(props) {
             </button>
           </header>
           <h1 className="bold-text">{name}</h1>
-          <h2 className="normal-text">{role}</h2>
-          <h2 className="normal-text">{mail}</h2>
-          <h2 className="normal-text">{mobile}</h2>
+          <h2 className="normal-text">Role:{role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()}</h2>
+        
+          <h2 className="normal-text">Mail ID: {mail}</h2>
+          <h2 className="normal-text">Mobile: {mobile}</h2>
 
           {cropperVisible && (
             <div className="cropper-modal">
