@@ -188,7 +188,7 @@ import { IoPeople } from "react-icons/io5";
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { IoMdCloudUpload } from "react-icons/io";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import { MdPending, MdCancel } from "react-icons/md";
+import { MdPending, MdCancel, MdMargin } from "react-icons/md";
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -230,6 +230,7 @@ const DashboardApp = () => {
     UPLOADER: "Uploader Dashboard",
     APPROVER: "Approver Dashboard",
     REVIEWER: "Reviewer Dashboard",
+    VIEWER: "Viewer Dashboard",
   };
 
   // 🟢 Bar Chart (Company Registrations)
@@ -289,11 +290,15 @@ const DashboardApp = () => {
   };
 
   // Check if the role should have the cards displayed
-  const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER'].includes(role);
+  const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
+
+  const Title = role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER'
+  ? { marginTop: '10%' }
+  : {};
 
   return (
     <div className='dashboard-body'>
-      <div className='dashboard-container'>
+      <div className='dashboard-container' style={Title}>
         <Dashboard title={roleTitles[role]} />
 
         {role === 'PRODUCT_OWNER' && (
@@ -347,16 +352,17 @@ const DashboardApp = () => {
 
 const Card = ({ title, value, icon, role }) => {
   // Inline style for Uploader, Approver, and Reviewer roles
-  const cardStyle = role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER'
+  const cardStyle = role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER'
     ? { backgroundColor: '#CCDAF1' }
     : {};
 
   return (
+    
     <div className="card" style={cardStyle}>
-      <div className="card-title">
+      <div className="card-title" >
         <div className="card-icon">{icon}</div>
         <div className="card-info">
-          <h2>{title}</h2>
+          <h2 >{title}</h2>
           <p>{value}</p>
         </div>
       </div>

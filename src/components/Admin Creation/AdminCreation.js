@@ -4,15 +4,15 @@ import "./AdminCreation.css";
 const AdminCreation = () => {
   // Initialize default company name in localStorage if not already set
   useEffect(() => {
-    if (!localStorage.getItem("companyName")) {
-      localStorage.setItem("companyName", "VDart");
+    if (!localStorage.getItem(" Company_name")) {
+      localStorage.setItem("Company_name", "VDart");
     }
   }, []);
 
   // Form state management
   const [formData, setFormData] = useState({
     userId: "",
-    companyName: localStorage.getItem("companyName") || "VDart", // Default from localStorage
+    Company_name: localStorage.getItem("Company_name") || "VDart", // Default from localStorage
     personName: "",
     mobile: "",
     accessCreationDate: "",
@@ -32,7 +32,7 @@ const AdminCreation = () => {
   const handleCancel = () => {
     setFormData({
       userId: "",
-      companyName: localStorage.getItem("companyName") || "VDart", // Reset to default
+      companyName: localStorage.getItem("Company_name") || "VDart", // Reset to default
       personName: "",
       mobile: "",
       accessCreationDate: "",
@@ -66,10 +66,9 @@ const AdminCreation = () => {
           </label>
           <input
             type="text"
-            name="companyName"
-            value={formData.companyName}
+            name="Company_name"
+            value={formData.Company_name}
             className="admin-creation-input"
-            readOnly 
           />
         </div>
 

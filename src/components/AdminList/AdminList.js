@@ -106,42 +106,42 @@ const AdminList = () => {
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin List</h1>
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
-      <div className="adminlist_controls flex justify-between mb-4">
-        <div className="adminlist_search flex items-center">
-          <Search className="adminlist_search_icon w-5 h-5 mr-2" />
+      <div className="adminlist_controls">
+        <div className="adminlist_search">
+          <Search className="adminlist_search_icon" />
           <input
             type="search"
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search"
-            className="adminlist_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
+            className="adminlist_search_input"
           />
         </div>
-        <div className="adminlist_filter flex items-center">
-          <label className="adminlist_filter_label mr-2">Filter by Role:</label>
-          <select value={filter} onChange={handleFilter} className="adminlist_filter_select py-2 pl-10 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
-            <option value="">All</option>
+        <div className="adminlist_filter">
+          <label className="adminlist_filter_label">Filter by Role:</label>
+          <select value={filter} onChange={handleFilter} className="adminlist_filter_select">
+            <option value="All">All</option>
             <option value="Admin">Admin</option>
             {/* <option value="SuperAdmin">SuperAdmin</option> */}
           </select>
         </div>
 
-        <div className="adminlist_rows flex items-center">
-          <label className="adminlist_rows_label mr-2">Rows per Page:</label>
-          <select value={rowsPerPage} onChange={handleRowsPerPage} className="adminlist_rows_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
+        <div className="adminlist_rows">
+          <label className="adminlist_rows_label">Rows per Page:</label>
+          <select value={rowsPerPage} onChange={handleRowsPerPage} className="adminlist_rows_select">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
           </select>
         </div>
       </div>
-      <table className="adminlist_table w-full text-sm text-left text-gray-500">
-        <thead className="adminlist_thead text-xs text-gray-700 uppercase bg-gray-50">
+      <table className="adminlist_table">
+        <thead className="adminlist_thead">
           <tr>
-            <th className="adminlist_th px-6 py-3">Admin ID</th>
-            <th className="adminlist_th px-6 py-3">Name</th>
-            <th className="adminlist_th px-6 py-3">Email</th>
-            <th className="adminlist_th px-6 py-3">Created Date
+            <th className="adminlist_th">Admin ID</th>
+            <th className="adminlist_th">Name</th>
+            <th className="adminlist_th">Email</th>
+            <th className="adminlist_th">Created Date
               <button
                 className="admin-list-calendarbtn"
                 onClick={handleCalendarToggle}
@@ -164,40 +164,40 @@ const AdminList = () => {
                 </div>
               )}
             </th>
-            <th className="adminlist_th px-6 py-3">Role</th>
+            <th className="adminlist_th">Role</th>
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
         {paginatedData.map((item, index) => (
     <tr
       key={index}
-      className={`adminlist_row ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}`}
-    >
-              <td className="adminlist_td px-6 py-4">{item.adminId}</td>
-              <td className="adminlist_td px-6 py-4">{item.name}</td>
-              <td className="adminlist_td px-6 py-4">{item.email}</td>
-              <td className="adminlist_td px-6 py-4">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              <td className="adminlist_td px-6 py-4">{item.role}</td>
+      className="adminlist_row
+    ">
+              <td className="adminlist_td ">{item.adminId}</td>
+              <td className="adminlist_td ">{item.name}</td>
+              <td className="adminlist_td ">{item.email}</td>
+              <td className="adminlist_td ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+              <td className="adminlist_td ">{item.role}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="adminlist_pagination flex justify-between mt-4">
-        <div className="adminlist_pageinfo flex items-center">
-          <p className="adminlist_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
+      <div className="adminlist_pagination">
+        <div className="adminlist_pageinfo">
+          <p className="adminlist_pageinfo_text">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
         </div>
-        <div className="adminlist_paging flex items-center">
+        <div className="adminlist_paging">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="adminlist_paging_button py-2 px-4 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 mr-2"
+            className="adminlist_prev_button"
           >
             Previous
           </button>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === Math.ceil(filteredData1.length / rowsPerPage)}
-            className="adminlist_paging_button py-2 px-4 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600"
+            className="adminlist_next_button"
           >
             Next
           </button>
