@@ -135,7 +135,7 @@ const OrganizationList = () => {
                     </select>
                 </div>
             </div>
-            <div className='organization-table-container'  style={{ maxHeight: rowsPerPage > 5 ? '250px' : 'auto' }}>
+            <div className='organization-table-container'>
             <table className="organization-table">
                 <thead>
                     <tr className="organization-table-header">
@@ -162,7 +162,8 @@ const OrganizationList = () => {
                         <th className="organization-table-th">Actions</th>
                     </tr>
                 </thead>
-                <tbody className='organization-tbody'>
+                
+                <tbody style={{ maxHeight: rowsPerPage > 5 ? '280px' : 'auto' }}>
                     {paginatedData.length > 0 ? (
                         paginatedData.map((org, index) => (
                            
@@ -197,7 +198,6 @@ const OrganizationList = () => {
                 
             </table>
             </div>
-
             <div className="prev-next-container">
                 <div className="pageno">
                     Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}

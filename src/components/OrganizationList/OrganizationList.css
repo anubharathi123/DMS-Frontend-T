@@ -72,11 +72,11 @@
 }
 
 .organization-table-container {
-    height: 300px; /* Adjust the height as needed */
-    overflow-y: auto;
+    height: 300px; /* Keep a fixed height */
+    overflow-y:auto;
     display: block;
-    width: 90%;
-    margin-left: 20%;
+    width: 81.5%;
+    margin-left: 18%;
     position: relative;
 }
 
@@ -94,7 +94,9 @@
 }
 
 .organization-table {
+    display: table;
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
 }
 
@@ -105,15 +107,11 @@
     font-size: 12px;
     z-index: 10;
     text-align: center;
+    width: 100%;
+    table-layout: fixed;
    
 }
-.organization-tbody_container {
-    display: block;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+
 
 .organization-table-th {
     padding: 10px;
@@ -163,21 +161,19 @@
 }
 
 .prev-next-container {
-    position: relative;
-    padding: 10px 0;
+   
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 90%;
-    margin-left: 5%;
-    z-index: 20; /* Higher z-index to stay above table */
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .prev-next-buttons {
     display: flex;
     align-items: center;
     gap: 20px; /* Adds spacing between buttons */
-    margin-left: 5%; /* Align with the table's right margin */
 }
 
 .prev-button {
