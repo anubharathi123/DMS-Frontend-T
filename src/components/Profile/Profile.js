@@ -4,23 +4,40 @@ import avatar from "../../assets/images/candidate-profile.png";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import ProfileEdit from "../../assets/images/edit_icon.png";
+import authService from "../../ApiServices/ApiServices";
 
 function ProfileCard(props) {
   const [cropperVisible, setCropperVisible] = useState(false);
+  const [name,setName]=useState("");
+  const [role,setRole]=useState("");
+  const [mail,setMail]=useState("");
+  const [mobile,setMobile]=useState("");
   const [imageToCrop, setImageToCrop] = useState(null);
   const cropperRef = useRef();
   const fileInputRef = useRef();
   const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage") || avatar);
 
-  const role = localStorage.getItem('role');
 
   useEffect(() => {
     const updateProfileImage = () => {
       setProfileImage(localStorage.getItem("profileImage") || avatar);
     };
+    const fetchprofiledetails = async ()=>{
+      const response = await authService.details()
+      setName(response.details[1].first_name)
+      console.log(response,response.details[1].first_name)
+      setRole(response.details[5].name)
+      console.log(response,response.details[5].name)
+      setMail(response.details[1].email)
+      console.log(response,response.details[1].email)
+      setMobile(response.details[3].mobile)
+      console.log(response,response.details[3].mobile)
 
+    }
     window.addEventListener("profileImageUpdated", updateProfileImage);
+    fetchprofiledetails();
     return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
+    
   }, []);
 
   const handleImageChange = (e) => {
@@ -66,10 +83,10 @@ function ProfileCard(props) {
               <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
             </button>
           </header>
-          <h1 className="bold-text">{props.name}</h1>
-          <h2 className="normal-text">Role: Compiler</h2>
-          <h2 className="normal-text">Mail ID: rita.correia1233@gmail.com</h2>
-          <h2 className="normal-text">Mobile: 9877685436</h2>
+          <h1 className="bold-text">{name}</h1>
+          <h2 className="normal-text">{role}</h2>
+          <h2 className="normal-text">{mail}</h2>
+          <h2 className="normal-text">{mobile}</h2>
 
           {cropperVisible && (
             <div className="cropper-modal">
@@ -95,10 +112,10 @@ function ProfileCard(props) {
               <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
             </button>
           </header>
-          <h1 className="bold-text">{props.name}</h1>
-          <h2 className="normal-text">Role: Admin</h2>
-          <h2 className="normal-text">Mail ID: rita.correia1233@gmail.com</h2>
-          <h2 className="normal-text">Mobile: 9877685436</h2>
+          <h1 className="bold-text">{name}</h1>
+          <h2 className="normal-text">{role}</h2>
+          <h2 className="normal-text">{mail}</h2>
+          <h2 className="normal-text">{mobile}</h2>
 
           {cropperVisible && (
             <div className="cropper-modal">
