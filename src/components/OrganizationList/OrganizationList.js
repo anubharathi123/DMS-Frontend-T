@@ -135,7 +135,7 @@ const OrganizationList = () => {
                     </select>
                 </div>
             </div>
-            <div className='organization-table-container' >
+            <div className='organization-table-container'  style={{ maxHeight: rowsPerPage > 5 ? '250px' : 'auto' }}>
             <table className="organization-table">
                 <thead>
                     <tr className="organization-table-header">
@@ -162,8 +162,7 @@ const OrganizationList = () => {
                         <th className="organization-table-th">Actions</th>
                     </tr>
                 </thead>
-                <div className='organization_table-body_container'style={{ maxHeight: rowsPerPage > 5 ? '250px' : 'auto', overflowY: rowsPerPage > 5 ? 'auto' : 'visible' }}>
-                <tbody className='organization_tbody'>
+                <tbody className='organization-tbody'>
                     {paginatedData.length > 0 ? (
                         paginatedData.map((org, index) => (
                            
@@ -195,7 +194,7 @@ const OrganizationList = () => {
                         </tr>
                     )}
                 </tbody>
-                </div>
+                
             </table>
             </div>
 
