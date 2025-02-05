@@ -67,7 +67,6 @@ const Forgot_pwd1 = () => {
         }
       };
     
-    
   return (
     <div className='reset-outer-container1'>
     <div className="forgot1-container">
