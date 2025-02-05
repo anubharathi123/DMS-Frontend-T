@@ -190,6 +190,8 @@ import { IoMdCloudUpload } from "react-icons/io";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdPending, MdCancel, MdMargin } from "react-icons/md";
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { FaArrowUp } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
 import {
   Chart as ChartJS,
   BarElement,
@@ -300,8 +302,9 @@ const DashboardApp = () => {
               <div className="chart">
                 <p className='dashboard_text'><center>Company File Size</center></p>
                 <div className='dashboard-btngrp'>
-                  <button className='dashboard-top'>Top</button>
-                  <button className='dashboard-bottom'>Bottom</button>
+                  <button className='dashboard-top'><FaArrowUp /></button>
+                  <button className='dashboard-bottom'><FaArrowDown /></button>
+                  <input type='text' className='dashboard_num-input'/>
                 </div>
                 <table className='dashboard_table'>
                     <tr>
@@ -340,13 +343,13 @@ const DashboardApp = () => {
                 <center>
                 <div className="slicer">
                   <label className='dashboard-year-selector'>Select Year: </label>
-                  <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+                  <select className="dashboard-year-select" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                   </select>
                 </div>
                 </center>
-                <Line data={lineData} options={chartOptions} />
+                <Line className="dashboard-linedata" data={lineData} options={chartOptions} />
               </div>
             </div>
           </>

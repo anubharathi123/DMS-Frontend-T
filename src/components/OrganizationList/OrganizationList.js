@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHref, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { Search } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -50,6 +50,10 @@ const OrganizationList = () => {
      const [showSearchInfo, setShowSearchInfo] = useState(false);
 
      const searchInfoRef = useRef(null); // Reference for search info popup
+
+     const handleEdit = (username) => {
+        navigate(`/ProfileManagement/${username}`);
+    };
 
      const handleSearchInfo = () => {
         setShowSearchInfo(!showSearchInfo);
@@ -208,7 +212,7 @@ const OrganizationList = () => {
                                 <td className="organization-table-td">{org.createdDate}</td>
                                 <td className="organization-table-td">{org.status}</td>
                                 <td className="organization-table-td">
-                                    <button className='organization-edit'>
+                                    <button className='organization-edit' onClick={() => handleEdit(org.username)}>
                                     <FaEdit />
                                     </button>
                                     
