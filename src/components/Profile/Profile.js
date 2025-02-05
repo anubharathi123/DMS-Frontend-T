@@ -17,37 +17,32 @@ function ProfileCard(props) {
   const fileInputRef = useRef();
   const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage") || avatar);
 
-  const RoleName = {
-    PRODUCT_OWNER: "Product Owner",
-    ADMIN: "Admin",
-    UPLOADER: "Uploader",
-    APPROVER: "Approver",
-    REVIEWER: "Reviewer",
-    VIEWER: "Viewer",
-  };
-
 
   useEffect(() => {
     const updateProfileImage = () => {
       setProfileImage(localStorage.getItem("profileImage") || avatar);
     };
-    const fetchprofiledetails = async ()=>{
-      const response = await authService.details()
-      setName(response.details[1].first_name)
-      console.log(response,response.details[1].first_name)
-      setRole(response.details[5].name)
-      console.log(response,response.details[5].name)
-      setMail(response.details[1].email)
-      console.log(response,response.details[1].email)
-      setMobile(response.details[3].mobile)
-      console.log(response,response.details[3].mobile)
 
-    }
+    const fetchProfileDetails = async () => {
+      try {
+        const response = await authService.details();
+        if (response?.details) {
+          setName(response.details[1]?.first_name || "N/A");
+          setRole(response.details[5]?.name || "Unknown");
+          setMail(response.details[1]?.email || "No email provided");
+          setMobile(response.details[3]?.mobile || "No mobile provided");
+        }
+      } catch (error) {
+        console.error("Error fetching profile details:", error);
+      }
+    };
+
     window.addEventListener("profileImageUpdated", updateProfileImage);
-    fetchprofiledetails();
+    fetchProfileDetails();
+
     return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
-    
   }, []);
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -79,6 +74,7 @@ function ProfileCard(props) {
     }
   };
 
+  const formattedRole = role ? role.charAt(0).toUpperCase() + role.slice(1).toLowerCase() : "Unknown";
   const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
   
 
@@ -94,7 +90,7 @@ function ProfileCard(props) {
             </button>
           </header>
           <h1 className="bold-text">{name}</h1>
-          <h2 className="normal-text">{role}</h2>
+          <h2 className="normal-text">{formattedRole}</h2>
           <h2 className="normal-text">{mail}</h2>
           <h2 className="normal-text">{mobile}</h2>
 
@@ -123,7 +119,7 @@ function ProfileCard(props) {
             </button>
           </header>
           <h1 className="bold-text">{name}</h1>
-          <h2 className="normal-text">Role:{role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()}</h2>
+          <h2 className="normal-text">Role:{formattedRole}</h2>
         
           <h2 className="normal-text">Mail ID: {mail}</h2>
           <h2 className="normal-text">Mobile: {mobile}</h2>
@@ -142,8 +138,6 @@ function ProfileCard(props) {
           )}
         </div></>
     )}
-
-
     </>
   );
 }

@@ -9,6 +9,7 @@ import './verifydoc.css';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
 import { MdCancel } from "react-icons/md";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 
 const DocumentApproval = () => {
@@ -26,6 +27,30 @@ const DocumentApproval = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
+  const [showSearchInfo, setShowSearchInfo] = useState(false);
+    
+      const searchInfoRef = useRef(null); // Reference for search info popup
+    
+      const handleSearchInfo = () => {
+        setShowSearchInfo(!showSearchInfo);
+      };
+    
+      useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
+            setShowSearchInfo(false);
+          }
+        };
+    
+        if (showSearchInfo) {
+          document.addEventListener("mousedown", handleClickOutside);
+        }
+    
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, [showSearchInfo]);
+
   const host = 'http://localhost:8000';
   const calendarRef = useRef(null);
 
@@ -189,6 +214,14 @@ const DocumentApproval = () => {
             placeholder="Search"
             className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
           />
+           <button className='verifydoc_searchinfo' onClick={handleSearchInfo}>
+              <IoMdInformationCircleOutline/> 
+            </button>
+            {showSearchInfo && (
+            <div ref={searchInfoRef} className="verifydoc-searchinfo-popup">
+                Date filter format should be like this: yyyy-mm-dd
+            </div>
+            )}
         </div>
 
         <div className="documenttable_filter flex items-center">

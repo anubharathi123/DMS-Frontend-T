@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { Search } from 'lucide-react';
@@ -7,6 +7,9 @@ import './OrganizationList.css';
 import { CiTextAlignLeft } from 'react-icons/ci';
 import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import Loader from "react-js-loader";
+import { IoMdInformationCircleOutline } from "react-icons/io";
+
 
 
 const OrganizationList = () => {
@@ -14,7 +17,7 @@ const OrganizationList = () => {
         { username:'AE-7783', name: 'HCL', createdDate: '2025-01-05', status: 'Inactive' },
         { username:'AE-7323', name: 'Infosys', createdDate: '2025-01-19', status: 'Active' },
         { username:'AE-7361', name: 'TCS', createdDate: '2025-02-01', status: 'Active' },
-        { username:'AE-5020', name: 'Capgemini', createdDate: '2025-02-15', status: 'Inactive' },
+        { username:'AE-5020', name: 'Product_Declaration_11Uv', createdDate: '2025-02-15', status: 'Inactive' },
         { username:'AE-0145', name: 'IBM', createdDate: '2025-03-01', status: 'Active' },
         { username:'AE-5648', name: 'Adobe', createdDate: '2025-03-15', status: 'Inactive' },
         { username:'AE-0547', name: 'Vdart', createdDate: '2025-04-01', status: 'Inactive' },
@@ -41,8 +44,32 @@ const OrganizationList = () => {
     const [filter, setFilter] = useState('');
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
+      const [isLoading, setIsLoading] = useState(false);
     const itemsPerPage = 5;
     const navigate = useNavigate();
+     const [showSearchInfo, setShowSearchInfo] = useState(false);
+
+     const searchInfoRef = useRef(null); // Reference for search info popup
+
+     const handleSearchInfo = () => {
+        setShowSearchInfo(!showSearchInfo);
+      };
+    
+      useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
+            setShowSearchInfo(false);
+          }
+        };
+    
+        if (showSearchInfo) {
+          document.addEventListener("mousedown", handleClickOutside);
+        }
+    
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, [showSearchInfo]);
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
@@ -107,27 +134,35 @@ const OrganizationList = () => {
 
     return (
         <div className="organization-main">
-            <h1 className="organization-h1">Organization List</h1>
+            <h1 className="organization-header">Organization List</h1>
             <div className='organization-container_controls'>
-                <div className='organization-search_container'>
+                <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
                     <input type="search" 
                         value={searchTerm}
                          onChange={handleSearch}
                             placeholder="Search" 
-                            className="organization-search"/>
+                            className="organization-search-input"/>
+                            <button className='organization_searchinfo' onClick={handleSearchInfo}>
+                                        <IoMdInformationCircleOutline/> 
+                                        </button>
+                                        {showSearchInfo && (
+                                          <div ref={searchInfoRef} className="organization-searchinfo-popup">
+                                              Date filter format should be like this: yyyy-mm-dd
+                                          </div>
+                                        )}
                 </div>
-                <div className="organization-filter_container">
+                <div className="organization-filter">
                     <label className="organization_filter-label">Filter by Status:</label>
-                    <select value={statusFilter} onChange={handleStatusFilter}className="organization-status_filter">
+                    <select value={statusFilter} onChange={handleStatusFilter}className="organization-filter-select">
                         <option value="">All</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select> 
                 </div>
-                <div className='organization_row_container'>
-                    <label className="organization_rows_label">Rows per Page:</label>
-                    <select value={rowsPerPage} onChange={handleRowsPerPage} className="organization_rows_select">
+                <div className='organization_row'>
+                    <label className="organization_row_label">Rows per Page:</label>
+                    <select value={rowsPerPage} onChange={handleRowsPerPage} className="organization_row_select">
                          <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
@@ -135,10 +170,10 @@ const OrganizationList = () => {
                     </select>
                 </div>
             </div>
-            <div className='organization-table-container'>
+            
             <table className="organization-table">
-                <thead>
-                    <tr className="organization-table-header">
+                <thead className='organization-thead'>
+                    <tr>
                         <th className="organization-table-th">Username</th>
                         <th className="organization-table-th">Organization Name</th>
                         <th className="organization-table-th">
@@ -163,7 +198,7 @@ const OrganizationList = () => {
                     </tr>
                 </thead>
                 
-                <tbody style={{ maxHeight: rowsPerPage > 5 ? '280px' : 'auto' }}>
+                <tbody className='organization-tbody' style={{ maxHeight: rowsPerPage > 5 ? '200px' : 'auto' }}>
                     {paginatedData.length > 0 ? (
                         paginatedData.map((org, index) => (
                            
@@ -197,12 +232,12 @@ const OrganizationList = () => {
                 </tbody>
                 
             </table>
-            </div>
-            <div className="prev-next-container">
-                <div className="pageno">
+            
+            <div className="organization_pagination">
+                <div className="organization_pageinfo">
                     Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
                 </div>
-                <div className="prev-next-buttons">
+                <div className="organization_paging">
                     <button
                         className="prev-button"
                         onClick={handlePrevPage}
@@ -219,8 +254,17 @@ const OrganizationList = () => {
                     </button>
                 </div>
             </div>
+            {isLoading && (
+        <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={100} />
+            <p>Loading...</p>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
+
 
 export default OrganizationList;

@@ -35,7 +35,57 @@
   text-align: center;
 }
 
+.dashboard_text {
+  font-size: 13px;
+  position: relative;
+  font-weight: bold;
+  bottom: 15px;
+  color: #000b58;
+}
 
+.dashboard_table{
+  table-layout: fixed;
+  width: 100%;
+  font-size: 12px !important;
+  border-collapse: collapse;
+}
+
+.dashboard-table-th {
+  background-color: #f1f1f1;
+    padding: 5px;
+    text-align: center;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    color: #000b58;
+    font-size: 12px;
+}
+
+.dashboard-table-td {
+  width: 20%;
+    word-wrap: break-word;
+    text-align: center;
+    padding: 12px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dashboard-btngrp {
+  position: relative;
+  bottom: 45px;
+  left: 72%;
+}
+
+.dashboard-top, .dashboard-bottom {
+  border: none;
+  background: white;
+  cursor:pointer;
+  font-size: 12px;
+  padding: 4px;
+}
+
+.dashboard-top:hover, .dashboard-bottom:hover {
+
+}
 
 
 
@@ -213,6 +263,7 @@ canvas {
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 45%;
+  height: 100%;
   transition: transform 0.3s ease;
 }
 
@@ -222,6 +273,10 @@ canvas {
 
 canvas {
   max-height: 200px;
+}
+
+.slicer {
+  margin-bottom: 10px;
 }
 
 /* Dropdown Year Selector */
