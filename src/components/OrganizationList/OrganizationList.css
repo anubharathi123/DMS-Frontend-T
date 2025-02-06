@@ -28,6 +28,9 @@
     border: none;
   background: none;
   cursor: pointer;
+  position: relative;
+  left:80%;
+  font-size: 13px;
 }
 
 .organization-searchinfo-popup {
@@ -39,24 +42,26 @@
   border-radius: 4px;
   top: 40px;
   left: 10px;
-  z-index: 100;
   font-size: 12px;
-  color: #333;
+  color: #000000;
 }
 
 .organization-search {
-    flex-direction: row-reverse;
     display: flex;
     align-items: center;
     gap: 5px;
+    flex-direction: row-reverse;
+    width: 30%;
+    position:relative;
+    right: 30px;
 }
 
 .organization-search-input {
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
     width: 260px;
-  padding-top: .5rem !important;
-  padding-bottom: .5rem !important;
-  border-radius: 7px;
-  font-size: 12px !important;
+    font-size: 12px !important;
 }
 
 .organization-filter {
@@ -66,15 +71,15 @@
 }
 
 .organization_filter-label{
-    font-size: 14px
+    font-size: 14px;
 }
 
 .organization-filter-select{
-    width: 200px;
-    font-size: 12px !important;
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 7px;
+    width: 200px;
+    font-size: 12px !important;
 }
 
 .organization_row {
@@ -84,15 +89,15 @@
 }
 
 .organization_row_label {
-    font-size: 14px
+    font-size: 14px;
 }
 
 .organization_row_select {
-    width: 200px;
-    font-size: 12px !important;
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 7px;
+    width: 200px;
+    font-size: 12px !important;
 }
 
 .organization-table {
@@ -199,7 +204,7 @@
     font-size: 12px !important;
 }
 
-.next-button {
+.next-button, .prev-button {
     background-color: #000b58;
     color: white;
     border-radius: 5px;

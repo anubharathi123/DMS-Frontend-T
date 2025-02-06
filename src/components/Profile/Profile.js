@@ -27,7 +27,7 @@ function ProfileCard(props) {
       try {
         const response = await authService.details();
         if (response?.details) {
-          setName(response.details[1]?.first_name || "N/A");
+          setName(response.details[1]?.username || "N/A");
           setRole(response.details[5]?.name || "Unknown");
           setMail(response.details[1]?.email || "No email provided");
           setMobile(response.details[3]?.mobile || "No mobile provided");
