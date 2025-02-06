@@ -121,6 +121,13 @@ const authService = {
     return handleResponse(apiClient.post('organization/', data));
   },
   getOrganizations: async () => handleResponse(apiClient.get('organization/')),
+  OrganizationList: async (data) => {
+    // if (!data.name || !data.owner_email) {
+    //   throw new Error('Organization name and owner email are required.');
+    // }
+    return handleResponse(apiClient.post('OrganizationList/', data));
+  },
+  
   getOrganizationById: async (orgId) => {
     if (!orgId) {
       throw new Error('Organization ID is required.');

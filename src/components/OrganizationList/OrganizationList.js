@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useHref, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { Search } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
+import apiServices from '../../ApiServices/ApiServices';
 import './OrganizationList.css';
-import { CiTextAlignLeft } from 'react-icons/ci';
 import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Loader from "react-js-loader";
@@ -13,34 +13,12 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 
 
 const OrganizationList = () => {
-    const data = [
-        { username:'AE-7783', name: 'HCL', createdDate: '2025-01-05', status: 'Inactive' },
-        { username:'AE-7323', name: 'Infosys', createdDate: '2025-01-19', status: 'Active' },
-        { username:'AE-7361', name: 'TCS', createdDate: '2025-02-01', status: 'Active' },
-        { username:'AE-5020', name: 'Product_Declaration_11Uv', createdDate: '2025-02-15', status: 'Inactive' },
-        { username:'AE-0145', name: 'IBM', createdDate: '2025-03-01', status: 'Active' },
-        { username:'AE-5648', name: 'Adobe', createdDate: '2025-03-15', status: 'Inactive' },
-        { username:'AE-0547', name: 'Vdart', createdDate: '2025-04-01', status: 'Inactive' },
-        { username:'AE-8606', name: 'DeLL', createdDate: '2025-04-15', status: 'Active' },
-        { username:'AE-1241', name: 'Microsoft', createdDate: '2025-05-01', status: 'Active' },
-        { username:'AE-1211', name: 'Wipro', createdDate: '2025-05-15', status: 'Inactive' },
-        { username:'AE-6711', name: 'Thoughtworks', createdDate: '2025-01-05', status: 'Inactive' },
-        { username:'AE-2937', name: 'Zoho', createdDate: '2025-01-19', status: 'Active' },
-        { username:'AE-3745', name: 'Accenture', createdDate: '2025-02-01', status: 'Active' },
-        { username:'AE-5471', name: 'Hp', createdDate: '2025-02-15', status: 'Inactive' },
-        { username:'AE-3568', name: 'Lenovo', createdDate: '2025-03-01', status: 'Active' },
-        { username:'AE-4265', name: 'Asus', createdDate: '2025-03-15', status: 'Inactive' },
-        { username:'AE-1876', name: 'Qualcomm', createdDate: '2025-04-01', status: 'Inactive' },
-        { username:'AE-0870', name: 'Phonepe', createdDate: '2025-04-15', status: 'Active' },
-        { username:'AE-2822', name: 'Google', createdDate: '2025-05-01', status: 'Active' },
-        { username:'AE-9425', name: 'Paytm', createdDate: '2025-05-15', status: 'Inactive' },
-    ];
-
+    const [data, setData] = useState([]);
     const [startDate, setStartDate] = useState(null);
-   
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [actionMessage, setActionMessage] = useState('');
     const [filter, setFilter] = useState('');
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
@@ -58,6 +36,35 @@ const OrganizationList = () => {
      const handleSearchInfo = () => {
         setShowSearchInfo(!showSearchInfo);
       };
+
+      useEffect (() => {
+        const fetchOrganization = async () => {
+            try {
+                setIsLoading(true)
+                const response = await apiServices.getOrganization();
+                const organization = response.map(org => ({
+                    username:org.username,
+                    org_name:org.org_name,
+                    created_date:org.createdDate,
+                    status:org.status,
+                })) 
+
+                setData(organization);
+
+                if(organization.length === 0){
+                    setActionMessage("No Organizations are found in the list..")
+                }
+                
+
+            }catch(error) {
+
+            }finally {
+                setIsLoading(false)
+            }
+        };
+
+        fetchOrganization();
+      }, []);
     
       useEffect(() => {
         const handleClickOutside = (event) => {
