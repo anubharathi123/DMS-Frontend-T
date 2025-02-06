@@ -44,10 +44,10 @@ const OrganizationList = () => {
             try {
                 setIsLoading(true)
                 const response = await apiServices.getOrganizations();
-                console.log(response)
+                console.log(response,response.organization)
                 
                  const organization = response.organization.map(org => ({
-                    username:org.auth_user,
+                    username:org.auth_user.username,
                     org_name:org.company_name,
                     created_date:org.created_at,
                     status:org.is_frozen,
