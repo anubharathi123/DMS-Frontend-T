@@ -12,7 +12,6 @@ function ProfileCard() {
   const [role, setRole] = useState("");
   const [mail, setMail] = useState("");
   const [mobile, setMobile] = useState("");
-  const [image, setImage] = useState(null);
   const [imageToCrop, setImageToCrop] = useState(null);
   const cropperRef = useRef();
   const fileInputRef = useRef();
@@ -20,7 +19,7 @@ function ProfileCard() {
 
   useEffect(() => {
     const updateProfileImage = () => {
-      setProfileImage(avatar);
+      setProfileImage(localStorage.getItem("profileImage") || avatar);
     };
 
     const fetchProfileDetails = async () => {
@@ -47,7 +46,7 @@ function ProfileCard() {
             const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
           
             setProfileImage(fullImageUrl);
-            // localStorage.setItem("profileImage", fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
       }
       catch(error){
         console.error("Error fetching profile details:", error);
