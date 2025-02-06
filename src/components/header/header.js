@@ -9,7 +9,9 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import avatar from "../../assets/images/candidate-profile.png";
 import { FaBullseye } from "react-icons/fa6";
-import authService from "../../ApiServices/ApiServices";
+import ApiService from "../../ApiServices/ApiServices";
+
+
 
 const Header = () => {
   const [query, setQuery] = useState("");
@@ -103,11 +105,17 @@ const Header = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("access_status");
-    localStorage.removeItem("token");
-    navigate("/");
-  };
+  const handleLogout = async () => {
+    try {
+        await ApiService.logout(); // Call the logout API
+        localStorage.removeItem("access_status");
+        localStorage.removeItem("token");
+        navigate("/");
+    } catch (error) {
+        console.warn("Error logging out:", error.message);
+    }
+};
+
 
   const handlePhotoUpload = () => fileInputRef.current?.click();
 
