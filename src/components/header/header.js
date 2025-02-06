@@ -17,9 +17,8 @@ const Header = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [profileImage, setProfileImage] = useState(
-    localStorage.getItem("profileImage") || CandidateProfile
-  );
+  const [profileImage, setProfileImage] = useState( );
+  const [iconColor, setIconColor] = useState("#000");
   const [imageToCrop, setImageToCrop] = useState(null);
   const [cropperVisible, setCropperVisible] = useState(false);
 
@@ -33,6 +32,7 @@ const Header = () => {
   const name = localStorage.getItem("name") || "User";
 
   useEffect(() => {
+    // localStorage.removeItem("profileImage");
     const updateProfileImage = async () =>  {
       setProfileImage(localStorage.getItem("profileImage") || avatar);
       };
@@ -40,17 +40,33 @@ const Header = () => {
         try {
           // const response = await authService.details();
           const image = await ApiService.getprofile();
-          console.log("Profile image response:", image.profile_image.image);
-          const url = image.profile_image.image;
-          console.log("Profile image URL:", url);
-              const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
-              // Ensure no double slashes in the URL
-              const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          try{
+            console.log("Profile image response:",(image.profile_image.image) );
+            const url = (image.profile_image.image);
+            console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
+          }
+          catch(error){
+            console.log("Profile image response:",(image.organization_image.image) );
+            const url = (image.organization_image.image);
+            console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
+          }
             
-              setProfileImage(fullImageUrl);
-              localStorage.setItem("profileImage", fullImageUrl);
             } catch (error) {
+              localStorage.setItem("profileImage", avatar);
               console.error("Error fetching profile details:", error);
+              
             }
           };
     fetchProfileDetails();
@@ -115,8 +131,12 @@ const Header = () => {
         console.warn("Error logging out:", error.message);
     }
 };
-
-
+const getRandomColor = () => {
+  return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+};
+useEffect(() => {
+  setIconColor(getRandomColor());
+}, []);
   const handlePhotoUpload = () => fileInputRef.current?.click();
 
   const handleImageChange = (e) => {
@@ -229,6 +249,7 @@ const Header = () => {
       <button
         type="button"
         className="profilebtn"
+        style={{ background: iconColor }}
         onClick={() =>
           setActiveDropdown(activeDropdown === "profile" ? null : "profile")
         }
