@@ -115,9 +115,6 @@ const ChangePassword1 = () => {
             <br/>
           <button type="submit" className="changepwd_submitbtn">Submit</button>
         </form>
-        <div className='changepwd_footer'>
-        <p className='changepwd_text'><center>© VDart 2025. All Rights Reserved.</center></p>
-        </div>
       </div>
     </div>
     

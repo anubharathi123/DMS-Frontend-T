@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaUpload, FaTrash } from 'react-icons/fa';
 import './FileUploadPage.css';
 import Loader from "react-js-loader";
 import { useNavigate } from 'react-router-dom';
 import apiServices from '../../ApiServices/ApiServices';
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const FileUploadPage = () => {
   const [declarationNumber, setDeclarationNumber] = useState('');
@@ -16,6 +17,30 @@ const FileUploadPage = () => {
     countryOfOrigin: null,
     deliveryOrder: null,
   });
+  const [showSearchInfo, setShowSearchInfo] = useState(false);
+  const [isGoButtonClicked, setIsGoButtonClicked] = useState(false); // Track if "Go" button has been clicked
+  
+  const searchInfoRef = useRef(null); // Reference for search info popup
+  
+  const handleSearchInfo = () => {
+    setShowSearchInfo(!showSearchInfo);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
+        setShowSearchInfo(false);
+      }
+    };
+  
+    if (showSearchInfo) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSearchInfo]);
 
   const handleDeclarationNumberChange = (e) => {
     setDeclarationNumber(e.target.value);
@@ -25,8 +50,7 @@ const FileUploadPage = () => {
 
   const [isLoading, setIsLoading] = useState(false); 
   const requiredFiles = ['declaration', 'invoice', 'packingList', 'awsBol', 'certificateOfOrigin', 'deliveryOrder'];
-  const isSubmitDisabled = !requiredFiles.every((key) => files[key] !== null); 
-
+ 
   const handleGoClick = async () => {
     if (declarationNumber.length === 13) {
       try {
@@ -59,12 +83,12 @@ const FileUploadPage = () => {
               if (mappedKey) {
                 const filePath = document.current_version?.file_path || '';
                 const fileName = filePath.split('/').pop();
-                const status = document.status; // Fetching document status
+                const status = document.status;
   
                 updatedDocuments[mappedKey] = {
                   fileName,
                   alreadyUploaded: true,
-                  status, // Store document status (approved/rejected)
+                  status,
                 };
               }
             }
@@ -72,7 +96,7 @@ const FileUploadPage = () => {
   
           setFiles(updatedDocuments);
           setIsFileUploadEnabled(true);
-          alert('Declaration number validated successfully.');
+          setIsGoButtonClicked(true); // Mark the Go button as clicked
         } else {
           throw new Error('Invalid response structure');
         }
@@ -98,7 +122,6 @@ const FileUploadPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Count the number of files that are either not already uploaded or newly uploaded
     const uploadedFileCount = Object.values(files).filter(file => file && !file.alreadyUploaded).length;
   
     if (uploadedFileCount < requiredFiles.length) {
@@ -132,92 +155,96 @@ const FileUploadPage = () => {
       setIsLoading(false);
     }
   };
-  
-  
 
-
-return (
-  <div className="file-upload-page-outer">
-    <div className="file-upload-page">
-      <h1 className="page-title">File Upload Portal</h1>
-      <form onSubmit={handleSubmit} className="upload-form">
-        {/* Declaration Number Section */}
-        <div className="declaration-section">
-          <label htmlFor="declarationNumber" className="declaration-label">
-            Declaration Number
-          </label>
-          <input
-            type="text"
-            id="declarationNumber"
-            className="declaration-input"
-            value={declarationNumber}
-            onChange={handleDeclarationNumberChange}
-            maxLength={13}
-            placeholder="Enter Declaration Number"
-          />
-          <button
-            type="button"
-            className="go-button"
-            onClick={handleGoClick}
-            disabled={declarationNumber.length !== 13}
-          >
-            Go
-          </button>
-        </div>
-
-        {/* File Upload Section */}
-        {isFileUploadEnabled && (
-          <div className="file-upload-section">
-            {[
-              { key: 'declaration', label: 'Declaration' },
-              { key: 'invoice', label: 'Invoice' },
-              { key: 'packingList', label: 'Packing List' },
-              { key: 'awsBol', label: 'AWS/BOL' },
-              { key: 'countryOfOrigin', label: 'Certificate Of Origin' },
-              { key: 'deliveryOrder', label: 'Delivery Order' },
-            ].map((item) => (
-              <div className="file-upload-item" key={item.key}>
-              <label className="file-upload-label">{item.label}</label>
-              <div className="file-actions">
-                {!files[item.key] ? (
-                  // If no file is selected, show upload button
-                  <label className="upload-icon">
-                    <FaUpload />
-                    <input
-                      type="file"
-                      className="hidden-input"
-                      onChange={(e) => handleFileChange(e, item.key)}
-                    />
-                  </label>
-                ) : (
-                  <>
-                   <span className="file-name">{files[item.key].name}</span>
-                    {/* If file is selected, display the file name */}
-                    <span className="file-name-exist">{files[item.key]?.fileName}</span>
-                    {/* Only show delete icon if the file is not already uploaded */}
-                    {!files[item.key]?.alreadyUploaded && (
-                      <button
-                        type="button"
-                        className="delete-icon"
-                        onClick={() => handleFileDelete(item.key)}
-                      >
-                        🇽
-                      </button>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
-
-            ))}
-            <button type="submit" className="submit-button" >
-              Submit
+  return (
+    <div className="file-upload-page-outer">
+      <div className="file-upload-page">
+        <h1 className="page-title">File Upload Portal</h1>
+        <form onSubmit={handleSubmit} className="upload-form">
+          {/* Declaration Number Section */}
+          <div className="declaration-section">
+            <label htmlFor="declarationNumber" className="declaration-label">
+              Declaration Number
+            </label>
+            <input
+              type="text"
+              id="declarationNumber"
+              className="declaration-input"
+              value={declarationNumber}
+              onChange={handleDeclarationNumberChange}
+              maxLength={13}
+              placeholder="Enter Declaration Number"
+            />
+            <button
+              type="button"
+              className="go-button"
+              onClick={handleGoClick}
+              disabled={declarationNumber.length !== 13}
+            >
+              Go
             </button>
+            {isGoButtonClicked && (
+              <button className='upload_searchinfo' onClick={handleSearchInfo}>
+                <IoMdInformationCircleOutline/> 
+              </button>
+            )}
+            {showSearchInfo && (
+              <div ref={searchInfoRef} className="upload-searchinfo-popup">
+                {/* Add the information you want to display here */}
+                To upload one file (e.g., If an invoice document contains multiple files, they should be combined into a single invoice file before uploading)
+              </div>
+            )}
           </div>
-        )}
-      </form>
-    </div>
-    {isLoading && (
+
+          {/* File Upload Section */}
+          {isFileUploadEnabled && (
+            <div className="file-upload-section">
+              {[
+                { key: 'declaration', label: 'Declaration' },
+                { key: 'invoice', label: 'Invoice' },
+                { key: 'packingList', label: 'Packing List' },
+                { key: 'awsBol', label: 'AWS/BOL' },
+                { key: 'countryOfOrigin', label: 'Certificate Of Origin' },
+                { key: 'deliveryOrder', label: 'Delivery Order' },
+              ].map((item) => (
+                <div className="file-upload-item" key={item.key}>
+                  <label className="file-upload-label">{item.label}</label>
+                  <div className="file-actions">
+                    {!files[item.key] ? (
+                      <label className="upload-icon">
+                        <FaUpload />
+                        <input
+                          type="file"
+                          className="hidden-input"
+                          onChange={(e) => handleFileChange(e, item.key)}
+                        />
+                      </label>
+                    ) : (
+                      <>
+                        <span className="file-name">{files[item.key].name}</span>
+                        <span className="file-name-exist">{files[item.key]?.fileName}</span>
+                        {!files[item.key]?.alreadyUploaded && (
+                          <button
+                            type="button"
+                            className="delete-icon"
+                            onClick={() => handleFileDelete(item.key)}
+                          >
+                            🇽
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <button type="submit" className="submit-button">
+                Submit
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
+      {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">
             <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
@@ -225,9 +252,8 @@ return (
           </div>
         </div>
       )}
-  </div>
-);
-
+    </div>
+  );
 };
 
 export default FileUploadPage;
