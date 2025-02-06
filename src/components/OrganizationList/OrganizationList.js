@@ -52,7 +52,7 @@ const OrganizationList = () => {
                     created_date:org.created_at,
                     status:org.is_frozen,
                 })) 
-
+                console.log(organization)
                 setData(organization);
 
                 if(organization.length === 0){
@@ -221,7 +221,9 @@ const OrganizationList = () => {
                                 <td className="organization-table-td">{org.username}</td>
                                 <td className="organization-table-td">{org.org_name}</td>
                                 <td className="organization-table-td">{org.created_date}</td>
-                                <td className="organization-table-td">{org.status}</td>
+                                <td className="organization-table-td">
+  {org.status ? "Inactive" : "Active"}
+</td>
                                 <td className="organization-table-td">
                                     <button className='organization-edit' onClick={() => handleEdit(org.username)}>
                                     <FaEdit />
