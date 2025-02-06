@@ -103,12 +103,12 @@ body {
 }
 
 .login1_vpwd {
-  position: fixed;
-  bottom: 117px;
-  right: 60px;
+  position: relative;
+  bottom: 31px;
+  left: 89%;
   border: none;
   background: none;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .form1-footer {
