@@ -26,10 +26,10 @@ function ProfileCard() {
       try {
         const response = await authService.details();
         if (response?.details) {
-          setName(response.details[1]?.username || "N/A");
-          setRole(response.details[5]?.name || "Unknown");
-          setMail(response.details[1]?.email || "No email provided");
-          setMobile(response.details[3]?.mobile || "No mobile provided");
+          setName(response.details[1]?.username || response.details[5]?.first_name || "N/A");
+          setRole(response.details[5]?.name || response.details[3]?.name || "Unknown");
+          setMail(response.details[1]?.email || response.details[5]?.email || "No email provided");
+          setMobile(response.details[3]?.mobile || response.details[1]?.mobile || "No mobile provided");
         }
       } catch (error) {
         console.error("Error fetching profile details:", error);
