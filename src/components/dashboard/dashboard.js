@@ -190,6 +190,8 @@ import { IoMdCloudUpload } from "react-icons/io";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdPending, MdCancel, MdMargin } from "react-icons/md";
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { FaArrowUp } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
 import {
   Chart as ChartJS,
   BarElement,
@@ -233,18 +235,7 @@ const DashboardApp = () => {
     VIEWER: "Viewer Dashboard",
   };
 
-  // 🟢 Bar Chart (Company Registrations)
-  const barData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Company Registrations',
-        data: [5000, 6000, 7000, 8000, 9000, 10000],
-        backgroundColor: '#6691D6',
-        borderRadius: 8,
-      },
-    ],
-  };
+ 
 
   // 🟠 Doughnut Chart (Total Uploads)
   const donutData = {
@@ -292,13 +283,11 @@ const DashboardApp = () => {
   // Check if the role should have the cards displayed
   const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
 
-  const Title = role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER'
-  ? { marginTop: '10%' }
-  : {};
+ 
 
   return (
     <div className='dashboard-body'>
-      <div className='dashboard-container' style={Title}>
+      <div className='dashboard-container' >
         <Dashboard title={roleTitles[role]} />
 
         {role === 'PRODUCT_OWNER' && (
@@ -311,20 +300,56 @@ const DashboardApp = () => {
             </div>
             <div className="charts-container">
               <div className="chart">
-                <Bar data={barData} options={chartOptions} />
+                <p className='dashboard_text'><center>Company File Size</center></p>
+                <div className='dashboard-btngrp'>
+                  <button className='dashboard-top'><FaArrowUp /></button>
+                  <button className='dashboard-bottom'><FaArrowDown /></button>
+                  <input type='text' className='dashboard_num-input'/>
+                </div>
+                <table className='dashboard_table'>
+                    <tr>
+                      <th className='dashboard-table-th'>Company Name</th>
+                      <th className='dashboard-table-th'>Username</th>
+                      <th className='dashboard-table-th'>File Size</th>
+                    </tr>
+                    <tr>
+                      <td className='dashboard-table-td'>HCL</td>
+                      <td className='dashboard-table-td'>Arun</td>
+                      <td className='dashboard-table-td'>1000Kb</td>
+                    </tr>
+                    <tr>
+                      <td className='dashboard-table-td'>Vdart</td>
+                      <td className='dashboard-table-td'>Harish</td>
+                      <td className='dashboard-table-td'>789Kb</td>
+                    </tr>
+                    <tr>
+                      <td className='dashboard-table-td'>Accenture</td>
+                      <td className='dashboard-table-td'>Vignesh</td>
+                      <td className='dashboard-table-td'>665Kb</td>
+                    </tr>
+                    <tr>
+                      <td className='dashboard-table-td'>Infosys</td>
+                      <td className='dashboard-table-td'>Surya</td>
+                      <td className='dashboard-table-td'>569Kb</td>
+                    </tr>
+                </table>
               </div>
               <div className="chart">
+              <p className='dashboard_text'><center>Uploaded Documents</center></p>
                 <Doughnut data={donutData} options={chartOptions} />
               </div>
               <div className="chart">
+                <p className='dashboard_text'><center>Company Trends</center></p>
+                <center>
                 <div className="slicer">
                   <label className='dashboard-year-selector'>Select Year: </label>
-                  <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+                  <select className="dashboard-year-select" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                   </select>
                 </div>
-                <Line data={lineData} options={chartOptions} />
+                </center>
+                <Line className="dashboard-linedata" data={lineData} options={chartOptions} />
               </div>
             </div>
           </>
@@ -353,13 +378,15 @@ const DashboardApp = () => {
 const Card = ({ title, value, icon, role }) => {
   // Inline style for Uploader, Approver, and Reviewer roles
   const cardStyle = role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER'
-    ? { backgroundColor: '#CCDAF1' }
+    ? { backgroundColor: '#CCDAF1', marginTop: "10%" }
     : {};
+
+  
 
   return (
     
     <div className="card" style={cardStyle}>
-      <div className="card-title" >
+      <div className="card-title">
         <div className="card-icon">{icon}</div>
         <div className="card-info">
           <h2 >{title}</h2>

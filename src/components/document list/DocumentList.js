@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import apiServices from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const DocumentTable = () => {
   const initialState = {
@@ -22,6 +23,29 @@ const DocumentTable = () => {
   const [actionMessage, setActionMessage] = useState('');
   const calendarRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showSearchInfo, setShowSearchInfo] = useState(false);
+
+  const searchInfoRef = useRef(null); // Reference for search info popup
+
+  const handleSearchInfo = () => {
+    setShowSearchInfo(!showSearchInfo);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
+        setShowSearchInfo(false);
+      }
+    };
+
+    if (showSearchInfo) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSearchInfo]);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -126,6 +150,14 @@ const DocumentTable = () => {
             placeholder="Search"
             className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
           />
+          <button className='document_searchinfo' onClick={handleSearchInfo}>
+            <IoMdInformationCircleOutline/> 
+            </button>
+            {showSearchInfo && (
+              <div ref={searchInfoRef} className="search-info-popup">
+                  Date filter format should be like this: yyyy-mm-dd
+              </div>
+            )}
         </div>
         <div className="documenttable_filter flex items-center">
           <label className="documenttable_filter_label mr-2">Filter by Status:</label>

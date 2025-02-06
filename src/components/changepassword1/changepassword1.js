@@ -62,9 +62,8 @@ const ChangePassword1 = () => {
   };
 
   return (
-    <div className='changepwd_main'>
+    
         <div className="changepwd-container">
-
         <div className="changepwd-left">
                    <img src={logo} alt="logo" className='changepwd_logo'/>
             <h1 className='changepwd_title'>Lorem Ipsum</h1>
@@ -117,26 +116,11 @@ const ChangePassword1 = () => {
           <button type="submit" className="changepwd_submitbtn">Submit</button>
         </form>
         <div className='changepwd_footer'>
-        <p className='changepwd_text'>© VDart 2025. All Rights Reserved.| <a href='https://www.vdart.com/contact-us/'>Contact Us</a></p>
-          <a href='https://www.vdart.com/'>
-          <img className='c_logo2' src={CLogo} alt='CLogo'/>
-          </a>
-          <a href='https://www.facebook.com/VDartIncs/'>
-          <img className='fb_logo2' src={FbLogo} alt='FbLogo'/>
-          </a>
-          <a href='https://x.com/VDartInc'>
-          <img className='t_logo2' src={TLogo} alt='TLogo'/>
-          </a>
-          <a href='https://www.linkedin.com/company/vdart/'>
-          <img className='lin_logo2' src={LinLogo} alt='LinLogo'/>
-          </a>
-          <a href='https://www.instagram.com/vdartinc/'>
-          <img className='i_logo2' src={ILogo} alt='ILogo'/>
-          </a>
+        <p className='changepwd_text'><center>© VDart 2025. All Rights Reserved.</center></p>
         </div>
       </div>
     </div>
-    </div>
+    
   );
 };
 

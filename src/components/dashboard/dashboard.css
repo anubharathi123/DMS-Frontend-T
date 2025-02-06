@@ -35,7 +35,68 @@
   text-align: center;
 }
 
+.dashboard_text {
+  font-size: 13px;
+  position: relative;
+  font-weight: bold;
+  bottom: 15px;
+  color: #000b58;
+}
 
+.dashboard_num-input {
+  width: 10px;
+  height: 15px;
+  border: none;
+  padding: 4px;
+  font-size: 12px;
+}
+
+.dashboard_table{
+  table-layout: fixed;
+  width: 100%;
+  font-size: 12px !important;
+  border-collapse: collapse;
+  position: relative;
+  bottom: 20px;
+}
+
+.dashboard-table-th {
+  background-color: #f1f1f1;
+    padding: 5px;
+    text-align: center;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    color: #000b58;
+    font-size: 12px;
+}
+
+.dashboard-table-td {
+  width: 20%;
+    word-wrap: break-word;
+    text-align: center;
+    padding: 12px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dashboard-btngrp {
+  position: relative;
+  bottom: 45px;
+  left: 82%;
+}
+
+.dashboard-top, .dashboard-bottom {
+  border: none;
+  background: white;
+  cursor:pointer;
+  font-size: 12px;
+  padding: 4px;
+}
+
+.dashboard-top:hover, .dashboard-bottom:hover {
+  background: black;
+  color: #ddd;
+}
 
 
 
@@ -213,6 +274,7 @@ canvas {
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 45%;
+  height: 90%;
   transition: transform 0.3s ease;
 }
 
@@ -224,11 +286,25 @@ canvas {
   max-height: 200px;
 }
 
+.slicer {
+ position: relative;
+ bottom: 12px;
+}
+
 /* Dropdown Year Selector */
 .dashboard-year-selector {
-  margin-bottom: 10px;
-  padding: 8px;
+  padding: 3px;
   border-radius: 6px;
   border: 1px solid #ddd;
 }
 
+.dashboard-year-select {
+  padding: 1px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.dashboard-linedata {
+  position: relative;
+  bottom: 7px;
+}

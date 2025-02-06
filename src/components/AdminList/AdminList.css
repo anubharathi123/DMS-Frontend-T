@@ -37,8 +37,29 @@
   padding-bottom: .5rem !important;
   border-radius: 7px;
   font-size: 12px !important;
-
 }
+
+.adminlist_searchinfo {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.adminlist-searchinfo-popup {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  top: 40px;
+  left: 10px;
+  z-index: 100;
+  font-size: 12px;
+  color: #333;
+}
+
+
 
 .adminlist_filter {
   display: flex;
@@ -103,6 +124,7 @@
 .admin-list-calendarbtn {
   background: transparent;
   border: none;
+  cursor: pointer;
 }
 
 .adminlist_tbody {

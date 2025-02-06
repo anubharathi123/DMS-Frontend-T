@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
 import './AdminList.css';
 import Loader from "react-js-loader";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const AdminList = () => {
   const [data, setData] = useState([]);
@@ -17,6 +18,30 @@ const AdminList = () => {
   const [actionMessage, setActionMessage] = useState('');
   const calendarRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showSearchInfo, setShowSearchInfo] = useState(false);
+  
+    const searchInfoRef = useRef(null); // Reference for search info popup
+  
+    const handleSearchInfo = () => {
+      setShowSearchInfo(!showSearchInfo);
+    };
+  
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
+          setShowSearchInfo(false);
+        }
+      };
+  
+      if (showSearchInfo) {
+        document.addEventListener("mousedown", handleClickOutside);
+      }
+  
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [showSearchInfo]);
+  
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -116,6 +141,14 @@ const AdminList = () => {
             placeholder="Search"
             className="adminlist_search_input"
           />
+          <button className='adminlist_searchinfo' onClick={handleSearchInfo}>
+              <IoMdInformationCircleOutline/> 
+          </button>
+          {showSearchInfo && (
+            <div ref={searchInfoRef} className="adminlist-searchinfo-popup">
+              Date filter format should be like this: yyyy-mm-dd
+            </div>
+          )}
         </div>
         <div className="adminlist_filter">
           <label className="adminlist_filter_label">Filter by Role:</label>

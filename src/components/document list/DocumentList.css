@@ -24,11 +24,32 @@
   background: transparent;
     border: none;
 }
+
 /* Search and Filters */
 .documenttable_controls {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+}
+
+.document_searchinfo {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.search-info-popup {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  top: 40px;
+  left: 10px;
+  z-index: 100;
+  font-size: 12px;
+  color: #333;
 }
 
 .documenttable_search

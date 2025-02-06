@@ -3,11 +3,6 @@ import './forgot_pwd1.css';
 import { useNavigate } from 'react-router-dom'; 
 import logo from '../../assets/images/vdart-logo.png';
 import authService from '../../ApiServices/ApiServices'; // Import API service
-import LinLogo from '../../assets/images/linkedin_logo.png';
-import TLogo from '../../assets/images/t_logo.png';
-import ILogo from '../../assets/images/ins_logo.png';
-import CLogo from '../../assets/images/internet_logo.png';
-import FbLogo from '../../assets/images/fb_logo.webp';
 
 const Forgot_pwd1 = () => {
     const [username, setEmailOrUsername] = useState('');
@@ -66,12 +61,11 @@ const Forgot_pwd1 = () => {
           const data = { token, otp };
           await authService.verifyOTP(data);
           setSuccessMessage('OTP verified successfully! You can now reset your password.');
-          navigate('/changepassword');
+          navigate('/ChangePassword1');
         } catch (error) {
           setErrorMessage(error.message || 'Invalid OTP. Please try again.');
         }
       };
-    
     
   return (
     <div className='reset-outer-container1'>
