@@ -44,7 +44,7 @@
 }
 
 .dashboard_num-input {
-  width: 10px;
+  width: 25px;
   height: 15px;
   border: none;
   padding: 4px;
@@ -52,37 +52,82 @@
 }
 
 .dashboard_table{
-  table-layout: fixed;
   width: 100%;
   font-size: 12px !important;
   border-collapse: collapse;
   position: relative;
   bottom: 20px;
+  display: block;
+  max-height: 300px; /* Set a height to allow scrolling */
+  overflow-y: auto;
+}
+
+.dashboard_thead, .dashboard-tbody {
+  display: block; /* Allows independent scrolling */
+  width: 100%;
+}
+
+.dashboard_thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  top: 0;
+  z-index: 10;
+  background-color: #f9fafb;
+}
+
+.dashboard_tbody {
+  max-height: 250px; /* Adjust height as needed */
+  overflow-y: auto;
+}
+
+.dashboard-tbody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dashboard-tbody::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.dashboard-tbody::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.dashboard-table-row {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: table-row;
+  display: table;
+  width: 100%;
+  table-layout: fixed;  
 }
 
 .dashboard-table-th {
+  position: sticky;
+  top: 0;
+  background: #fff; /* Ensure header remains visible */
+  z-index: 10;
   background-color: #f1f1f1;
     padding: 5px;
-    text-align: center;
+    text-align: left;
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
     color: #000b58;
     font-size: 12px;
+    
 }
 
 .dashboard-table-td {
   width: 20%;
-    word-wrap: break-word;
-    text-align: center;
-    padding: 12px;
-    background: white;
-    border-bottom: 1px solid #e5e7eb;
+  word-wrap: break-word;
+  padding: 8px;
 }
 
 .dashboard-btngrp {
   position: relative;
   bottom: 45px;
-  left: 82%;
+  left: 80%;
 }
 
 .dashboard-top, .dashboard-bottom {

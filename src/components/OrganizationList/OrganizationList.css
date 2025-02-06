@@ -28,8 +28,6 @@
     border: none;
   background: none;
   cursor: pointer;
-  position: relative;
-  left:80%;
   font-size: 13px;
 }
 
@@ -53,7 +51,7 @@
     flex-direction: row-reverse;
     width: 30%;
     position:relative;
-    right: 30px;
+    
 }
 
 .organization-search-input {
