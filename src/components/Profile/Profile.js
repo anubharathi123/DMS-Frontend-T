@@ -12,7 +12,6 @@ function ProfileCard() {
   const [role, setRole] = useState("");
   const [mail, setMail] = useState("");
   const [mobile, setMobile] = useState("");
-  const [image, setImage] = useState(null);
   const [imageToCrop, setImageToCrop] = useState(null);
   const cropperRef = useRef();
   const fileInputRef = useRef();
@@ -20,17 +19,17 @@ function ProfileCard() {
 
   useEffect(() => {
     const updateProfileImage = () => {
-      setProfileImage(avatar);
+      setProfileImage(localStorage.getItem("profileImage") || avatar);
     };
 
     const fetchProfileDetails = async () => {
       try {
         const response = await authService.details();
         if (response?.details) {
-          setName(response.details[1]?.username || "N/A");
-          setRole(response.details[5]?.name || "Unknown");
-          setMail(response.details[1]?.email || "No email provided");
-          setMobile(response.details[3]?.mobile || "No mobile provided");
+          setName(response.details[1]?.username || response.details[5]?.first_name || "N/A");
+          setRole(response.details[5]?.name || response.details[3]?.name || "Unknown");
+          setMail(response.details[1]?.email || response.details[5]?.email || "No email provided");
+          setMobile(response.details[3]?.mobile || response.details[1]?.mobile || "No mobile provided");
         }
       } catch (error) {
         console.error("Error fetching profile details:", error);
@@ -47,7 +46,7 @@ function ProfileCard() {
             const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
           
             setProfileImage(fullImageUrl);
-            // localStorage.setItem("profileImage", fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
       }
       catch(error){
         console.error("Error fetching profile details:", error);

@@ -33,9 +33,8 @@ const Header = () => {
   const name = localStorage.getItem("name") || "User";
 
   useEffect(() => {
-    localStorage.removeItem("profileImage");
     const updateProfileImage = async () =>  {
-      setProfileImage(avatar);
+      setProfileImage(localStorage.getItem("profileImage") || avatar);
       };
       const fetchProfileDetails = async () => {
         try {
@@ -49,7 +48,7 @@ const Header = () => {
               const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
             
               setProfileImage(fullImageUrl);
-              // localStorage.setItem("profileImage", fullImageUrl);
+              localStorage.setItem("profileImage", fullImageUrl);
             } catch (error) {
               console.error("Error fetching profile details:", error);
             }
