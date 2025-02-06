@@ -219,7 +219,10 @@ const OrganizationList = () => {
                            
                             <tr key={index} className="organization-table-row">
                                 <td className="organization-table-td">{org.username}</td>
-                                <td className="organization-table-td">{org.org_name}</td>
+                                <td className="organization-table-td">
+  {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
+</td>
+
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}
