@@ -214,7 +214,10 @@ const DocumentTable = () => {
           {paginatedData.map((item, index) => (
             <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
-              <td className="documenttable_td px-6 py-4">{item.fileName}</td>
+              <td className="documenttable_td px-6 py-4">
+  {item.fileName.length > 20 ? item.fileName.substring(0, 20) + "..." : item.fileName}
+</td>
+
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documenttable_td px-6 py-4">{item.documentType.charAt(0).toUpperCase() + item.documentType.slice(1).toLowerCase()}</td>
               <td className="documenttable_td px-6 py-4">

@@ -17,7 +17,7 @@ const AsideBar = () => {
         // const fetchedName = details_data.details[5].name;
         // const fetchedRole = details_data.details[5].name;
         // localStorage.setItem('name', details_data.details[1].first_name);
-        localStorage.setItem('email', details_data.details[1].email);
+        localStorage.setItem('email', (details_data.details[1].email || details_data.details[5].email));
         // console.log('fetchedName:', fetchedName);
         // console.log(fetchedRole)
 
@@ -27,7 +27,7 @@ const AsideBar = () => {
         // localStorage.setItem('Company_name', details_data.details[7].company_name);
         if (details_data.type === "User") {
           console.log('user')
-          const name = details_data.details[1].first_name
+          const name = details_data.details[1].first_name 
           console.log(name)
           localStorage.setItem('name', name);
           const fetchedRole = details_data.details[5].name
@@ -38,7 +38,7 @@ const AsideBar = () => {
         // eslint-disable-next-line no-cond-assign
         if (details_data.type === "Organization") {
           console.log('Org')
-          const name = details_data.details[1].company_name
+          const name = details_data.details[5].first_name
           console.log(name)
           localStorage.setItem('name', name);
           const fetchedRole = details_data.details[3].name

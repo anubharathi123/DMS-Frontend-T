@@ -30,6 +30,8 @@ const Header = () => {
   const notificationButtonRef = useRef();
   const navigate = useNavigate();
   const name = localStorage.getItem("name") || "User";
+  const email = localStorage.getItem("email") || "email";
+
 
   useEffect(() => {
     // localStorage.removeItem("profileImage");
@@ -272,7 +274,7 @@ useEffect(() => {
             <b>Name:</b> {name}
           </p>
           <p>
-            <b>Email:</b> {localStorage.getItem("email") || "Not Available"}
+            <b>Email:</b> {email}
           </p>
           <button
             type="button"

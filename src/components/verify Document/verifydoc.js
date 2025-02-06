@@ -281,7 +281,7 @@ const DocumentApproval = () => {
               )}
             </th>
             <th className="documentapproval_th px-6 py-3">Doc Type</th>
-            <th className="documentapproval_th px-6 py-3">Actions</th>
+            <th className="documentapproval_th px-6 py-3" style={{textAlignLast:"center"}}>Actions</th>
           </tr>
         </thead>
 
@@ -290,15 +290,16 @@ const DocumentApproval = () => {
             <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
               <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documentapproval_td documentapproval_td_name px-6 py-4">
-                <button
-                  className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
-                  onClick={() => handleFileOpen(item)}
-                  aria-label={`View ${item.fileName}`}
-                >
-                  {item.fileName}
-                </button>
-                {item.viewed && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
-              </td>
+  <button
+    className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
+    onClick={() => handleFileOpen(item)}
+    aria-label={`View ${item.fileName}`}
+  >
+    {item.fileName.length > 20 ? item.fileName.substring(0, 20) + "..." : item.fileName}
+  </button>
+  {item.viewed && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
+</td>
+
               <td className="documentapproval_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documentapproval_td px-6 py-4">{item.documentType}</td>
               <td className="documentapproval_td documentapproval_approvalbtn px-6 py-4">

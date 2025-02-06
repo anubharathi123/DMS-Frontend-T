@@ -439,7 +439,7 @@
   background-color: #f1f1f1; 
   padding: 8px;
   text-align: left;
-  /* text-align-last: left; */
+  text-align-last: left;
 }
 
 .documentapproval_table td,
