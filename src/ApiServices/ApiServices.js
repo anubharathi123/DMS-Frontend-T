@@ -107,7 +107,7 @@ const authService = {
   logout: async () => {
     try {
       await apiClient.post('auth/logout/');
-      localStorage.removeItem('token');
+      // localStorage.removeItem('token');
     } catch (error) {
       console.warn('Error logging out:', error.message);
     }
