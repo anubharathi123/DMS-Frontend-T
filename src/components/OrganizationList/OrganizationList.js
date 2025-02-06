@@ -1,3 +1,4 @@
+/* eslint-disable no-const-assign */
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -20,6 +21,7 @@ const OrganizationList = () => {
     const [statusFilter, setStatusFilter] = useState('');
     const [actionMessage, setActionMessage] = useState('');
     const [filter, setFilter] = useState('');
+    // const [organization, setOrganization] = useState([])
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
       const [isLoading, setIsLoading] = useState(false);
@@ -41,14 +43,16 @@ const OrganizationList = () => {
         const fetchOrganization = async () => {
             try {
                 setIsLoading(true)
-                const response = await apiServices.getOrganization();
-                const organization = response.map(org => ({
-                    username:org.username,
-                    org_name:org.org_name,
-                    created_date:org.createdDate,
-                    status:org.status,
+                const response = await apiServices.getOrganizations();
+                console.log(response)
+                
+                 const organization = response.organization.map(org => ({
+                    username:org.auth_user,
+                    org_name:org.company_name,
+                    created_date:org.created_at,
+                    status:org.is_frozen,
                 })) 
-
+                console.log(organization)
                 setData(organization);
 
                 if(organization.length === 0){
@@ -215,9 +219,11 @@ const OrganizationList = () => {
                            
                             <tr key={index} className="organization-table-row">
                                 <td className="organization-table-td">{org.username}</td>
-                                <td className="organization-table-td">{org.name}</td>
-                                <td className="organization-table-td">{org.createdDate}</td>
-                                <td className="organization-table-td">{org.status}</td>
+                                <td className="organization-table-td">{org.org_name}</td>
+                                <td className="organization-table-td">{org.created_date}</td>
+                                <td className="organization-table-td">
+  {org.status ? "Inactive" : "Active"}
+</td>
                                 <td className="organization-table-td">
                                     <button className='organization-edit' onClick={() => handleEdit(org.username)}>
                                     <FaEdit />
