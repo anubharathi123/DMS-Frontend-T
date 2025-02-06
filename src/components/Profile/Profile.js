@@ -71,6 +71,7 @@ function ProfileCard(props) {
       localStorage.setItem("profileImage", croppedDataUrl);
       setProfileImage(croppedDataUrl);
 
+     
       // 🔥 Notify all components that the profile image has changed
       window.dispatchEvent(new Event("profileImageUpdated"));
 
