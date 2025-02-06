@@ -6,17 +6,16 @@ import "cropperjs/dist/cropper.css";
 import ProfileEdit from "../../assets/images/edit_icon.png";
 import authService from "../../ApiServices/ApiServices";
 
-function ProfileCard(props) {
+function ProfileCard() {
   const [cropperVisible, setCropperVisible] = useState(false);
-  const [name,setName]=useState("");
-  const [role,setRole]=useState("");
-  const [mail,setMail]=useState("");
-  const [mobile,setMobile]=useState("");
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [mail, setMail] = useState("");
+  const [mobile, setMobile] = useState("");
   const [imageToCrop, setImageToCrop] = useState(null);
   const cropperRef = useRef();
   const fileInputRef = useRef();
   const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage") || avatar);
-
 
   useEffect(() => {
     const updateProfileImage = () => {
@@ -26,6 +25,16 @@ function ProfileCard(props) {
     const fetchProfileDetails = async () => {
       try {
         const response = await authService.details();
+        const image = await authService.getprofile();
+        console.log("Profile image response:", image.profile_image.image);
+        const url = image.profile_image.image;
+        console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
         if (response?.details) {
           setName(response.details[1]?.username || "N/A");
           setRole(response.details[5]?.name || "Unknown");
@@ -43,7 +52,6 @@ function ProfileCard(props) {
     return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
   }, []);
 
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -57,88 +65,78 @@ function ProfileCard(props) {
     }
   };
 
-  const handleSaveCrop = () => {
+  const handleSaveCrop = async () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
       const croppedCanvas = cropper.getCroppedCanvas();
-      const croppedDataUrl = croppedCanvas.toDataURL();
+      croppedCanvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append("image", blob, "profile.jpg");
 
-      localStorage.setItem("profileImage", croppedDataUrl);
-      setProfileImage(croppedDataUrl);
-
-     
-      // 🔥 Notify all components that the profile image has changed
-      window.dispatchEvent(new Event("profileImageUpdated"));
+        try {
+          const response = await authService.profile(formData);
+          // localStorage.setItem("profileImage", croppedCanvas);
+          // localStorage.setItem("profileImage", croppedDataUrl);
+          console.log("Profile update response:", response);
+          if (response) {
+            const url = response.profile_image.image;
+            console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${response.profile_image.image}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
+            window.dispatchEvent(new Event("profileImageUpdated"));
+          
+            alert("Profile image has been successfully changed.");
+          } else {
+            console.error("Failed to update profile image:", response.profile_image.image);
+            alert("Failed to update profile image.");
+          }
+        } catch (error) {
+          console.error("Error uploading profile image:", error);
+          alert("Error uploading image.");
+        }
+      }, "image/jpeg");
 
       setCropperVisible(false);
-      alert("Profile image has been successfully changed.");
     }
   };
 
   const formattedRole = role ? role.charAt(0).toUpperCase() + role.slice(1).toLowerCase() : "Unknown";
-  const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
-  
+  const isAdminOrDocumentRole = ["ADMIN", "UPLOADER", "APPROVER", "REVIEWER", "VIEWER"].includes(role);
+  const isProductOwner = role === "PRODUCT_OWNER";
 
   return (
     <>
-      { role === "PRODUCT_OWNER" && (
-      <><h1 className="profile-title">Profile</h1><div className="card-container">
-          <header className="profile-header">
-            <img className="profile_img" src={profileImage} alt="Profile" />
-            <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
-              <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
-              <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
-            </button>
-          </header>
-          <h1 className="bold-text">{name}</h1>
-          <h2 className="normal-text">{formattedRole}</h2>
-          <h2 className="normal-text">{mail}</h2>
-          <h2 className="normal-text">{mobile}</h2>
+      <h1 className="profile-title">Profile</h1>
+      <div className="card-container">
+        <header className="profile-header">
+          <img className="profile_img" src={profileImage} alt="Profile" />
+          <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
+            <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
+            <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
+          </button>
+        </header>
+        <h1 className="bold-text">{name}</h1>
+        <h2 className="normal-text">Role: {formattedRole}</h2>
+        <h2 className="normal-text">Mail ID: {mail}</h2>
+        <h2 className="normal-text">Mobile: {mobile}</h2>
 
-          {cropperVisible && (
-            <div className="cropper-modal">
-              <div className="cropper-modal-content">
-                <h2 className="cropper-header">Crop Your Photo</h2>
-                <Cropper src={imageToCrop} ref={cropperRef} style={{ height: "300px", width: "100%" }} aspectRatio={1} guides={true} />
-                <div className="cropper-actions">
-                  <button onClick={handleSaveCrop} className="btn-save-crop">Save Changes</button>
-                  <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">Cancel</button>
-                </div>
+        {cropperVisible && (
+          <div className="cropper-modal">
+            <div className="cropper-modal-content">
+              <h2 className="cropper-header">Crop Your Photo</h2>
+              <Cropper src={imageToCrop} ref={cropperRef} style={{ height: "300px", width: "100%" }} aspectRatio={1} guides={true} />
+              <div className="cropper-actions">
+                <button onClick={handleSaveCrop} className="btn-save-crop">Save Changes</button>
+                <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">Cancel</button>
               </div>
             </div>
-          )}
-        </div></>
-    )}
-
-{(isAdminOrDocumentRole) && (
-      <><h1 className="profile-title">Profile</h1><div className="card-container">
-          <header className="profile-header">
-            <img className="profile_img" src={profileImage} alt="Profile" />
-            <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
-              <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
-              <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
-            </button>
-          </header>
-          <h1 className="bold-text">{name}</h1>
-          <h2 className="normal-text">Role:{formattedRole}</h2>
-        
-          <h2 className="normal-text">Mail ID: {mail}</h2>
-          <h2 className="normal-text">Mobile: {mobile}</h2>
-
-          {cropperVisible && (
-            <div className="cropper-modal">
-              <div className="cropper-modal-content">
-                <h2 className="cropper-header">Crop Your Photo</h2>
-                <Cropper src={imageToCrop} ref={cropperRef} style={{ height: "300px", width: "100%" }} aspectRatio={1} guides={true} />
-                <div className="cropper-actions">
-                  <button onClick={handleSaveCrop} className="btn-save-crop">Save Changes</button>
-                  <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">Cancel</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div></>
-    )}
+          </div>
+        )}
+      </div>
     </>
   );
 }

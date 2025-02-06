@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiServices from "../../ApiServices/ApiServices"; // Adjust the path as needed
+import apiServices from "../../ApiServices/ApiServices"; // Adjust the path if necessary
 import Loader from "react-js-loader";
 import "./AdminCreation.css";
 
 const AdminCreation = () => {
   const [formData, setFormData] = useState({
     username: "",
-    companyname: localStorage.getItem("company_name") || "VDart", 
+    companyname: localStorage.getItem("company_name") || "VDart",
     name: "",
     mobile: "",
     email: "",
     created_at: "",
+    role:"Product Admin"
   });
+
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -29,11 +31,14 @@ const AdminCreation = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await apiServices.registerAdmin(formData);
+      const response = await apiServices.register(formData);
+      console.log("API Response:", response);
       setMessage("Admin registered successfully!");
-      navigate("/Dashboard");
+      setTimeout(() => {
+        navigate("/AdminList");  
+      }, 2000);
     } catch (error) {
-      const errorMessage = error.response?.data?.error || error.error;
+      const errorMessage = error.response?.data?.error || error.message;
       console.error("Error registering admin:", errorMessage);
       setMessage(`Error: ${errorMessage}`);
       setTimeout(() => {
@@ -87,9 +92,7 @@ const AdminCreation = () => {
             type="text"
             name="companyname"
             value={formData.companyname}
-            onChange={handleChange}
             className="admincreation-input"
-            required
             readOnly
           />
         </div>

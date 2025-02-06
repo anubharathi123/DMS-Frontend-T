@@ -9,6 +9,9 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import avatar from "../../assets/images/candidate-profile.png";
 import { FaBullseye } from "react-icons/fa6";
+import ApiService from "../../ApiServices/ApiServices";
+
+
 
 const Header = () => {
   const [query, setQuery] = useState("");
@@ -30,10 +33,27 @@ const Header = () => {
   const name = localStorage.getItem("name") || "User";
 
   useEffect(() => {
-    const updateProfileImage = () => {
+    const updateProfileImage = async () =>  {
       setProfileImage(localStorage.getItem("profileImage") || avatar);
-    };
-
+      };
+      const fetchProfileDetails = async () => {
+        try {
+          // const response = await authService.details();
+          const image = await ApiService.getprofile();
+          console.log("Profile image response:", image.profile_image.image);
+          const url = image.profile_image.image;
+          console.log("Profile image URL:", url);
+              const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+              // Ensure no double slashes in the URL
+              const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+            
+              setProfileImage(fullImageUrl);
+              localStorage.setItem("profileImage", fullImageUrl);
+            } catch (error) {
+              console.error("Error fetching profile details:", error);
+            }
+          };
+    fetchProfileDetails();
     window.addEventListener("profileImageUpdated", updateProfileImage);
     return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
   }, []);
@@ -85,11 +105,17 @@ const Header = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("access_status");
-    localStorage.removeItem("token");
-    navigate("/");
-  };
+  const handleLogout = async () => {
+    try {
+        await ApiService.logout(); // Call the logout API
+        localStorage.removeItem("access_status");
+        localStorage.removeItem("token");
+        navigate("/");
+    } catch (error) {
+        console.warn("Error logging out:", error.message);
+    }
+};
+
 
   const handlePhotoUpload = () => fileInputRef.current?.click();
 
