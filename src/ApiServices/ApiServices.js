@@ -79,6 +79,12 @@ const authService = {
   profile: async (image) => {
     return handleResponse(apiClient.post('profileimage/', image));
   },
+  media: async (url) => {
+    return handleResponse(apiClient.post(url));
+  },
+  getprofile: async () => {
+    return handleResponse(apiClient.get('profileimage/'));
+  },
   resendOTP: async () => {
     return handleResponse(apiClient.put('auth/otp/'));
   },
