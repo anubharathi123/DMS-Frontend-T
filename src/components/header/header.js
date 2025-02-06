@@ -39,7 +39,7 @@ const Header = () => {
       const fetchProfileDetails = async () => {
         try {
           // const response = await authService.details();
-          const image = await authService.getprofile();
+          const image = await ApiService.getprofile();
           console.log("Profile image response:", image.profile_image.image);
           const url = image.profile_image.image;
           console.log("Profile image URL:", url);
