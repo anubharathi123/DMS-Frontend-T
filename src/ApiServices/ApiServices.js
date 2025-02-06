@@ -76,6 +76,9 @@ const authService = {
     }
     return handleResponse(apiClient.post('auth/otp/', data));
   },
+  profile: async (image) => {
+    return handleResponse(apiClient.post('profileimage/', image));
+  },
   resendOTP: async () => {
     return handleResponse(apiClient.put('auth/otp/'));
   },
