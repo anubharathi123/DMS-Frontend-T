@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './dashboard.css';
 import { IoPeople } from "react-icons/io5";
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { IoMdCloudUpload } from "react-icons/io";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdPending, MdCancel, MdMargin } from "react-icons/md";
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import apiServices from '../../ApiServices/ApiServices';
+import { Bar, Pie, Line } from 'react-chartjs-2';
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import {
@@ -19,6 +20,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { TbBackground } from 'react-icons/tb';
 
 ChartJS.register(
   BarElement,
@@ -40,29 +42,49 @@ const Dashboard = ({ title }) => (
 const DashboardApp = () => {
   const role = localStorage.getItem('role');
   const [selectedYear, setSelectedYear] = useState('2023');
+  const [data, setData] = useState([]);
   const [companyData, setCompanyData] = useState([
     { name: 'HCL', username: 'Arun', fileSize: 1000 },
     { name: 'Vdart', username: 'Harish', fileSize: 789 },
     { name: 'Accenture', username: 'Vignesh', fileSize: 665 },
     { name: 'Infosys', username: 'Surya', fileSize: 569 },
     { name: 'Wipro', username: 'Chandru', fileSize: 223 },
-    // { name: 'Cognizant', username: 'Prakash', fileSize: 446 },
-    // { name: 'Infotech', username: 'Karthik', fileSize: 998 },
-    // { name: 'SAP', username: 'Joseph', fileSize: 554 },
+    { name: 'Cognizant', username: 'Prakash', fileSize: 446 },
+    { name: 'Infotech', username: 'Karthik', fileSize: 998 },
+    { name: 'SAP', username: 'Suresh', fileSize: 554 },
+    { name: 'TCS', username: 'Aravind', fileSize: 232 },
+    { name: 'IBM', username: 'Rangarajan', fileSize: 109 },
+    { name: 'Fiorano', username: 'Ram', fileSize: 654 },
+    { name: 'Zoho', username: 'Tamilselvan', fileSize: 451 },
+    { name: 'Capgemini', username: 'Sundar', fileSize: 342 },
   ]);
 
   const [rowLimit, setRowLimit] = useState(companyData.length);
+  const username = localStorage.getItem('name') || "User";
+
+  useEffect(() => {
+    const fetchName = async () => {
+      try {
+        const response = await apiServices.getName();
+        if (response) {
+          console.log("Fetched usernames:", response);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchName();
+  }, []);
+ 
+  
   
 
-const handleRowLimitChange = (e) => {
-  const value = parseInt(e.target.value, 10);
-  if (!isNaN(value) && value < 5) {
-    setRowLimit(value);
-  } else {
-    setRowLimit(companyData.length);
-  }
-};
-
+  const handleRowLimitChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value) && value > 0) {
+      setRowLimit(value);
+    }
+  };
   const sortAscending = () => {
     const sortedData = [...companyData].sort((a, b) => a.fileSize - b.fileSize);
     setCompanyData(sortedData);
@@ -94,7 +116,7 @@ const handleRowLimitChange = (e) => {
         data: [50000, 10000, 5000],
         backgroundColor: ['#336CC9', '#f0ec05', '#ff0101'],
         borderWidth: 3,
-        cutout: '70%',
+        cutout: '',
       },
     ],
   };
@@ -105,9 +127,9 @@ const handleRowLimitChange = (e) => {
     datasets: [
       {
         label: `Growth Rate (${selectedYear})`,
-        data: selectedYear === '2023' ? 
-          [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60] : 
-          [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65],
+        data: selectedYear === '2023' ?  
+          [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60] :
+          [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65] ,
         borderColor: '#99B5E4',
         borderWidth: 1,
         tension: 0.4,
@@ -123,10 +145,7 @@ const handleRowLimitChange = (e) => {
       legend: { display: false },
       tooltip: { backgroundColor: '#333', titleColor: '#fff' },
     },
-    scales: {
-      x: { grid: { display: false } },
-      y: { grid: { color: 'rgba(0, 0, 0, 0.1)' } },
-    },
+    
   };
 
   // Check if the role should have the cards displayed
@@ -136,11 +155,12 @@ const handleRowLimitChange = (e) => {
     <div className='dashboard-body'>
       <div className='dashboard-container' >
         <Dashboard title={roleTitles[role]} />
+        <h2 className='dashboard-h2'>Welcome Back, {username} 👋</h2>
 
         {role === 'PRODUCT_OWNER' && (
           <>
             <div className="cards-container">
-              <Card title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} role={role} />
+              <Card title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} role={role}  />
               <Card title="Active Companies" value="22,345" icon={<HiBuildingOffice2 style={{ color: 'green' }} />} role={role} />
               <Card title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} role={role} />
               <Card title="Client Admin" value="23,456" icon={<IoPeople />} role={role} />
@@ -154,6 +174,7 @@ const handleRowLimitChange = (e) => {
                   <input type='number'  className='dashboard_num-input' onChange={handleRowLimitChange}/>
                 </div>
                 
+                <div className='dashboard-table-container' style={{ maxHeight: '250px', overflowY: rowLimit > 5 ? 'scroll' : 'auto', position: "relative", bottom: "25px"}}>
                 <table className='dashboard_table'>
                 <thead className='dashboard_thead'>
                     <tr>
@@ -164,7 +185,7 @@ const handleRowLimitChange = (e) => {
                     </thead>
                     <tbody className='dashboard-tbody'>
                     {companyData.slice(0, rowLimit).map((company, index) => (
-                    <tr key={index} className='dashboard-table-row'>
+                    <tr key={index} className='dashboard-table-row hover:bg-gray-50'>
                       <td className='dashboard-table-td'>{company.name}</td>
                       <td className='dashboard-table-td'>{company.username}</td>
                       <td className='dashboard-table-td'>{company.fileSize} Kb</td>
@@ -172,10 +193,16 @@ const handleRowLimitChange = (e) => {
               ))}
             </tbody>
                 </table>
+                </div>
               </div>
               <div className="chart">
               <p className='dashboard_text'><center>Uploaded Documents</center></p>
-                <Doughnut data={donutData} options={chartOptions} />
+                <Pie data={donutData} options={chartOptions} />
+                <div className='piechart-text'>
+                  <p className='piechart-data'><span className='color1'></span>  Total Uploads</p>
+                  <p className='piechart-data'><span className='color2'></span>  Pending Documents</p>
+                  <p className='piechart-data'><span className='color3'></span>  Rejected Documents</p>
+                </div>
               </div>
               <div className="chart">
                 <p className='dashboard_text'><center>Company Trends</center></p>
@@ -204,7 +231,8 @@ const handleRowLimitChange = (e) => {
             </div>
             {role === 'ADMIN' && (
               <div className="chart">
-                <Doughnut data={donutData} options={chartOptions} />
+                <Pie data={donutData} options={chartOptions} />
+
               </div>
             )}
           </>
@@ -219,6 +247,7 @@ const Card = ({ title, value, icon, role }) => {
   const cardStyle = role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER'
     ? { backgroundColor: '#CCDAF1', marginTop: "10%" }
     : {};
+    
 
   
 

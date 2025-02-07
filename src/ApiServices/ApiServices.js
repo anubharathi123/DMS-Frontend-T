@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AdminList from '../components/AdminList/AdminList';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
 
@@ -119,6 +120,19 @@ const authService = {
     }
   },
 
+  getName: async (data) => {
+    return handleResponse(apiClient.post('Dashboard/', data))
+  },
+  createAdmin: async (data) => {
+    return handleResponse(apiClient.post('AdminCreation/',data))
+  },
+
+  getAdmins: async (data) => {
+    return handleResponse(apiClient.post('AdminList/', data))
+  },
+  AdminList: async (data) => {
+    return handleResponse(apiClient.post('AdminList/',data))
+  },
   // Organization APIs
   createOrganization: async (data) => {
     // if (!data.name || !data.owner_email) {

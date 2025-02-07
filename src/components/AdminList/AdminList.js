@@ -19,6 +19,7 @@ const AdminList = () => {
   const calendarRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
+  const [refresh, setRefresh] = useState(false); // Track when to refresh data
   
     const searchInfoRef = useRef(null); // Reference for search info popup
   
@@ -43,36 +44,34 @@ const AdminList = () => {
     }, [showSearchInfo]);
   
 
-  useEffect(() => {
-    const fetchAdmins = async () => {
-      try {
-        setIsLoading(true);
-
-        const response = await apiServices.getAdmins(); // Adjust based on API
-        const admins = response.map(admin => ({
-          adminId: admin.id,
-          name: admin.name,
-          email: admin.email,
-          createdAt: admin.created_at,
-          role: admin.role,
-        }));
-
-        setData(admins);
-        setFilteredData(admins);
-
-        if (admins.length === 0) {
-          setActionMessage('No admins available.');
+    useEffect(() => {
+      const fetchAdmins = async () => {
+        try {
+          setIsLoading(true);
+          const response = await apiServices.getAdmins(); // Adjust based on API
+          const admins = response.map(admin => ({
+            adminId: admin.id,
+            name: admin.auth_user.name,
+            email: admin.email,
+            createdAt: admin.created_at,
+            role: admin.role,
+          }));
+          console.log(admins)
+          setData(admins);
+          setFilteredData(admins);
+    
+          if (admins.length === 0) {
+            setActionMessage('No admins available.');
+          }
+        } catch (error) {
+          console.error('Error fetching admins:', error);
+          setActionMessage('Error fetching admins. Please try again later.');
+        } finally {
+          setIsLoading(false); // End loading
         }
-      } catch (error) {
-        // console.error('Error fetching admins:', error);
-        // setActionMessage('Error fetching admins. Please try again later.');
-      } finally {
-        setIsLoading(false); // End loading
-      }
-    };
-
-    fetchAdmins();
-  }, []);
+      };
+      fetchAdmins();
+    }, [refresh]); // <-- Refresh the list when `refresh` changes
 
   const filteredData1 = filteredData.filter((item) => {
     if (filter === '') {
