@@ -22,6 +22,8 @@ import AdminList from "./components/AdminList/AdminList";
 import { ProfileImageProvider } from "./context/ProfileImageContext"; 
 // import Header from "./components/Header";
 import AdminCreation from "./components/AdminCreation/AdminCreation";
+import { StyledEngineProvider } from '@mui/material/styles';
+import Login2 from "./login2/SignInSide";
 
 
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -29,6 +31,7 @@ import AdminCreation from "./components/AdminCreation/AdminCreation";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./App.css";
+import styles from './index.css';
 
 // Function to check authentication status
 const isAuthenticated = () => {
@@ -80,12 +83,15 @@ function AppContent() {
     <div className="app">
       {/* Static AsideBar with Logout functionality */}
       {shouldDisplayAsideBar && <AsideBar_Header onLogout={handleLogout} />}
-
+      <StyledEngineProvider injectFirst>
       {/* Main Content */}
       <Routes>
         {/* Route for Login */}
         {/* <Route path="/login" element={<Login />} /> */}
-        <Route path="/login" element={<Login1 />} />
+        
+        <Route path="/login" element={<Login2 />} />
+            
+        {/* <Route path="/login" element={<Login2 />} /> */}
         {/* <Route path="/" element={<Login1 />} /> */}
 
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
@@ -235,9 +241,11 @@ function AppContent() {
         />
 
         {/* Fallback route for unmatched paths */}
-        <Route path="*" element={<Login1 />} />
+        <Route path="*" element={<Login2 />} />
       </Routes>
+      </StyledEngineProvider>
     </div>
+
   );
 }
 
