@@ -14,6 +14,13 @@ body {
   /* background-color: #0b3041; */
 }
 
+@media screen and (min-width: 1500px) {
+  .app{
+    height: 100vh;
+  }
+  
+}
+
 .css-1fysxw9-MuiStack-root{
   margin-top: 0;
 }
