@@ -45,15 +45,20 @@ const OrganizationList = () => {
                 setIsLoading(true)
                 const response = await apiServices.getOrganizations();
                 console.log(response,response.organization)
+                console.log("API Response:", response);
                 
                  const organization = response.organization.map(org => ({
                     username:org.auth_user.username,
                     org_name:org.company_name,
+                    msa_doc: org.contract_doc,
                     created_date:org.created_at,
                     status:org.is_frozen,
                 })) 
                 console.log(organization)
                 setData(organization);
+
+                console.log("API Response:", response);
+console.log("First Organization's contract_doc:", response.organization[0].contract_doc);
 
                 if(organization.length === 0){
                     setActionMessage("No Organizations are found in the list..")
@@ -61,6 +66,7 @@ const OrganizationList = () => {
                 
 
             }catch(error) {
+                console.error(error);
 
             }finally {
                 setIsLoading(false)
@@ -191,6 +197,7 @@ const OrganizationList = () => {
                     <tr>
                         <th className="organization-table-th">Username</th>
                         <th className="organization-table-th">Organization Name</th>
+                        <th className="organization-table-th">MSA Doc</th>
                         <th className="organization-table-th">
                             Created Date
                             <button
@@ -222,7 +229,14 @@ const OrganizationList = () => {
                                 <td className="organization-table-td">
   {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
 </td>
-
+                                <td className="organization-table-td">
+                                    {org.msa_doc ? (
+                                        <a href={org.msa_doc} target="_blank" rel="noopener noreferrer">
+                                            {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+                                        </a>
+                                    ) : (
+                                        "Null"
+                                    )} </td>
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}

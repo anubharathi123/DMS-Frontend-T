@@ -226,7 +226,7 @@ const CompanyCreation = () => {
           {/* Contract Document */}
           <div className="company-creation-form-group">
             <label className="company-creation-label">
-              Contract Document <span className="company-creation-mandatory">*</span>
+              Master Services Agreement(MSA) <span className="company-creation-mandatory">*</span>
             </label>
             <div className={`company-creation-upload-area ${dragging ? 'dragging' : ''}`}
                   onDragOver={handleDragOver}
