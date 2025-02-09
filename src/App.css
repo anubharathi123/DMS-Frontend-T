@@ -12,8 +12,11 @@
 }
 body {
   /* background-color: #0b3041; */
+  background-color: var(--template-palette-background-default);
 }
-
+.css-7ly1ne-MuiStack-root{
+  height:95vh !important;
+}
 /* @media screen and (min-width: 1500px) {
   .app{
     height: 100vh;
@@ -28,6 +31,10 @@ body {
 [data-mui-color-scheme="dark"] .css-bxe83t-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill, 
 [data-mui-color-scheme="dark"] .css-cgi6xx-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill{
   -webkit-box-shadow: 0 0 0 30px hsl(220, 35%, 3%) inset !important;
+}
+[data-mui-color-scheme="light"] .css-bxe83t-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill, 
+[data-mui-color-scheme="light"] .css-cgi6xx-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill{
+  -webkit-box-shadow: 0 0 0 30px hsl(0, 0%, 100%) inset !important;
 }
 
 .Inner_content_indent

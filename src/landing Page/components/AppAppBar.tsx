@@ -3,6 +3,7 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import { useTheme } from '@mui/system';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
@@ -13,7 +14,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorModeIconDropdown from '.././theme/ColorModeIconDropdown';
 // import Sitemark from './SitemarkIcon';
-import Logo from '../../assets/images/vdart-logo.png';
+import DartLogo from '../../assets/images/VDart-dark-logo.png';
+import WhiteLogo from '../../assets/images/company_logo.png';
+
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -33,7 +36,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
-
+const theme = useTheme();
+const logos = theme.palette.mode === 'light' ? DartLogo : WhiteLogo;
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -53,7 +57,7 @@ export default function AppAppBar() {
         <StyledToolbar variant="dense" disableGutters>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             {/* <Sitemark /> */}
-            <img src={Logo} alt="Vdart Logo" style={{ height: '40px', marginRight:"20px" }} />
+            <img src={logos} alt="Vdart Logo" style={{ height: '40px', marginRight:"20px" }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button variant="text" color="info" size="small">
                 Features
@@ -88,7 +92,7 @@ export default function AppAppBar() {
             <Button color="primary" variant="contained" size="small">
               Sign up
             </Button>
-            {/* <ColorModeIconDropdown /> */}
+            <ColorModeIconDropdown />
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
             <ColorModeIconDropdown size="medium" />

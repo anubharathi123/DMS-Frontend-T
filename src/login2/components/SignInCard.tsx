@@ -78,6 +78,7 @@ export default function SignInCard() {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    setMessages([]); 
     event.preventDefault(); // Prevent default form submission
     validateInputs();
   };
@@ -136,7 +137,8 @@ export default function SignInCard() {
 
     } catch (error: any) {
       console.error('Login error:', error.message || error);
-      setMessages([error.message || 'Login failed']);
+      console.log('Login failed:', error.detail);
+      setMessages([error.detail || 'Login failed']);
       setIsOtpVisible(false); // Reset OTP visibility on failure
     }
   };
@@ -154,8 +156,9 @@ export default function SignInCard() {
       console.log('OTP verification successful:', verifyResponse);
 
       // Handle successful verification
-      const details_data = await authService.details();
-      console.log(details_data);
+      // const details_data = await authService.details();
+      // console.log(details_data);
+      setIsLoginSuccessful(true);
       localStorage.setItem('access_status', 'true');
       navigate('/Dashboard');
 
@@ -218,6 +221,7 @@ export default function SignInCard() {
             fullWidth
             variant="outlined"
             color={emailError ? 'error' : 'primary'}
+            disabled={isOtpVisible}
           />
         </FormControl>
         <FormControl>
@@ -245,6 +249,7 @@ export default function SignInCard() {
             autoFocus
             fullWidth
             variant="outlined"
+            disabled={isOtpVisible}
             color={passwordError ? 'error' : 'primary'}
             InputProps={{
               endAdornment: (
@@ -252,6 +257,7 @@ export default function SignInCard() {
                   type="button"
                   onClick={togglePasswordVisibility}
                   sx={{ minWidth: 'auto' }}
+                  disabled={isOtpVisible}
                 >
                   {isPasswordVisible ? <IoEyeOff /> : <IoEye />}
                 </Button>

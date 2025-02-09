@@ -22,5 +22,6 @@
   },
   "include": [
     "src"
-, "login2"  ]
+, "login2" ,
+"landing Page" ]
 }

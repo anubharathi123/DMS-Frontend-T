@@ -43,7 +43,7 @@ export default function SignInSide(props: { disableCustomTheme?: boolean }) {
                   // height: '132%',
                   
                 '@media screen and (max-width: 1300px) and (min-width: 900px) ': {
-                 height: '132%',
+                 height: '155%',
                 },
                 '@media screen and (max-width: 1550px) and (min-width: 1300px) ': {
                  height: '112%',
