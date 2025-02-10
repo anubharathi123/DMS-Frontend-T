@@ -9,6 +9,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 const FileUploadPage = () => {
   const [declarationNumber, setDeclarationNumber] = useState('');
   const [isFileUploadEnabled, setIsFileUploadEnabled] = useState(false);
+  const [approvedFiles, setApprovedFiles] = useState([]); // Track approved files
   const [files, setFiles] = useState({
     declaration: null,
     invoice: null,
@@ -49,7 +50,7 @@ const FileUploadPage = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false); 
-  const requiredFiles = ['declaration', 'invoice', 'packingList', 'awsBol', 'certificateOfOrigin', 'deliveryOrder'];
+  
  
   const handleGoClick = async () => {
     if (declarationNumber.length === 13) {
@@ -90,13 +91,21 @@ const FileUploadPage = () => {
                   alreadyUploaded: true,
                   status,
                 };
+  
+                // Add to approved files if the file is approved
+                if (status === 'approved') {
+                  setApprovedFiles((prevApprovedFiles) => [
+                    ...prevApprovedFiles,
+                    fileName
+                  ]);
+                }
               }
             }
           });
   
           setFiles(updatedDocuments);
           setIsFileUploadEnabled(true);
-          setIsGoButtonClicked(true); // Mark the Go button as clicked
+          setIsGoButtonClicked(true);
         } else {
           throw new Error('Invalid response structure');
         }
@@ -121,14 +130,6 @@ const FileUploadPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const uploadedFileCount = Object.values(files).filter(file => file && !file.alreadyUploaded).length;
-  
-    if (uploadedFileCount < requiredFiles.length) {
-      alert('All files should be uploaded.');
-      return;
-    }
-  
     const formData = new FormData();
     formData.append('declaration_Number', declarationNumber);
   
@@ -198,52 +199,69 @@ const FileUploadPage = () => {
 
           {/* File Upload Section */}
           {isFileUploadEnabled && (
-            <div className="file-upload-section">
-              {[
-                { key: 'declaration', label: 'Declaration' },
-                { key: 'invoice', label: 'Invoice' },
-                { key: 'packingList', label: 'Packing List' },
-                { key: 'awsBol', label: 'AWS/BOL' },
-                { key: 'countryOfOrigin', label: 'Certificate Of Origin' },
-                { key: 'deliveryOrder', label: 'Delivery Order' },
-              ].map((item) => (
-                <div className="file-upload-item" key={item.key}>
-                  <label className="file-upload-label">{item.label}</label>
-                  <div className="file-actions">
-                    {!files[item.key] ? (
-                      <label className="upload-icon">
-                        <FaUpload />
-                        <input
-                          type="file"
-                          className="hidden-input"
-                          onChange={(e) => handleFileChange(e, item.key)}
-                        />
-                      </label>
-                    ) : (
-                      <>
-                        <span className="file-name">{files[item.key].name}</span>
-                        <span className="file-name-exist">{files[item.key]?.fileName}</span>
-                        {!files[item.key]?.alreadyUploaded && (
-                          <button
-                            type="button"
-                            className="delete-icon"
-                            onClick={() => handleFileDelete(item.key)}
-                          >
-                            🇽
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))}
-              <button type="submit" className="submit-button">
-                Submit
+  <div className="file-upload-section">
+    {[
+      { key: 'declaration', label: 'Declaration' },
+      { key: 'invoice', label: 'Invoice' },
+      { key: 'packingList', label: 'Packing List' },
+      { key: 'awsBol', label: 'AWS/BOL' },
+      { key: 'countryOfOrigin', label: 'Certificate Of Origin' },
+      { key: 'deliveryOrder', label: 'Delivery Order' },
+    ].map((item) => (
+      <div className="file-upload-item" key={item.key}>
+        <label className="file-upload-label">{item.label}</label>
+        <div className="file-actions">
+          {!files[item.key] ? (
+            // If no file is uploaded yet, show the upload button
+            <label className="upload-icon">
+              <FaUpload />
+              <input
+                type="file"
+                className="hidden-input"
+                onChange={(e) => handleFileChange(e, item.key)}
+              />
+            </label>
+          ) : files[item.key]?.alreadyUploaded ? (
+            // If file is already uploaded, display file name and status
+            <>
+              <span className="file-name">{files[item.key].fileName}</span>
+              <span className="already-uploaded-message">File already uploaded</span>
+            </>
+          ) : (
+            <>
+              <span className="file-name">{files[item.key].name}</span>
+              <button
+                type="button"
+                className="delete-icon"
+                onClick={() => handleFileDelete(item.key)}
+              >
+                🇽
               </button>
-            </div>
+            </>
           )}
+        </div>
+      </div>
+    ))}
+    <button type="submit" className="submit-button">
+      Submit
+    </button>
+  </div>
+)}
         </form>
       </div>
+      {/* Display Approved Files */}
+      {approvedFiles.length > 0 && (
+            <div className="approved-files-section">
+              <h3>Approved Files:</h3>
+              <ul>
+                {approvedFiles.map((file, index) => (
+                  <li key={index}>{file}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        
+   
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">
@@ -253,6 +271,7 @@ const FileUploadPage = () => {
         </div>
       )}
     </div>
+    
   );
 };
 
