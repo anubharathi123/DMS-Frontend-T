@@ -10,6 +10,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import File1 from "../../assets/Country of Origin.pdf";
 
 
 
@@ -231,7 +232,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
 </td>
                                 <td className="organization-table-td">
                                     {org.msa_doc ? (
-                                        <a href={org.msa_doc} target="_blank" rel="noopener noreferrer">
+                                        <a href={File1} target="_blank" rel="noopener noreferrer">
                                             {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
                                         </a>
                                     ) : (

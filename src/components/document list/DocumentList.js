@@ -5,6 +5,7 @@ import apiServices from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import File1 from "../../assets/Packing List.pdf";
 
 const DocumentTable = () => {
   const initialState = {
@@ -215,8 +216,14 @@ const DocumentTable = () => {
             <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documenttable_td px-6 py-4">
-  {item.fileName.length > 20 ? item.fileName.substring(0, 20) + "..." : item.fileName}
-</td>
+                {item.fileName ? (
+                  <a href={File1} target='_blank' rel='noopener noreferrer'>
+                    {item.fileName.split('/').pop().substring(0, 20) + '...'}
+                  </a>
+                ) : (
+                  "Null"  
+                )}
+              </td>
 
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documenttable_td px-6 py-4">{item.documentType.charAt(0).toUpperCase() + item.documentType.slice(1).toLowerCase()}</td>
