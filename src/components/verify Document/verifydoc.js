@@ -336,7 +336,7 @@ const DocumentApproval = () => {
             <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
               <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documentapproval_td documentapproval_td_name px-6 py-4">
-  <button
+      <button
     className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
     onClick={() => handleFileOpen(item)}
     aria-label={`View ${item.fileName}`}
