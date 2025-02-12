@@ -28,12 +28,15 @@ import LandingPage from "./landing Page/MarketingPage";
 import NotFoundView from "./error 404/pages/page-not-found";
 import DateRangeSearch from "./document search/DateRangeSearch";
 import ProfileCard from "./profile final/ProfileCard";
+import ClientPage from "./components/clientpage/clientpage";
+
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./App.css";
 import styles from './index.css';
+
 
 // Function to check authentication status
 const isAuthenticated = () => {
@@ -136,6 +139,14 @@ function AppContent() {
               <ProfileManagementPage />
             //  </PrivateRoute> 
 
+          }
+        />
+        <Route
+          path="/Clientpage"
+          element={
+            // <PrivateRoute>
+              <ClientPage />
+            //  </PrivateRoute> 
           }
         />
 
