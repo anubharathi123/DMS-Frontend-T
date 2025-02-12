@@ -26,6 +26,8 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Login2 from "./login2/SignInSide";
 import LandingPage from "./landing Page/MarketingPage";
 import NotFoundView from "./error 404/pages/page-not-found";
+import DateRangeSearch from "./document search/DateRangeSearch";
+import ProfileCard from "./profile final/ProfileCard";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -242,6 +244,28 @@ function AppContent() {
 
           }
         />
+
+
+<Route
+  path="/date-range-search"
+  element={
+    // <PrivateRoute>
+      <DateRangeSearch />
+    // </PrivateRoute>
+  }
+/>
+
+
+<Route
+  path="/profile-final"
+  element={
+    // <PrivateRoute>
+      <ProfileCard />
+    // </PrivateRoute>
+  }
+/>
+
+
 
         {/* Fallback route for unmatched paths */}
         <Route path="*" element={<Login2 />} />
