@@ -11,7 +11,7 @@ import Dashboard from "./components/dashboard/dashboard";
 import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
-import { FileUploadPage } from "./components/File Upload/FileUploadPage";
+import Fileupload from "./components/File Upload/file upload"
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
 import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -30,12 +30,17 @@ import { HomePage } from './dashboard/routes/sections';
 import UserList from './components/UserList/Userlist';
 
 import NotFoundView from "./error 404/pages/page-not-found";
+import DateRangeSearch from "./document search/DateRangeSearch";
+import ProfileCard from "./profile final/ProfileCard";
+import ClientPage from "./components/clientpage/clientpage";
+
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 import "./App.css";
 import styles from './index.css';
+
 
 // Function to check authentication status
 const isAuthenticated = () => {
@@ -81,7 +86,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/","/dash","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -95,7 +100,7 @@ function AppContent() {
         
         <Route path="/login" element={<Login2 />} />
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dash" element={<HomePage />} />
+        {/* <Route path="/dash" element={<HomePage />} /> */}
         <Route path="/NotFoundView" element={<NotFoundView />} />
 
             
@@ -127,7 +132,7 @@ function AppContent() {
           path="/upload"
           element={
             <PrivateRoute>
-              <FileUploadPage />
+              <Fileupload />
             </PrivateRoute>
           }
         />
@@ -138,6 +143,16 @@ function AppContent() {
             <PrivateRoute>
               <ProfileManagementPage />
               </PrivateRoute> 
+            //  </PrivateRoute> 
+
+          }
+        />
+        <Route
+          path="/Clientpage"
+          element={
+            // <PrivateRoute>
+              <ClientPage />
+            //  </PrivateRoute> 
           }
         />
 
@@ -256,6 +271,28 @@ function AppContent() {
 
           }
         />
+
+
+<Route
+  path="/date-range-search"
+  element={
+    // <PrivateRoute>
+      <DateRangeSearch />
+    // </PrivateRoute>
+  }
+/>
+
+
+<Route
+  path="/profile-final"
+  element={
+    // <PrivateRoute>
+      <ProfileCard />
+    // </PrivateRoute>
+  }
+/>
+
+
 
         {/* Fallback route for unmatched paths */}
         <Route path="*" element={<Login2 />} />

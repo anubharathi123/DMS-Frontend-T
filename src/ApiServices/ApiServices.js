@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AdminList from '../components/AdminList/AdminList';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
+const API_URL = process.env.REACT_APP_API_URL || 'https://c03qw957-8000.inc1.devtunnels.ms/api/';
 
 // Create an Axios instance
 const apiClient = axios.create({

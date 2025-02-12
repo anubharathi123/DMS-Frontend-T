@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
+import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
-import { Search } from 'lucide-react';
+import { AlignCenter, Search } from 'lucide-react';
 import Loader from "react-js-loader";
 import './verifydoc.css';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
@@ -28,11 +28,8 @@ const DocumentApproval = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
-  const [isRejectPopupOpen, setRejectPopupOpen] = useState(false);
-  const [rejectionReason, setRejectReason] = useState("");
-  const [rejectDocumentId, setRejectDocumentId] = useState(null);
-  const navigate = useNavigate();  
-  const searchInfoRef = useRef(null); // Reference for search info popup
+    
+      const searchInfoRef = useRef(null); // Reference for search info popup
     
       const handleSearchInfo = () => {
         setShowSearchInfo(!showSearchInfo);
@@ -76,7 +73,6 @@ const DocumentApproval = () => {
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
-          rejectionReason: doc.rejectionReason,
           fileUrl: doc.fileUrl || '',
           viewed: false,
           version: doc.current_version?.version_number,
@@ -137,48 +133,6 @@ const DocumentApproval = () => {
       return !prev;
     });
   };
-
-  const handleRejectButtonClick = (documentId) => {
-    setRejectPopupOpen(true);
-    setRejectDocumentId(documentId);
-  };
-
-  const handleRejectSubmit = async () => {
-    if (!rejectionReason.trim()) {
-      alert("Please enter a reason for rejection.");
-      return;
-    }
-  
-    try {
-      setIsLoading(true);
-      await apiServices.verifyDocument(rejectDocumentId, {
-        approval_status: "Rejected",
-        reason: rejectionReason,
-      });
-  
-      // Update the status with the rejection reason
-      const updatedData = data.map((doc) =>
-        doc.file_id === rejectDocumentId
-          ? { ...doc, status: "Rejected", rejectionReason: rejectionReason }
-          : doc
-      );
-  
-      setData(updatedData);
-      setFilteredData(updatedData);
-      setRejectPopupOpen(false);
-      setRejectReason("");
-  
-      // Display alert and navigate after submission
-      alert("Rejection Reason has been submitted");
-      navigate("/documentlist", { state: { rejectDocumentId, rejectionReason } });
-    } catch (error) {
-      console.error("Error rejecting document:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  
 
   const handleFileOpen = (file) => {
     const a = document.createElement('a');
@@ -336,7 +290,7 @@ const DocumentApproval = () => {
             <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
               <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documentapproval_td documentapproval_td_name px-6 py-4">
-      <button
+  <button
     className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
     onClick={() => handleFileOpen(item)}
     aria-label={`View ${item.fileName}`}
@@ -352,7 +306,7 @@ const DocumentApproval = () => {
                 <button className="documentapproval_action_button" onClick={() => handleApproval(item.file_id, 'Approved')}>
                   <IoIosCheckmarkCircle />
                 </button>
-                <button className="documentreject_action_button" onClick={() => handleRejectButtonClick(item.file_id, 'Rejected')}>
+                <button className="documentreject_action_button" onClick={() => handleApproval(item.file_id, 'Rejected')}>
                   <MdCancel />
                 </button>
               </td>
@@ -360,24 +314,6 @@ const DocumentApproval = () => {
           ))}
         </tbody>
       </table>
-
-      {isRejectPopupOpen && (
-  <div className="reject-popup">
-    <div className="reject-popup-content">
-      <h2>Reject Document</h2>
-      <textarea
-        placeholder="Enter reason for rejection"
-        value={rejectionReason}
-        onChange={(e) => setRejectReason(e.target.value)}
-        className="reject-reason-input"
-      />
-      <div className="reject-popup-actions">
-        <button onClick={handleRejectSubmit} className="submit-button">Submit</button>
-        <button onClick={() => setRejectPopupOpen(false)} className="cancel-button">Cancel</button>
-      </div>
-    </div>
-  </div>
-)}
 
       <div className="documenttable_pagination flex justify-between mt-4">
         <div className="documenttable_pageinfo flex items-center">

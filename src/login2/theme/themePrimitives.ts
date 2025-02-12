@@ -242,20 +242,15 @@ export const colorSchemes = {
   light: {
     palette: {
       primary: {
-        lighter: "#E3F2FD",
         light: brand[200],
         main: brand[400],
         dark: brand[700],
         contrastText: brand[50],
-        lighterChannel: '210, 100%, 95%',  // Add this
-        darkerChannel: '210, 100%, 16%',  // Add this
-        darker: "#0B3D91",
       },
       info: {
         light: brand[100],
         main: brand[300],
         dark: brand[600],
-        
         contrastText: gray[50],
       },
       warning: {
