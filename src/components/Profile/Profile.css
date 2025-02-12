@@ -42,8 +42,8 @@
 	width: 100px;
 	border: solid black 2px;
 	border-radius: 50%;
-	margin-top: 75px;
-	margin-left: 30px;
+	/* margin-top: 75px; */
+	/* margin-left: 30px; */
 }
 
 .profile_edit {

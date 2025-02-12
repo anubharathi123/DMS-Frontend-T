@@ -30,7 +30,7 @@ import LandingPage from "./landing Page/MarketingPage";
 
 import NotFoundView from "./error 404/pages/page-not-found";
 import DateRangeSearch from "./document search/DateRangeSearch";
-import ProfileCard from "./profile final/ProfileCard";
+import ProfileCard from "./profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 
 // import OrganizationList from "./components/OrganizationList/OrganizationList";

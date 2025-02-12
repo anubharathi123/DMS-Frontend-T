@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./ProfileCard.css";
+import "./Profile.css";
 import avatar from "../assets/images/candidate-profile.png";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
