@@ -71,7 +71,7 @@
 }
 
 /* Table Styling */
-table {
+/* table {
   width: 100%;
   border-collapse: collapse;
 }
@@ -84,7 +84,7 @@ th, td {
 
 th {
   background: #f8f8f8;
-}
+} */
 
 /* Action Button */
 .more-btn {

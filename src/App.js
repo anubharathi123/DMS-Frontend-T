@@ -28,10 +28,11 @@ import LandingPage from "./landing Page/MarketingPage";
 // import Dash from './dashboard/routes/sections'
 // import { HomePage } from './dashboard/routes/sections';
 import UserList from './components/UserList/Userlist';
-
+import AdminCreation1 from "./components/Admin Creation1/AdminCreation";
+import OrganizationCreation from './components/Organization creation/CompanyCreation'
 import NotFoundView from "./error 404/pages/page-not-found";
-import DateRangeSearch from "./document search/DateRangeSearch";
-import ProfileCard from "./profile final/Profile";
+import DateRangeSearch from "./components/document search/DateRangeSearch";
+import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -160,12 +161,13 @@ function AppContent() {
           path="/profile"
           element={
             // <PrivateRoute>
-              <Profile name="Rita Correia"
-				age="32"
-				city="London"
-				followers="80K"
-				likes="803K"
-				photos="1.4K" />
+        //       <Profile name="Rita Correia"
+				// age="32"
+				// city="London"
+				// followers="80K"
+				// likes="803K"
+				// photos="1.4K" />
+        <ProfileCard />
             // </PrivateRoute>
           }
         />
@@ -180,7 +182,7 @@ function AppContent() {
           path="/companycreation"
           element={
           //  <PrivateRoute>
-              <CompanyCreation />
+              <OrganizationCreation />
             // </PrivateRoute>
           }
         />
@@ -248,7 +250,7 @@ function AppContent() {
           path="/admincreation"
           element={
             <PrivateRoute>
-              <AdminCreation/>
+              <AdminCreation1 />
            </PrivateRoute>
           }
         />
@@ -295,7 +297,7 @@ function AppContent() {
 
 
         {/* Fallback route for unmatched paths */}
-        <Route path="*" element={<Login2 />} />
+        <Route path="*" element={<NotFoundView />} />
       </Routes>
       </StyledEngineProvider>
     </div>

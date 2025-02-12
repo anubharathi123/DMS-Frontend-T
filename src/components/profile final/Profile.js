@@ -1,21 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Profile.css";
-import avatar from "../assets/images/candidate-profile.png";
+import avatar from "../../assets/images/candidate-profile.png";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import authService from "../ApiServices/ApiServices";
-import removeIcon from "../assets/images/remove_icon.png";
+import authService from "../../ApiServices/ApiServices";
+import removeIcon from "../../assets/images/remove_icon.png";
 
 function ProfileCard() {
   const [cropperVisible, setCropperVisible] = useState(false);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [mail, setMail] = useState("");
+    const [iconColor, setIconColor] = useState("#000");
+  
   const [mobile, setMobile] = useState("");
   const [imageToCrop, setImageToCrop] = useState(null);
   const cropperRef = useRef();
   const fileInputRef = useRef();
-  const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage") || avatar);
+  const [profileImage, setProfileImage] = useState(localStorage.getItem("profileImage"));
 
   // State variables for editing
   const [editName, setEditName] = useState("");
@@ -25,30 +27,118 @@ function ProfileCard() {
 
   // State for handling transitions
   const [showEditCard, setShowEditCard] = useState(false);
+  useEffect(() => {
+    // localStorage.removeItem("profileImage");
+    const updateProfileImage = async () =>  {
+      setProfileImage(localStorage.getItem("profileImage"));
+      };
+      const fetchProfileDetails = async () => {
+        try {
+          // const response = await authService.details();
+          const image = await authService.getprofile();
+          try{
+            console.log("Profile image response:",(image.profile_image.image) );
+            const url = (image.profile_image.image);
+            console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
+          }
+          catch(error){
+            console.log("Profile image response:",(image.organization_image.image) );
+            const url = (image.organization_image.image);
+            console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
+          }
+            
+            } catch (error) {
+              localStorage.setItem("profileImage", avatar);
+              console.error("Error fetching profile details:", error);
+              
+            }
+          };
+    fetchProfileDetails();
+    window.addEventListener("profileImageUpdated", updateProfileImage);
+    return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
+  }, []);
+  const getInitials = (name) => {
+    if (!name.trim()) return "U";
+    return name
+      .split(" ")
+      .map((n) => n.charAt(0).toUpperCase())
+      .join("");
+  };
+  const capitalizeFirst = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
+  const getRandomColor = () => {
+    return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+  };
+  useEffect(() => {
+    setIconColor(getRandomColor());
+  }, []);
 
   useEffect(() => {
     const updateProfileImage = () => {
-      setProfileImage(localStorage.getItem("profileImage") || avatar);
+      setProfileImage(localStorage.getItem("profileImage"));
     };
 
     const fetchProfileDetails = async () => {
       try {
-        const response = await authService.details();
-        if (response?.details) {
-          const fetchedName = response.details[1]?.username || response.details[5]?.first_name || "N/A";
-          const fetchedRole = response.details[5]?.name || response.details[3]?.name || "Unknown";
-          const fetchedMail = response.details[1]?.email || response.details[5]?.email || "No email provided";
-          const fetchedMobile = response.details[3]?.mobile || response.details[1]?.mobile || "No mobile provided";
+        const details_data = await authService.details();
+        if (details_data.type === "User") {
+          console.log('user')
+          setName(details_data.details[1].first_name)
+          console.log(name)
+          setMail(details_data.details[1].email)
+          console.log(mail)
+          // localStorage.setItem('name', name);
+          setRole(details_data.details[5].name)
+          console.log(role)
+          setMobile(details_data.details[3].mobile)
+          console.log(mobile)
+          // localStorage.setItem('role', fetchedRole);
+          // setRole(fetchedRole);
+          setEditName(details_data.details[1].first_name);
+          setEditRole(details_data.details[5].name);
+          setEditMail(details_data.details[1].email);
+          setEditMobile(details_data.details[3].mobile);
+        }
+        // eslint-disable-next-line no-cond-assign
+        if (details_data.type === "Organization") {
+          console.log('Org')
+          setName(details_data.details[5].first_name)
+          console.log(name)
+          // localStorage.setItem('name', name);
+          const fetchedRole = details_data.details[3].name
+          localStorage.setItem('Company_name', name);
+          // console.log(fetchedRole)
+          if (fetchedRole === 'ADMIN'){
+            localStorage.setItem('role', fetchedRole);
+            setRole(fetchedRole);
+          }
+          if (fetchedRole === 'Organization Admin'){
+            localStorage.setItem('role', 'ADMIN');
+            setRole('ADMIN');
+          }
+          // setName(name);
+          // setRole(role);
+          // setMail(fetchedMail);
+          // setMobile(fetchedMobile);
 
-          setName(fetchedName);
-          setRole(fetchedRole);
-          setMail(fetchedMail);
-          setMobile(fetchedMobile);
-
-          setEditName(fetchedName);
-          setEditRole(fetchedRole);
-          setEditMail(fetchedMail);
-          setEditMobile(fetchedMobile);
+          setEditName(name);
+          setEditRole(role);
+          setEditMail(mail);
+          setEditMobile(mobile);
         }
       } catch (error) {
         console.error("Error fetching profile details:", error);
@@ -119,7 +209,7 @@ function ProfileCard() {
 
   const handleRemoveProfileImage = () => {
     setProfileImage(avatar);
-    localStorage.setItem("profileImage", avatar);
+    localStorage.removeItem("profileImage");
     window.dispatchEvent(new Event("profileImageUpdated"));
   };
 
@@ -132,7 +222,7 @@ function ProfileCard() {
             {profileImage && profileImage !== avatar ? (
               <img className="profile_img" src={profileImage} alt="Profile" />
             ) : (
-              <div className="profile-initials">{name.charAt(0).toUpperCase()}</div>
+              <div className="profile-initials" style={{ background: iconColor }}>{getInitials(name)}</div>
             )}
 
             {/* Remove Profile Icon */}
@@ -146,7 +236,7 @@ function ProfileCard() {
             )}
           </div>
 
-          <h2 className="profile-name">{name}</h2>
+          <h2 className="profile-name">{capitalizeFirst(name)}</h2>
           <p className="profile-role">Role: {role}</p>
           <p className="profile-location">Email: {mail}</p>
           <p className="profile-role">Phone: {mobile}</p>
@@ -188,12 +278,14 @@ function ProfileCard() {
 
               <div className="input-group">
                 <label>Role:</label>
-                <input type="text" value={editRole} onChange={(e) => setEditRole(e.target.value)} />
+                {/* onChange={(e) => setEditRole(e.target.value)} */}
+                <input type="text" value={editRole}  disabled/>
               </div>
 
               <div className="input-group">
                 <label>Email address: </label>
-                <input type="email" value={editMail} onChange={(e) => setEditMail(e.target.value)} />
+                {/* onChange={(e) => setEditMail(e.target.value)} */}
+                <input type="email" value={editMail}  disabled />
               </div>
 
               <div className="input-group">

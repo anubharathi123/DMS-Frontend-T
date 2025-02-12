@@ -86,7 +86,7 @@ const logos = theme.palette.mode === 'light' ? DartLogo : WhiteLogo;
               alignItems: 'center',
             }}
           >
-            <Button color="primary" variant="text" size="small">
+            <Button color="primary" variant="text" size="small" onClick={() => window.location.href = '/login'}>
               Sign in
             </Button>
             <Button color="primary" variant="contained" size="small">

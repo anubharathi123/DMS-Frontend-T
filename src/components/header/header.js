@@ -36,7 +36,7 @@ const Header = () => {
   useEffect(() => {
     // localStorage.removeItem("profileImage");
     const updateProfileImage = async () =>  {
-      setProfileImage(localStorage.getItem("profileImage") || avatar);
+      setProfileImage(localStorage.getItem("profileImage"));
       };
       const fetchProfileDetails = async () => {
         try {
@@ -115,13 +115,7 @@ const Header = () => {
     };
   }, []);
 
-  const handleNotificationClick = (event) => {
-    event.stopPropagation(); // Prevents unwanted event bubbling
-
-    if (activeDropdown !== "notification") {
-      setActiveDropdown("notification"); // Open notification dropdown
-    }
-  };
+  
 
   const handleLogout = async () => {
     try {
@@ -139,57 +133,9 @@ const getRandomColor = () => {
 useEffect(() => {
   setIconColor(getRandomColor());
 }, []);
-  const handlePhotoUpload = () => fileInputRef.current?.click();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+ 
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImageToCrop(reader.result);
-      setCropperVisible(true);
-    };
-    reader.readAsDataURL(file);
-    e.target.value = "";
-  };
-
-  const handleSaveCrop = () => {
-    const cropper = cropperRef.current?.cropper;
-    if (!cropper) return;
-
-    const croppedDataUrl = cropper.getCroppedCanvas().toDataURL();
-    setProfileImage(croppedDataUrl);
-    localStorage.setItem("profileImage", croppedDataUrl);
-    setCropperVisible(false);
-  };
-
-  const renderCropperModal = () =>
-    cropperVisible && (
-      <div className="cropper-modal">
-        <div className="cropper-modal-content">
-          <h2 className="cropper-header">Crop Your Photo</h2>
-          <Cropper
-            src={imageToCrop}
-            ref={cropperRef}
-            style={{ height: "300px", width: "100%" }}
-            aspectRatio={1}
-            guides={true}
-          />
-          <div className="cropper-actions">
-            <button onClick={handleSaveCrop} className="btn-save-crop">
-              Save Changes
-            </button>
-            <button
-              onClick={() => setCropperVisible(false)}
-              className="btn-cancel-crop"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    );
 
   return (
     <div className="header-container">
@@ -286,7 +232,7 @@ useEffect(() => {
         </div>
       )}
 
-      {renderCropperModal()}
+      {/* {renderCropperModal()} */}
     </div>
   );
 };

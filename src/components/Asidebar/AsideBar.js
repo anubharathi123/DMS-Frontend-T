@@ -114,7 +114,7 @@ const AsideBar = () => {
       <nav style={{ marginBottom: '14px' }}>
       <ul>
   {/* Profile Dropdown */}
-  {(role === 'PRODUCT_OWNER' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
+  {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
     <li className={`dropdown ${openDropdowns.profile ? 'open' : ''}`}>
       <NavLink to="/Profile" className={({ isActive }) => (isActive ? 'active' : '')}>
         <p className="profiletab asidebar_p_tag">Profile</p>
@@ -141,7 +141,7 @@ const AsideBar = () => {
 
   {/* Dashboard Dropdown */}
  {/* Dashboard Dropdown */}
-{(role === 'PRODUCT_OWNER' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
+{(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN' || role === 'ADMIN' || role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER') && (
   <li className={`dropdown ${openDropdowns.dashboard ? 'open' : ''}`}>
     <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
       <p className="asidebar_p_tag">Dashboard</p>
@@ -154,7 +154,7 @@ const AsideBar = () => {
       </button>
     )}
 
-    {openDropdowns.dashboard && (role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
+    {openDropdowns.dashboard && (role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN' || role === 'ADMIN') && (
       <ul className="dropdown-menu1">
         <li>
           <NavLink to="/audit-log" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -169,14 +169,14 @@ const AsideBar = () => {
             <button onClick={() => toggleDropdown('document', true)} className="dropdown-toggle1">
               {renderDropdownIcon('document')}
             </button>
-            {openDropdowns.document && (role == 'PRODUCT_OWNER'|| role === 'ADMIN') && (
+            {openDropdowns.document && (role == 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN' || role === 'ADMIN') && (
               <ul className="dropdown-menu1">
                 <li>
                   <NavLink to="/DocumentCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
                   <p className="asidebar_p_tag">Document Creation</p>
                   </NavLink>
                 </li>
-                {(role !=='ADMIN'||role == 'PRODUCT_OWNER') && (
+                {(role !=='ADMIN' || role === 'PRODUCT_ADMIN'||role == 'PRODUCT_OWNER') && (
                 <><li>
                             <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
                               <p className="asidebar_p_tag">Contract Document</p>
@@ -246,7 +246,7 @@ const AsideBar = () => {
   )}
 
   {/* Organization Dropdown */}
-  {(role === 'PRODUCT_OWNER' || role === '#') && (
+  {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN' || role === '#') && (
     <li className={`dropdown ${openDropdowns['organization'] ? 'open' : ''}`}>
       <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? 'active' : '')}>
         <p className="asidebar_p_tag">Organization</p>
@@ -328,7 +328,7 @@ const AsideBar = () => {
   )}
 
   {/* Settings */}
-  {(role === 'PRODUCT_OWNER' || role === 'ADMIN') && (
+  {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN' || role === 'ADMIN') && (
     <li>
       <NavLink to="/settings" className={({ isActive }) => (isActive ? 'active' : '')}>
         <p className="asidebar_p_tag" >Settings</p>

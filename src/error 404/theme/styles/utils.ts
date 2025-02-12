@@ -49,13 +49,20 @@ export function responsiveFontSizes({ sm, md, lg }: { sm: number; md: number; lg
  * Converts a hex color to RGB channels
  */
 export function hexToRgbChannel(hex: string) {
-  if (!/^#[0-9A-F]{6}$/i.test(hex)) {
+  if (!/^#[0-9A-F]{3,6}$/i.test(hex)) {
     throw new Error(`Invalid hex color: ${hex}`);
   }
 
-  const r = parseInt(hex.substring(1, 3), 16);
-  const g = parseInt(hex.substring(3, 5), 16);
-  const b = parseInt(hex.substring(5, 7), 16);
+  let r, g, b;
+  if (hex.length === 4) {
+    r = parseInt(hex[1] + hex[1], 16);
+    g = parseInt(hex[2] + hex[2], 16);
+    b = parseInt(hex[3] + hex[3], 16);
+  } else {
+    r = parseInt(hex.substring(1, 3), 16);
+    g = parseInt(hex.substring(3, 5), 16);
+    b = parseInt(hex.substring(5, 7), 16);
+  }
 
   return `${r} ${g} ${b}`;
 }
@@ -77,20 +84,19 @@ export function createPaletteChannel(hexPalette: Record<string, string>) {
  * Color with alpha channel
  */
 export function varAlpha(color: string, opacity = 1) {
-  const unsupported =
-    color.startsWith('#') ||
-    color.startsWith('rgb') ||
-    color.startsWith('rgba') ||
-    (!color.includes('var') && color.includes('Channel'));
-
-  if (unsupported) {
+  if (color && color.startsWith('#')) {
+    color = hexToRgbChannel(color);
+  } else if (
+    color?.startsWith('rgb(') ||
+    color?.startsWith('rgba(') ||
+    (color && !color.includes('var(') && color.includes('Channel'))
+  ) {
     throw new Error(
       `[Alpha]: Unsupported color format "${color}".
        Supported formats are:
        - RGB channels: "0 184 217".
        - CSS variables with "Channel" prefix: "var(--palette-common-blackChannel, #000000)".
        Unsupported formats are:
-       - Hex: "#00B8D9".
        - RGB: "rgb(0, 184, 217)".
        - RGBA: "rgba(0, 184, 217, 1)".
        `

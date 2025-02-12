@@ -9,9 +9,9 @@ import NotFoundView from 'error 404/sections/error/not-found-view';
 export default function Page() {
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title> {`404 page not found! | Error - ${CONFIG.appName}`}</title>
-      </Helmet>
+      </Helmet> */}
 
       <NotFoundView />
     </>

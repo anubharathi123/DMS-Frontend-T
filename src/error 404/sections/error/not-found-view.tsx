@@ -24,7 +24,7 @@ export default function NotFoundView() {
 
         <Box
           component="img"
-          src="/assets/illustrations/illustration-404.svg"
+          src="assets/illustrations/illustration-404.svg"
           sx={{
             width: 320,
             height: 'auto',
