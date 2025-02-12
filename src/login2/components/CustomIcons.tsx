@@ -1,13 +1,13 @@
 import * as React from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
 import Logo from '../../assets/images/company_logo.png';
-// import git from './github-mark-white.png';
+import git from './github-mark-white.png';
 
 export function SitemarkIcon() {
   return (
     <div>
       <img src={Logo} alt="Profile" />
-      <h3 style={{marginTop:'-23px', marginLeft:'40px'}}>DartPort</h3>
+      <h3 style={{marginTop:'-23px', marginLeft:'40px'}}>DMS</h3>
     {/* <SvgIcon sx={{ height: 21, width: 100, mr: 2 }}>
       
       <svg
