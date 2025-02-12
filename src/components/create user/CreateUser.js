@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri";  // Import the dropdown icon
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './CreateUser.css';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
 import Loader from "react-js-loader";
@@ -20,7 +20,7 @@ const CreateUser = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);  
 
-  const [roleOptions, setRoleOptions] = useState(["Compiler", "Approver", "Viewer"]);
+  const [roleOptions] = useState(["Compiler", "Approver", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
@@ -53,7 +53,7 @@ const CreateUser = () => {
       
       const response = await apiServices.register(formData);
       setMessage('User registered successfully!');
-      navigate('/Dashboard');
+      navigate('/user-list');
     } catch (error) {
       // setIsLoading(false);
       const errorMessage = error.response?.data?.error || error.error;

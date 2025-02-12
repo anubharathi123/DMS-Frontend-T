@@ -26,7 +26,8 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Login2 from "./login2/SignInSide";
 import LandingPage from "./landing Page/MarketingPage";
 // import Dash from './dashboard/routes/sections'
-// import { HomePage } from './dashboard/routes/sections';
+import { HomePage } from './dashboard/routes/sections';
+import UserList from './components/UserList/Userlist';
 
 import NotFoundView from "./error 404/pages/page-not-found";
 import DateRangeSearch from "./document search/DateRangeSearch";
@@ -139,8 +140,9 @@ function AppContent() {
         <Route
           path="/profilemanagement"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <ProfileManagementPage />
+              </PrivateRoute> 
             //  </PrivateRoute> 
 
           }
@@ -219,11 +221,21 @@ function AppContent() {
         <Route
           path="/createuser"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <CreateUser />
-            // </PrivateRoute>
+             </PrivateRoute>
           }
         />
+
+          <Route
+            path="/user-list"
+            element={
+              <PrivateRoute>
+              <UserList/>
+              </PrivateRoute>
+            }
+            />
+
          <Route
           path="/notificationdropdown"
           element={
@@ -244,18 +256,18 @@ function AppContent() {
         <Route
           path="/OrganizationList"
           element={
-            // <PrivateRoute>
+             <PrivateRoute>
               <OrganizationList />
-            // </PrivateRoute>
+             </PrivateRoute>
           }
         />
 
        <Route
           path="/AdminList"
           element={
-            // <PrivateRoute>
+             <PrivateRoute>
               <AdminList/>
-            // </PrivateRoute> 
+            </PrivateRoute> 
 
           }
         />

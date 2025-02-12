@@ -92,6 +92,10 @@ const authService = {
   details: async () => {
     return handleResponse(apiClient.get('details/'));
   },
+  users: async () => {
+    return handleResponse(apiClient.get('users/'));
+  },
+
   resetPassword: async (data) => {
 
     if (!data) {

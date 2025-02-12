@@ -176,7 +176,7 @@
 }
 
 .card {
-  background-image: url("../../assets/images/shape-square.svg"), linear-gradient(90deg,rgb(232, 232, 252),rgb(232, 232, 252));
+  background-image: url("../../assets/images/shape-square.svg");
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
