@@ -20,6 +20,8 @@ const OrganizationList = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [filterDate, setFilterDate] = useState(null);
     const [actionMessage, setActionMessage] = useState('');
     const [filter, setFilter] = useState('');
     // const [organization, setOrganization] = useState([])
@@ -29,7 +31,7 @@ const OrganizationList = () => {
     const itemsPerPage = 5;
     const navigate = useNavigate();
      const [showSearchInfo, setShowSearchInfo] = useState(false);
-
+const calendarRef = useRef(null);
      const searchInfoRef = useRef(null); // Reference for search info popup
 
      const handleEdit = (username) => {
@@ -106,20 +108,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         setRowsPerPage(parseInt(e.target.value));
       };
 
-    const handleDateChange = (date) => {
-        setStartDate(date);
-        setShowDatePicker(false);
-
-        if (date) {
-            const selectedDate = date.toISOString().split('T')[0];
-            const filtered = data.filter((org) => org.createdDate === selectedDate);
-            setFilter(filtered);
-            setCurrentPage(1);
-        } else {
-            setFilter(data);
-            setCurrentPage(1);
-        }
-    };
+    
 
     const filteredData = data.filter(org =>
         (!searchTerm ||
@@ -128,10 +117,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         (!statusFilter || org.status.toLowerCase() === statusFilter.toLowerCase()) &&
         (!startDate || org.createdDate === startDate.toISOString().split('T')[0])
     );
-    const toggleDatePicker = () => {
-        setShowDatePicker((prev) => !prev);
-    };
-
+    const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
         const totalPages = Math.ceil(filteredData.length / itemsPerPage);
         if (currentPage < totalPages) {
@@ -202,18 +188,23 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
                         <th className="organization-table-th">
                             Created Date
                             <button
-                                onClick={toggleDatePicker}
+                                onClick={handleCalendarToggle}
                                 className="organization-calendarbtn"
                             >
                                 📅
                             </button>
-                            {showDatePicker && (
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={handleDateChange}
+                            {isCalendarOpen && (
+                            <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
+                            <DatePicker
+                                    selected={filterDate}
+                                    onChange={(date) => {
+                                        setFilterDate(date);
+                                        setIsCalendarOpen(false);
+                                      }}
+                                      inline
                                     dateFormat="yyyy-MM-dd"
-                                    inline
-                                />
+                                    />
+                                    </div>
                             )}
                         </th>
                         <th className="organization-table-th">Status</th>

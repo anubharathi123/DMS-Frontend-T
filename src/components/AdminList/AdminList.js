@@ -44,7 +44,7 @@ const AdminList = () => {
     }, [showSearchInfo]);
   
 
-    useEffect(() => {
+    useEffect(() =>   {
       const fetchAdmins = async () => {
         try {
           setIsLoading(true);
@@ -203,8 +203,7 @@ const AdminList = () => {
         {paginatedData.map((item, index) => (
     <tr
       key={index}
-      className="adminlist_row
-    ">
+      className="adminlist_row">
               <td className="adminlist_td ">{item.adminId}</td>
               <td className="adminlist_td ">{item.name}</td>
               <td className="adminlist_td ">{item.email}</td>

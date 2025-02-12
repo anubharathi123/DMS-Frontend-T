@@ -21,6 +21,7 @@ import {
   Legend,
 } from 'chart.js';
 import { TbBackground } from 'react-icons/tb';
+import { colors } from '@mui/material';
 
 ChartJS.register(
   BarElement,
@@ -151,6 +152,8 @@ const DashboardApp = () => {
   // Check if the role should have the cards displayed
   const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
 
+  
+
   return (
     <div className='dashboard-body'>
       <div className='dashboard-container' >
@@ -160,10 +163,10 @@ const DashboardApp = () => {
         {role === 'PRODUCT_OWNER' && (
           <>
             <div className="cards-container">
-              <Card title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} role={role}  />
-              <Card title="Active Companies" value="22,345" icon={<HiBuildingOffice2 style={{ color: 'green' }} />} role={role} />
-              <Card title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} role={role} />
-              <Card title="Client Admin" value="23,456" icon={<IoPeople />} role={role} />
+              <Card title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} role={role} bgColor="#daeefe" />
+              <Card title="Active Companies" value="22,345" icon={<HiBuildingOffice2 style={{ color: 'green' }} />} role={role} bgColor="#eed9ff"/>
+              <Card title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} role={role} bgColor="#fff4d2"/>
+              <Card title="Client Admin" value="23,456" icon={<IoPeople />} role={role} bgColor="#ffe8da" />
             </div>
             <div className="charts-container">
               <div className="chart">
@@ -224,7 +227,7 @@ const DashboardApp = () => {
         {(isAdminOrDocumentRole) && (
           <>
             <div className="cards-container">
-              <Card title="Total Documents" value="21,234" icon={<IoMdCloudUpload />} role={role} />
+              <Card title="Total Documents" value="21,234" icon={<IoMdCloudUpload />} role={role}  />
               <Card title="Accepted Documents" value="18,234" icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} />
               <Card title="Pending Documents" value="1,000" icon={<MdPending style={{ color: '#dd651b' }} />} role={role} />
               <Card title="Rejected Documents" value="2,000" icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} />
@@ -242,13 +245,14 @@ const DashboardApp = () => {
   );
 };
 
-const Card = ({ title, value, icon, role }) => {
+const Card = ({ title, value, icon, role, bgColor}) => {
   // Inline style for Uploader, Approver, and Reviewer roles
-  const cardStyle = role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER'
-    ? { backgroundColor: '#CCDAF1', marginTop: "10%" }
-    : {};
+  const cardStyle = {
+    backgroundColor: bgColor,
+    marginTop: role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER' ? "10%" : "",
+  }
     
-
+  
   
 
   return (
