@@ -26,7 +26,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Login2 from "./login2/SignInSide";
 import LandingPage from "./landing Page/MarketingPage";
 // import Dash from './dashboard/routes/sections'
-import { HomePage } from './dashboard/routes/sections';
+// import { HomePage } from './dashboard/routes/sections';
 
 import NotFoundView from "./error 404/pages/page-not-found";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -94,7 +94,7 @@ function AppContent() {
         
         <Route path="/login" element={<Login2 />} />
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dash" element={<HomePage />} />
+        {/* <Route path="/dash" element={<HomePage />} /> */}
         <Route path="/NotFoundView" element={<NotFoundView />} />
 
             
