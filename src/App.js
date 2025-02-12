@@ -26,7 +26,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Login2 from "./login2/SignInSide";
 import LandingPage from "./landing Page/MarketingPage";
 // import Dash from './dashboard/routes/sections'
-import { HomePage } from './dashboard/routes/sections';
+// import { HomePage } from './dashboard/routes/sections';
 import UserList from './components/UserList/Userlist';
 
 import NotFoundView from "./error 404/pages/page-not-found";
