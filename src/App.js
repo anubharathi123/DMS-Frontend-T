@@ -11,7 +11,7 @@ import Dashboard from "./components/dashboard/dashboard";
 import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
-import Fileupload from "./components/File Upload/file upload"
+import { FileUploadPage } from "./components/File Upload/FileUploadPage";
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
 import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -28,6 +28,7 @@ import LandingPage from "./landing Page/MarketingPage";
 // import Dash from './dashboard/routes/sections'
 import { HomePage } from './dashboard/routes/sections';
 
+import NotFoundView from "./error 404/pages/page-not-found";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -94,6 +95,8 @@ function AppContent() {
         <Route path="/login" element={<Login2 />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/dash" element={<HomePage />} />
+        <Route path="/NotFoundView" element={<NotFoundView />} />
+
             
         {/* <Route path="/login" element={<Login2 />} /> */}
         {/* <Route path="/" element={<Login1 />} /> */}
@@ -123,7 +126,7 @@ function AppContent() {
           path="/upload"
           element={
             <PrivateRoute>
-              <Fileupload />
+              <FileUploadPage />
             </PrivateRoute>
           }
         />
@@ -134,7 +137,6 @@ function AppContent() {
             // <PrivateRoute>
               <ProfileManagementPage />
             //  </PrivateRoute> 
-
           }
         />
 
