@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@iconify/react": "^5.2.0",
     "@mui/icons-material": "6.4.3",
     "@mui/material": "^6.4.3",
     "@nextui-org/react": "^2.6.10",
@@ -19,6 +20,7 @@
     "chart.js": "^4.4.7",
     "chartjs-plugin-datalabels": "^2.2.0",
     "cropperjs": "^1.6.2",
+    "dayjs": "^1.11.13",
     "font-awesome": "^4.7.0",
     "lucide-react": "^0.469.0",
     "pdf.js": "^0.1.0",
