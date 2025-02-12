@@ -23,5 +23,6 @@
   "include": [
     "src"
 , "login2" ,
-"landing Page" ]
+"landing Page",
+"dashboard" ]
 }

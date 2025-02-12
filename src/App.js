@@ -25,6 +25,9 @@ import AdminCreation from "./components/AdminCreation/AdminCreation";
 import { StyledEngineProvider } from '@mui/material/styles';
 import Login2 from "./login2/SignInSide";
 import LandingPage from "./landing Page/MarketingPage";
+// import Dash from './dashboard/routes/sections'
+import { HomePage } from './dashboard/routes/sections';
+
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -76,7 +79,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/","/dash","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -90,6 +93,7 @@ function AppContent() {
         
         <Route path="/login" element={<Login2 />} />
         <Route path="/" element={<LandingPage />} />
+        <Route path="/dash" element={<HomePage />} />
             
         {/* <Route path="/login" element={<Login2 />} /> */}
         {/* <Route path="/" element={<Login1 />} /> */}

@@ -238,19 +238,66 @@ export const getDesignTokens = (mode: PaletteMode) => {
   };
 };
 
+const colorSchemes1 = {
+  light: {
+    palette: {
+      primary: {
+        lighter: brand[50], 
+        light: brand[200], 
+        main: brand[400], 
+        dark: brand[600], 
+        contrastText: '#fff',
+        darker: brand[800],
+        lighterChannel: '210, 100%, 95%',  // Add this
+        darkerChannel: '210, 100%, 16%',  // Add this
+      },
+      info: {
+        light: brand[200],
+        main: brand[400],
+        dark: brand[600],
+        contrastText: '#fff',
+        lighter: brand[50],  // Ensure these exist
+        darker: brand[800],
+        lighterChannel: '210, 100%, 95%',
+        darkerChannel: '210, 100%, 16%',
+      },
+    },
+  },
+  dark: {
+    palette: {
+      primary: {
+        lighter: brand[50],
+        light: brand[200],
+        main: brand[600],
+        dark: brand[800],
+        contrastText: '#fff',
+        darker: brand[900],
+        lighterChannel: '210, 100%, 95%',
+        darkerChannel: '210, 100%, 16%',
+      },
+    },
+  },
+};
+
+
 export const colorSchemes = {
   light: {
     palette: {
       primary: {
+        lighter: "#E3F2FD",
         light: brand[200],
         main: brand[400],
         dark: brand[700],
         contrastText: brand[50],
+        lighterChannel: '210, 100%, 95%',  // Add this
+        darkerChannel: '210, 100%, 16%',  // Add this
+        darker: "#0B3D91",
       },
       info: {
         light: brand[100],
         main: brand[300],
         dark: brand[600],
+        
         contrastText: gray[50],
       },
       warning: {

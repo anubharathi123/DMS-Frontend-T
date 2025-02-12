@@ -70,6 +70,7 @@ export default function SignInCard() {
   }, [counter, isOtpVisible]);
 
   const handleClickOpen = () => {
+    
     setOpen(true);
   };
 
@@ -258,6 +259,7 @@ export default function SignInCard() {
                   onClick={togglePasswordVisibility}
                   sx={{ minWidth: 'auto' }}
                   disabled={isOtpVisible}
+                  style={{background: 'transparent'}}
                 >
                   {isPasswordVisible ? <IoEyeOff /> : <IoEye />}
                 </Button>
@@ -301,7 +303,7 @@ export default function SignInCard() {
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
         />
-        <ForgotPassword open={open} handleClose={handleClose} />
+        
 
         <Button
           type="submit"
@@ -321,13 +323,14 @@ export default function SignInCard() {
               </Typography>
             ))}
           </Box>
+          
         )}
 
         <Typography sx={{ textAlign: 'center' }}>
           Don&rsquo;t have an account?{' '}
           <span>
             <Link
-              href="/material-ui/getting-started/templates/sign-in/"
+              href="./sign-in/"
               variant="body2"
               sx={{ alignSelf: 'center' }}
             >
@@ -355,7 +358,12 @@ export default function SignInCard() {
           Sign in with GitHub
         </Button>
       </Box>
+      <ForgotPassword open={open} handleClose={handleClose} />
     </Card>
 
   );
 }
+
+
+
+
