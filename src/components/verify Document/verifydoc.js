@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
@@ -27,7 +28,11 @@ const DocumentApproval = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isDocTypeDropdownVisible, setDocTypeDropdownVisible] = useState(false);
+  const [isRejectPopupOpen, setRejectPopupOpen] = useState(false);
+  const [rejectionReason, setRejectReason] = useState("");
+  const [rejectDocumentId, setRejectDocumentId] = useState(null);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
+  const navigate = useNavigate();  
     
       const searchInfoRef = useRef(null); // Reference for search info popup
     
@@ -74,6 +79,7 @@ const DocumentApproval = () => {
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
           fileUrl: doc.fileUrl || '',
+          rejectionReason:doc.comments,
           viewed: false,
           version: doc.current_version?.version_number,
         }));
@@ -132,6 +138,47 @@ const DocumentApproval = () => {
       if (!prev) setDocTypeDropdownVisible(false); // Close dropdown when calendar opens
       return !prev;
     });
+  };
+
+  const handleRejectButtonClick = (documentId) => {
+    setRejectPopupOpen(true);
+    setRejectDocumentId(documentId);
+    
+  };
+
+  const handleRejectSubmit = async () => {
+    if (!rejectionReason.trim()) {
+      alert("Please enter a reason for rejection.");
+      return;
+    }
+  
+    try {
+      setIsLoading(true);
+      await apiServices.verifyDocument(rejectDocumentId, {
+        approval_status: "Rejected",
+        reason: rejectionReason,
+      });
+  
+      // Update the status with the rejection reason
+      const updatedData = data.map((doc) =>
+        doc.file_id === rejectDocumentId
+          ? { ...doc, status: "Rejected", rejectionReason: rejectionReason }
+          : doc
+      );
+  
+      setData(updatedData);
+      setFilteredData(updatedData);
+      setRejectPopupOpen(false);
+      setRejectReason("");
+  
+      // Display alert and navigate after submission
+      alert("Rejection Reason has been submitted");
+      navigate("/Documentlist", { state: { rejectDocumentId, rejectionReason } });
+    } catch (error) {
+      console.error("Error rejecting document:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleFileOpen = (file) => {
@@ -306,7 +353,7 @@ const DocumentApproval = () => {
                 <button className="documentapproval_action_button" onClick={() => handleApproval(item.file_id, 'Approved')}>
                   <IoIosCheckmarkCircle />
                 </button>
-                <button className="documentreject_action_button" onClick={() => handleApproval(item.file_id, 'Rejected')}>
+                <button className="documentreject_action_button" onClick={() => handleRejectButtonClick(item.file_id, 'Rejected')}>
                   <MdCancel />
                 </button>
               </td>
@@ -314,6 +361,24 @@ const DocumentApproval = () => {
           ))}
         </tbody>
       </table>
+
+      {isRejectPopupOpen && (
+  <div className="reject-popup">
+    <div className="reject-popup-content">
+      <h2>Reject Document</h2>
+      <textarea
+        placeholder="Enter reason for rejection"
+        value={rejectionReason}
+        onChange={(e) => setRejectReason(e.target.value)}
+        className="reject-reason-input"
+      />
+      <div className="reject-popup-actions">
+        <button onClick={handleRejectSubmit} className="reject-popup-submit">Submit</button>
+        <button onClick={() => setRejectPopupOpen(false)} className="reject-popup-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+)}
 
       <div className="documenttable_pagination flex justify-between mt-4">
         <div className="documenttable_pageinfo flex items-center">
