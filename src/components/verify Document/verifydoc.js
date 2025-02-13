@@ -63,7 +63,7 @@ const DocumentApproval = () => {
       setIsLoading(true);
       const response = await apiServices.getDocuments();
       console.log('Documents:', response);
-      const documents = response
+      const documents = response.documents
         .filter(doc => doc.status?.toLowerCase() === 'pending') // Filter documents with status 'pending'
         .map(doc => ({
           file_id: doc.id,

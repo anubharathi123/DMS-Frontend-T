@@ -49,12 +49,13 @@ const AdminList = () => {
         try {
           setIsLoading(true);
           const response = await apiServices.getAdmins(); // Adjust based on API
-          const admins = response.map(admin => ({
+          console.log(response)
+          const admins = response.product_admins.map(admin => ({
             adminId: admin.id,
-            name: admin.auth_user.name,
-            email: admin.email,
+            name: admin.auth_user.first_name,
+            email: admin.auth_user.email,
             createdAt: admin.created_at,
-            role: admin.role,
+            role: admin.role.name,
           }));
           console.log(admins)
           setData(admins);
@@ -204,11 +205,11 @@ const AdminList = () => {
     <tr
       key={index}
       className="adminlist_row">
-              <td className="adminlist_td ">{item.adminId}</td>
-              <td className="adminlist_td ">{item.name}</td>
-              <td className="adminlist_td ">{item.email}</td>
-              <td className="adminlist_td ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              <td className="adminlist_td ">{item.role}</td>
+              <td className="documenttable_td px-6 py-4 ">{item.adminId}</td>
+              <td className="documenttable_td px-6 py-4 ">{item.name}</td>
+              <td className="documenttable_td px-6 py-4 ">{item.email}</td>
+              <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+              <td className="documenttable_td px-6 py-4 ">{item.role}</td>
             </tr>
           ))}
         </tbody>

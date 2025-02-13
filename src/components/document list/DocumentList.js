@@ -54,7 +54,8 @@ const DocumentTable = () => {
         setIsLoading(true);
 
         const response = await apiServices.getDocuments();
-        const documents = response.map(doc => ({
+        console.log(response)
+        const documents = response.documents.map(doc => ({
           declarationNumber: doc.declaration_number,
           file: doc.current_version?.file_path,
           fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',

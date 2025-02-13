@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AdminList from '../components/AdminList/AdminList';
+// import AdminList from '../components/AdminList/AdminList';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/api/';
 
@@ -132,7 +132,7 @@ const authService = {
   },
 
   getAdmins: async (data) => {
-    return handleResponse(apiClient.post('AdminList/', data))
+    return handleResponse(apiClient.get('admin/', data))
   },
   AdminList: async (data) => {
     return handleResponse(apiClient.post('AdminList/',data))

@@ -161,7 +161,7 @@ const DashboardApp = () => {
         <Dashboard title={roleTitles[role]} />
         <h2 className='dashboard-h2'>Welcome Back, {username} 👋</h2>
 
-        {role === 'PRODUCT_OWNER' ||role === 'PRODUCT_ADMIN' && (
+        {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
           <>
             <div className="cards-container">
               <Card title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} role={role} bgColor="#daeefe" />
