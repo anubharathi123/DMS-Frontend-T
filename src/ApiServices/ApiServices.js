@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AdminList from '../components/AdminList/AdminList';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://c03qw957-8000.inc1.devtunnels.ms/api/';
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/api/';
 
 // Create an Axios instance
 const apiClient = axios.create({
@@ -150,6 +150,15 @@ const authService = {
     //   throw new Error('Organization name and owner email are required.');
     // }
     return handleResponse(apiClient.post('OrganizationList/', data));
+  },
+
+  rangesearch: async (data) => {
+    console.log('data:', data);
+  //   const startDate = data.startDate.toISOString().split('T')[0];  // Format to 'yyyy-MM-dd'
+  // const endDate = data.endDate.toISOString().split('T')[0];      // Format to 'yyyy-MM-dd'
+
+
+    return handleResponse(apiClient.get('documents/download-range/',data));
   },
   
   getOrganizationById: async (orgId) => {

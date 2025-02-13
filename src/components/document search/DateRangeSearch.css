@@ -8,7 +8,7 @@
 
 .date-range-search {
     width: 600px;
-    margin: 100px auto 0;
+    margin: 100px auto ;
     padding: 20px;
     font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
@@ -151,3 +151,77 @@
     margin-left: 10px;   /* Optional: Adds space between the document name and the button */
   }
   
+
+
+
+
+
+
+
+
+
+
+  /* .date-input-container {
+    position: relative;
+  }
+  
+  .date-icon-container {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  .date-icon-container svg {
+    color: #666;  
+  }
+   */
+
+
+
+
+
+
+   .custom-date-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .custom-date-input input {
+    width: 100%;
+    padding: 8px;
+    padding-right: 30px; /* Space for the calendar icon */
+    box-sizing: border-box;
+  }
+  
+  .calendar-icon {
+    position: absolute;
+    right: 10px;
+    font-size: 14px;
+    color: #888;
+  }
+  
+
+  
+
+
+
+
+
+
+.date-reset-button{
+  position: absolute;
+  top: 150px;
+  right: 340px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
