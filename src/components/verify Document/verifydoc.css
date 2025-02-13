@@ -581,6 +581,7 @@
   border: none;
   border-radius: 8px;
   margin-right: 10px;
+  padding: 8px;
 }
 .reject-popup-cancel:hover {
   background: #b3b3b3;
@@ -591,6 +592,7 @@
   border-radius: 8px;
   background: #d9534f;
   color: white;
+  padding: 8px;
   margin-right: 10px;
 }
 .reject-popup-submit:hover {

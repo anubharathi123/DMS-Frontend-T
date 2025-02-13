@@ -2,9 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
-import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
-import { AlignCenter, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import Loader from "react-js-loader";
 import './verifydoc.css';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
@@ -20,7 +19,6 @@ const DocumentApproval = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [actionMessage, setActionMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('');  
   const [isLoading, setIsLoading] = useState(false);  

@@ -13,6 +13,11 @@ const DocumentTable = () => {
     loading: false,
   };
 
+  const text = {
+    reason_text: "wrong document"
+  }
+
+ 
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState(null);
@@ -210,6 +215,7 @@ const DocumentTable = () => {
             </th>
             <th className="documenttable_th px-6 py-3">Doc Type</th>
             <th className="documenttable_th px-6 py-3">Status</th>
+            <th className="documenttable_th px-6 py-3">Comments</th>
           </tr>
         </thead>
         <tbody className="documenttable_tbody">
@@ -237,8 +243,16 @@ const DocumentTable = () => {
                     'bg-green-100 text-green-800'}`}
                 >
                   {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
-                  <div className="tooltip">{item.rejectionReason}</div>
+                 
                 </span>
+              </td>
+              <td className="documenttable_td px-6 py-4">
+                      {item.status !== "APPROVED" && item.status !== "PENDING" && (
+                        <span>Wrong Document</span>
+                      )}
+                      {item.status !== "REJECTED" && (
+                        <span> NULL</span>
+                      )}
               </td>
             </tr>
           ))}

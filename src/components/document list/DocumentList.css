@@ -305,3 +305,25 @@ padding-left: .5rem !important;
 .documenttable_filter_select {
   font-size: 12px !important; 
 }
+
+.tooltip {
+  visibility: hidden;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.documenttable_td:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
