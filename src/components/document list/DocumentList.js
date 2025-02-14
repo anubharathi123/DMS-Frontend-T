@@ -30,7 +30,10 @@ const DocumentTable = () => {
   const calendarRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
-
+  const [isBackupOpen, setIsBackupOpen] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [filteredBackupData, setFilteredBackupData] = useState([]);
   const searchInfoRef = useRef(null); // Reference for search info popup
 
   const handleSearchInfo = () => {
@@ -67,7 +70,7 @@ const DocumentTable = () => {
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
-          rejectionReason: doc.rejectionReason,
+          rejectionReason: doc.comments,
           fileUrl: doc.fileUrl || '',
           viewed: false,
           version: doc.current_version?.version_number,
@@ -123,6 +126,39 @@ const DocumentTable = () => {
 
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
+  const handleBackupClick = () => {
+    setIsBackupOpen(true);
+  };
+
+  const handleCloseBackup = () => {
+    setIsBackupOpen(false);
+  };
+
+  // const handleRejection = async (declarationNumber,status) => {
+  //   try {
+  //     console.log('Rejection:', declarationNumber, status);
+      
+  //   }
+  // }
+
+  const handleDateChange = () => {
+    if (startDate && endDate) {
+      const filteredDocs = data.filter(doc => {
+        const docDate = new Date(doc.updatedDate);
+        return docDate >= startDate && docDate <= endDate;
+      });
+      setFilteredBackupData(filteredDocs);
+    }
+  };
+
+  useEffect(() => {
+    handleDateChange();
+  }, [startDate, endDate]);
+
+  const handleDownload = () => {
+    alert("Download functionality to be implemented");
+  };
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -146,6 +182,37 @@ const DocumentTable = () => {
   return (
     <div className="documenttable_container">
       <h1 className="documentlist_header">Document List</h1>
+      <button className='doc-backup' onClick={handleBackupClick}>Backup</button>
+      {isBackupOpen && (
+        <>
+        <div className="backup-overlay" onClick={handleCloseBackup}/>
+        <div className="backup-popup">
+          <div className="backup-popup-content">
+            <h2 className='backup-popup-h2'>Backup Documents</h2>
+            <label className='popup-content-label'>Start Date:</label>
+            <input type='date' className="popup-content-input" selected={startDate} onChange={(date) => setStartDate(date)} />
+            <label className='popup-content-label'>End Date:</label>
+            <input type='date' className="popup-content-input" selected={endDate} onChange={(date) => setEndDate(date)} />
+            <h3 className='backup-popup-h3'>Documents Included:</h3>
+            <div className='backup-documentlist'>
+            <ul className="backup-documentlist-ul"> 
+            {filteredBackupData.length > 0 ? (
+              filteredBackupData.map((doc, index) => (
+                <li className="backup-documentlist-li" key={index}>{doc.fileName} ({new Date(doc.updatedDate).toLocaleDateString()})</li>
+              ))
+            ) : (
+              <li>No documents found for selected dates.</li>
+            )}
+            </ul>
+            </div>
+            <div className='backup-actions'>
+            <button className="document-downloadbtn" onClick={handleDownload}>Download</button>
+            <button className="backup-closebtn" onClick={handleCloseBackup}>Close</button>
+            </div>
+          </div>
+        </div>
+        </>
+      )}
       {actionMessage && <div className="documenttable_action_message">{actionMessage}</div>}
       <div className="documenttable_controls flex justify-between mb-4">
         <div className="documenttable_search flex items-center">
@@ -248,7 +315,7 @@ const DocumentTable = () => {
               </td>
               <td className="documenttable_td px-6 py-4">
                       {item.status !== "APPROVED" && item.status !== "PENDING" && (
-                        <span>Wrong Document</span>
+                        <span>{item.rejectionReason}</span>
                       )}
                       {item.status !== "REJECTED" && (
                         <span> NULL</span>
