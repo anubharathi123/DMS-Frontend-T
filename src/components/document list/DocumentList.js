@@ -264,7 +264,9 @@ const DocumentTable = () => {
             Next
           </button>
         </div>
+        
       </div>
+      
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">

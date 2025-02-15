@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import AdminList from '../components/AdminList/AdminList';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/api/';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
 
 // Create an Axios instance
 const apiClient = axios.create({
@@ -102,6 +102,7 @@ const authService = {
       throw new Error('Email, OTP, and new password are required for password reset.');
     }
     localStorage.removeItem('token');
+    console.log(data)
     const response = await handleResponse(apiClient.post('auth/reset/', data));
     if (response.token) {
       localStorage.setItem('token', response.token);
