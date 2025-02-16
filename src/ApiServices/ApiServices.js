@@ -139,6 +139,9 @@ const authService = {
   AdminList: async (data) => {
     return handleResponse(apiClient.post('AdminList/',data))
   },
+  OrgNotification: async (url) => {
+    return handleResponse(apiClient.get(`organizations/${url}/`))
+  },
   // Organization APIs
   createOrganization: async (data) => {
     // if (!data.name || !data.owner_email) {

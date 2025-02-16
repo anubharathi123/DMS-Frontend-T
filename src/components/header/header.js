@@ -215,22 +215,19 @@ useEffect(() => {
 
       {/* Profile Dropdown */}
       {activeDropdown === "profile" && (
-        <div className="profile-dropdown" ref={profileDropdownRef}>
-          <p>
-            <b>Name:</b> {name}
-          </p>
-          <p>
-            <b>Email:</b> {email}
-          </p>
-          <button
-            type="button"
-            className="signout-button"
-            onClick={handleLogout}
-          >
-            LogOut
-          </button>
-        </div>
-      )}
+  <div className="profile-dropdown" ref={profileDropdownRef}>
+    <p><b></b> {name}</p>
+    <p><b></b> {email}</p>
+    <hr />
+    <ul className="dropdown-menu">
+      <li><button type="button" className="dropdown-item">Home</button></li>
+      <li><button type="button" className="dropdown-item">Settings</button></li>
+      <li><button type="button" className="signout-button" onClick={handleLogout}>
+        LogOut
+      </button></li>
+    </ul>
+  </div>
+)}
 
       {/* {renderCropperModal()} */}
     </div>
