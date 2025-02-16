@@ -51,7 +51,7 @@ const AdminList = () => {
           const response = await apiServices.getAdmins(); // Adjust based on API
           console.log(response)
           const admins = response.product_admins.map(admin => ({
-            adminId: admin.id,
+            username: admin.auth_user.username,
             name: admin.auth_user.first_name,
             email: admin.auth_user.email,
             createdAt: admin.created_at,
@@ -171,7 +171,7 @@ const AdminList = () => {
       <table className="adminlist_table">
         <thead className="adminlist_thead">
           <tr>
-            <th className="adminlist_th">Admin ID</th>
+            <th className="adminlist_th">Username</th>
             <th className="adminlist_th">Name</th>
             <th className="adminlist_th">Email</th>
             <th className="adminlist_th">Created Date
@@ -205,9 +205,9 @@ const AdminList = () => {
     <tr
       key={index}
       className="adminlist_row">
-              <td className="documenttable_td px-6 py-4 ">{item.adminId}</td>
+              <td className="documenttable_td px-6 py-4 ">{item.username}</td>
               <td className="documenttable_td px-6 py-4 ">{item.name}</td>
-              <td className="documenttable_td px-6 py-4 ">{item.email}</td>
+              <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
               <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documenttable_td px-6 py-4 ">{item.role}</td>
             </tr>

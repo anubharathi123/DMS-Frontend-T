@@ -78,6 +78,7 @@ const FileUploadPage = () => {
                 'awsbol': 'awsBol',
                 'countryoforigin': 'certificateOfOrigin',
                 'deliveryorder': 'deliveryOrder',
+                'other': 'other',
               };
   
               const mappedKey = mappings[docTypeName];
@@ -185,9 +186,9 @@ const FileUploadPage = () => {
               Go
             </button>
             {isGoButtonClicked && (
-              <button className='upload_searchinfo' onClick={handleSearchInfo}>
+              <a className='upload_searchinfo' onClick={handleSearchInfo}>
                 <IoMdInformationCircleOutline/> 
-              </button>
+              </a>
             )}
             {showSearchInfo && (
               <div ref={searchInfoRef} className="upload-searchinfo-popup">
@@ -207,6 +208,7 @@ const FileUploadPage = () => {
       { key: 'awsBol', label: 'AWS/BOL' },
       { key: 'countryOfOrigin', label: 'Certificate Of Origin' },
       { key: 'deliveryOrder', label: 'Delivery Order' },
+      { key: 'other', label: 'Other' },
     ].map((item) => (
       <div className="file-upload-item" key={item.key}>
         <label className="file-upload-label">{item.label}</label>

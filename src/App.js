@@ -182,7 +182,7 @@ function AppContent() {
           path="/companycreation"
           element={
           //  <PrivateRoute>
-              <OrganizationCreation />
+              <CompanyCreation />
             // </PrivateRoute>
           }
         />
@@ -250,7 +250,7 @@ function AppContent() {
           path="/admincreation"
           element={
             <PrivateRoute>
-              <AdminCreation1 />
+              <AdminCreation />
            </PrivateRoute>
           }
         />

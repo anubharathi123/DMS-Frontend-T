@@ -4,6 +4,8 @@ import DatePicker from 'react-datepicker';
 import apiServices from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
+import apiservices from '../../ApiServices/ApiServices';
+
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import File1 from "../../assets/Packing List.pdf";
 
@@ -17,7 +19,7 @@ const DocumentTable = () => {
     reason_text: "wrong document"
   }
 
- 
+  const [documents, setDocuments] = useState([]);
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState(null);
@@ -74,7 +76,7 @@ const DocumentTable = () => {
           fileUrl: doc.fileUrl || '',
           viewed: false,
           version: doc.current_version?.version_number,
-        }));
+        })).sort((a, b) => new Date(b.updatedDate) - new Date(a.updatedDate));
 
         setData(documents);
         setFilteredData(documents);
@@ -155,9 +157,72 @@ const DocumentTable = () => {
     handleDateChange();
   }, [startDate, endDate]);
 
-  const handleDownload = () => {
-    alert("Download functionality to be implemented");
-  };
+
+
+  const handleDownload = async () => {
+    if (!startDate || !endDate) {
+        alert("Please select both start and end dates.");
+        return;
+    }
+
+    console.log("Selected Dates:", startDate, endDate);
+    const parsedStartDate = new Date(startDate);
+    const parsedEndDate = new Date(endDate);
+
+    // ✅ Validate Dates
+    if (isNaN(parsedStartDate) || isNaN(parsedEndDate)) {
+        alert("Invalid date format. Please select valid dates.");
+        return;
+    }
+    if (parsedStartDate > parsedEndDate) {
+        alert("Start date cannot be greater than the end date.");
+        return;
+    }
+
+    try {
+        // ✅ Fetch ZIP file from API
+        const response = await apiServices.rangesearch({
+            params: {
+                start_date: startDate, 
+                end_date: endDate
+            },
+            responseType: 'blob'  // Ensures the response is a file
+        });
+
+        console.log("Response status:", response.status);
+
+        if (response.status === 404) {
+            alert("No files found for the selected date range.");
+            return;
+        }
+
+        // ✅ Check for a valid ZIP file
+        if (!response || response.size === 0) {
+            throw new Error("Received an empty or invalid file.");
+        }
+
+        // ✅ Download the ZIP file
+        const blob = new Blob([response], { type: "application/zip" });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `documents_${startDate}_${endDate}.zip`);
+        document.body.appendChild(link);
+        link.click();
+
+        // ✅ Cleanup
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+        console.log("Download successful.");
+    } catch (error) {
+        console.error("Download error:", error);
+        alert(error.message || "Error downloading files. Please try again.");
+    }
+};
+
+
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -190,20 +255,33 @@ const DocumentTable = () => {
           <div className="backup-popup-content">
             <h2 className='backup-popup-h2'>Backup Documents</h2>
             <label className='popup-content-label'>Start Date:</label>
-            <input type='date' className="popup-content-input" selected={startDate} onChange={(date) => setStartDate(date)} />
+            {/* <input type='date' className="popup-content-input" selected={startDate} onChange={(date) => setStartDate(date)} /> */}
+            <input
+  type="date"
+  className="popup-content-input"
+  value={startDate} 
+  onChange={(e) => setStartDate(e.target.value)} 
+/>
             <label className='popup-content-label'>End Date:</label>
-            <input type='date' className="popup-content-input" selected={endDate} onChange={(date) => setEndDate(date)} />
-            <h3 className='backup-popup-h3'>Documents Included:</h3>
+            {/* <input type='date' className="popup-content-input" selected={endDate} onChange={(date) => setEndDate(date)} /> */}
+            <input
+  type="date"
+  className="popup-content-input"
+  value={endDate} 
+  onChange={(e) => setEndDate(e.target.value)} 
+/>
+            {/* <h3 className='backup-popup-h3'>Documents Included:</h3> */}
             <div className='backup-documentlist'>
-            <ul className="backup-documentlist-ul"> 
-            {filteredBackupData.length > 0 ? (
+            {/* <ul className="backup-documentlist-ul">  */}
+            {/* {filteredBackupData.length > 0 ? (
               filteredBackupData.map((doc, index) => (
                 <li className="backup-documentlist-li" key={index}>{doc.fileName} ({new Date(doc.updatedDate).toLocaleDateString()})</li>
               ))
             ) : (
               <li>No documents found for selected dates.</li>
-            )}
-            </ul>
+            )
+            } */}
+            {/* </ul> */}
             </div>
             <div className='backup-actions'>
             <button className="document-downloadbtn" onClick={handleDownload}>Download</button>
@@ -315,10 +393,10 @@ const DocumentTable = () => {
               </td>
               <td className="documenttable_td px-6 py-4">
                       {item.status !== "APPROVED" && item.status !== "PENDING" && (
-                        <span>{item.rejectionReason}</span>
+                        <span> NULL</span>
                       )}
                       {item.status !== "REJECTED" && (
-                        <span> NULL</span>
+                        <span>{item.rejectionReason}</span>
                       )}
               </td>
             </tr>

@@ -80,7 +80,7 @@ const DocumentApproval = () => {
           rejectionReason:doc.comments,
           viewed: false,
           version: doc.current_version?.version_number,
-        }));
+        })).sort((a, b) => new Date(b.updatedDate) - new Date(a.updatedDate));
 
       setData(documents);
       setFilteredData(documents);

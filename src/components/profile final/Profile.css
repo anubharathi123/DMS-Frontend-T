@@ -2,8 +2,9 @@
 	display: flex;
 	flex-wrap: wrap;
 	/* height:100vh; */
+	margin-top: 50px;
 	justify-content: center;
-	align-items: center;
+	/* align-items: center; */
 	gap: 10px;
 	font-family: 'Arial', sans-serif;
 	padding-left: 180px;
@@ -19,7 +20,7 @@
 /* Profile Card */
 .profile-card {
     padding-top: 5px;
-    margin-top: 150px;
+    /* margin-top: 150px; */
 	background: #fff;
 	padding: 30px;
 	border-radius: 20px;
@@ -115,7 +116,7 @@
 	background: #fff;
 	padding: 30px;
 	border-radius: 20px;
-	width: 700px;
+	width: 600px;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 	border: 1px solid #e0e0e0;
 	opacity: 0;
@@ -131,11 +132,11 @@
 	opacity: 1;
 	transform: translateY(0);
 }
-@media screen and (min-width: 1262px) {
+/* @media screen and (min-width: 1262px) {
 	.profile-edit-card {
 		margin-top: 150px;
 	}
-  }
+  } */
 /* Input Fields */
 .input-group {
 	display: flex;
@@ -208,6 +209,14 @@
 .cropper-modal.show {
     opacity: 1;
     visibility: visible;
+}
+
+.profile-title {
+	/* margin-left: 170px; */
+	place-self: center;
+	font-size: 1.5rem;
+    color: #000b58;
+	
 }
 
 /* 🖼️ Cropper Container */

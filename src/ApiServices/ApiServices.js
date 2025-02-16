@@ -2,6 +2,7 @@ import axios from 'axios';
 // import AdminList from '../components/AdminList/AdminList';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
+const API_URL1 = process.env.REACT_APP_API_URL || 'http://localhost:8000/';
 
 // Create an Axios instance
 const apiClient = axios.create({
@@ -80,9 +81,9 @@ const authService = {
   profile: async (image) => {
     return handleResponse(apiClient.post('profileimage/', image));
   },
-  media: async (url) => {
-    return handleResponse(apiClient.post(url));
-  },
+  media: async (url, params) => {
+    return handleResponse(axios.get(`${API_URL1}${url}`, { params, responseType: 'blob' }));
+},
   getprofile: async () => {
     return handleResponse(apiClient.get('profileimage/'));
   },
