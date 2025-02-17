@@ -4,6 +4,8 @@ import './CompanyCreation.css';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import Loader from "react-js-loader";
 import authService from '../../ApiServices/ApiServices';
+import apiServices from '../../ApiServices/ApiServices';
+
 
 const CompanyCreation = () => {
   const [company, setCompany] = useState({
@@ -20,6 +22,8 @@ const CompanyCreation = () => {
   const [dragging, setDragging] = useState(false);
   const [fileInputClicked, setFileInputClicked] = useState(false);
   const [error, setError] = useState(null); // For error handling
+  const [companyName, setCompanyName] = useState('');
+  const [newNotification, setNewNotification] = useState(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);  
   
@@ -36,6 +40,24 @@ const CompanyCreation = () => {
     if (file) {
       setContractDocuments(file); // Store the selected file
       setFileInputClicked(true); // Mark that a file is selected
+    }
+  };
+
+  const handleCreateCompany = async () => {
+    try {
+      const response = await apiServices.createCompany({ name: companyName });
+      
+      if (response.success) {
+        // Set notification when the company is successfully created
+        setNewNotification({
+          id: new Date().getTime(),
+          action: 'Organization Created',
+          entity_type: companyName,
+          description: 'Organization has been created successfully.',
+        });
+      }
+    } catch (error) {
+      console.error('Company creation failed:', error);
     }
   };
 
@@ -72,34 +94,36 @@ const CompanyCreation = () => {
   // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Check if contract document is uploaded
+    if (!contractDocuments) {
+      setError("Please upload the Master Services Agreement (MSA) before proceeding.");
+      setTimeout(() => setError(null), 3000);
+      return; // Stop form submission
+    }
+  
     const formData = new FormData();
     // Append company details to FormData
     Object.keys(company).forEach((key) => {
       formData.append(key, company[key]);
     });
+  
+    formData.append('contractDocuments', contractDocuments); // Append file to FormData
+  
     setIsLoading(true);
-    if (contractDocuments) {
-      formData.append('contractDocuments', contractDocuments); // Append file to FormData
-    }
-
+  
     try {
       await authService.createOrganization(formData); // Call the API service
       alert('Company registered successfully!');
-      // Reset the form after successful submission
       navigate('/dashboard');
-
     } catch (error) {
-      setError(error.message || 'Something went wrong.'); // Display error if API call fails
-      setTimeout(() => {
-        setError(error.message || 'Something went wrong.');
-        setError(``);
-        // setLoading(false);
-      }, 3000);
-    }
-    finally {
+      setError(error.message || 'Something went wrong.');
+      setTimeout(() => setError(null), 3000);
+    } finally {
       setIsLoading(false); // End loading
     }
   };
+  
 
   // Handles cancel action
   const handleCancel = () => {
@@ -265,6 +289,7 @@ const CompanyCreation = () => {
             <button type="submit" className="company-creation-submit">
               Create
             </button>
+           
             <button type="button" onClick={handleCancel} className="company-creation-cancel">
               Cancel
             </button>

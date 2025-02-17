@@ -223,12 +223,13 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
 </td>
                                 <td className="organization-table-td">
                                     {org.msa_doc ? (
-                                        <a href={File1} target="_blank" rel="noopener noreferrer">
-                                            {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+                                        <a href={File1} target='_blank' rel='noopener noreferrer'>
+                                        {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
                                         </a>
                                     ) : (
-                                        "Null"
-                                    )} </td>
+                                    "Null"  
+                                    )}
+                                    </td>
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}

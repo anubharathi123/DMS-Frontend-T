@@ -4,8 +4,6 @@ import DatePicker from 'react-datepicker';
 import apiServices from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
-import apiservices from '../../ApiServices/ApiServices';
-
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import File1 from "../../assets/Packing List.pdf";
 
@@ -15,9 +13,6 @@ const DocumentTable = () => {
     loading: false,
   };
 
-  const text = {
-    reason_text: "wrong document"
-  }
 
   const [documents, setDocuments] = useState([]);
   const [data, setData] = useState([]);
