@@ -67,7 +67,7 @@ const DocumentTable = () => {
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
-          rejectionReason: doc.comments,
+          rejectionReason: doc.file_approval_history?.rework_reason?.description || '',
           fileUrl: doc.fileUrl || '',
           viewed: false,
           version: doc.current_version?.version_number,
@@ -361,6 +361,7 @@ const DocumentTable = () => {
         <tbody className="documenttable_tbody">
           {paginatedData.map((item, index) => (
             <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
+              
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documenttable_td px-6 py-4">
                 {item.fileName ? (
@@ -387,12 +388,16 @@ const DocumentTable = () => {
                 </span>
               </td>
               <td className="documenttable_td px-6 py-4">
-                      {item.status !== "APPROVED" && item.status !== "PENDING" && (
-                        <span> NULL</span>
-                      )}
-                      {item.status !== "REJECTED" && (
+              {item.status === "REJECTED" && (
                         <span>{item.rejectionReason}</span>
                       )}
+                {item.status == "APPROVED" && (
+                        <span> NULL</span>
+                      )}
+                {item.status == "PENDING" && (
+                        <span> NULL</span>
+                      )}
+                     
               </td>
             </tr>
           ))}

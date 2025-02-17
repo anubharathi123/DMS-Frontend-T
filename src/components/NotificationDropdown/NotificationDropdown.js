@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiServices from '../../ApiServices/ApiServices'; // Ensure correct import path
 import './NotificationDropdown.css';
 
-const NotificationPage = () => {
+const NotificationPage = ({ newNotification }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const NotificationPage = () => {
         // Fetch organization details to get org_id
         const details_data = await apiServices.details();
         const org_id = details_data?.details?.[7]?.id; // Safely access org_id
-        
+
         if (!org_id) {
           throw new Error('Organization ID not found');
         }
@@ -23,8 +23,8 @@ const NotificationPage = () => {
         // Fetch notifications
         const response = await apiServices.OrgNotification(org_id);
         const notificationData = response;
-        
-        setNotifications(notificationData);
+        console.log(response)
+        setNotifications(notificationData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
       } catch (err) {
         console.error('Error fetching notifications:', err);
         setError(err.message || 'Failed to load notifications');
@@ -35,6 +35,14 @@ const NotificationPage = () => {
 
     fetchNotifications();
   }, []);
+
+  // Handle new notification
+  useEffect(() => {
+    if (newNotification) {
+      setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
+      setIsOpen(true); // Ensure the dropdown opens when a new notification is received
+    }
+  }, [newNotification]);
 
   const closeNotification = () => {
     setIsOpen(false);

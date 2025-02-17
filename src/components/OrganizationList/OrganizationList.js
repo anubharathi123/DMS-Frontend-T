@@ -35,7 +35,8 @@ const calendarRef = useRef(null);
      const searchInfoRef = useRef(null); // Reference for search info popup
 
      const handleEdit = (username) => {
-        navigate(`/ProfileManagement/${username}`);
+        console.log("Navigating to edit company:", username);
+        navigate(`/CompanyCreation`);
     };
 
      const handleSearchInfo = () => {

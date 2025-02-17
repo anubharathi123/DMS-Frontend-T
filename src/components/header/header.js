@@ -134,6 +134,10 @@ useEffect(() => {
   setIconColor(getRandomColor());
 }, []);
 
+const handleNavigate =() => {
+  navigate("/Dashboard");
+}
+
  
 
 
@@ -220,7 +224,7 @@ useEffect(() => {
     <p><b></b> {email}</p>
     <hr />
     <ul className="dropdown-menu">
-      <li><button type="button" className="dropdown-item">Home</button></li>
+      <li><button type="button" className="dropdown-item" onClick={handleNavigate}>Home</button></li>
       <li><button type="button" className="dropdown-item">Settings</button></li>
       <li><button type="button" className="signout-button" onClick={handleLogout}>
         LogOut

@@ -154,7 +154,7 @@ const DocumentApproval = () => {
       setIsLoading(true);
       await apiServices.verifyDocument(rejectDocumentId, {
         approval_status: "Rejected",
-        reason: rejectionReason,
+        comments: rejectionReason,
       });
   
       // Update the status with the rejection reason

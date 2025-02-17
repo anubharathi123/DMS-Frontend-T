@@ -63,7 +63,10 @@ const AdminCreation = () => {
     <div className="admincreation-container">
       <h2 className="admincreation-title">Admin Creation</h2>
       {message && (
-        <div className="admincreation-message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+        <div className={`admincreation-message px-4 py-2 rounded mb-4 ${
+          message.includes("Error") ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
+        }`}
+        role="alert">
           {message}
         </div>
       )}
@@ -159,11 +162,11 @@ const AdminCreation = () => {
 
         {/* Button Group */}
         <div className="admincreation-button-group">
-          <button type="button" className="admincreation-btn-cancel" onClick={handleCancel}>
-            Cancel
-          </button>
           <button type="submit" className="admincreation-btn-submit">
             Create
+          </button>
+          <button type="button" className="admincreation-btn-cancel"  onClick={handleCancel}>
+            Cancel
           </button>
         </div>
       </form>
