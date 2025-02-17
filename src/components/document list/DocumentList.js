@@ -13,7 +13,7 @@ const DocumentTable = () => {
     loading: false,
   };
 
-
+  const role = localStorage.getItem('role');
   const [documents, setDocuments] = useState([]);
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,6 +31,7 @@ const DocumentTable = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [filteredBackupData, setFilteredBackupData] = useState([]);
+  const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
 
   const handleSearchInfo = () => {
@@ -152,7 +153,7 @@ const DocumentTable = () => {
     handleDateChange();
   }, [startDate, endDate]);
 
-
+  
 
   const handleDownload = async () => {
     if (!startDate || !endDate) {
@@ -242,7 +243,9 @@ const DocumentTable = () => {
   return (
     <div className="documenttable_container">
       <h1 className="documentlist_header">Document List</h1>
-      <button className='doc-backup' onClick={handleBackupClick}>Backup</button>
+      {(role === "ADMIN" || role === "PRODUCT_ADMIN") && (
+  <button className='doc-backup' onClick={handleBackupClick}>Backup</button> 
+)}
       {isBackupOpen && (
         <>
         <div className="backup-overlay" onClick={handleCloseBackup}/>
