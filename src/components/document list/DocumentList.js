@@ -273,12 +273,8 @@ const DocumentTable = () => {
       <h1 className="documentlist_header">Document List</h1>
       {(role === "ADMIN") && (
   <button className='doc-backup' onClick={handleBackupClick}>Backup</button> 
-
 )}
- {(role === "PRODUCT_OWNER") && (
-  <button className='doc-backup' onClick={handleBackupClick}>Upload</button> 
-  
-)}
+ 
       {isBackupOpen && (
         <>
         <div className="backup-overlay" onClick={handleCloseBackup}/>

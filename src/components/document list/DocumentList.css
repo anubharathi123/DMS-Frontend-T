@@ -27,10 +27,10 @@
     background-color: #000b58;
     color: white;
     cursor: pointer;
-    width: 170px;
+    width: fit-content;
     font-size: 12px;
     position: relative;
-    left: 83%;
+    left: 91%;
 }
 
 /* Popup Container */
