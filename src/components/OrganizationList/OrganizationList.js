@@ -115,8 +115,6 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         setRowsPerPage(parseInt(e.target.value));
       };
 
-    
-
     const filteredData = data.filter(org =>
         (!searchTerm ||
             org.username.toLowerCase().includes(searchTerm) ||
@@ -140,18 +138,20 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
 
    
     const handleDelete = async (username) => {
+        if (!window.confirm("Are you sure you want to delete this organization?")) {
+            return;
+        }
+    
         try {
             setIsLoading(true);
+    
+            // Call API to delete the organization
             const response = await apiServices.deleteOrganization(username);
-            console.log("Delete response:", response); // Debugging statement
-            if (response.success) {
-                setData(prevData => {
-                    const newData = prevData.filter(org => org.username !== username);
-                    console.log("New data after deletion:", newData); // Debugging statement
-                    return newData;
-                });
+    
+            if (response.success) { // Ensure API returns success
+                setData(prevData => prevData.filter(org => org.username !== username));
             } else {
-                alert("Failed to delete the organization.");
+                alert("Failed to delete the organization. Please try again.");
             }
         } catch (error) {
             console.error("Error deleting organization:", error);
@@ -160,8 +160,6 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
             setIsLoading(false);
         }
     };
-
-   
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
