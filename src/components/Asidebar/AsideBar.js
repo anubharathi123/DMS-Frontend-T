@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { 
-  User, LayoutDashboard, Building2, UserPlus, ListOrdered, FileText, Settings
+  User, LayoutDashboard, Building2, UserPlus, ListOrdered,FileCheck2, FileText, Settings,Upload,ChartNoAxesCombined
 } from "lucide-react"; // Importing icons
 import "./AsideBar.css";
 import Logo from "../../assets/images/company_logo.png";
@@ -70,7 +70,7 @@ const AsideBar = () => {
       <div className="nav-links">
         <nav style={{ marginBottom: "14px" }}>
           <ul>
-            {(role === "PRODUCT_OWNER" || role === "ADMIN") && (
+            {(role === "VIEWER" || role === "PRODUCT_OWNER" || role === "ADMIN" || role === "UPLOADER" || role === "REVIEWER") && (
               <li>
                 <NavLink to="/Profile" className={({ isActive }) => (isActive ? "active" : "")}>
                   <User className="aside-icon" size={20} />
@@ -79,29 +79,29 @@ const AsideBar = () => {
               </li>
             )}
 
-            {(role === "PRODUCT_OWNER" || role === "ADMIN") && (
+            {(role === "VIEWER" || role === "PRODUCT_OWNER" || role === "ADMIN" || role === "UPLOADER" || role === "REVIEWER") && (
               <li>
                 <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? "active" : "")}>
-                  <LayoutDashboard className="aside-icon" size={20} />
+                  <ChartNoAxesCombined className="aside-icon" size={20} />
                   <p className="asidebar_p_tag">Dashboard</p>
                 </NavLink>
               </li>
             )}
 
-            {(role === "PRODUCT_OWNER" || role === "ADMIN") && (
+            {(role === "PRODUCT_OWNER") && (
               <li>
-                <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/OrganizationList" className={({ isActive }) => (isActive ? "active" : "")}>
                   <Building2 className="aside-icon" size={20} />
                   <p className="asidebar_p_tag">Organization</p>
                 </NavLink>
               </li>
             )}
 
-            {role === "PRODUCT_OWNER" && (
+{(role === "ADMIN") && (
               <li>
-                <NavLink to="/AdminCreation" className={({ isActive }) => (isActive ? "active" : "")}>
-                  <UserPlus className="aside-icon" size={20} />
-                  <p className="asidebar_p_tag">Create Admin</p>
+                <NavLink to="/user-list" className={({ isActive }) => (isActive ? "active" : "")}>
+                  <Building2 className="aside-icon" size={20} />
+                  <p className="asidebar_p_tag">User</p>
                 </NavLink>
               </li>
             )}
@@ -109,13 +109,39 @@ const AsideBar = () => {
             {role === "PRODUCT_OWNER" && (
               <li>
                 <NavLink to="/AdminList" className={({ isActive }) => (isActive ? "active" : "")}>
-                  <ListOrdered className="aside-icon" size={20} />
-                  <p className="asidebar_p_tag">Admin List</p>
+                  <UserPlus className="aside-icon" size={20} />
+                  <p className="asidebar_p_tag">Admin</p>
                 </NavLink>
               </li>
             )}
 
-            {(role === "VIEWER" || role === "ADMIN") && (
+            {/*{role === "PRODUCT_OWNER" && (
+              <li>
+                <NavLink to="/AdminList" className={({ isActive }) => (isActive ? "active" : "")}>
+                  <ListOrdered className="aside-icon" size={20} />
+                  <p className="asidebar_p_tag">Admin List</p>
+                </NavLink>
+              </li>
+            )}*/}
+
+{role === "REVIEWER" && (
+              <li>
+                <NavLink to="/verifydocument" className={({ isActive }) => (isActive ? "active" : "")}>
+                  <FileCheck2 className="aside-icon" size={20} />
+                  <p className="asidebar_p_tag">Validate</p>
+                </NavLink>
+              </li>
+            )}
+            {role === "UPLOADER" && (
+              <li>
+                <NavLink to="/upload" className={({ isActive }) => (isActive ? "active" : "")}>
+                  <Upload className="aside-icon" size={20} />
+                  <p className="asidebar_p_tag">Upload Document</p>
+                </NavLink>
+              </li>
+            )}
+
+            {(role === "VIEWER" || role === "ADMIN"  || role === "UPLOADER" || role === "REVIEWER") && (
               <li>
                 <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? "active" : "")}>
                   <FileText className="aside-icon" size={20} />
@@ -128,7 +154,7 @@ const AsideBar = () => {
       </div>
 
       {/* Settings - Pushed to Bottom */}
-      <div className="bottom-links">
+      {/*<div className="bottom-links">
         {(role === "PRODUCT_OWNER" || role === "ADMIN") && (
           <li>
             <NavLink to="/error 404" className={({ isActive }) => (isActive ? "active" : "")}>
@@ -139,7 +165,7 @@ const AsideBar = () => {
             </NavLink>
           </li>
         )}
-      </div>
+      </div> */}
     </aside>
   );
 };
