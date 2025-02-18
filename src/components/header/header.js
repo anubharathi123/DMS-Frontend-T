@@ -134,8 +134,12 @@ useEffect(() => {
   setIconColor(getRandomColor());
 }, []);
 
-const handleNavigate =() => {
+const handleNavigateHome =() => {
   navigate("/Dashboard");
+}
+
+const handleNavigate404 = () => {
+  navigate("/NotFoundView")
 }
 
  
@@ -224,8 +228,8 @@ const handleNavigate =() => {
     <p><b></b> {email}</p>
     <hr />
     <ul className="dropdown-menu">
-      <li><button type="button" className="dropdown-item" onClick={handleNavigate}>Home</button></li>
-      <li><button type="button" className="dropdown-item">Settings</button></li>
+      <li><button type="button" className="dropdown-item" onClick={handleNavigateHome}>Home</button></li>
+      <li><button type="button" className="dropdown-item" onClick={handleNavigate404}>Settings</button></li>
       <li><button type="button" className="signout-button" onClick={handleLogout}>
         LogOut
       </button></li>

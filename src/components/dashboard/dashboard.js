@@ -167,7 +167,7 @@ const DashboardApp = () => {
     <div className='dashboard-body'>
       <div className='dashboard-container' >
         <Dashboard title={roleTitles[role]} />
-        <h2 className='dashboard-h2'>Welcome Back, {username} 👋</h2>
+        <h2 className='dashboard-h2'>Welcome Back, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()} 👋</h2>
 
         {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
           <>

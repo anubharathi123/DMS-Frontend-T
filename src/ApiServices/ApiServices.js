@@ -185,6 +185,10 @@ const authService = {
     }
     return handleResponse(apiClient.post(`organizations/${orgId}/resume/`));
   },
+  deleteOrganization: async (orgId) => {
+    return handleResponse(apiClient.post(`organization_delete/${orgId}/delete/`));
+  },
+
   addSubAdmin: async (orgId, data) => {
     if (!orgId || !data.email) {
       throw new Error('Organization ID and sub-admin email are required.');

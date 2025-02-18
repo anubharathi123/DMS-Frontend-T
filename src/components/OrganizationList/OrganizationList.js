@@ -27,6 +27,8 @@ const OrganizationList = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
       const [isLoading, setIsLoading] = useState(false);
+      const [orgData, setOrgData] = useState(data); // Main data state
+
     const itemsPerPage = 5;
     const navigate = useNavigate();
      const [showSearchInfo, setShowSearchInfo] = useState(false);
@@ -136,12 +138,31 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         }
     };
 
-    const handleDelete = (indexToDelete) => {
-        const updatedData = filteredData.filter((_, index) => index !== indexToDelete);
-        setFilter(updatedData);
-        setCurrentPage(1);
+   
+    const handleDelete = async (username) => {
+        try {
+            setIsLoading(true);
+            const response = await apiServices.deleteOrganization(username);
+            console.log("Delete response:", response); // Debugging statement
+            if (response.success) {
+                setData(prevData => {
+                    const newData = prevData.filter(org => org.username !== username);
+                    console.log("New data after deletion:", newData); // Debugging statement
+                    return newData;
+                });
+            } else {
+                alert("Failed to delete the organization.");
+            }
+        } catch (error) {
+            console.error("Error deleting organization:", error);
+            alert("An error occurred while deleting.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
+   
+    
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
@@ -250,7 +271,8 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
                                     
                                     <button
                                         className="organization-delete"
-                                        onClick={() => handleDelete((currentPage - 1) * itemsPerPage + index)}
+                                        onClick={() => handleDelete(org.username)}
+                                      
                                     >
                                         <MdDeleteOutline />
 

@@ -30,6 +30,7 @@ const DocumentApproval = () => {
   const [rejectionReason, setRejectReason] = useState("");
   const [rejectDocumentId, setRejectDocumentId] = useState(null);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
+  const [lastViewedId, setLastViewedId] = useState(null);
   const navigate = useNavigate();  
     
       const searchInfoRef = useRef(null); // Reference for search info popup
@@ -138,6 +139,8 @@ const DocumentApproval = () => {
     });
   };
 
+  
+
   const handleRejectButtonClick = (documentId) => {
     setRejectPopupOpen(true);
     setRejectDocumentId(documentId);
@@ -189,6 +192,7 @@ const DocumentApproval = () => {
         : item
     );
     setData(updatedData);
+    setLastViewedId(file.file_id); 
     
     window.open(host + file.file, '_blank');  
   };
@@ -342,7 +346,7 @@ const DocumentApproval = () => {
   >
     {item.fileName.length > 20 ? item.fileName.substring(0, 20) + "..." : item.fileName}
   </button>
-  {item.viewed && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
+  {lastViewedId === item.file_id && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
 </td>
 
               <td className="documentapproval_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>

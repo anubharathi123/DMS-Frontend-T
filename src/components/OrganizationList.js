@@ -63,8 +63,11 @@ const OrganizationList = () => {
     };
 
     const handleDelete = (indexToDelete) => {
-        const updatedData = filteredData.filter((_, index) => index !== indexToDelete);
-        setFilteredData(updatedData);
+        const globalIndex = (currentPage - 1) * itemsPerPage + indexToDelete; // Get actual index
+        const updatedData = orgData.filter((_, index) => index !== globalIndex);
+    
+        setOrgData(updatedData); // Update main data
+        setFilteredData(updatedData); // Update displayed data
     };
 
     const handleEdit = (org) => {
