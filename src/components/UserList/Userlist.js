@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
 import Loader from "react-js-loader";
 import apiServices from "../../ApiServices/ApiServices"; // Adjust path if needed
 import "./Userlist.css";
@@ -21,6 +22,7 @@ const UserList = () => {
   const [refresh, setRefresh] = useState(false);
   const calendarRef = useRef(null);
   const searchInfoRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -92,6 +94,11 @@ const UserList = () => {
 
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
+  const handleCreateUser = () => {
+    navigate(`/createuser`);
+  }
+
+
   const handleSearch = (e) => setSearchTerm(e.target.value);
   const handleSearchInfo = () => setShowSearchInfo(!showSearchInfo);
   const handleFilter = (e) => setFilter(e.target.value);
@@ -102,6 +109,7 @@ const UserList = () => {
   return (
     <div className="userlist-container">
       <h1 className="userlist-header">User List</h1>
+      <button className='user_createbtn' onClick={handleCreateUser} > + New User</button> 
       {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 
       <div className="userlist-controls">
@@ -179,7 +187,7 @@ const UserList = () => {
               <td className="userlist_td">
                 {new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
               </td>
-              <td className="userlist_td">{item.role}</td>
+              <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
             </tr>
           ))}
         </tbody>

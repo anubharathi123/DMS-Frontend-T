@@ -17,6 +17,22 @@
     margin-top: 10px;
 }
 
+.org_createbtn {
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    background-color: #000b58;
+    color: white;
+    margin-right: 40px;
+    cursor: pointer;
+    width: fit-content;
+    font-size: 12px;
+    position: relative;
+    left: 85%;
+}
+
 .organization-container_controls {
     display: flex;
     justify-content: space-between;
@@ -135,6 +151,7 @@
     max-height: 300px; /* Adjust based on desired height */
     overflow-y: auto;
 }
+
 
 .organization-tbody::-webkit-scrollbar {
     width: 8px;

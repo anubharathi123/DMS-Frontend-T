@@ -43,7 +43,7 @@ const Dashboard = ({ title }) => (
 const DashboardApp = () => {
   const role = localStorage.getItem('role');
   const [selectedYear, setSelectedYear] = useState('2023');
-  const [data, setData] = useState([]);
+  const [OrgCount,setOrgCount] = useState('');
   const [companyData, setCompanyData] = useState([
     { name: 'HCL', username: 'Arun', fileSize: 1000 },
     { name: 'Vdart', username: 'Harish', fileSize: 789 },
@@ -64,9 +64,21 @@ const DashboardApp = () => {
   const username = localStorage.getItem('name') || "User";
 
   useEffect(() => {
-    const fetchName = async () => {
+    const fetchdata = async () => {
       try {
         const response = await apiServices.getName();
+        console.log(response,response.dashboard)
+        console.log("API Response:", response)
+
+        const dashboard = response.dashboard.map(db => ({
+          org_count:db.organization_count || "",
+          active_orgcount:db.active_user_count,
+          inactive_orgcount:db.inactive_user_count,
+          active_doc_count:db.active_document_count,
+          inactive_doc_count:db.inactive_document_count,
+        }));
+        console.log(dashboard);
+        setOrgCount(dashboard);
         if (response) {
           console.log("Fetched usernames:", response);
         }
@@ -74,12 +86,11 @@ const DashboardApp = () => {
         console.error("Error fetching data:", error);
       }
     };
-    fetchName();
+    fetchdata();
+
+   
   }, []);
  
-  
-  
-
   const handleRowLimitChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0) {
@@ -96,7 +107,6 @@ const DashboardApp = () => {
     setCompanyData(sortedData);
   };
 
-
   // Define titles for each role
   const roleTitles = {
     PRODUCT_OWNER: "Product Owner Dashboard",
@@ -107,8 +117,6 @@ const DashboardApp = () => {
     REVIEWER: "Reviewer Dashboard",
     VIEWER: "Viewer Dashboard",
   };
-
- 
 
   // 🟠 Doughnut Chart (Total Uploads)
   const donutData = {
@@ -164,7 +172,7 @@ const DashboardApp = () => {
         {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
           <>
             <div className="cards-container">
-              <Card title="Total Companies" value="34,567" icon={<HiBuildingOffice2 />} role={role} bgColor="#daeefe" />
+              <Card title="Total Companies" value={OrgCount} icon={<HiBuildingOffice2 />} role={role} bgColor="#daeefe" />
               <Card title="Active Companies" value="22,345" icon={<HiBuildingOffice2 style={{ color: 'green' }} />} role={role} bgColor="#eed9ff"/>
               <Card title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} role={role} bgColor="#fff4d2"/>
               <Card title="Client Admin" value="23,456" icon={<IoPeople />} role={role} bgColor="#ffe8da" />

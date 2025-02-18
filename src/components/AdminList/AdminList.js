@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
 import './AdminList.css';
@@ -20,6 +21,7 @@ const AdminList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
   const [refresh, setRefresh] = useState(false); // Track when to refresh data
+  const navigate = useNavigate();
   
     const searchInfoRef = useRef(null); // Reference for search info popup
   
@@ -107,6 +109,11 @@ const AdminList = () => {
 
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
+  const handleCreateAdmin = () => {
+    navigate(`/AdminCreation`);
+  }
+
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -130,6 +137,7 @@ const AdminList = () => {
   return (
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin List</h1>
+      <button className='admin_createbtn' onClick={handleCreateAdmin} > + New Admin</button> 
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
       <div className="adminlist_controls">
         <div className="adminlist_search">

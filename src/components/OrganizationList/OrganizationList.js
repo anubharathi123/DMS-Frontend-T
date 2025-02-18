@@ -10,8 +10,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import File1 from "../../assets/Country of Origin.pdf";
-
+ 
 
 
 const OrganizationList = () => {
@@ -33,7 +32,8 @@ const OrganizationList = () => {
      const [showSearchInfo, setShowSearchInfo] = useState(false);
 const calendarRef = useRef(null);
      const searchInfoRef = useRef(null); // Reference for search info popup
-
+     const role = localStorage.getItem('role');
+     const url = "http://localhost:8000"
      const handleEdit = (username) => {
         console.log("Navigating to edit company:", username);
         navigate(`/CompanyCreation`);
@@ -96,6 +96,10 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         };
       }, [showSearchInfo]);
 
+      const handleCreateOrganization = () => {
+        navigate(`/CompanyCreation`);
+      }
+
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
       };
@@ -144,6 +148,10 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization List</h1>
+            {(role === "PRODUCT_OWNER") && (
+  <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 
+  
+)}
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
@@ -224,7 +232,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
 </td>
                                 <td className="organization-table-td">
                                     {org.msa_doc ? (
-                                        <a href={File1} target='_blank' rel='noopener noreferrer'>
+                                        <a href={(url+org.msa_doc)} target='_blank' rel='noopener noreferrer'>
                                         {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
                                         </a>
                                     ) : (

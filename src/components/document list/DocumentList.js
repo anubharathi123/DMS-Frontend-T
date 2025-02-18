@@ -5,7 +5,7 @@ import apiServices from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import File1 from "../../assets/Packing List.pdf";
+
 
 const DocumentTable = () => {
   const initialState = {
@@ -33,6 +33,7 @@ const DocumentTable = () => {
   const [filteredBackupData, setFilteredBackupData] = useState([]);
   const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
+  const url = "http://localhost:8000"
 
   const handleSearchInfo = () => {
     setShowSearchInfo(!showSearchInfo);
@@ -239,12 +240,44 @@ const DocumentTable = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const filedownload = async (file) => {
+    try {
+      const response = await apiServices.media1({ file });
+  
+      if (!response || response.status !== 200) {
+        throw new Error("Failed to download file");
+      }
+  
+      // Convert response to Blob
+      const blob = new Blob([response.data], { type: response.headers["content-type"] });
+      const url = window.URL.createObjectURL(blob);
+  
+      // Create a download link
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", file.split('/').pop()); // Extracts the file name
+      document.body.appendChild(link);
+      link.click();
+  
+      // Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      alert("Failed to download the file. Please try again.");
+    }
+  };
 
   return (
     <div className="documenttable_container">
       <h1 className="documentlist_header">Document List</h1>
-      {(role === "ADMIN" || role === "PRODUCT_ADMIN") && (
+      {(role === "ADMIN") && (
   <button className='doc-backup' onClick={handleBackupClick}>Backup</button> 
+
+)}
+ {(role === "PRODUCT_OWNER") && (
+  <button className='doc-backup' onClick={handleBackupClick}>Upload</button> 
+  
 )}
       {isBackupOpen && (
         <>
@@ -368,7 +401,7 @@ const DocumentTable = () => {
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documenttable_td px-6 py-4">
                 {item.fileName ? (
-                  <a href={File1} target='_blank' rel='noopener noreferrer'>
+                  <a href={(url+item.file)} target='_blank' rel='noopener noreferrer'>
                     {item.fileName.split('/').pop().substring(0, 20) + '...'}
                   </a>
                 ) : (
