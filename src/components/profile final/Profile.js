@@ -95,6 +95,7 @@ function ProfileCard() {
     const fetchProfileDetails = async () => {
       try {
         const details_data = await authService.details();
+        console.log(details_data)
         if (details_data.type === "User") {
           console.log('user')
           setName(details_data.details[1].first_name)
@@ -118,6 +119,10 @@ function ProfileCard() {
           console.log('Org')
           setName(details_data.details[5].first_name)
           console.log(name)
+          setMail(details_data.details[5].email)
+          console.log(mail)
+          setMobile(details_data.details[1].mobile)
+          console.log(mail)
           // localStorage.setItem('name', name);
           const fetchedRole = details_data.details[3].name
           localStorage.setItem('Company_name', name);

@@ -161,7 +161,7 @@ export default function SignInCard() {
       // console.log(details_data);
       setIsLoginSuccessful(true);
       localStorage.setItem('access_status', 'true');
-      navigate('/Dashboard');
+      navigate('/profile');
 
     } catch (error: any) {
       console.error('OTP verification error:', error.message || error);
