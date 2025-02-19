@@ -48,11 +48,12 @@ const UserList = () => {
         const response = await apiServices.users();
         console.log(response)
         const users = response.map((user) => ({
-          username: user.auth_user.username || "N/A",
-          company_name: user.organization.company_name,
+          username: user.auth_user.first_name || "N/A",
+          // company_name: user.organization.company_name,
           email: user.auth_user.email,
           createdAt: user.created_at,
           role: user.role.name,
+          status:user.is_frozen
         }));
         setData(users);
         setFilteredData(users);
@@ -161,8 +162,7 @@ const UserList = () => {
       <table className="userlist_table">
         <thead className="userlist_thead">
           <tr>
-            <th className="userlist_th">Username</th>
-            <th className="userlist_th">Organization Name</th>
+            <th className="userlist_th">Name</th>
             <th className="userlist_th">Email</th>
             <th className="userlist_th">
               Created Date
@@ -183,18 +183,21 @@ const UserList = () => {
               )}
             </th>
             <th className="userlist_th">Role</th>
+            <th className="userlist_th">Status</th>
+
           </tr>
         </thead>
         <tbody className="userlist_tbody">
           {paginatedData.map((item, index) => (
             <tr key={index} className="userlist_row">
               <td className="userlist_td">{item.username}</td>
-              <td className="userlist_td">{item.company_name}</td>
+              
               <td className="userlist_td">{item.email}</td>
               <td className="userlist_td">
                 {new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
               </td>
               <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
+              <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
             </tr>
           ))}
         </tbody>

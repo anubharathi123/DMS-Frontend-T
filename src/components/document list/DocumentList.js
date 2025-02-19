@@ -35,7 +35,15 @@ const DocumentTable = () => {
   const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
   const url = "http://localhost:8000"
-
+  const mappings = {
+    'declaration': 'Declaration',
+    'invoice': 'Invoice',
+    'packinglist': 'Packing List',
+    'awsbol': 'AWS/BOL',
+    'countryoforigin': 'Certificate of Origin',
+    'deliveryorder': 'Delivery Order',
+    'other': 'Others',
+  };
   const handleSearchInfo = () => {
     setShowSearchInfo(!showSearchInfo);
   };
@@ -415,7 +423,8 @@ const DocumentTable = () => {
               </td>
 
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              <td className="documenttable_td px-6 py-4">{item.documentType.charAt(0).toUpperCase() + item.documentType.slice(1).toLowerCase()}</td>
+              
+              <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
               <td className="documenttable_td px-6 py-4">
                 <span
                   data-tip={item.rejectionReason} 

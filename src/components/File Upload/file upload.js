@@ -208,7 +208,7 @@ const FileUploadPage = () => {
       { key: 'awsBol', label: 'AWS/BOL' },
       { key: 'countryOfOrigin', label: 'Certificate Of Origin' },
       { key: 'deliveryOrder', label: 'Delivery Order' },
-      { key: 'other', label: 'Other' },
+      { key: 'other', label: 'Others' },
     ].map((item) => (
       <div className="file-upload-item" key={item.key}>
         <label className="file-upload-label">{item.label}</label>
