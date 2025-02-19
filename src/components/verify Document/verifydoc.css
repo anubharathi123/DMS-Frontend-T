@@ -273,6 +273,7 @@
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  padding-left: .5rem !important;
 }
 
 /* Modal Styling */

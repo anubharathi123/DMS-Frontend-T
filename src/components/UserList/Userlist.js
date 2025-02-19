@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "react-js-loader";
 import apiServices from "../../ApiServices/ApiServices"; // Adjust path if needed
 import "./Userlist.css";
+import refreshIcon from '../../assets/images/refresh-icon.png';
 
 const UserList = () => {
   const [data, setData] = useState([]);
@@ -72,11 +73,11 @@ const UserList = () => {
     const searchTermLower = searchTerm.toLowerCase();
     const matchesSearch =
       item.username.toLowerCase().includes(searchTermLower) ||
-      item.name.toLowerCase().includes(searchTermLower) ||
+      item.company_name.toLowerCase().includes(searchTermLower) || // Fix: company_name instead of name
       item.email.toLowerCase().includes(searchTermLower) ||
       item.createdAt.toLowerCase().includes(searchTermLower) ||
       item.role.toLowerCase().includes(searchTermLower);
-
+  
     return filter ? item.role === filter && matchesSearch : matchesSearch;
   });
 
@@ -98,7 +99,13 @@ const UserList = () => {
     navigate(`/createuser`);
   }
 
-
+  const handleResetFilter = (e) => {
+    setSearchTerm('');
+    setFilter(e.target.value);
+    setFilterDate(null);
+    setIsCalendarOpen(false);
+    setCurrentPage(1);
+};
   const handleSearch = (e) => setSearchTerm(e.target.value);
   const handleSearchInfo = () => setShowSearchInfo(!showSearchInfo);
   const handleFilter = (e) => setFilter(e.target.value);
@@ -197,6 +204,14 @@ const UserList = () => {
         <div className="userlist_pageinfo">
             <p className="userlist_pageinfo_text">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
         </div>
+         {/* Reset Filter Button */}
+         {(searchTerm || filter || filterDate) && (
+             <button className="reset-filter-btn" onClick={handleResetFilter} 
+                        disabled={!searchTerm && !filter && !filterDate}>
+                            Reset Filter 
+                            <img className='refresh-icon' src={refreshIcon}/>
+                            </button>
+                            )}
         <div className="userlist_paging">
           <button
             onClick={() => handlePageChange(currentPage - 1)}

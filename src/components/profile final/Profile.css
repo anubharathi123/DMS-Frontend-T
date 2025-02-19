@@ -19,21 +19,22 @@
 
 /* Profile Card */
 .profile-card {
-    padding-top: 5px;
+   
     /* margin-top: 150px; */
 	background: #fff;
-	padding: 30px;
+	padding: 25px;
 	border-radius: 20px;
 	text-align: center;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 	width: 250px;
 	border: 1px solid #e0e0e0;
-	/* height: 340px; */
+	/* height: 450px; */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	position: relative;
+	top: 20px;
 	transition: transform 0.9s ease-in-out;
 }
 
@@ -95,7 +96,28 @@
 }
 
 /* Buttons */
-.upload-btn,
+.upload-btn {
+	color: #6c63ff;
+	font-weight: bold;
+	background: none;
+	border: none;
+	cursor: pointer;
+	margin: 5px;
+}
+
+.upload-photo {
+	left: 30px;
+    position: relative;
+    bottom: 175px;
+    width: 38px;
+    height: 22px;
+    cursor: pointer;
+    background: none;
+    border-radius: 50%;
+    padding: 4px;
+    transition: opacity 0.4s ease-in-out;
+}
+
 .edit-btn {
 	color: #6c63ff;
 	font-weight: bold;
@@ -119,6 +141,9 @@
 	width: 600px;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 	border: 1px solid #e0e0e0;
+	position: relative;
+	height: 440px;
+	top: 20px;
 	opacity: 0;
 	transform: translateY(-20px);
 	transition: opacity 0.1s ease-in-out, transform 0.7s ease-in-out;

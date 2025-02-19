@@ -6,6 +6,7 @@ import apiServices from '../../ApiServices/ApiServices'; // Adjust the import pa
 import './AdminList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import refreshIcon from '../../assets/images/refresh-icon.png';
 
 const AdminList = () => {
   const [data, setData] = useState([]);
@@ -14,6 +15,7 @@ const AdminList = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [filter, setFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [actionMessage, setActionMessage] = useState('');
@@ -113,6 +115,14 @@ const AdminList = () => {
     navigate(`/AdminCreation`);
   }
 
+  const handleResetFilter = () => {
+    setSearchTerm('');
+    setStatusFilter('');
+    setFilterDate(null);
+    setIsCalendarOpen(false);
+    setCurrentPage(1);
+};
+
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -162,7 +172,7 @@ const AdminList = () => {
           <label className="adminlist_filter_label">Filter by Role:</label>
           <select value={filter} onChange={handleFilter} className="adminlist_filter_select">
             <option value="All">All</option>
-            <option value="Admin">Admin</option>
+            <option value="PRODUCT_ADMIN">PRODUCT_ADMIN</option>
             {/* <option value="SuperAdmin">SuperAdmin</option> */}
           </select>
         </div>
@@ -217,7 +227,7 @@ const AdminList = () => {
               <td className="documenttable_td px-6 py-4 ">{item.name}</td>
               <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
               <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              <td className="documenttable_td px-6 py-4 ">{item.role}</td>
+              <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
             </tr>
           ))}
         </tbody>
@@ -226,6 +236,14 @@ const AdminList = () => {
         <div className="adminlist_pageinfo">
           <p className="adminlist_pageinfo_text">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
         </div>
+        {/* Reset Filter Button */}
+      {(searchTerm || statusFilter || filterDate) && (
+             <button className="reset-filter-btn" onClick={handleResetFilter} 
+                        disabled={!searchTerm && !statusFilter && !filterDate}>
+                            Reset Filter 
+                            <img className='refresh-icon' src={refreshIcon}/>
+                            </button>
+                            )}
         <div className="adminlist_paging">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -243,6 +261,14 @@ const AdminList = () => {
           </button>
         </div>
       </div>
+      {/* Reset Filter Button */}
+      {(searchTerm || statusFilter || filterDate) && (
+             <button className="reset-filter-btn" onClick={handleResetFilter} 
+                        disabled={!searchTerm && !statusFilter && !filterDate}>
+                            Reset Filter 
+                            <img className='refresh-icon' src={refreshIcon}/>
+                            </button>
+                            )}
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">

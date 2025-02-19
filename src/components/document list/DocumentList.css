@@ -164,6 +164,11 @@
   color: #333;
 }
 
+.documenttable_search_icon {
+  position: relative;
+    right: 33px;
+}
+
 .documenttable_search
 {
   flex-direction: row-reverse;

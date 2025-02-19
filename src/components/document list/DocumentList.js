@@ -5,6 +5,7 @@ import apiServices from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import refreshIcon from '../../assets/images/refresh-icon.png';
 
 
 const DocumentTable = () => {
@@ -128,6 +129,14 @@ const DocumentTable = () => {
   const handleBackupClick = () => {
     setIsBackupOpen(true);
   };
+
+  const handleResetFilter = (e) => {
+    setSearchTerm('');
+    setFilter(e.target.value);
+    setFilterDate(null);
+    setIsCalendarOpen(false);
+    setCurrentPage(1);
+};
 
   const handleCloseBackup = () => {
     setIsBackupOpen(false);
@@ -321,7 +330,7 @@ const DocumentTable = () => {
       {actionMessage && <div className="documenttable_action_message">{actionMessage}</div>}
       <div className="documenttable_controls flex justify-between mb-4">
         <div className="documenttable_search flex items-center">
-          <Search className="documenttable_search_icon w-5 h-5 mr-2" />
+          <Search className="documenttable_search_icon" />
           <input
             type="search"
             value={searchTerm}
@@ -421,7 +430,7 @@ const DocumentTable = () => {
               </td>
               <td className="documenttable_td px-6 py-4">
               {item.status === "REJECTED" && (
-                        <span>{item.rejectionReason}</span>
+                        <span>{item.rejectionReason.split('/').pop().substring(0, 20) + '...'}</span>
                       )}
                 {item.status == "APPROVED" && (
                         <span> NULL</span>
@@ -439,6 +448,14 @@ const DocumentTable = () => {
         <div className="documenttable_pageinfo flex items-center">
           <p className="documenttable_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
         </div>
+        {/* Reset Filter Button */}
+              {(searchTerm || filter || filterDate) && (
+                     <button className="reset-filter-btn" onClick={handleResetFilter} 
+                                disabled={!searchTerm && !filter && !filterDate}>
+                                    Reset Filter 
+                                    <img className='refresh-icon' src={refreshIcon}/>
+                                    </button>
+                                    )}
         <div className="documenttable_paging flex items-center">
           <button
             onClick={() => handlePageChange(currentPage - 1)}

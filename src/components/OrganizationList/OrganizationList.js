@@ -10,6 +10,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import refreshIcon from '../../assets/images/refresh-icon.png';
  
 
 
@@ -115,13 +116,23 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         setRowsPerPage(parseInt(e.target.value));
       };
 
-    const filteredData = data.filter(org =>
-        (!searchTerm ||
-            org.username.toLowerCase().includes(searchTerm) ||
-            org.name.toUpperCase().includes(searchTerm)) &&
-        (!statusFilter || org.status.toLowerCase() === statusFilter.toLowerCase()) &&
-        (!startDate || org.createdDate === startDate.toISOString().split('T')[0])
-    );
+      const filteredData = data.filter(org => {
+        const matchesSearch = searchTerm
+            ? org.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              org.org_name.toLowerCase().includes(searchTerm.toLowerCase())
+            : true;
+    
+        const matchesStatus = statusFilter
+            ? (statusFilter === "Active" ? org.status === false : org.status === true)
+            : true;
+    
+        const matchesDate = startDate
+            ? org.created_date === startDate.toISOString().split('T')[0]
+            : true;
+    
+        return matchesSearch && matchesStatus && matchesDate;
+    });
+    
     const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
         const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -134,6 +145,14 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         if (currentPage > 1) {
             setCurrentPage((prev) => prev - 1);
         }
+    };
+
+    const handleResetFilter = () => {
+        setSearchTerm('');
+        setStatusFilter('');
+        setFilterDate(null);
+        setIsCalendarOpen(false);
+        setCurrentPage(1);
     };
 
    
@@ -205,6 +224,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
                         <option value="20">20</option>
                     </select>
                 </div>
+                
             </div>
             
             <table className="organization-table">
@@ -293,6 +313,14 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
                 <div className="organization_pageinfo">
                     Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
                 </div>
+                 {/* Reset Filter Button */}
+             {(searchTerm || statusFilter || filterDate) && (
+             <button className="reset-filter-btn" onClick={handleResetFilter} 
+                        disabled={!searchTerm && !statusFilter && !filterDate}>
+                            Reset Filter 
+                            <img className='refresh-icon' src={refreshIcon}/>
+                            </button>
+                            )}
                 <div className="organization_paging">
                     <button
                         className="prev-button"
@@ -310,6 +338,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
                     </button>
                 </div>
             </div>
+            
             {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">

@@ -51,6 +51,7 @@
   .userlist_search_input {
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
+    padding-left: .5rem !important;
     border-radius: 7px;
     width: 260px;
     font-size: 12px !important;
@@ -90,6 +91,11 @@
     z-index: 100;
     font-size: 12px;
     color: #333;
+  }
+
+  .userlist_search_icon {
+    position: relative;
+    right: 33px;
   }
   
   .userlist-filter, .userlist_rows {

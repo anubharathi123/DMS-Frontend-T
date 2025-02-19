@@ -10,6 +10,7 @@ import apiServices from '../../ApiServices/ApiServices'; // Adjust path if neces
 import { MdCancel } from "react-icons/md";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import refreshIcon from '../../assets/images/refresh-icon.png';
 
 
 const DocumentApproval = () => {
@@ -31,6 +32,7 @@ const DocumentApproval = () => {
   const [rejectDocumentId, setRejectDocumentId] = useState(null);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
   const [lastViewedId, setLastViewedId] = useState(null);
+  
   const navigate = useNavigate();  
     
       const searchInfoRef = useRef(null); // Reference for search info popup
@@ -139,7 +141,14 @@ const DocumentApproval = () => {
     });
   };
 
-  
+  const handleResetFilter = (e) => {
+    setSearchTerm('');
+    setFilter(e.target.value);
+    setFilterDoc(e.target.value);
+    setFilterDate(null);
+    setIsCalendarOpen(false);
+    setCurrentPage(1);
+};
 
   const handleRejectButtonClick = (documentId) => {
     setRejectPopupOpen(true);
@@ -386,6 +395,14 @@ const DocumentApproval = () => {
         <div className="documenttable_pageinfo flex items-center">
           <p className="documenttable_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData.length / rowsPerPage)}</p>
         </div>
+         {/* Reset Filter Button */}
+         {(searchTerm || filterDoc || filterDate) && (
+             <button className="reset-filter-btn" onClick={handleResetFilter} 
+                        disabled={!searchTerm && !filterDoc && !filterDate}>
+                            Reset Filter 
+                            <img className='refresh-icon' src={refreshIcon}/>
+                            </button>
+                            )}
         <div className="documenttable_paging flex items-center">
           <button
             onClick={() => handlePageChange(currentPage - 1)}

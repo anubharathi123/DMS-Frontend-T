@@ -50,8 +50,14 @@
   width: 260px;
   padding-top: .5rem !important;
   padding-bottom: .5rem !important;
+  padding-left: .5rem !important;
   border-radius: 7px;
   font-size: 12px !important;
+}
+
+.adminlist_search_icon {
+  position: relative;
+  right: 33px;
 }
 
 .adminlist_searchinfo {

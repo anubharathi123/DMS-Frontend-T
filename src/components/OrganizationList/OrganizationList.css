@@ -59,6 +59,11 @@
   color: #000000;
 }
 
+.org_search-icon {
+    position: relative;
+    right: 33px;
+}
+
 .organization-search {
     display: flex;
     align-items: center;
@@ -67,11 +72,13 @@
     width: 30%;
     position:relative;
     
+    
 }
 
 .organization-search-input {
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
+    padding-left: .5rem !important;
     border-radius: 7px;
     width: 260px;
     font-size: 12px !important;
@@ -110,6 +117,27 @@
     padding-bottom: .5rem !important;
     border-radius: 7px;
     width: 200px;
+    font-size: 12px !important;
+}
+
+.refresh-icon {
+    position:relative;
+    left: 3px;
+    width: 20px;
+    height: 12px;
+    filter: invert(1);
+}
+
+.reset-filter-btn {
+    background-color: #000b58;
+    color: white;
+    padding: 8px;
+    width: 100px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 7px;
+    position: relative;
+    right: 29%;
     font-size: 12px !important;
 }
 

@@ -5,6 +5,7 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import authService from "../../ApiServices/ApiServices";
 import removeIcon from "../../assets/images/remove_icon.png";
+import editIcon from "../../assets/images/edit_icon.png";
 
 function ProfileCard() {
   const [cropperVisible, setCropperVisible] = useState(false);
@@ -246,13 +247,11 @@ function ProfileCard() {
           <p className="profile-location">Email: {mail}</p>
           <p className="profile-role">Phone: {mobile}</p>
 
-          <div className="divider-container">
-            <div className="profile-divider"></div>
-          </div>
-
+          {(!profileImage || profileImage === avatar) && (
           <button className="upload-btn" onClick={() => fileInputRef.current.click()}>
-            Upload picture
+            <img className="upload-photo" src={editIcon}></img>
           </button>
+          )}
       
           <div className="divider-container">
             <div className="profile-divider"></div>
