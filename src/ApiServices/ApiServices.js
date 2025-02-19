@@ -130,6 +130,11 @@ const authService = {
   getName: async (data) => {
     return handleResponse(apiClient.post('Dashboard/', data))
   },
+
+  organizationCount: async () => {
+    return handleResponse(apiClient.get('organizations/dashboard/'))
+  },
+
   createAdmin: async (data) => {
     return handleResponse(apiClient.post('AdminCreation/',data))
   },

@@ -20,8 +20,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { TbBackground } from 'react-icons/tb';
-import { colors } from '@mui/material';
+
 
 ChartJS.register(
   BarElement,
@@ -44,52 +43,41 @@ const DashboardApp = () => {
   const role = localStorage.getItem('role');
   const [selectedYear, setSelectedYear] = useState('2023');
   const [OrgCount,setOrgCount] = useState('');
-  const [companyData, setCompanyData] = useState([
-    { name: 'HCL', username: 'Arun', fileSize: 1000 },
-    { name: 'Vdart', username: 'Harish', fileSize: 789 },
-    { name: 'Accenture', username: 'Vignesh', fileSize: 665 },
-    { name: 'Infosys', username: 'Surya', fileSize: 569 },
-    { name: 'Wipro', username: 'Chandru', fileSize: 223 },
-    { name: 'Cognizant', username: 'Prakash', fileSize: 446 },
-    { name: 'Infotech', username: 'Karthik', fileSize: 998 },
-    { name: 'SAP', username: 'Suresh', fileSize: 554 },
-    { name: 'TCS', username: 'Aravind', fileSize: 232 },
-    { name: 'IBM', username: 'Rangarajan', fileSize: 109 },
-    { name: 'Fiorano', username: 'Ram', fileSize: 654 },
-    { name: 'Zoho', username: 'Tamilselvan', fileSize: 451 },
-    { name: 'Capgemini', username: 'Sundar', fileSize: 342 },
-  ]);
+  const [companyData, setCompanyData] = useState([]);
 
-  const [rowLimit, setRowLimit] = useState(companyData.length  || 10);
+  const [rowLimit, setRowLimit] = useState(10);
   const username = localStorage.getItem('name') || "User";
 
   useEffect(() => {
-    const fetchdata = async () => {
+    const fetchData = async () => {
       try {
-        const response = await apiServices.getName();
-        console.log(response,response.dashboard)
-        console.log("API Response:", response)
+        const response = await apiServices.organizationCount();
+        console.log("API Response:", response);
 
-        const dashboard = response.dashboard.map(db => ({
-          org_count:db.organization_count || "",
-          active_orgcount:db.active_user_count,
-          inactive_orgcount:db.inactive_user_count,
-          active_doc_count:db.active_document_count,
-          inactive_doc_count:db.inactive_document_count,
-        }));
-        console.log(dashboard);
-        setOrgCount(dashboard);
         if (response) {
-          console.log("Fetched usernames:", response);
+          const dashboard = response.map(db => ({
+            org_name: db.organization_name,
+            username: db.organization_user,
+            doc_count: db.total_files_all,
+            doc_size: db.total_file_size_all,
+          }));
+
+          setCompanyData(dashboard);  
+          setOrgCount(dashboard.length); // Set OrgCount
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    fetchdata();
 
-   
-  }, []);
+    fetchData();
+  }, [companyData]);
+
+  // Monitor companyData state updates
+  useEffect(() => {
+    console.log("Updated Company Data:", companyData);
+  }, [companyData]);
+  
  
   const handleRowLimitChange = (e) => {
     const value = e.target.value.trim() === "" ? 1 : parseInt(e.target.value, 10);
@@ -200,10 +188,10 @@ const DashboardApp = () => {
                     <tbody className='dashboard-tbody'>
                     {companyData.slice(0, rowLimit).map((company, index) => (
                     <tr key={index} className='dashboard-table-row hover:bg-gray-50'>
-                      <td className='dashboard-table-td'>{company.name}</td>
+                      <td className='dashboard-table-td'>{company.org_name}</td>
                       <td className='dashboard-table-td'>{company.username}</td>
-                      <td className='dashboard-table-td'></td>
-                      <td className='dashboard-table-td'>{company.fileSize} Kb</td>
+                      <td className='dashboard-table-td'>{company.doc_count}</td>
+                      <td className='dashboard-table-td'>{company.doc_size} Kb</td>
                     </tr>
               ))}
             </tbody>
