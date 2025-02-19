@@ -60,7 +60,7 @@ const DashboardApp = () => {
     { name: 'Capgemini', username: 'Sundar', fileSize: 342 },
   ]);
 
-  const [rowLimit, setRowLimit] = useState(companyData.length);
+  const [rowLimit, setRowLimit] = useState(companyData.length  || 10);
   const username = localStorage.getItem('name') || "User";
 
   useEffect(() => {
@@ -92,11 +92,12 @@ const DashboardApp = () => {
   }, []);
  
   const handleRowLimitChange = (e) => {
-    const value = parseInt(e.target.value, 10);
+    const value = e.target.value.trim() === "" ? 1 : parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0) {
       setRowLimit(value);
     }
   };
+
   const sortAscending = () => {
     const sortedData = [...companyData].sort((a, b) => a.fileSize - b.fileSize);
     setCompanyData(sortedData);
@@ -183,7 +184,7 @@ const DashboardApp = () => {
                 <div className='dashboard-btngrp'>
                   <button className='dashboard-top' onClick={sortAscending}><FaArrowUp /></button>
                   <button className='dashboard-bottom' onClick={sortDescending}><FaArrowDown /></button>
-                  <input type='number'  className='dashboard_num-input' onChange={handleRowLimitChange}/>
+                  <input type='text' value={rowLimit} className='dashboard_num-input' onChange={handleRowLimitChange}/>
                 </div>
                 
                 <div className='dashboard-table-container' style={{ maxHeight: '250px', overflowY: rowLimit > 5 ? 'scroll' : 'auto', position: "relative", bottom: "25px"}}>
@@ -192,6 +193,7 @@ const DashboardApp = () => {
                     <tr>
                       <th className='dashboard-table-th'>Company Name</th>
                       <th className='dashboard-table-th'>Username</th>
+                      <th className='dashboard-table-th'>Doc Count</th>
                       <th className='dashboard-table-th'>File Size (Kb)</th>
                     </tr>
                     </thead>
@@ -200,6 +202,7 @@ const DashboardApp = () => {
                     <tr key={index} className='dashboard-table-row hover:bg-gray-50'>
                       <td className='dashboard-table-td'>{company.name}</td>
                       <td className='dashboard-table-td'>{company.username}</td>
+                      <td className='dashboard-table-td'></td>
                       <td className='dashboard-table-td'>{company.fileSize} Kb</td>
                     </tr>
               ))}
