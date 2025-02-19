@@ -127,7 +127,7 @@ const authService = {
     }
   },
 
-  getName: async (data) => {
+  companyCount: async (data) => {
     return handleResponse(apiClient.post('Dashboard/', data))
   },
 

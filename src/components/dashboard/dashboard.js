@@ -63,7 +63,7 @@ const DashboardApp = () => {
           }));
 
           setCompanyData(dashboard);  
-          setOrgCount(dashboard.length); // Set OrgCount
+          
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -72,6 +72,8 @@ const DashboardApp = () => {
 
     fetchData();
   }, [companyData]);
+
+  
 
   // Monitor companyData state updates
   useEffect(() => {
