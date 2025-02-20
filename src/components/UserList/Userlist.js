@@ -7,6 +7,8 @@ import Loader from "react-js-loader";
 import apiServices from "../../ApiServices/ApiServices"; // Adjust path if needed
 import "./Userlist.css";
 import refreshIcon from '../../assets/images/refresh-icon.png';
+import { FaEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
 const UserList = () => {
   const [data, setData] = useState([]);
@@ -100,6 +102,33 @@ const UserList = () => {
     navigate(`/createuser`);
   }
 
+  const handleEditAdmin = (username) => {
+    navigate(`/createuser/${username}`);
+  };
+
+  const handleDeleteAdmin = async (username) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete user "${username}"?`);
+    
+    if (confirmDelete) {
+      try {
+        setIsLoading(true);
+        await apiServices.deleteAdmin(username); // Adjust API call based on your service
+  
+        // Remove the deleted admin from state
+        const updatedAdmins = data.filter(admin => admin.username !== username);
+        setData(updatedAdmins);
+        setFilteredData(updatedAdmins);
+        
+        setActionMessage(`User "${username}" deleted successfully.`);
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        setActionMessage('Error deleting user. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   const handleResetFilter = (e) => {
     setSearchTerm('');
     setFilter(e.target.value);
@@ -184,7 +213,7 @@ const UserList = () => {
             </th>
             <th className="userlist_th">Role</th>
             <th className="userlist_th">Status</th>
-
+            <th className="userlist_th">Actions</th>
           </tr>
         </thead>
         <tbody className="userlist_tbody">
@@ -198,6 +227,10 @@ const UserList = () => {
               </td>
               <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
               <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
+              <td className="userlist_td">
+                 <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}><FaEdit /></button>
+                                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><MdDeleteOutline/></button>
+              </td>
             </tr>
           ))}
         </tbody>

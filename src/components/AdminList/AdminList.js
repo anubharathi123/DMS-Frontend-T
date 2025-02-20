@@ -7,6 +7,8 @@ import './AdminList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
+import { FaEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
 const AdminList = () => {
   const [data, setData] = useState([]);
@@ -123,6 +125,33 @@ const AdminList = () => {
     setCurrentPage(1);
 };
 
+const handleEditAdmin = (username) => {
+  navigate(`/AdminCreation/${username}`);
+};
+
+const handleDeleteAdmin = async (username) => {
+  const confirmDelete = window.confirm(`Are you sure you want to delete admin "${username}"?`);
+  
+  if (confirmDelete) {
+    try {
+      setIsLoading(true);
+      await apiServices.deleteAdmin(username); // Adjust API call based on your service
+
+      // Remove the deleted admin from state
+      const updatedAdmins = data.filter(admin => admin.username !== username);
+      setData(updatedAdmins);
+      setFilteredData(updatedAdmins);
+      
+      setActionMessage(`Admin "${username}" deleted successfully.`);
+    } catch (error) {
+      console.error('Error deleting admin:', error);
+      setActionMessage('Error deleting admin. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+};
+
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -216,6 +245,7 @@ const AdminList = () => {
               )}
             </th>
             <th className="adminlist_th">Role</th>
+            <th className="adminlist_th">Actions</th>
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
@@ -228,6 +258,10 @@ const AdminList = () => {
               <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
               <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
+              <td className='documenttable_td px-6 py-4'>
+                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}><FaEdit /></button>
+                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><MdDeleteOutline/></button>
+              </td>
             </tr>
           ))}
         </tbody>

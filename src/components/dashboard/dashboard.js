@@ -53,7 +53,7 @@ const DashboardApp = () => {
       try {
         const response = await apiServices.organizationCount();
         console.log("API Response:", response);
-
+  
         if (response) {
           const dashboard = response.map(db => ({
             org_name: db.organization_name,
@@ -61,20 +61,34 @@ const DashboardApp = () => {
             doc_count: db.total_files_all,
             doc_size: db.total_file_size_all,
           }));
-
+  
           setCompanyData(dashboard);  
-          
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
-    fetchData();
-  }, [companyData]);
-
   
-
+    fetchData();
+  }, []); // ✅ Removed `companyData` from dependencies
+  
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const response = await apiServices.companyCount();
+        console.log("API Response:", response);
+  
+        if (response) {
+          setOrgCount(response[0]?.organization_count || "0"); // ✅ Fixed incorrect data handling
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchCount();
+  }, []); // ✅ Removed `companyData` from dependencies
+  
   // Monitor companyData state updates
   useEffect(() => {
     console.log("Updated Company Data:", companyData);

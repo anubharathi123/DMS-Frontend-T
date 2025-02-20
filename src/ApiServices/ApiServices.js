@@ -128,7 +128,7 @@ const authService = {
   },
 
   companyCount: async (data) => {
-    return handleResponse(apiClient.post('Dashboard/', data))
+    return handleResponse(apiClient.get('dashboard/', data))
   },
 
   organizationCount: async () => {
@@ -156,6 +156,13 @@ const authService = {
     return handleResponse(apiClient.post('organization/', data));
   },
   getOrganizations: async () => handleResponse(apiClient.get('organization/')),
+  updateOrganization: async (id, data) => {
+    return await fetch(`http://localhost:8000/api/organizations/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    }).then(res => res.json());
+},
   OrganizationList: async (data) => {
     // if (!data.name || !data.owner_email) {
     //   throw new Error('Organization name and owner email are required.');
@@ -191,7 +198,7 @@ const authService = {
     return handleResponse(apiClient.post(`organizations/${orgId}/resume/`));
   },
   deleteOrganization: async (orgId) => {
-    return handleResponse(apiClient.post(`organization_delete/${orgId}/delete/`));
+    return handleResponse(apiClient.delete(`organization_delete1/${orgId}/`));
   },
 
   addSubAdmin: async (orgId, data) => {

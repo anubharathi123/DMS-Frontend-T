@@ -40,9 +40,10 @@ const CompanyCreation = () => {
     
     setIsLoading(true);
     try {
+      
       await authService.createOrganization(formData);
       alert('Company registered successfully!');
-      navigate('/dashboard');
+      navigate('/OrganizationList');
     } catch (error) {
       setError(error.message || 'Something went wrong.');
       setTimeout(() => setError(''), 3000);

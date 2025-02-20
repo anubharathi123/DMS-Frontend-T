@@ -37,9 +37,9 @@ const calendarRef = useRef(null);
      const searchInfoRef = useRef(null); // Reference for search info popup
      const role = localStorage.getItem('role');
      const url = "http://localhost:8000"
-     const handleEdit = (username) => {
-        console.log("Navigating to edit company:", username);
-        navigate(`/CompanyCreation`);
+
+     const handleEdit = (id) => {
+        navigate(`/CompanyCreation/${id}`);
     };
 
      const handleSearchInfo = () => {
@@ -55,6 +55,7 @@ const calendarRef = useRef(null);
                 console.log("API Response:", response);
                 
                  const organization = response.organization.map(org => ({
+                    id:org.id,
                     username:org.auth_user.username,
                     org_name:org.company_name,
                     msa_doc: org.contract_doc,
@@ -156,7 +157,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
     };
 
    
-    const handleDelete = async (username) => {
+    const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this organization?")) {
             return;
         }
@@ -165,10 +166,10 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
             setIsLoading(true);
     
             // Call API to delete the organization
-            const response = await apiServices.deleteOrganization(username);
-    
-            if (response.success) { // Ensure API returns success
-                setData(prevData => prevData.filter(org => org.username !== username));
+            const response = await apiServices.deleteOrganization(id);
+            // console.log(response,response.success,response.message)
+            if (response.message) { // Ensure API returns success
+                setData(prevData => prevData.filter(org => org.id !== id));
             } else {
                 alert("Failed to delete the organization. Please try again.");
             }
@@ -283,13 +284,13 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
   {org.status ? "Inactive" : "Active"}
 </td>
                                 <td className="organization-table-td">
-                                    <button className='organization-edit' onClick={() => handleEdit(org.username)}>
+                                    <button className='organization-edit' onClick={() => handleEdit(org.id)}>
                                     <FaEdit />
                                     </button>
                                     
                                     <button
                                         className="organization-delete"
-                                        onClick={() => handleDelete(org.username)}
+                                        onClick={() => handleDelete(org.id)}
                                       
                                     >
                                         <MdDeleteOutline />
