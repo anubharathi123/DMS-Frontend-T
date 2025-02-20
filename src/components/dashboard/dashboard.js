@@ -100,9 +100,9 @@ const DashboardApp = () => {
 
   // Define titles for each role
   const roleTitles = {
-    PRODUCT_OWNER: "Product Owner Dashboard",
-    PRODUCT_ADMIN: "Product Admin Dashboard",
-    ADMIN: "Admin Dashboard",
+    PRODUCT_OWNER: "Dashboard",
+    PRODUCT_ADMIN: "Dashboard",
+    ADMIN: "Dashboard",
     UPLOADER: "Uploader Dashboard",
     APPROVER: "Approver Dashboard",
     REVIEWER: "Reviewer Dashboard",
@@ -157,7 +157,7 @@ const DashboardApp = () => {
   return (
     <div className='dashboard-body'>
       <div className='dashboard-container' >
-        <Dashboard title={roleTitles[role]} />
+        <Dashboard title="Dashboard" />
         <h2 className='dashboard-h2'>Welcome Back, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()} 👋</h2>
 
         {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (

@@ -24,9 +24,9 @@
   align-items: center;
   /* width: 940px; */
   /* margin-bottom: 20px; */
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 20px;
-  height: 50px;
+  height: 20px;
 }
 
 .dashboard-h1 {
@@ -37,7 +37,9 @@
 
 .dashboard-h2 {
   position: relative;
-  right: 35%;
+  font-size: 18px;
+  /* right: 35%; */
+  margin-right: auto;
   bottom: 20px;
   color: var(--dark-blue);
 }

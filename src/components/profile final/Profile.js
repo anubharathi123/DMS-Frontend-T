@@ -272,7 +272,7 @@ function ProfileCard() {
         {showEditCard && (
           <div className="profile-edit-card">
             <h2 className="profile-title">Profile</h2>
-            <p className="profile-subtitle">The information can be edited</p>
+           {/* <p className="profile-subtitle">The information can be edited</p>*/}
 
             <div className="profile-form">
               <div className="input-group">
