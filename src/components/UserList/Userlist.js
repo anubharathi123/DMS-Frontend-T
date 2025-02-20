@@ -145,7 +145,7 @@ const UserList = () => {
 
   return (
     <div className="userlist-container">
-      <h1 className="userlist-header">User List</h1>
+      <h1 className="userlist-header">User Details</h1>
       <button className='user_createbtn' onClick={handleCreateUser} > + New User</button> 
       {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 

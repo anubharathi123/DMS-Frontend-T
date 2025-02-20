@@ -287,7 +287,7 @@ const DocumentTable = () => {
 
   return (
     <div className="documenttable_container">
-      <h1 className="documentlist_header">Document List</h1>
+      <h1 className="documentlist_header">Document Details</h1>
       {(role === "ADMIN") && (
   <button className='doc-backup' onClick={handleBackupClick}>Backup</button> 
 )}
