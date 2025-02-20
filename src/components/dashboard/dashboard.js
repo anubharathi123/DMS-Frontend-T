@@ -44,7 +44,7 @@ const DashboardApp = () => {
   const [selectedYear, setSelectedYear] = useState('2023');
   const [OrgCount,setOrgCount] = useState([]);
   const [companyData, setCompanyData] = useState([]);
-  const [rowLimit, setRowLimit] = useState(10);
+  const [rowLimit, setRowLimit] = useState('');
   const username = localStorage.getItem('name') || "User";
   // const [data, setData] = useState([])
 
@@ -139,7 +139,7 @@ const DashboardApp = () => {
     datasets: [
       {
         data: [50000, 10000, 5000],
-        backgroundColor: ['#336CC9', '#f0ec05', '#ff0101'],
+        backgroundColor: ['#094780', '#70bbff', '#a0d1ff'],
         borderWidth: 3,
         cutout: '',
       },
@@ -155,10 +155,10 @@ const DashboardApp = () => {
         data: selectedYear === '2023' ?  
           [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60] :
           [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65] ,
-        borderColor: '#99B5E4',
+        borderColor: '#1661a9',
         borderWidth: 1,
         tension: 0.4,
-        pointBackgroundColor: '#336CC9',
+        pointBackgroundColor: '#0d6abf',
         pointRadius: 3,
       },
     ],
