@@ -7,8 +7,9 @@ import Loader from "react-js-loader";
 import apiServices from "../../ApiServices/ApiServices"; // Adjust path if needed
 import "./Userlist.css";
 import refreshIcon from '../../assets/images/refresh-icon.png';
-import { FaEdit } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const UserList = () => {
   const [data, setData] = useState([]);
@@ -228,8 +229,8 @@ const UserList = () => {
               <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
               <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
               <td className="userlist_td">
-                 <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}><FaEdit /></button>
-                                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><MdDeleteOutline/></button>
+                 <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}> <FontAwesomeIcon icon={faPencil} /></button>
+                                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><FontAwesomeIcon icon={faTrash}/></button>
               </td>
             </tr>
           ))}
