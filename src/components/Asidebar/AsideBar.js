@@ -23,6 +23,10 @@ const AsideBar = () => {
         if (details_data.type === "User") {
           const name = details_data.details[1].first_name;
           localStorage.setItem("name", name);
+          const company_name = details_data.details[7].company_name;
+          console.log("company name : ",company_name);
+          localStorage.setItem("company_name", company_name);
+          
           const fetchedRole = details_data.details[5].name;
           localStorage.setItem("role", fetchedRole);
           setRole(fetchedRole);
