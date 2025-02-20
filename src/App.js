@@ -188,6 +188,15 @@ function AppContent() {
         />
 
         <Route
+          path="/companycreation/:id"
+          element={
+          //  <PrivateRoute>
+              <CompanyCreation />
+            // </PrivateRoute>
+          }
+        />
+
+        <Route
           path="/organizationlist"
           element={
             // <PrivateRoute>
@@ -229,6 +238,15 @@ function AppContent() {
           }
         />
 
+         <Route
+          path="/createuser/:username"
+          element={
+            <PrivateRoute>
+              <CreateUser />
+             </PrivateRoute>
+          }
+        />
+
           <Route
             path="/user-list"
             element={
@@ -248,6 +266,15 @@ function AppContent() {
         />
          <Route
           path="/admincreation"
+          element={
+            <PrivateRoute>
+              <AdminCreation />
+           </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admincreation/:username"
           element={
             <PrivateRoute>
               <AdminCreation />
