@@ -11,11 +11,9 @@ import { FaEdit } from "react-icons/fa";
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPencil } from '@fortawesome/react-fontawesome';
-
- 
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const OrganizationList = () => {
     const [data, setData] = useState([]);
@@ -290,7 +288,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
 </td>
                                 <td className="organization-table-td">
                                     <button className='organization-edit' onClick={() => handleEdit(org.id)}>
-                                    {/* <FontAwesomeIcon icon={faPencil} /> */}
+                                    <FontAwesomeIcon icon={faPencil} />
                                     </button>
                                     
                                     <button
@@ -298,7 +296,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
                                         onClick={() => handleDelete(org.id)}
                                       
                                     >
-                                        <MdDeleteOutline />
+                                        <FontAwesomeIcon icon={faTrash} />
 
                                     </button>
                                 </td>
