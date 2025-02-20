@@ -7,8 +7,9 @@ import './AdminList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
-import { FaEdit } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const AdminList = () => {
   const [data, setData] = useState([]);
@@ -259,8 +260,8 @@ const handleDeleteAdmin = async (username) => {
               <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
               <td className='documenttable_td px-6 py-4'>
-                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}><FaEdit /></button>
-                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><MdDeleteOutline/></button>
+                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}> <FontAwesomeIcon icon={faPencil} /></button>
+                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><FontAwesomeIcon icon={faTrash} /></button>
               </td>
             </tr>
           ))}
