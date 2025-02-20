@@ -156,13 +156,7 @@ const authService = {
     return handleResponse(apiClient.post('organization/', data));
   },
   getOrganizations: async () => handleResponse(apiClient.get('organization/')),
-  updateOrganization: async (id, data) => {
-    return await fetch(`http://localhost:8000/api/organizations/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-    }).then(res => res.json());
-},
+  
   OrganizationList: async (data) => {
     // if (!data.name || !data.owner_email) {
     //   throw new Error('Organization name and owner email are required.');

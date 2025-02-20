@@ -11,6 +11,9 @@ import { FaEdit } from "react-icons/fa";
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPencil } from '@fortawesome/react-fontawesome';
+
  
 
 
@@ -39,7 +42,7 @@ const calendarRef = useRef(null);
      const url = "http://localhost:8000"
 
      const handleEdit = (id) => {
-        navigate(`/CompanyCreation/${id}`);
+        navigate(`/CompanyCreation`, {state: {id}});
     };
 
      const handleSearchInfo = () => {
@@ -61,6 +64,7 @@ const calendarRef = useRef(null);
                     msa_doc: org.contract_doc,
                     created_date:org.created_at,
                     status:org.is_frozen,
+                    delete:org.is_delete,
                 })) 
                 console.log(organization)
                 setData(organization);
@@ -263,7 +267,8 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
                 
                 <tbody className='organization-tbody' style={{ maxHeight: rowsPerPage > 5 ? '200px' : 'auto' }}>
                     {paginatedData.length > 0 ? (
-                        paginatedData.map((org, index) => (
+                        paginatedData.filter(org => !org.delete).map((org, index) => (
+                            
                            
                             <tr key={index} className="organization-table-row">
                                 <td className="organization-table-td">{org.username}</td>
@@ -285,7 +290,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
 </td>
                                 <td className="organization-table-td">
                                     <button className='organization-edit' onClick={() => handleEdit(org.id)}>
-                                    <FaEdit />
+                                    {/* <FontAwesomeIcon icon={faPencil} /> */}
                                     </button>
                                     
                                     <button

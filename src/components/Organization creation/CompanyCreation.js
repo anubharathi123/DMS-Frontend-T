@@ -4,6 +4,7 @@ import { TextField, Box, Button, CircularProgress } from "@mui/material";
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import Loader from 'react-js-loader';
 import authService from '../../ApiServices/ApiServices';
+import apiServices from '../../ApiServices/ApiServices';
 // import './CompanyCreation.css';
 const CompanyCreation = () => {
   const [company, setCompany] = useState({
@@ -31,6 +32,9 @@ const CompanyCreation = () => {
     if (file) setContractDocuments(file);
   };
 
+ 
+
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -40,7 +44,10 @@ const CompanyCreation = () => {
     
     setIsLoading(true);
     try {
-      
+      if(formData) {
+        await apiServices.updateOrganization(formData);
+        alert("Organization has been updated successfully!");
+      }
       await authService.createOrganization(formData);
       alert('Company registered successfully!');
       navigate('/OrganizationList');

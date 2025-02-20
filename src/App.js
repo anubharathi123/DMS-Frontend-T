@@ -34,6 +34,7 @@ import NotFoundView from "./error 404/pages/page-not-found";
 import DateRangeSearch from "./components/document search/DateRangeSearch";
 import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
+// import CompanyUpdate from "./components/Organization update/CompanyUpdate";
 
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
@@ -187,14 +188,14 @@ function AppContent() {
           }
         />
 
-        <Route
-          path="/companycreation/:id"
+        {/* <Route
+          path="/companyupdate"
           element={
-          //  <PrivateRoute>
-              <CompanyCreation />
-            // </PrivateRoute>
+           <PrivateRoute>
+              <CompanyUpdate />
+           </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/organizationlist"

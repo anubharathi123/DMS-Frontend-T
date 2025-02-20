@@ -42,11 +42,11 @@ const Dashboard = ({ title }) => (
 const DashboardApp = () => {
   const role = localStorage.getItem('role');
   const [selectedYear, setSelectedYear] = useState('2023');
-  const [OrgCount,setOrgCount] = useState('');
+  const [OrgCount,setOrgCount] = useState([]);
   const [companyData, setCompanyData] = useState([]);
-
   const [rowLimit, setRowLimit] = useState(10);
   const username = localStorage.getItem('name') || "User";
+  // const [data, setData] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,18 +76,28 @@ const DashboardApp = () => {
     const fetchCount = async () => {
       try {
         const response = await apiServices.companyCount();
-        console.log("API Response:", response);
+        console.log("company Response:", response);
   
-        if (response) {
-          setOrgCount(response[0]?.organization_count || "0"); // ✅ Fixed incorrect data handling
-        }
+        if (response ) {
+          // const { organization_count, user_count, active_org_count, inactive_org_count } = response[0];
+          setOrgCount({
+            totalCompanies: response.organization_count || 0,
+            activeCompanies: response.active_org_count || 0,
+            inactiveCompanies: response.inactive_org_count || 0,
+            clientAdmins: response.user_count || 0,
+            totalDocuments:response.document_count || 0,
+            approvedDocuments:response.approved_count || 0,
+            pendingDocuments:response.pending_count || 0, 
+            rejectedDocuments:response.rejected_count || 0,
+          });}
+          console.log(OrgCount)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
   
     fetchCount();
-  }, []); // ✅ Removed `companyData` from dependencies
+  }, [companyData]); // ✅ Removed `companyData` from dependencies
   
   // Monitor companyData state updates
   useEffect(() => {
@@ -166,7 +176,6 @@ const DashboardApp = () => {
   // Check if the role should have the cards displayed
   const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
 
-  
 
   return (
     <div className='dashboard-body'>
@@ -177,11 +186,13 @@ const DashboardApp = () => {
         {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
           <>
             <div className="cards-container">
-              <Card title="Total Companies" value={OrgCount} icon={<HiBuildingOffice2 />} role={role} bgColor="#daeefe" />
-              <Card title="Active Companies" value="22,345" icon={<HiBuildingOffice2 style={{ color: 'green' }} />} role={role} bgColor="#eed9ff"/>
-              <Card title="Inactive Companies" value="1,234" icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} role={role} bgColor="#fff4d2"/>
-              <Card title="Client Admin" value="23,456" icon={<IoPeople />} role={role} bgColor="#ffe8da" />
+           
+              <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />} bgColor="#daeefe" />
+              <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} bgColor="#eed9ff"/>
+              <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} bgColor="#fff4d2"/>
+              <Card title="Client Admin" value={OrgCount.clientAdmins} icon={<IoPeople />} bgColor="#ffe8da" />
             </div>
+              
             <div className="charts-container">
               <div className="chart">
                 <p className='dashboard_text'><center>Company File Size</center></p>
@@ -243,10 +254,10 @@ const DashboardApp = () => {
         {(isAdminOrDocumentRole) && (
           <>
             <div className="cards-container">
-              <Card title="Total Documents" value="21,234" icon={<IoMdCloudUpload />} role={role}  />
-              <Card title="Accepted Documents" value="18,234" icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} />
-              <Card title="Pending Documents" value="1,000" icon={<MdPending style={{ color: '#dd651b' }} />} role={role} />
-              <Card title="Rejected Documents" value="2,000" icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} />
+              <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} role={role}  />
+              <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} />
+              <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} role={role} />
+              <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} />
             </div>
             {role === 'ADMIN' && (
               <div className="chart">
