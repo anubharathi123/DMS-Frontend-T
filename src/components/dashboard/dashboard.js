@@ -84,7 +84,7 @@ const DashboardApp = () => {
             totalCompanies: response.organization_count || 0,
             activeCompanies: response.active_org_count || 0,
             inactiveCompanies: response.inactive_org_count || 0,
-            clientAdmins: response.user_count || 0,
+            clientAdmins: response.admin_count || 0,
             totalDocuments:response.document_count || 0,
             approvedDocuments:response.approved_count || 0,
             pendingDocuments:response.pending_count || 0, 

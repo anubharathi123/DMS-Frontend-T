@@ -28,7 +28,7 @@ const AdminCreation = () => {
 
     const payload = {
       username: `${formData.firstName.toLowerCase()}${formData.lastName.toLowerCase()}`,
-      companyname: localStorage.getItem("company_name") || "VDart",
+      companyname: localStorage.getItem("company_name"),
       name: `${formData.firstName} ${formData.lastName}`,
       mobile: `${formData.countryCode} ${formData.contactNumber}`,
       email: formData.email,
