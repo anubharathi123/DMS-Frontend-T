@@ -60,6 +60,11 @@
   font-size: 12px;
 }
 
+.dashboard_num-input::-webkit-inner-spin-button,
+.dashboard_num-input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
 
 
 .dashboard-table-container {

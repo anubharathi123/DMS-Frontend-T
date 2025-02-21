@@ -44,7 +44,7 @@ const DashboardApp = () => {
   const [selectedYear, setSelectedYear] = useState('2023');
   const [OrgCount,setOrgCount] = useState([]);
   const [companyData, setCompanyData] = useState([]);
-  const [rowLimit, setRowLimit] = useState('');
+  const [rowLimit, setRowLimit] = useState('3');
   const username = localStorage.getItem('name') || "User";
   // const [data, setData] = useState([])
 
@@ -84,7 +84,7 @@ const DashboardApp = () => {
             totalCompanies: response.organization_count || 0,
             activeCompanies: response.active_org_count || 0,
             inactiveCompanies: response.inactive_org_count || 0,
-            clientAdmins: response.admin_count || 0,
+            clientAdmins: response.user_count || 0,
             totalDocuments:response.document_count || 0,
             approvedDocuments:response.approved_count || 0,
             pendingDocuments:response.pending_count || 0, 
@@ -181,7 +181,7 @@ const DashboardApp = () => {
     <div className='dashboard-body'>
       <div className='dashboard-container' >
         <Dashboard title="Dashboard" />
-        <h2 className='dashboard-h2'>Welcome Back, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()} 👋</h2>
+        <h2 className='dashboard-h2'>Welcome, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()} </h2>
 
         {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
           <>
@@ -199,7 +199,7 @@ const DashboardApp = () => {
                 <div className='dashboard-btngrp'>
                   <button className='dashboard-top' onClick={sortAscending}><FaArrowUp /></button>
                   <button className='dashboard-bottom' onClick={sortDescending}><FaArrowDown /></button>
-                  <input type='text' value={rowLimit} className='dashboard_num-input' onChange={handleRowLimitChange}/>
+                  <input type='number' value={rowLimit} className='dashboard_num-input' onChange={handleRowLimitChange}/>
                 </div>
                 
                 <div className='dashboard-table-container' style={{ maxHeight: '250px', overflowY: rowLimit > 5 ? 'scroll' : 'auto', position: "relative", bottom: "25px"}}>
