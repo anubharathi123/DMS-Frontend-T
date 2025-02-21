@@ -26,7 +26,7 @@ const AsideBar = () => {
           const company_name = details_data.details[7].company_name;
           console.log("company name : ",company_name);
           localStorage.setItem("company_name", company_name);
-          
+
           const fetchedRole = details_data.details[5].name;
           localStorage.setItem("role", fetchedRole);
           setRole(fetchedRole);
@@ -77,7 +77,7 @@ const AsideBar = () => {
       <div className="nav-links">
         <nav style={{ marginBottom: "14px" }}>
           <ul>
-            {(role === "VIEWER" || role === "PRODUCT_OWNER" || role === "ADMIN" || role === "UPLOADER" || role === "REVIEWER") && (
+            {(role === "PRODUCT_ADMIN" || role === "VIEWER" || role === "PRODUCT_OWNER" || role === "ADMIN" || role === "UPLOADER" || role === "REVIEWER") && (
               <li>
                 <NavLink to="/Profile" className={({ isActive }) => (isActive ? "active" : "")}>
                   <User className="aside-icon" size={20} />
@@ -86,7 +86,7 @@ const AsideBar = () => {
               </li>
             )}
 
-            {(role === "VIEWER" || role === "PRODUCT_OWNER" || role === "ADMIN" || role === "UPLOADER" || role === "REVIEWER") && (
+            {(role === "PRODUCT_ADMIN" || role === "VIEWER" || role === "PRODUCT_OWNER" || role === "ADMIN" || role === "UPLOADER" || role === "REVIEWER") && (
               <li>
                 <NavLink to="/Dashboard" className={({ isActive }) => (isActive ? "active" : "")}>
                   <ChartNoAxesCombined className="aside-icon" size={20} />
@@ -95,7 +95,7 @@ const AsideBar = () => {
               </li>
             )}
 
-            {(role === "PRODUCT_OWNER") && (
+            {(role === "PRODUCT_ADMIN" || role === "PRODUCT_OWNER") && (
               <li>
                 <NavLink to="/OrganizationList" className={({ isActive }) => (isActive ? "active" : "")}>
                   <Building2 className="aside-icon" size={20} />
