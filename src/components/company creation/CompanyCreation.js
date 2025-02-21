@@ -115,7 +115,7 @@ const CompanyCreation = () => {
     try {
       await authService.createOrganization(formData); // Call the API service
       alert('Company registered successfully!');
-      navigate('/dashboard');
+      navigate('/OrganizationList');
     } catch (error) {
       setError(error.message || 'Something went wrong.');
       setTimeout(() => setError(null), 3000);

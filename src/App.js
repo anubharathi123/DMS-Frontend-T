@@ -34,7 +34,7 @@ import NotFoundView from "./error 404/pages/page-not-found";
 import DateRangeSearch from "./components/document search/DateRangeSearch";
 import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
-// import CompanyUpdate from "./components/Organization update/CompanyUpdate";
+import CompanyUpdate from "./components/Organization update/CompanyUpdate";
 
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
@@ -42,6 +42,7 @@ import ClientPage from "./components/clientpage/clientpage";
 
 import "./App.css";
 import styles from './index.css';
+import { IdCard } from "lucide-react";
 
 
 // Function to check authentication status
@@ -188,14 +189,14 @@ function AppContent() {
           }
         />
 
-        {/* <Route
-          path="/companyupdate"
+        <Route
+          path="/companyupdate/:id"
           element={
            <PrivateRoute>
               <CompanyUpdate />
            </PrivateRoute>
           }
-        /> */}
+        />
 
         <Route
           path="/organizationlist"
