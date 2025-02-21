@@ -9,12 +9,12 @@
 }
 
 .organization-header {
-    font-size: 25px;
+    font-size: 18px;
     font-weight: bold;
     color: #000b58;
-    text-align: center;
+    text-align: left;
     margin-bottom: 5px;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 
 .org_createbtn {

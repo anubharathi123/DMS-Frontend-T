@@ -138,7 +138,7 @@ export const FileUploadPage = () => {
   return (
     <div className="file-upload-page-outer">
       <div className="file-upload-page">
-        <h1 className="page-title">File Upload Portal</h1>
+        <h1 className="page-title">Document upload</h1>
         <form onSubmit={handleSubmit} className="upload-form">
           <div className="declaration-section">
             <label htmlFor="declarationNumber" className="declaration-label">

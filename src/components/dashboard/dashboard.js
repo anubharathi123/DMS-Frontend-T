@@ -180,7 +180,7 @@ const DashboardApp = () => {
   return (
     <div className='dashboard-body'>
       <div className='dashboard-container' >
-        <Dashboard title="Dashboard" />
+       {/* <Dashboard title="Visionboard" />*/}
         <h2 className='dashboard-h2'>Welcome, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()} </h2>
 
         {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (

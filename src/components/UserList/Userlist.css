@@ -9,12 +9,12 @@
   }
   
   .userlist-header {
-    font-size: 25px;
+    font-size: 18px;
     font-weight: bold;
     color: #000b58;
-    text-align: center;
-    margin: 70px 0 5px;
-    padding: 5px;
+    text-align: left;
+    margin-bottom:5px;
+    margin-top: 80px;
   } 
 
   .user_createbtn {

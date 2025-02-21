@@ -14,8 +14,8 @@
 
 .profile-title {
 	/* margin-left: 170px; */
-	place-self: center;
-	font-size: 1.5rem;
+	place-self: left;
+	font-size: 18px;
     color: #000b58;
 	
 }
