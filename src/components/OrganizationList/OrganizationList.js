@@ -40,51 +40,44 @@ const calendarRef = useRef(null);
      const url = "http://localhost:8000"
 
      const handleEdit = (id) => {
-        navigate(`/CompanyCreation`, {state: {id}});
+        navigate(`/CompanyUpdate/${id}`);
     };
 
      const handleSearchInfo = () => {
         setShowSearchInfo(!showSearchInfo);
       };
 
-      useEffect (() => {
+      useEffect(() => {
         const fetchOrganization = async () => {
             try {
-                setIsLoading(true)
+                setIsLoading(true);
                 const response = await apiServices.getOrganizations();
-                console.log(response,response.organization)
-                console.log("API Response:", response);
-                
-                 const organization = response.organization.map(org => ({
-                    id:org.id,
-                    username:org.auth_user.username,
-                    org_name:org.company_name,
+    
+                const organization = response.organization.map(org => ({
+                    id: org.id,
+                    username: org.auth_user.username,
+                    org_name: org.company_name,
                     msa_doc: org.contract_doc,
-                    created_date:org.created_at,
-                    status:org.is_frozen,
-                    delete:org.is_delete,
-                })) 
-                console.log(organization)
+                    created_date: org.created_at,
+                    status: org.is_frozen,
+                    delete: org.is_delete,
+                }));
+    
                 setData(organization);
-
-                console.log("API Response:", response);
-console.log("First Organization's contract_doc:", response.organization[0].contract_doc);
-
-                if(organization.length === 0){
-                    setActionMessage("No Organizations are found in the list..")
+    
+                if (organization.length === 0) {
+                    setActionMessage("No Organizations are found in the list.");
                 }
-                
-
-            }catch(error) {
+            } catch (error) {
                 console.error(error);
-
-            }finally {
-                setIsLoading(false)
+            } finally {
+                setIsLoading(false);
             }
         };
-
+    
         fetchOrganization();
-      }, []);
+    }, [navigate]); // Triggers when returning from navigation
+    
     
       useEffect(() => {
         const handleClickOutside = (event) => {
@@ -138,15 +131,14 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
     
     const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
-        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
         if (currentPage < totalPages) {
-            setCurrentPage((prev) => prev + 1);
+            setCurrentPage(currentPage + 1);
         }
     };
 
     const handlePrevPage = () => {
         if (currentPage > 1) {
-            setCurrentPage((prev) => prev - 1);
+            setCurrentPage(currentPage - 1);
         }
     };
 
@@ -158,7 +150,6 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
         setCurrentPage(1);
     };
 
-   
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this organization?")) {
             return;
@@ -172,8 +163,6 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
             // console.log(response,response.success,response.message)
             if (response.message) { // Ensure API returns success
                 setData(prevData => prevData.filter(org => org.id !== id));
-            } else {
-                alert("Failed to delete the organization. Please try again.");
             }
         } catch (error) {
             console.error("Error deleting organization:", error);
@@ -184,7 +173,10 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
     };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+    const paginatedData = filteredData.slice(
+        (currentPage - 1) * rowsPerPage,
+        currentPage * rowsPerPage
+    );
 
     return (
         <div className="organization-main">
@@ -315,7 +307,7 @@ console.log("First Organization's contract_doc:", response.organization[0].contr
             
             <div className="organization_pagination">
                 <div className="organization_pageinfo">
-                    Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
+                Page {currentPage} of {totalPages || 1}
                 </div>
                  {/* Reset Filter Button */}
              {(searchTerm || statusFilter || filterDate) && (

@@ -177,7 +177,7 @@ const authService = {
     if (!orgId) {
       throw new Error('Organization ID is required.');
     }
-    return handleResponse(apiClient.get(`organizations/${orgId}/`));
+    return handleResponse(apiClient.get(`organization_details/${orgId}/`));
   },
   freezeOrganization: async (orgId) => {
     if (!orgId) {
@@ -190,6 +190,9 @@ const authService = {
       throw new Error('Organization ID is required to resume an organization.');
     }
     return handleResponse(apiClient.post(`organizations/${orgId}/resume/`));
+  },
+  updateOrganization:async (orgId) => {
+    return handleResponse(apiClient.get(`organization_update/${orgId}/`))
   },
   deleteOrganization: async (orgId) => {
     return handleResponse(apiClient.delete(`organization_delete1/${orgId}/`));
