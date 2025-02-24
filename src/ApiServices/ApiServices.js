@@ -195,8 +195,8 @@ const authService = {
     }
     return handleResponse(apiClient.post(`organizations/${orgId}/resume/`));
   },
-  updateOrganization:async (orgId) => {
-    return handleResponse(apiClient.get(`organization_update/${orgId}/`))
+  updateOrganization:async (orgId,Data) => {
+    return handleResponse(apiClient.put(`organization_update/${orgId}/`,Data))
   },
   deleteOrganization: async (orgId) => {
     return handleResponse(apiClient.delete(`organization_delete1/${orgId}/`));
@@ -218,7 +218,7 @@ const authService = {
     if (!orgId) {
       throw new Error('Organization ID is required to fetch employees.');
     }
-    return handleResponse(apiClient.get(`organizations/${orgId}/employees/`));
+    return handleResponse(apiClient.get(`user_details/${orgId}/`));
   },
   freezeEmployee: async (orgId, employeeId) => {
     if (!orgId || !employeeId) {

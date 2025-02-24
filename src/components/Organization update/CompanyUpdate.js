@@ -78,6 +78,8 @@ const CompanyUpdate = () => {
   };
   
 
+  
+
   // Handles file selection (only one file at a time)
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Get the first selected file
@@ -136,16 +138,15 @@ const CompanyUpdate = () => {
     setContractDocuments(null); // Remove the file
     setCompany((prevCompany) => ({
       ...prevCompany,
-      contract_doc: '', // Reset the contract_doc field
+      contrxact_doc: '', // Reset the contract_doc field
     }));
     setFileInputClicked(false); // Prevent the file input dialog from popping up
   };
 
   // Handles form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
   
-    // Validate required fields
     if (!contractDocuments) {
       setError("Please upload the Master Services Agreement (MSA) before proceeding.");
       setTimeout(() => setError(null), 3000);
@@ -153,12 +154,22 @@ const CompanyUpdate = () => {
     }
   
     const formData = new FormData();
+  
+    // Append company details
     Object.keys(company).forEach((key) => {
-      formData.append(key, company[key]);
+      if (company[key]) {
+        formData.append(key, company[key]);
+      }
     });
   
+    // Append file
     if (contractDocuments) {
-      formData.append('contractDocuments', contractDocuments); 
+      formData.append('contractDocuments', contractDocuments);
+    }
+  
+    console.log("FormData entries:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
     }
   
     setIsLoading(true);
@@ -166,11 +177,7 @@ const CompanyUpdate = () => {
     try {
       const response = await authService.updateOrganization(id, formData);
       console.log("Update Response:", response);
-  
-      // Show alert before navigation
       alert("Company Details have been updated successfully!");
-  
-      // Delay navigation to ensure the user sees the alert
       setTimeout(() => {
         navigate('/OrganizationList');
       }, 500); 
@@ -182,6 +189,7 @@ const CompanyUpdate = () => {
       setIsLoading(false);
     }
   };
+  
   
   
   
@@ -228,6 +236,7 @@ const CompanyUpdate = () => {
               onChange={handleChange}
               className="company-creation-input"
               required
+              disabled
             />
           </div>
 
@@ -304,6 +313,7 @@ const CompanyUpdate = () => {
                 onChange={handleChange}
                 className="company-creation-date-input"
                 required
+                disabled
               />
             </div>
           </div>

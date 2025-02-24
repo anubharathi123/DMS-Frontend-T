@@ -34,8 +34,8 @@ import NotFoundView from "./error 404/pages/page-not-found";
 import DateRangeSearch from "./components/document search/DateRangeSearch";
 import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
-import CompanyUpdate from "./components/Organization update/CompanyUpdate";
-
+import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
+// import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';

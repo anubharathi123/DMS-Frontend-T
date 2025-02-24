@@ -37,8 +37,9 @@ function ProfileCard() {
         try {
           // const response = await authService.details();
           const image = await authService.getprofile();
+          // console(image.profile_image.image);
           try{
-            console.log("Profile image response:",(image.profile_image.image) );
+            console.log("Profile image response:",(image.profile_image) );
             const url = (image.profile_image.image);
             console.log("Profile image URL:", url);
             const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";

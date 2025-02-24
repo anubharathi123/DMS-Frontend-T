@@ -44,10 +44,7 @@ const CompanyCreation = () => {
     
     setIsLoading(true);
     try {
-      if(formData) {
-        await apiServices.updateOrganization(formData);
-        alert("Organization has been updated successfully!");
-      }
+      
       await authService.createOrganization(formData);
       alert('Company registered successfully!');
       navigate('/OrganizationList');
