@@ -160,8 +160,8 @@ const calendarRef = useRef(null);
     
             // Call API to delete the organization
             const response = await apiServices.deleteOrganization(id);
-            // console.log(response,response.success,response.message)
-            if (response.message) { // Ensure API returns success
+            console.log(response,response.success,response.message)
+            if (response.error) { // Ensure API returns success
                 setData(prevData => prevData.filter(org => org.id !== id));
             }
         } catch (error) {
