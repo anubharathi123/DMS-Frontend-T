@@ -186,13 +186,14 @@
   width: 100%;
   margin-top: -20px;
   margin-bottom: 20px;
+  background: white;
   
 }
 
 .card {
-  background-image: url("../../assets/images/shape-square.svg");
+  
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 
   padding: 20px;
   /* margin: 10px; */
   width: 190px;
@@ -377,10 +378,10 @@ left:74%;
 .charts-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  
 }
 
-/* .chart {
+.chart {
   background: white;
   padding: 20px;
   border-radius: 12px;
@@ -388,7 +389,7 @@ left:74%;
   width: 45%;
   height: 90%;
   transition: transform 0.3s ease;
-} */
+}
 
 .chart:hover {
   transform: translateY(-5px);
@@ -415,11 +416,13 @@ canvas {
   padding: 1px;
   border-radius: 6px;
   border: 1px solid #ddd;
-  margin-right: 353px;
+  position: relative;
+  bottom: 21px;
+  right: 22%;
 }
 
 .dashboard-linedata {
   position: relative;
-  bottom: 7px;
-  margin-right: 350px;
+  bottom: 14%;
+  
 }

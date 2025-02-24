@@ -153,6 +153,13 @@ const DashboardApp = () => {
     try {
       const response = await apiServices.getlinedata();
       console.log("company Trends:", response);
+      if(response) {
+        const companytrends = response.companytrends.map( ct => ({
+          count: ct[0].count,
+          month: ct[0].month,
+        }))
+        
+      }
     } 
 
     catch {
@@ -162,7 +169,7 @@ const DashboardApp = () => {
     }
 
   };
-  fetchlineData()
+  fetchlineData();
 })
 
 const lineData = {
@@ -205,10 +212,10 @@ const lineData = {
           <>
             <div className="cards-container">
            
-              <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />} bgColor="#E6F0FA" />
-              <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} bgColor="#E6F0FA"/>
-              <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} bgColor="#E6F0FA"/>
-              <Card title="User Count" value={OrgCount.clientAdmins} icon={<IoPeople />} bgColor="#E6F0FA " />
+              <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />}  />
+              <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} />
+              <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
+              <Card title="Client Admin" value={OrgCount.clientAdmins} icon={<IoPeople />} />
             </div>
               
             <div className="charts-container">
