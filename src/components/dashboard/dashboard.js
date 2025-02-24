@@ -147,7 +147,25 @@ const DashboardApp = () => {
   };
 
   // 🔵 Line Chart (Growth Rate)
-  const lineData = {
+  
+  useEffect(() => {
+  const fetchlineData = async () => {
+    try {
+      const response = await apiServices.getlinedata();
+      console.log("company Trends:", response);
+    } 
+
+    catch {
+
+    } finally {
+
+    }
+
+  };
+  fetchlineData()
+})
+
+const lineData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
       {
@@ -225,15 +243,7 @@ const DashboardApp = () => {
                 </table>
                 </div>
               </div>
-              <div className="chart">
-              <p className='dashboard_text'><center>Uploaded Documents</center></p>
-                <Pie data={donutData} options={chartOptions} />
-                <div className='piechart-text'>
-                  <p className='piechart-data'><span className='color1'></span>  Total Uploads</p>
-                  <p className='piechart-data'><span className='color2'></span>  Pending Documents</p>
-                  <p className='piechart-data'><span className='color3'></span>  Rejected Documents</p>
-                </div>
-              </div>
+ 
               <div className="chart">
                 <p className='dashboard_text'><center>Company Trends</center></p>
                 <center>
