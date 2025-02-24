@@ -176,7 +176,7 @@ const handleDeleteAdmin = async (username) => {
 
   return (
     <div className="adminlist_container">
-      <h1 className="adminlist_header">Admin List</h1>
+      <h1 className="adminlist_header">Admin Details</h1>
       <button className='admin_createbtn' onClick={handleCreateAdmin} > + New Admin</button> 
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
       <div className="adminlist_controls">

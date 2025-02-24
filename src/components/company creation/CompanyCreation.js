@@ -148,7 +148,7 @@ const CompanyCreation = () => {
   return (
     <div className="company-creation-container">
       <div className="company-creation-inner-container">
-        <h2 className="company-creation-title1">Company Creation</h2>
+        <h2 className="company-creation-title1">Company Hub</h2>
         {error && (
         <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
           {error}
