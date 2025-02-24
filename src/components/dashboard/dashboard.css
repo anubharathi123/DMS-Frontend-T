@@ -51,6 +51,7 @@
   font-weight: bold;
   bottom: 15px;
   color: #000b58;
+  margin-right: 353px;
 }
 
 .dashboard_num-input {
@@ -70,6 +71,7 @@
 
 .dashboard-table-container {
  height: 80%;
+ width: 500px;
 }
 
 .dashboard-table-container::-webkit-scrollbar {
@@ -136,6 +138,7 @@
     padding-bottom: 1rem !important;
     color: #000b58;
     font-size: 12px;
+   
     
 }
 
@@ -239,11 +242,11 @@
 
 
 
-canvas {
+/* canvas {
   width: 100% !important;
   height: 100% !important;
   border-radius: 10px;
-}
+} */
 
 
 
@@ -304,7 +307,7 @@ canvas {
   justify-content: space-evenly;
 }
 
-.piechart-text {
+/* .piechart-text {
 position: relative;
 bottom: 100%;
 left:74%;
@@ -312,7 +315,7 @@ left:74%;
 
 .piechart-data {
   font-size: 9px;
-}
+} */
 
 .color1{
   width: 8px;
@@ -356,14 +359,15 @@ left:74%;
   width: 250px;
 }
 
-.pie-chart{
+/* .pie-chart{
   padding: 10px;
   height: 220px;
   width: 220px;
-}
+} */
 
 .dashboard-year-selector{
   font-size: 14px;
+  margin-right: 353px;
 }
 
 
@@ -376,7 +380,7 @@ left:74%;
   margin-top: 20px;
 }
 
-.chart {
+/* .chart {
   background: white;
   padding: 20px;
   border-radius: 12px;
@@ -384,7 +388,7 @@ left:74%;
   width: 45%;
   height: 90%;
   transition: transform 0.3s ease;
-}
+} */
 
 .chart:hover {
   transform: translateY(-5px);
@@ -397,6 +401,7 @@ canvas {
 .slicer {
  position: relative;
  bottom: 12px;
+ margin-right: 23px;
 }
 
 /* Dropdown Year Selector */
@@ -410,9 +415,11 @@ canvas {
   padding: 1px;
   border-radius: 6px;
   border: 1px solid #ddd;
+  margin-right: 353px;
 }
 
 .dashboard-linedata {
   position: relative;
   bottom: 7px;
+  margin-right: 350px;
 }

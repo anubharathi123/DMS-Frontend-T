@@ -172,11 +172,15 @@ const authService = {
 
     return handleResponse(apiClient.get('documents/download-range/',data));
   },
+  getlinedata:async () => {
+    return handleResponse(apiClient.get('organizations/creation_stats/'))
+  },
   
   getOrganizationById: async (orgId) => {
     if (!orgId) {
       throw new Error('Organization ID is required.');
     }
+
     return handleResponse(apiClient.get(`organization_details/${orgId}/`));
   },
   freezeOrganization: async (orgId) => {
