@@ -190,7 +190,7 @@ const DashboardApp = () => {
               <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />} bgColor="#E6F0FA" />
               <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} bgColor="#E6F0FA"/>
               <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />} bgColor="#E6F0FA"/>
-              <Card title="Client Admin" value={OrgCount.clientAdmins} icon={<IoPeople />} bgColor="#E6F0FA " />
+              <Card title="User Count" value={OrgCount.clientAdmins} icon={<IoPeople />} bgColor="#E6F0FA " />
             </div>
               
             <div className="charts-container">

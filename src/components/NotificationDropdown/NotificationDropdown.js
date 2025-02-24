@@ -74,7 +74,7 @@ const NotificationPage = ({ newNotification }) => {
             {notifications.slice(0, visibleCount).map((notification, index) => (
               <li key={notification.id || index} className="notification-item">
                 <span className="message">
-                  <strong>{notification.action}</strong> on <strong>{notification.entity_type}</strong>
+                  <strong>{notification.action}</strong>
                 </span>
                 <div className="notification-time">{notification.description}</div>
               </li>

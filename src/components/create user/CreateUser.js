@@ -90,6 +90,8 @@ const CreateUser = () => {
     setIsDropdownVisible(true);  // Show dropdown when user types
   };
 
+  
+
   const handleKeyDown = (e) => {
     if (e.key === "ArrowDown") {
       setHighlightedIndex((prevIndex) => 
@@ -124,7 +126,7 @@ const CreateUser = () => {
     <div className="company-register-container">
       
       {/* {message && <div className="createuser_message">{message}</div>} */}
-      <h2 className="company-register-title">Access Creation</h2>
+      <h2 className="company-register-title">Access Management</h2>
       {message && (
         <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
           {message}
@@ -261,8 +263,9 @@ const CreateUser = () => {
 
         {/* Button Group */}
         <div className="button-group">
-          <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn-submit">Create</button>
+          <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
+         
         </div>
       </form>
       {isLoading && (

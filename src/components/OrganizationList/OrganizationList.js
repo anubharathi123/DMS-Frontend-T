@@ -180,7 +180,7 @@ const calendarRef = useRef(null);
 
     return (
         <div className="organization-main">
-            <h1 className="organization-header">Organization List</h1>
+            <h1 className="organization-header">Organization Details</h1>
             {(role === "PRODUCT_OWNER") && (
   <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 
   
