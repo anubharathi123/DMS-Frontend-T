@@ -43,6 +43,8 @@ import CompanyUpdate from "./components/Organization update/CompanyUpdate";
 import "./App.css";
 import styles from './index.css';
 import { IdCard } from "lucide-react";
+import UpdateAdmin from "./components/AdminCreation Update/UpdateAdmin";
+import UpdateUser from "./components/UpdateUser/UpdateUser";
 
 
 // Function to check authentication status
@@ -241,10 +243,10 @@ function AppContent() {
         />
 
          <Route
-          path="/createuser/:username"
+          path="/UpdateUser/:id"
           element={
             <PrivateRoute>
-              <CreateUser />
+              <UpdateUser />
              </PrivateRoute>
           }
         />
@@ -276,10 +278,10 @@ function AppContent() {
         />
 
         <Route
-          path="/admincreation/:username"
+          path="/updateadmin/:id"
           element={
             <PrivateRoute>
-              <AdminCreation />
+              <UpdateAdmin />
            </PrivateRoute>
           }
         />

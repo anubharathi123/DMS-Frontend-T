@@ -88,6 +88,9 @@ const authService = {
   getprofile: async () => {
     return handleResponse(apiClient.get('profileimage/'));
   },
+  delprofile: async () => {
+    return handleResponse(apiClient.delete('profileimage/'));
+  },
   resendOTP: async () => {
     return handleResponse(apiClient.put('auth/otp/'));
   },
@@ -96,6 +99,10 @@ const authService = {
   },
   users: async () => {
     return handleResponse(apiClient.get('users/'));
+  },
+
+  getUsersbyId: async (id) => {
+    return handleResponse(apiClient.get(`user_details/${id}/`))
   },
 
   resetPassword: async (data) => {
@@ -142,6 +149,15 @@ const authService = {
   getAdmins: async (data) => {
     return handleResponse(apiClient.get('admin/', data))
   },
+
+  getAdminsbyID: async (id) => {
+    return handleResponse(apiClient.get(`user_details/${id}/`))
+  },
+
+  updateAdmin: async (id) => {
+    return handleResponse(apiClient.put(`auth/register_update/${id}/`))
+  },
+
   AdminList: async (data) => {
     return handleResponse(apiClient.post('AdminList/',data))
   },
