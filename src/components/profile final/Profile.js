@@ -214,11 +214,13 @@ function ProfileCard() {
     alert("Profile details updated successfully!");
   };
 
-  const handleRemoveProfileImage = () => {
-    setProfileImage(avatar);
-    localStorage.removeItem("profileImage");
-    window.dispatchEvent(new Event("profileImageUpdated"));
-  };
+  const handleRemoveProfileImage = async () => {
+      const image = await authService.delprofile();
+      
+      setProfileImage(avatar);
+      localStorage.removeItem("profileImage");
+      window.dispatchEvent(new Event("profileImageUpdated"));
+    };
 
   return (
     <>

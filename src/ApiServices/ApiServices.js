@@ -88,6 +88,9 @@ const authService = {
   getprofile: async () => {
     return handleResponse(apiClient.get('profileimage/'));
   },
+  delprofile: async () => {
+    return handleResponse(apiClient.delete('profileimage/'));
+  },
   resendOTP: async () => {
     return handleResponse(apiClient.put('auth/otp/'));
   },

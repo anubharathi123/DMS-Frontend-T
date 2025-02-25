@@ -93,6 +93,7 @@ const calendarRef = useRef(null);
         return () => {
           document.removeEventListener("mousedown", handleClickOutside);
         };
+        
       }, [showSearchInfo]);
 
       const handleCreateOrganization = () => {
@@ -100,6 +101,7 @@ const calendarRef = useRef(null);
       }
 
     const handleSearch = (e) => {
+        console.log("Search Term:", e.target.value);
         setSearchTerm(e.target.value);
       };
 
@@ -111,8 +113,9 @@ const calendarRef = useRef(null);
     const handleRowsPerPage = (e) => {
         setRowsPerPage(parseInt(e.target.value));
       };
+      
 
-      const filteredData = data.filter(org => {
+    const filteredData = data.filter(org => {
         const matchesSearch = searchTerm
             ? org.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
               org.org_name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -122,8 +125,8 @@ const calendarRef = useRef(null);
             ? (statusFilter === "Active" ? org.status === false : org.status === true)
             : true;
     
-        const matchesDate = startDate
-            ? org.created_date === startDate.toISOString().split('T')[0]
+            const matchesDate = filterDate
+            ? new Date(org.created_date).toDateString() === new Date(filterDate).toDateString()
             : true;
     
         return matchesSearch && matchesStatus && matchesDate;
@@ -236,19 +239,19 @@ const calendarRef = useRef(null);
                             >
                                 📅
                             </button>
-                            {isCalendarOpen && (
-                            <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
-                            <DatePicker
-                                    selected={filterDate}
-                                    onChange={(date) => {
-                                        setFilterDate(date);
-                                        setIsCalendarOpen(false);
-                                      }}
-                                      inline
-                                    dateFormat="yyyy-MM-dd"
-                                    />
-                                    </div>
-                            )}
+                                {isCalendarOpen && (
+                                <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
+                                <DatePicker
+                                        selected={filterDate}
+                                        onChange={(date) => {
+                                            setFilterDate(date);
+                                            setIsCalendarOpen(false);
+                                        }}
+                                        inline
+                                        dateFormat="yyyy-MM-dd" 
+                                        />
+                                        </div>
+                                )}
                         </th>
                         <th className="organization-table-th">Status</th>
                         <th className="organization-table-th">Actions</th>
