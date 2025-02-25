@@ -9,7 +9,7 @@ import Loader from "react-js-loader";
 const CreateUser = () => {
   const [formData, setFormData] = useState({
     username: '',
-    companyname: localStorage.getItem('Company_name') || '',
+    companyname: localStorage.getItem("company_name") || "",
     name: '',
     mobile: '',
     email: '',

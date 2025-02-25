@@ -7,7 +7,7 @@ import "./AdminCreation.css";
 const AdminCreation = () => {
   const [formData, setFormData] = useState({
     username: "",
-    companyname: localStorage.getItem("company_name") || "VDart",
+    companyname: localStorage.getItem("company_name") || "",
     name: "",
     mobile: "",
     email: "",

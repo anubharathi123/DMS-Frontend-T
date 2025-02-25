@@ -8,23 +8,23 @@ const NotificationPage = ({ newNotification }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(10); // Show 10 notifications initially
+  const [orgId, setOrgId] = useState("");
 
   useEffect(() => {
-    const fetchNotifications = async () => {
+    const fetchOrgAndNotifications = async () => {
       try {
-        // Fetch organization details to get org_id
         const details_data = await apiServices.details();
-        const org_id = details_data?.details?.[7]?.id; // Safely access org_id
-
+        let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
+        
         if (!org_id) {
           throw new Error('Organization ID not found');
         }
 
-        // Fetch notifications
+        setOrgId(org_id);
+        
+        // Fetch notifications using the obtained org_id
         const response = await apiServices.OrgNotification(org_id);
-        const notificationData = response;
-        console.log(response)
-        setNotifications(notificationData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+        setNotifications(response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
       } catch (err) {
         console.error('Error fetching notifications:', err);
         setError(err.message || 'Failed to load notifications');
@@ -33,10 +33,11 @@ const NotificationPage = ({ newNotification }) => {
       }
     };
 
-    fetchNotifications();
-  }, []);
+    if (!orgId) { // Prevent multiple API calls
+      fetchOrgAndNotifications();
+    }
+  }, [orgId]); // Depend only on orgId
 
-  // Handle new notification
   useEffect(() => {
     if (newNotification) {
       setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
@@ -48,9 +49,8 @@ const NotificationPage = ({ newNotification }) => {
     setIsOpen(false);
   };
 
-  // Ensure "Show More" does not affect `isOpen`
   const handleShowMore = (event) => {
-    event.stopPropagation(); // Prevent accidental closure
+    event.stopPropagation();
     setVisibleCount((prevCount) => prevCount + 10);
   };
 
