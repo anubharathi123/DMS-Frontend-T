@@ -158,6 +158,10 @@ const authService = {
     return handleResponse(apiClient.put(`auth/register_update/${id}/`))
   },
 
+  deleteAdmin: async (id) => {
+    return handleResponse(apiClient.delete(`auth/${id}/delete/`))
+  },
+
   AdminList: async (data) => {
     return handleResponse(apiClient.post('AdminList/',data))
   },
