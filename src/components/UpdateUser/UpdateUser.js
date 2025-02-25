@@ -12,7 +12,7 @@ const UpdateUser = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);  
-const [selectedUser, setSelectedUser] = useState();
+const [selectedUser, setSelectedUser] = useState('');
   const [roleOptions] = useState(["Compiler", "Approver", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -22,37 +22,46 @@ const [selectedUser, setSelectedUser] = useState();
       try {
         setIsLoading(true);
         const response = await apiServices.getUsersbyId(id);
-        console.log("Fetch User ID:", id)
-        console.log("API Response:", response.details)
-
-        if (response && response.details) {
+        console.log("Fetch User ID:", id);
+        console.log("API Response:", response.details);
+  
+        if (response.details) {
           const user = response.details;
 
+          const formattedDate = user[7]?.created_at
+          ? new Date(user[7].created_at).toISOString().split('T')[0]
+          : '';
+  
+          // Ensure user.details is properly structured
           const users = {
-            id:user.id,
-            username:user.auth_user.first_name || '',
-            email: user.auth_user.email,
-            createdAt: user.created_at,
-            role: user.role.name,
-        };
-        setSelectedUser(users);
-       setFormData(users);
-       console.log("Processed User Data:", users);
-      } else {
-        console.log("No User data Found")
-      }
-       
+            id: user.id,
+            username: user[1].username, // Assuming username is at the root level
+            company_name: user[7].company_name || "N/A", // Optional chaining to avoid errors
+            first_name: user[1].first_name,
+            mobile: user[7].mobile,
+            email: user[1].email,
+            created_at: formattedDate,
+            role: user[5].name || "N/A", // Handle potential missing role
+          };
+  
+          setSelectedUser(users);
+          setFormData(users);
+          console.log("Processed User Data:", users);
+        } else {
+          console.log("No User Data Found");
+        }
       } catch (error) {
-        console.error("Error Fetching users:", error);
-       
+        console.error("Error Fetching Users:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    if(id) {
-    fetchDetails();
-  }
+  
+    if (id) {
+      fetchDetails();
+    }
   }, [id]);
+  
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -185,8 +194,8 @@ const [selectedUser, setSelectedUser] = useState();
           </label>
           <input
             type="text"
-            name="companyname"
-            value={selectedUser?.companyname}
+            name="company_name"
+            value={selectedUser?.company_name}
             onChange={handleChange}
             className="company-input"
             required
@@ -201,8 +210,8 @@ const [selectedUser, setSelectedUser] = useState();
           </label>
           <input
             type="text"
-            name="name"
-            value={selectedUser?.name}
+            name="first_name"
+            value={selectedUser?.first_name}
             onChange={handleChange}
             className="company-input"
             required

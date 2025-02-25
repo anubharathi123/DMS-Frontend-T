@@ -51,6 +51,7 @@ const UserList = () => {
         const response = await apiServices.users();
         console.log(response)
         const users = response.map((user) => ({
+          id:user.id,
           username: user.auth_user.first_name || "N/A",
           // company_name: user.organization.company_name,
           email: user.auth_user.email,
