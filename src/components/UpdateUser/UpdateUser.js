@@ -111,14 +111,7 @@ const [selectedUser, setSelectedUser] = useState('');
   };
 
   const handleCancel = () => {
-    setFormData({
-      username: '',
-      name: '',
-      mobile: '',
-      email: '',
-      created_at: '',
-      role: ''
-    });
+    navigate('/user-list');
   };
 
   const handleRoleChange = (e) => {
