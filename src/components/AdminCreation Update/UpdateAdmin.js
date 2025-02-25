@@ -6,11 +6,12 @@ import "./UpdateAdmin.css";
 
 const UpdateAdmin = () => {
   const { id } = useParams();
+  const [admin, setAdmin] = useState(null);
   const navigate = useNavigate();
   
   const [selectedadmin, setselectedAdmin] = useState(null);
   const [message, setMessage] = useState("");
-  const [isChanged, setIsChanged] = useState(false);
+  // const [isChanged, setIsChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -71,17 +72,17 @@ const UpdateAdmin = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setselectedAdmin((prev) => ({ ...prev, [name]: value }));
-    setIsChanged(true); // Mark as changed
+    // setIsChanged(true); // Mark as changed
   };
   
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    if (!isChanged) return; // Prevent update if no changes
+    // if (!isChanged) return; // Prevent update if no changes
   
     setIsLoading(true);
     try {
-      const response = await apiServices.updateAdmin(selectedadmin);
+      const response = await apiServices.updateAdmin(id,selectedadmin);
       console.log("API Response:", response);
       setMessage("Admin details have been updated successfully!");
       
@@ -122,6 +123,7 @@ const UpdateAdmin = () => {
             onChange={handleInputChange}
             className="admincreation-input"
             required
+            disabled
           />
         </div>
 
