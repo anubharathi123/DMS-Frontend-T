@@ -274,11 +274,11 @@ const lineData = {
 
         {(isAdminOrDocumentRole) && (
           <>
-            <div className="cards-container">
-              <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} role={role}  />
-              <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} />
-              <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} role={role} />
-              <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} />
+            <div className="cards-container1">
+              <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} role={role} bgColor={'#d2eafd'}  />
+              <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} bgColor={'#eed9ff'}/>
+              <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} role={role} bgColor={'#fff3d0'}/>
+              <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} bgColor={'#ffe5d6'} />
             </div>
             {role === 'ADMIN' && (
               <div className="chart">
@@ -296,8 +296,8 @@ const lineData = {
 const Card = ({ title, value, icon, role, bgColor}) => {
   // Inline style for Uploader, Approver, and Reviewer roles
   const cardStyle = {
-    backgroundColor: bgColor,
-    marginTop: role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER' ? "10%" : "",
+    backgroundColor: role === 'ADMIN' || 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER' ?  bgColor : "",
+    marginTop: role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER' ? "10%" : "",
   }
     
   
