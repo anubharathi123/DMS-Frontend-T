@@ -149,6 +149,24 @@ const calendarRef = useRef(null);
         setIsCalendarOpen(false);
         setCurrentPage(1);
     };
+    const handleDownload = async (fileUrl, fileName) => {
+        try {
+          const response = await fetch(fileUrl);
+          const blob = await response.blob();
+          const blobUrl = window.URL.createObjectURL(blob);
+      
+          const a = document.createElement("a");
+          a.href = blobUrl;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+      
+          window.URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+          console.error("Download failed:", error);
+        }
+      };
 
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this organization?")) {
@@ -267,9 +285,16 @@ const calendarRef = useRef(null);
 </td>
                                 <td className="organization-table-td">
                                     {org.msa_doc ? (
-                                        <a href={(url+org.msa_doc)} target='_blank' rel='noopener noreferrer'>
-                                        {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
-                                        </a>
+                                        // <a href={(url+org.msa_doc)} target='_blank' rel='noopener noreferrer'>
+                                        // {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+                                        // </a>
+                                        <a
+  onClick={() => handleDownload(`${url}/${org.msa_doc}`, org.msa_doc.split('/').pop())}
+  style={{ cursor: "pointer", textDecoration: "underline" }}
+>
+  {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+</a>
+
                                     ) : (
                                     "Null"  
                                     )}
