@@ -13,7 +13,7 @@ const CompanyUpdate = () => {
   const [fileInputClicked, setFileInputClicked] = useState(false);
   const [error, setError] = useState(null); // For error handling
   const [selectedCompany, setSelectedCompany] = useState(null);
-  const [companyName, setCompanyName] = useState('');
+
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);  
   
@@ -146,7 +146,7 @@ const CompanyUpdate = () => {
   // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-  
+    
     if (!contractDocuments) {
       setError("Please upload the Master Services Agreement (MSA) before proceeding.");
       setTimeout(() => setError(null), 3000);
@@ -195,17 +195,7 @@ const CompanyUpdate = () => {
   
   // Handles cancel action
   const handleCancel = () => {
-    setCompany({
-      username: 'AE-',
-      companyName: '',
-      personName: '',
-      mobile: '',
-      email: '',
-      accessCreationDate: '',
-      accessExpiryDate: '',
-    });
-    setContractDocuments(null);
-    setFileInputClicked(false);
+    navigate('/OrganizationList');
   };
 
   // Triggers file input dialog when clicking anywhere on the upload area

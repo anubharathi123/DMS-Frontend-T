@@ -51,6 +51,7 @@ const UserList = () => {
         const response = await apiServices.users();
         console.log(response)
         const users = response.map((user) => ({
+          id:user.id,
           username: user.auth_user.first_name || "N/A",
           // company_name: user.organization.company_name,
           email: user.auth_user.email,
@@ -103,8 +104,8 @@ const UserList = () => {
     navigate(`/createuser`);
   }
 
-  const handleEditAdmin = (username) => {
-    navigate(`/createuser/${username}`);
+  const handleEditAdmin = (id) => {
+    navigate(`/UpdateUser/${id}`);
   };
 
   const handleDeleteAdmin = async (username) => {
@@ -229,7 +230,7 @@ const UserList = () => {
               <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
               <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
               <td className="userlist_td">
-                 <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}> <FontAwesomeIcon icon={faPencil} /></button>
+                 <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
                                 <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><FontAwesomeIcon icon={faTrash}/></button>
               </td>
             </tr>

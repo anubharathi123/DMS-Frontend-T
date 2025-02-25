@@ -214,11 +214,30 @@ function ProfileCard() {
     alert("Profile details updated successfully!");
   };
 
-  const handleRemoveProfileImage = () => {
-    setProfileImage(avatar);
-    localStorage.removeItem("profileImage");
-    window.dispatchEvent(new Event("profileImageUpdated"));
-  };
+  const handleRemoveProfileImage = async () => {
+    const data= await authService.details();
+    console.log(data);
+    const id = data.details[3].id;
+    console.log(id);
+    if (id) {
+      const image = await authService.delprofile(id);
+      }
+
+      else{
+        const id = data.details[1].id;
+        console.log(id);
+        if (id) {
+          const image = await authService.delprofile(id);
+        }
+      }
+
+    console.log(id);
+      const image = await authService.delprofile(id);
+      
+      setProfileImage(avatar);
+      localStorage.removeItem("profileImage");
+      window.dispatchEvent(new Event("profileImageUpdated"));
+    };
 
   return (
     <>

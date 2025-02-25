@@ -58,6 +58,7 @@ const AdminList = () => {
           const response = await apiServices.getAdmins(); // Adjust based on API
           console.log(response)
           const admins = response.product_admins.map(admin => ({
+            id:admin.id,
             username: admin.auth_user.username,
             name: admin.auth_user.first_name,
             email: admin.auth_user.email,
@@ -126,24 +127,26 @@ const AdminList = () => {
     setCurrentPage(1);
 };
 
-const handleEditAdmin = (username) => {
-  navigate(`/AdminCreation/${username}`);
+const handleEditAdmin = (id) => {
+  navigate(`/updateadmin/${id}`);
 };
 
-const handleDeleteAdmin = async (username) => {
-  const confirmDelete = window.confirm(`Are you sure you want to delete admin "${username}"?`);
-  
+const handleDeleteAdmin = async (id) => {
+  const confirmDelete = window.confirm(`Are you sure you want to delete admin "${id}"?`);
+
   if (confirmDelete) {
     try {
       setIsLoading(true);
-      await apiServices.deleteAdmin(username); // Adjust API call based on your service
+      const response = await apiServices.deleteAdmin(id); // Adjust API call based on your service
+      console.log(response, response.id);
 
-      // Remove the deleted admin from state
-      const updatedAdmins = data.filter(admin => admin.username !== username);
-      setData(updatedAdmins);
-      setFilteredData(updatedAdmins);
-      
-      setActionMessage(`Admin "${username}" deleted successfully.`);
+      // Check for a successful response before updating state
+      if (response.success) {
+        setData(prevData => prevData.filter(admin => admin.id !== id));
+        setActionMessage(`Admin "${id}" deleted successfully.`);
+      } else {
+        setActionMessage(response.message || 'Failed to delete admin.');
+      }
     } catch (error) {
       console.error('Error deleting admin:', error);
       setActionMessage('Error deleting admin. Please try again.');
@@ -152,6 +155,7 @@ const handleDeleteAdmin = async (username) => {
     }
   }
 };
+
 
 
   const handleSearch = (e) => {
@@ -260,8 +264,8 @@ const handleDeleteAdmin = async (username) => {
               <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
               <td className='documenttable_td px-6 py-4'>
-                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}> <FontAwesomeIcon icon={faPencil} /></button>
-                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
+                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.id)}><FontAwesomeIcon icon={faTrash} /></button>
               </td>
             </tr>
           ))}

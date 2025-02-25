@@ -184,10 +184,21 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   width: 100%;
+  border-radius: 6px;
   margin-top: -20px;
   margin-bottom: 20px;
   background: white;
+}
+
+.cards-container1 {
   
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: -20px;
+    margin-bottom: 20px;
 }
 
 .card {

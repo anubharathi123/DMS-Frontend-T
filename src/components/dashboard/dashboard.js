@@ -43,6 +43,8 @@ const DashboardApp = () => {
   const role = localStorage.getItem('role');
   const [selectedYear, setSelectedYear] = useState('2023');
   const [OrgCount,setOrgCount] = useState([]);
+  const [count, setCount] = useState([]);
+  const [month, setMonth] = useState([]);
   const [companyData, setCompanyData] = useState([]);
   const [rowLimit, setRowLimit] = useState('3');
   const username = localStorage.getItem('name') || "User";
@@ -157,8 +159,11 @@ const DashboardApp = () => {
         const companytrends = response.companytrends.map( ct => ({
           count: ct[0].count,
           month: ct[0].month,
+          year: ct[0].year,
         }))
-        
+        setSelectedYear(companytrends);
+        setCount(companytrends);
+        setMonth(companytrends);
       }
     } 
 
@@ -173,21 +178,21 @@ const DashboardApp = () => {
 })
 
 const lineData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [
-      {
-        label: `Growth Rate (${selectedYear})`,
-        data: selectedYear === '2023' ?  
-          [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60] :
-          [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65] ,
-        borderColor: '#1661a9',
-        borderWidth: 1,
-        tension: 0.4,
-        pointBackgroundColor: '#0d6abf',
-        pointRadius: 3,
-      },
-    ],
-  };
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: `Growth Rate (${selectedYear})`,
+      data: selectedYear ?  
+        [count] :
+        [month['01'], month['02'], month[2], month[3], month[4], month[5], month[6], month[7], month[8], month[9], month[10], month[11]] ,
+      borderColor: '#1661a9',
+      borderWidth: 1,
+      tension: 0.4,
+      pointBackgroundColor: '#0d6abf',
+      pointRadius: 3,
+    },
+  ],
+};
 
   const chartOptions = {
     responsive: true,
@@ -257,8 +262,7 @@ const lineData = {
                 <div className="slicer">
                   <label className='dashboard-year-selector'>Select Year: </label>
                   <select className="dashboard-year-select" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
+                    <option value={selectedYear}>2025</option>
                   </select>
                 </div>
                 </center>
@@ -270,11 +274,11 @@ const lineData = {
 
         {(isAdminOrDocumentRole) && (
           <>
-            <div className="cards-container">
-              <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} role={role}  />
-              <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} />
-              <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} role={role} />
-              <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} />
+            <div className="cards-container1">
+              <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} role={role} bgColor={'#d2eafd'}  />
+              <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} bgColor={'#eed9ff'}/>
+              <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} role={role} bgColor={'#fff3d0'}/>
+              <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} bgColor={'#ffe5d6'} />
             </div>
             {role === 'ADMIN' && (
               <div className="chart">
@@ -292,8 +296,8 @@ const lineData = {
 const Card = ({ title, value, icon, role, bgColor}) => {
   // Inline style for Uploader, Approver, and Reviewer roles
   const cardStyle = {
-    backgroundColor: bgColor,
-    marginTop: role === 'UPLOADER' || role === 'APPROVER' || role === 'REVIEWER' || role === 'VIEWER' ? "10%" : "",
+    backgroundColor: role === 'ADMIN' || 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER' ?  bgColor : "",
+    marginTop: role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER' ? "10%" : "",
   }
     
   
