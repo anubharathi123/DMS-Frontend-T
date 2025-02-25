@@ -88,8 +88,8 @@ const authService = {
   getprofile: async () => {
     return handleResponse(apiClient.get('profileimage/'));
   },
-  delprofile: async () => {
-    return handleResponse(apiClient.delete('profileimage/'));
+  delprofile: async (id) => {
+    return handleResponse(apiClient.delete(`profileimage/${id}/`));
   },
   resendOTP: async () => {
     return handleResponse(apiClient.put('auth/otp/'));
@@ -154,8 +154,8 @@ const authService = {
     return handleResponse(apiClient.get(`user_details/${id}/`))
   },
 
-  updateAdmin: async (id) => {
-    return handleResponse(apiClient.put(`auth/register_update/${id}/`))
+  updateAdmin: async (id,data) => {
+    return handleResponse(apiClient.put(`auth/register/${id}/`,data))
   },
 
   AdminList: async (data) => {

@@ -215,7 +215,24 @@ function ProfileCard() {
   };
 
   const handleRemoveProfileImage = async () => {
-      const image = await authService.delprofile();
+    const data= await authService.details();
+    console.log(data);
+    const id = data.details[3].id;
+    console.log(id);
+    if (id) {
+      const image = await authService.delprofile(id);
+      }
+
+      else{
+        const id = data.details[1].id;
+        console.log(id);
+        if (id) {
+          const image = await authService.delprofile(id);
+        }
+      }
+
+    console.log(id);
+      const image = await authService.delprofile(id);
       
       setProfileImage(avatar);
       localStorage.removeItem("profileImage");

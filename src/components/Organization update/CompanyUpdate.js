@@ -195,17 +195,7 @@ const CompanyUpdate = () => {
   
   // Handles cancel action
   const handleCancel = () => {
-    setCompany({
-      username: 'AE-',
-      companyName: '',
-      personName: '',
-      mobile: '',
-      email: '',
-      accessCreationDate: '',
-      accessExpiryDate: '',
-    });
-    setContractDocuments(null);
-    setFileInputClicked(false);
+    navigate('/OrganizationList');
   };
 
   // Triggers file input dialog when clicking anywhere on the upload area
