@@ -58,6 +58,7 @@ const AdminList = () => {
           const response = await apiServices.getAdmins(); // Adjust based on API
           console.log(response)
           const admins = response.product_admins.map(admin => ({
+            id:admin.id,
             username: admin.auth_user.username,
             name: admin.auth_user.first_name,
             email: admin.auth_user.email,
@@ -126,8 +127,8 @@ const AdminList = () => {
     setCurrentPage(1);
 };
 
-const handleEditAdmin = (username) => {
-  navigate(`/AdminCreation/${username}`);
+const handleEditAdmin = (id) => {
+  navigate(`/updateadmin/${id}`);
 };
 
 const handleDeleteAdmin = async (username) => {
@@ -260,7 +261,7 @@ const handleDeleteAdmin = async (username) => {
               <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
               <td className='documenttable_td px-6 py-4'>
-                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.username)}> <FontAwesomeIcon icon={faPencil} /></button>
+                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
                 <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><FontAwesomeIcon icon={faTrash} /></button>
               </td>
             </tr>

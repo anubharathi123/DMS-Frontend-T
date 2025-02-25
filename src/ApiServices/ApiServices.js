@@ -98,6 +98,10 @@ const authService = {
     return handleResponse(apiClient.get('users/'));
   },
 
+  getUsersbyId: async (id) => {
+    return handleResponse(apiClient.get(`user_details/${id}/`))
+  },
+
   resetPassword: async (data) => {
 
     if (!data) {
@@ -142,6 +146,15 @@ const authService = {
   getAdmins: async (data) => {
     return handleResponse(apiClient.get('admin/', data))
   },
+
+  getAdminsbyID: async (id) => {
+    return handleResponse(apiClient.get(`user_details/${id}/`))
+  },
+
+  updateAdmin: async (id) => {
+    return handleResponse(apiClient.put(`auth/register_update/${id}/`))
+  },
+
   AdminList: async (data) => {
     return handleResponse(apiClient.post('AdminList/',data))
   },
