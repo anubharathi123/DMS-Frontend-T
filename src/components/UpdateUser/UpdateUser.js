@@ -50,7 +50,16 @@ const UpdateUser = () => {
             created_at: formattedDate,
             role: user[5]?.name || "N/A",
           };
-  
+          if (userData.role === "UPLOADER"){
+            userData.role = 'Compiler'
+          }
+          if (userData.role === "REVIEWER"){
+            userData.role = 'Approver'
+          }
+          if (userData.role === "VIEWER"){
+            userData.role = 'Viewer'
+          }
+
           setSelectedUser(userData);
           setFormData(userData);
           console.log("Processed User Data:", userData);
