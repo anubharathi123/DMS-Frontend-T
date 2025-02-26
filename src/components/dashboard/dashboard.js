@@ -80,26 +80,25 @@ const DashboardApp = () => {
         const response = await apiServices.companyCount();
         console.log("company Response:", response);
   
-        if (response ) {
-          // const { organization_count, user_count, active_org_count, inactive_org_count } = response[0];
+        if (response) {
           setOrgCount({
             totalCompanies: response.organization_count || 0,
             activeCompanies: response.active_org_count || 0,
             inactiveCompanies: response.inactive_org_count || 0,
             clientAdmins: response.user_count || 0,
-            totalDocuments:response.document_count || 0,
-            approvedDocuments:response.approved_count || 0,
-            pendingDocuments:response.pending_count || 0, 
-            rejectedDocuments:response.rejected_count || 0,
-          });}
-          console.log(OrgCount)
+            totalDocuments: response.document_count || 0,
+            approvedDocuments: response.approved_count || 0,
+            pendingDocuments: response.pending_count || 0,
+            rejectedDocuments: response.rejected_count || 0,
+          });
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
   
     fetchCount();
-  }, [companyData]); // ✅ Removed `companyData` from dependencies
+  }, []); // ✅ Removed companyData from dependencies
   
   // Monitor companyData state updates
   useEffect(() => {
@@ -156,14 +155,14 @@ const DashboardApp = () => {
       const response = await apiServices.getlinedata();
       console.log("company Trends:", response);
       if(response) {
-        const companytrends = response.companytrends.map( ct => ({
-          count: ct[0].count,
-          month: ct[0].month,
-          year: ct[0].year,
-        }))
-        setSelectedYear(companytrends);
-        setCount(companytrends);
-        setMonth(companytrends);
+        const companytrends = response.companytrends.map(ct => ({
+          count: ct.count,
+          month: ct.month,
+          year: ct.year,
+        }));
+        setSelectedYear(companytrends[0].year);
+        setCount(companytrends.map(ct => ct.count));
+        setMonth(companytrends.map(ct => ct.month));
       }
     } 
 
@@ -182,9 +181,7 @@ const lineData = {
   datasets: [
     {
       label: `Growth Rate (${selectedYear})`,
-      data: selectedYear ?  
-        [count] :
-        [month['01'], month['02'], month[2], month[3], month[4], month[5], month[6], month[7], month[8], month[9], month[10], month[11]] ,
+      data: count,
       borderColor: '#1661a9',
       borderWidth: 1,
       tension: 0.4,
@@ -293,24 +290,22 @@ const lineData = {
   );
 };
 
-const Card = ({ title, value, icon, role, bgColor}) => {
-  // Inline style for Uploader, Approver, and Reviewer roles
+const Card = ({ title, value = 1, icon, role, bgColor }) => {
   const cardStyle = {
-    backgroundColor: role === 'ADMIN' || 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER' ?  bgColor : "",
-    marginTop: role === 'UPLOADER' || role === 'REVIEWER' || role === 'VIEWER' ? "10%" : "",
-  }
+    backgroundColor: ['ADMIN', 'UPLOADER', 'REVIEWER', 'VIEWER'].includes(role) ? bgColor : "",
+    marginTop: ['UPLOADER', 'REVIEWER', 'VIEWER'].includes(role) ? "10%" : "",
+  };
     
   
   
 
   return (
-    
     <div className="card" style={cardStyle}>
       <div className="card-title">
         <div className="card-icon">{icon}</div>
         <div className="card-info">
-          <h2 >{title}</h2>
-          <p>{value}</p>
+          <h2>{title}</h2>
+          <p>{value ?? 0}</p> {/* Ensures value is always displayed */}
         </div>
       </div>
     </div>

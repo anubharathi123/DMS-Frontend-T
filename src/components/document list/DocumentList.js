@@ -254,6 +254,25 @@ const DocumentTable = () => {
     setRowsPerPage(parseInt(e.target.value));
   };
 
+  const handleDownloadFile = async (fileUrl, fileName) => {
+    try {
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+  
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -413,13 +432,13 @@ const DocumentTable = () => {
               
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documenttable_td px-6 py-4">
-                {item.fileName ? (
-                  <a href={(url+item.file)} target='_blank' rel='noopener noreferrer'>
-                    {item.fileName.split('/').pop().substring(0, 20) + '...'}
-                  </a>
-                ) : (
-                  "Null"  
-                )}
+              <a
+              title={item.fileName.split('/').pop()}
+  onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
+  style={{ cursor: "pointer", textDecoration: "underline" }}
+>
+  {item.fileName.split('/').pop().substring(0, 20) + '...'}
+</a>
               </td>
 
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
