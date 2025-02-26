@@ -105,6 +105,10 @@ const authService = {
     return handleResponse(apiClient.get(`user_details/${id}/`))
   },
 
+  deleteuser: async (id) => {
+    return handleResponse(apiClient.delete(`auth/${id}/delete/`))
+  },
+
   resetPassword: async (data) => {
 
     if (!data) {
