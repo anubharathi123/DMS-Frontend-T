@@ -352,6 +352,7 @@ const DocumentApproval = () => {
     className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
     onClick={() => handleFileOpen(item)}
     aria-label={`View ${item.fileName}`}
+    title={item.fileName.split('/').pop()}
   >
     {item.fileName.length > 20 ? item.fileName.substring(0, 20) + "..." : item.fileName}
   </button>
