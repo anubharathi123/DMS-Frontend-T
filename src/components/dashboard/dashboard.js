@@ -183,8 +183,9 @@ const lineData = {
     {
       label: `Growth Rate (${selectedYear})`,
       data: selectedYear ?  
-        [count] :
-        [month['01'], month['02'], month[2], month[3], month[4], month[5], month[6], month[7], month[8], month[9], month[10], month[11]] ,
+        [count] :['01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12'] 
+        
+        [month['01'], month['02'], month['03'], month['04'], month['05'], month['06'], month['07'], month['08'], month['09'], month['10'], month['11'], month['12']] ,
       borderColor: '#1661a9',
       borderWidth: 1,
       tension: 0.4,
@@ -220,7 +221,7 @@ const lineData = {
               <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />}  />
               <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} />
               <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
-              <Card title="Client Admin" value={OrgCount.clientAdmins} icon={<IoPeople />} />
+              <Card title="User" value={OrgCount.clientAdmins} icon={<IoPeople />} />
             </div>
               
             <div className="charts-container">

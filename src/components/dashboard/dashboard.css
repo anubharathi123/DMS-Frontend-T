@@ -12,7 +12,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 250px;
+  margin-left: 223px;
   margin-top: 80px;
 }
 
@@ -71,7 +71,7 @@
 
 .dashboard-table-container {
  height: 80%;
- width: 500px;
+ width: 460px;
 }
 
 .dashboard-table-container::-webkit-scrollbar {
@@ -201,18 +201,8 @@
     margin-bottom: 20px;
 }
 
-.card {
-  
-  border-radius: 10px;
- 
-  padding: 20px;
-  /* margin: 10px; */
-  width: 190px;
-  text-align: center;
-  display: inline-block;
 
-  
-}
+
 
 
 .card h2 {
@@ -397,9 +387,10 @@ left:74%;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 45%;
+  width: 67%;
   height: 90%;
   transition: transform 0.3s ease;
+  /* margin-left: -27px; */
 }
 
 .chart:hover {
@@ -407,7 +398,7 @@ left:74%;
 }
 
 canvas {
-  max-height: 200px;
+  max-height: 187px;
 }
 
 .slicer {
