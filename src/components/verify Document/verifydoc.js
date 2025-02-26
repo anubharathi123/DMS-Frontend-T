@@ -57,7 +57,7 @@ const DocumentApproval = () => {
         };
       }, [showSearchInfo]);
 
-  const host = 'http://localhost:8000';
+  const host = 'http://localhost:3000';
   const calendarRef = useRef(null);
 
   useEffect(() => {
@@ -356,7 +356,7 @@ const DocumentApproval = () => {
   >
     {item.fileName.length > 20 ? item.fileName.substring(0, 20) + "..." : item.fileName}
   </button>
-  {lastViewedId === item.file_id && <span className="text-green-500 text-xs ml-2">(Viewed)</span>}
+  {lastViewedId === item.file_id && <span className="text-green-500 text-xs ml-2">(Last Viewed)</span>}
 </td>
 
               <td className="documentapproval_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>

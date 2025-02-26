@@ -84,21 +84,22 @@ const AdminList = () => {
       fetchAdmins();
     }, [refresh]); // <-- Refresh the list when `refresh` changes
 
-  const filteredData1 = filteredData.filter((item) => {
-    if (filter === '') {
-      return item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase());
-    } else {
-      return item.role === filter && (
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-  });
+    const filteredData1 = filteredData.filter((item) => {
+      if (filter === 'All' || filter === '') {
+        return item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.role.toLowerCase().includes(searchTerm.toLowerCase());
+      } else {
+        return item.role === filter && (
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.role.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+    });
+    
 
   useEffect(() => {
     // Filter admins based on the selected filter date
@@ -115,7 +116,16 @@ const AdminList = () => {
     setFilteredData(filteredAdmins);
   }, [filterDate, data]);
 
-  const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+  useEffect(() => {
+    const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
+    setCurrentPage((prevPage) => Math.min(prevPage, totalPages));
+  }, [filteredData, rowsPerPage]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
+
+  const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
+
 
   const handleCreateAdmin = () => {
     navigate(`/AdminCreation`);
@@ -308,7 +318,7 @@ const handleDeleteAdmin = async (id) => {
           </button>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === Math.ceil(filteredData1.length / rowsPerPage)}
+           disabled={currentPage >= totalPages}
             className="adminlist_next_button"
           >
             Next

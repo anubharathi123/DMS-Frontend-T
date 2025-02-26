@@ -169,7 +169,12 @@
 }
 
 
-
+.card {
+  padding: 20px;
+    border-radius: 6px;
+    width: 17%;
+    
+}
 
 
 
@@ -192,13 +197,14 @@
 
 .cards-container1 {
   
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    width: 100%;
-    border-radius: 6px;
-    margin-top: -20px;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  width: 100%;
+  border-radius: 6px;
+  margin-top: -20px;
+  margin-bottom: 20px;
+
 }
 
 
