@@ -217,7 +217,7 @@ const lineData = {
               <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />}  />
               <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} />
               <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
-              <Card title="Client Admin" value={OrgCount.clientAdmins} icon={<IoPeople />} />
+              <Card title="User" value={OrgCount.clientAdmins} icon={<IoPeople />} />
             </div>
               
             <div className="charts-container">
