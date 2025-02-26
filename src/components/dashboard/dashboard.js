@@ -84,7 +84,7 @@ const DashboardApp = () => {
           setOrgCount({
             totalCompanies: response.organization_count || 0,
             activeCompanies: response.active_org_count || 0,
-            inactiveCompanies: response.inactive_org_count || 0,
+            inactiveCompanies: response.deleted_org_count || 0,
             clientAdmins: response.user_count || 0,
             totalDocuments: response.document_count || 0,
             approvedDocuments: response.approved_count || 0,
@@ -177,11 +177,12 @@ const DashboardApp = () => {
 })
 
 const lineData = {
+  
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   datasets: [
     {
       label: `Growth Rate (${selectedYear})`,
-      data: count,
+      data: (count, month),
       borderColor: '#1661a9',
       borderWidth: 1,
       tension: 0.4,
@@ -216,7 +217,7 @@ const lineData = {
            
               <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />}  />
               <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} />
-              <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
+              <Card title="Deleted Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
               <Card title="User" value={OrgCount.clientAdmins} icon={<IoPeople />} />
             </div>
               
