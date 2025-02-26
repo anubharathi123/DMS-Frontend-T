@@ -62,8 +62,8 @@ const calendarRef = useRef(null);
                     status: org.is_frozen,
                     delete: org.is_delete,
                 }));
-    
-                setData(organization);
+                const filterdata = organization.filter(org => !org.delete)
+                setData(filterdata);
     
                 if (organization.length === 0) {
                     setActionMessage("No Organizations are found in the list.");
@@ -178,7 +178,7 @@ const calendarRef = useRef(null);
     };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    const paginatedData = filteredData.slice(
+    const paginatedData = filteredData.filter(org => !org.delete).slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
     );
@@ -262,7 +262,7 @@ const calendarRef = useRef(null);
                 
                 <tbody className='organization-tbody' style={{ maxHeight: rowsPerPage > 5 ? '200px' : 'auto' }}>
                     {paginatedData.length > 0 ? (
-                        paginatedData.filter(org => !org.delete).map((org, index) => (
+                        paginatedData.map((org, index) => (
                             
                            
                             <tr key={index} className="organization-table-row">

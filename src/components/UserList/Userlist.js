@@ -50,7 +50,7 @@ const UserList = () => {
         setIsLoading(true);
         const response = await apiServices.users();
         console.log(response)
-        const users = response.map((user) => ({
+        let users = response.map((user) => ({
           id:user.id,
           username: user.auth_user.first_name || "N/A",
           // company_name: user.organization.company_name,
@@ -60,8 +60,9 @@ const UserList = () => {
           status:user.is_frozen,
           delete:user.is_delete,
         }));
-        setData(users);
-        setFilteredData(users);
+        const filteredUsers = users.filter(item => !item.delete);
+        setData(filteredUsers);
+        setFilteredData(filteredUsers);
         if (users.length === 0) {
           setActionMessage("No users available.");
         }
@@ -99,7 +100,7 @@ const UserList = () => {
     setFilteredData(filterUsers);
   }, [filterDate, data]);
 
-  const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+  const paginatedData = filteredData1.filter(item => !item.delete).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   const handleCreateUser = () => {
     navigate(`/createuser`);
@@ -237,7 +238,7 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody className="userlist_tbody">
-          {paginatedData.filter(item => !item.delete).map((item, index) => (
+          {paginatedData.map((item, index) => (
             <tr key={index} className="userlist_row">
               <td className="userlist_td">{item.username}</td>
               
