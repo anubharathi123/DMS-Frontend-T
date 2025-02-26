@@ -67,8 +67,9 @@ const AdminList = () => {
             delete: admin.is_delete,
           }));
           console.log(admins)
-          setData(admins);
-          setFilteredData(admins);
+          const filterdata = admins.filter(item => !item.delete)
+          setData(filterdata);
+          setFilteredData(filterdata);
     
           if (admins.length === 0) {
             setActionMessage('No admins available.');
@@ -278,7 +279,7 @@ const handleDeleteAdmin = async (id) => {
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
-        {paginatedData.filter(item => !item.delete).map((item, index) => (
+        {paginatedData.map((item, index) => (
     <tr
       key={index}
       className="adminlist_row">
