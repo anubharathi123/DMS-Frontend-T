@@ -395,74 +395,69 @@ const DocumentTable = () => {
                     selected={filterDate}
                     onChange={(date) => {
                       setFilterDate(date);
-                        setIsCalendarOpen(false);
-                      }}
-                      inline
-                      />
-                    </div>
-                    )}
-                  </th>
-                  <th className="documenttable_th px-6 py-3">Doc Type</th>
-                  <th className="documenttable_th px-6 py-3">Status</th>
-                  <th className="documenttable_th px-6 py-3">Comments</th>
-                  <th className="documenttable_th px-6 py-3">Download</th>
-                  </tr>
-                </thead>
-                <tbody className="documenttable_tbody">
-                  {paginatedData.map((item, index) => (
-                  <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
-                    
-                    <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
-                    <td className="documenttable_td px-6 py-4">
-                    {item.fileName ? (
-                      <a href={(url+item.file)} target='_blank' rel='noopener noreferrer'>
-                      {item.fileName.split('/').pop().substring(0, 20) + '...'}
-                      </a>
-                    ) : (
-                      "Null"  
-                    )}
-                    </td>
+                      setIsCalendarOpen(false);
+                    }}
+                    inline
+                  />
+                </div>
+              )}
+            </th>
+            <th className="documenttable_th px-6 py-3">Doc Type</th>
+            <th className="documenttable_th px-6 py-3">Status</th>
+            <th className="documenttable_th px-6 py-3">Comments</th>
+          </tr>
+        </thead>
+        <tbody className="documenttable_tbody">
+          {paginatedData.map((item, index) => (
+            <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
+              
+              <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
+              <td className="documenttable_td px-6 py-4">
+                {item.fileName ? (
+                  <a href={(url+item.file)} target='_blank' rel='noopener noreferrer'>
+                    {item.fileName.split('/').pop().substring(0, 20) + '...'}
+                  </a>
+                ) : (
+                  "Null"  
+                )}
+              </td>
 
-                    <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                    
-                    <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
-                    <td className="documenttable_td px-6 py-4">
-                    <span
-                      data-tip={item.rejectionReason} 
-                      className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
-                      ${item.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 
-                      item.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 
-                      'bg-green-100 text-green-800'}`}
-                    >
-                      {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
-                     
-                    </span>
-                    </td>
-                    <td className="documenttable_td px-6 py-4">
-                    {item.status === "REJECTED" && (
+              <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+              
+              <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
+              <td className="documenttable_td px-6 py-4">
+                <span
+                  data-tip={item.rejectionReason} 
+                  className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
+                    ${item.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 
+                    item.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 
+                    'bg-green-100 text-green-800'}`}
+                >
+                  {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
+                 
+                </span>
+              </td>
+              <td className="documenttable_td px-6 py-4">
+              {item.status === "REJECTED" && (
                         <span>{item.rejectionReason.split('/').pop().substring(0, 20) + '...'}</span>
-                        )}
-                    {item.status == "APPROVED" && (
+                      )}
+                {item.status == "APPROVED" && (
                         <span> NULL</span>
-                        )}
-                    {item.status == "PENDING" && (
+                      )}
+                {item.status == "PENDING" && (
                         <span> NULL</span>
-                        )}
-                       
-                    </td>
-                    <td className="documenttable_td px-6 py-4">
-                    {item.fileName && (
-                      <button onClick={() => filedownload(item.file)} className="documenttable_download_button">
-                      Download
-                      </button>
-                    )}
-                    </td>
-                  </tr>
-                  ))}
-                </tbody>
-                </table>
-                <div className="documenttable_pagination flex justify-between mt-4">
-                <div className="documenttable_pageinfo flex items-center"></div>
+                      )}
+                     
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="documenttable_pagination flex justify-between mt-4">
+        <div className="documenttable_pageinfo flex items-center">
+          <p className="documenttable_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
+        </div>
+        {/* Reset Filter Button */}
               {(searchTerm || filter || filterDate) && (
                      <button className="reset-filter-btn" onClick={handleResetFilter} 
                                 disabled={!searchTerm && !filter && !filterDate}>

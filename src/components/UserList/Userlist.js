@@ -57,7 +57,8 @@ const UserList = () => {
           email: user.auth_user.email,
           createdAt: user.created_at,
           role: user.role.name,
-          status:user.is_frozen
+          status:user.is_frozen,
+          delete:user.is_delete,
         }));
         setData(users);
         setFilteredData(users);
@@ -108,24 +109,41 @@ const UserList = () => {
     navigate(`/UpdateUser/${id}`);
   };
 
-  const handleDeleteAdmin = async (username) => {
-    const confirmDelete = window.confirm(`Are you sure you want to delete user "${username}"?`);
-    
+  const handleDeleteUser = async (id) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete user "${id}"?`);
+
     if (confirmDelete) {
       try {
         setIsLoading(true);
-        await apiServices.deleteAdmin(username); // Adjust API call based on your service
   
-        // Remove the deleted admin from state
-        const updatedAdmins = data.filter(admin => admin.username !== username);
-        setData(updatedAdmins);
-        setFilteredData(updatedAdmins);
-        
-        setActionMessage(`User "${username}" deleted successfully.`);
+        // Call the API to delete the admin
+        const response = await apiServices.deleteAdmin(id);
+  
+        console.log("Delete API Response:", response); // Log full response
+  
+        // Verify response structure
+        if (response.message) {
+          console.log("user deleted successfully, updating state...");
+  
+          // Update the state to remove the deleted admin
+          setData((prevData) => {
+            console.log("Previous Data:", prevData);
+            return prevData.filter(item => item.id !== id);
+          });
+  
+          // Set success message
+          // setActionMessage(`Admin "${id}" deleted successfully.`);
+        } else {
+          // Handle API failure
+          console.error("Failed to delete user:", response?.data?.message);
+          setActionMessage(response?.data?.message || "Failed to delete user.");
+        }
       } catch (error) {
-        console.error('Error deleting user:', error);
-        setActionMessage('Error deleting user. Please try again.');
+        // Handle any errors
+        console.error("Error deleting user:", error);
+        setActionMessage("Error deleting user. Please try again.");
       } finally {
+        // Reset loading state
         setIsLoading(false);
       }
     }
@@ -219,7 +237,7 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody className="userlist_tbody">
-          {paginatedData.map((item, index) => (
+          {paginatedData.filter(item => !item.delete).map((item, index) => (
             <tr key={index} className="userlist_row">
               <td className="userlist_td">{item.username}</td>
               
@@ -231,7 +249,7 @@ const UserList = () => {
               <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
               <td className="userlist_td">
                  <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
-                                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.username)}><FontAwesomeIcon icon={faTrash}/></button>
+                                <button className='adminlist-deletebtn' onClick={() => handleDeleteUser(item.id)}><FontAwesomeIcon icon={faTrash}/></button>
               </td>
             </tr>
           ))}

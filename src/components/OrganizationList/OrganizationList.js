@@ -289,15 +289,17 @@ const calendarRef = useRef(null);
 </td>
                                 <td className="organization-table-td">
                                     {org.msa_doc ? (
-                                        // <a href={(url+org.msa_doc)} target='_blank' rel='noopener noreferrer'>
-                                        // {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
-                                        // </a>
-                                        <a
-  onClick={() => handleDownload(`${url}/${org.msa_doc}`, org.msa_doc.split('/').pop())}
-  style={{ cursor: "pointer", textDecoration: "underline" }}
->
-  {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
-</a>
+                                        <a href={(url+org.msa_doc)} 
+                                        title={org.msa_doc.split('/').pop()}
+                                        target='_blank' rel='noopener noreferrer'>
+                                        {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+                                        </a>
+//                                         <a
+//   onClick={() => handleDownload(`${url}/${org.msa_doc}`, org.msa_doc.split('/').pop())}
+//   style={{ cursor: "pointer", textDecoration: "underline" }}
+// >
+//   {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+// </a>
 
                                     ) : (
                                     "Null"  

@@ -36,7 +36,7 @@ const AsideBar = () => {
           const name = details_data.details[5].first_name;
           localStorage.setItem("name", name);
           const Company_name = details_data.details[1].company_name;
-          localStorage.setItem("Company_name", Company_name);
+          localStorage.setItem("company_name", Company_name);
           const fetchedRole = details_data.details[3].name;
 
           if (fetchedRole === "ADMIN") {

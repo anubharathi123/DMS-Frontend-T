@@ -64,6 +64,7 @@ const AdminList = () => {
             email: admin.auth_user.email,
             createdAt: admin.created_at,
             role: admin.role.name,
+            delete: admin.is_delete,
           }));
           console.log(admins)
           setData(admins);
@@ -137,26 +138,39 @@ const handleDeleteAdmin = async (id) => {
   if (confirmDelete) {
     try {
       setIsLoading(true);
-      const response = await apiServices.deleteAdmin(id); // Adjust API call based on your service
-      console.log(response, response.id);
 
-      // Check for a successful response before updating state
-      if (response.success) {
-        setData(prevData => prevData.filter(admin => admin.id !== id));
-        setActionMessage(`Admin "${id}" deleted successfully.`);
+      // Call the API to delete the admin
+      const response = await apiServices.deleteAdmin(id);
+
+      console.log("Delete API Response:", response); // Log full response
+
+      // Verify response structure
+      if (response.message) {
+        console.log("Admin deleted successfully, updating state...");
+
+        // Update the state to remove the deleted admin
+        setData((prevData) => {
+          console.log("Previous Data:", prevData);
+          return prevData.filter(item => item.id !== id);
+        });
+
+        // Set success message
+        // setActionMessage(`Admin "${id}" deleted successfully.`);
       } else {
-        setActionMessage(response.message || 'Failed to delete admin.');
+        // Handle API failure
+        console.error("Failed to delete admin:", response?.data?.message);
+        setActionMessage(response?.data?.message || "Failed to delete admin.");
       }
     } catch (error) {
-      console.error('Error deleting admin:', error);
-      setActionMessage('Error deleting admin. Please try again.');
+      // Handle any errors
+      console.error("Error deleting admin:", error);
+      setActionMessage("Error deleting admin. Please try again.");
     } finally {
+      // Reset loading state
       setIsLoading(false);
     }
   }
 };
-
-
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -254,7 +268,7 @@ const handleDeleteAdmin = async (id) => {
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
-        {paginatedData.map((item, index) => (
+        {paginatedData.filter(item => !item.delete).map((item, index) => (
     <tr
       key={index}
       className="adminlist_row">
