@@ -6,8 +6,10 @@ import "cropperjs/dist/cropper.css";
 import authService from "../../ApiServices/ApiServices";
 import removeIcon from "../../assets/images/remove_icon.png";
 import editIcon from "../../assets/images/edit_icon.png";
+import { useParams } from "react-router-dom";
 
 function ProfileCard() {
+  
   const [cropperVisible, setCropperVisible] = useState(false);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -137,15 +139,15 @@ function ProfileCard() {
             localStorage.setItem('role', 'ADMIN');
             setRole('ADMIN');
           }
-          // setName(name);
-          // setRole(role);
-          // setMail(fetchedMail);
-          // setMobile(fetchedMobile);
+            // setName(name);
+            // setRole(role);
+            // setMail(mail);
+            // setMobile(mobile);
 
-          setEditName(name);
-          setEditRole(role);
-          setEditMail(mail);
-          setEditMobile(mobile);
+            setEditName(details_data.details[5].first_name);
+            setEditRole(details_data.details[3].name);
+            setEditMail(details_data.details[5].email);
+            setEditMobile(details_data.details[1].mobile);
         }
       } catch (error) {
         console.error("Error fetching profile details:", error);
@@ -205,7 +207,28 @@ function ProfileCard() {
   };
 
   // ✅ Save changes should hide the edit card
-  const handleSaveDetails = () => {
+  const handleSaveDetails = async (id) => {
+    try {
+      const response = await authService.saveprofile(id);
+      console.log("Profile Update Response:",response.id)
+      if(response.id) {
+        const p = response.details_data;
+        console.log(p);
+
+        const saveprofile = {
+          first_name:p.details[5].first_name,
+          role:p.details[3].name,
+          email:p.details[5].email,
+          mobile:p.details[1].mobile,
+        }
+        setShowEditCard(saveprofile);
+      }
+    } catch (error) {
+     
+    } finally {
+
+    }
+
     setName(editName);
     setRole(editRole);
     setMail(editMail);
@@ -220,7 +243,7 @@ function ProfileCard() {
     const id = data.details[3].id;
     console.log(id);
     if (id) {
-      const image = await authService.delprofile(id);
+      await authService.delprofile(id);
       }
 
       else{
