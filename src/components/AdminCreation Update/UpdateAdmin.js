@@ -137,7 +137,7 @@ const UpdateAdmin = () => {
             value={selectedadmin?.company_name || ""}
             className="admincreation-input"
             onChange={handleChange}
-            
+            disabled
           />
         </div>
 
@@ -195,6 +195,7 @@ const UpdateAdmin = () => {
             onChange={handleChange}
             className="admincreation-input"
             required
+            disabled
           />
         </div>
 
