@@ -405,7 +405,7 @@ const DocumentTable = () => {
                   <th className="documenttable_th px-6 py-3">Doc Type</th>
                   <th className="documenttable_th px-6 py-3">Status</th>
                   <th className="documenttable_th px-6 py-3">Comments</th>
-                  <th className="documenttable_th px-6 py-3">Download</th>
+                  
                   </tr>
                 </thead>
                 <tbody className="documenttable_tbody">
@@ -415,12 +415,17 @@ const DocumentTable = () => {
                     <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
                     <td className="documenttable_td px-6 py-4">
                     {item.fileName ? (
-                      <a href={(url+item.file)} target='_blank' rel='noopener noreferrer'>
-                      {item.fileName.split('/').pop().substring(0, 20) + '...'}
-                      </a>
-                    ) : (
-                      "Null"  
-                    )}
+  <a
+    href={url + item.file}
+    target="_blank"
+    rel="noopener noreferrer"
+    title={item.fileName.split('/').pop()} // Full file name as tooltip
+  >
+    {item.fileName.split('/').pop().substring(0, 20) + '...'}
+  </a>
+) : (
+  "Null"
+)}
                     </td>
 
                     <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
@@ -439,24 +444,14 @@ const DocumentTable = () => {
                     </span>
                     </td>
                     <td className="documenttable_td px-6 py-4">
-                    {item.status === "REJECTED" && (
-                        <span>{item.rejectionReason.split('/').pop().substring(0, 20) + '...'}</span>
-                        )}
-                    {item.status == "APPROVED" && (
-                        <span> NULL</span>
-                        )}
-                    {item.status == "PENDING" && (
-                        <span> NULL</span>
-                        )}
-                       
-                    </td>
-                    <td className="documenttable_td px-6 py-4">
-                    {item.fileName && (
-                      <button onClick={() => filedownload(item.file)} className="documenttable_download_button">
-                      Download
-                      </button>
-                    )}
-                    </td>
+  {item.status === "REJECTED" && (
+    <span title={item.rejectionReason}>{item.rejectionReason.split('/').pop().substring(0, 20) + '...'}</span>
+  )}
+  {item.status === "APPROVED" && <span> NULL</span>}
+  {item.status === "PENDING" && <span> NULL</span>}
+</td>
+
+                    
                   </tr>
                   ))}
                 </tbody>
