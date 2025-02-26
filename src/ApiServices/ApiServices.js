@@ -138,8 +138,8 @@ const authService = {
     }
   },
 
-  saveprofile: async (id) => {
-    return handleResponse(apiClient.post(`auth/register/${id}/`))
+  saveprofile: async (id,data) => {
+    return handleResponse(apiClient.put(`auth/register/${id}/`,data))
   },
 
   companyCount: async (data) => {

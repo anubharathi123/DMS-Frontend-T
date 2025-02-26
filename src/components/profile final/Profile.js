@@ -207,35 +207,86 @@ function ProfileCard() {
   };
 
   // ✅ Save changes should hide the edit card
-  const handleSaveDetails = async (id) => {
-    try {
-      const response = await authService.saveprofile(id);
-      console.log("Profile Update Response:",response.id)
-      if(response.id) {
-        const p = response.details_data;
-        console.log(p);
+  // const handleSaveDetails = async (id) => {
+  //   try {
+  //     const response = await authService.saveprofile(id ,{editMobile,editMail,editRole,editName});
+  //     console.log("Profile Update Response:",response.id)
+  //     if(response.id) {
+  //       const p = response.details_data;
+  //       console.log(p);
 
-        const saveprofile = {
-          first_name:p.details[5].first_name,
-          role:p.details[3].name,
-          email:p.details[5].email,
-          mobile:p.details[1].mobile,
-        }
-        setShowEditCard(saveprofile);
+  //       const saveprofile = {
+  //         first_name:p.details[5].first_name,
+  //         role:p.details[3].name,
+  //         email:p.details[5].email,
+  //         mobile:p.details[1].mobile,
+  //       }
+  //       setShowEditCard(saveprofile);
+  //     }
+  //   } catch (error) {
+     
+  //   } finally {
+
+  //   }
+
+  //   setName(editName);
+  //   setRole(editRole);
+  //   setMail(editMail);
+  //   setMobile(editMobile);
+  //   setShowEditCard(false); // Hide the edit card after saving
+  //   alert("Profile details updated successfully!");
+  // };
+
+
+  const handleSaveDetails = async () => {
+    try {
+      // Fetch user details to get the correct user ID
+      const data = await authService.details();
+      let userId = null;
+  
+      if (data.type === "User") {
+        userId = data.details[5].id;
+      } else if (data.type === "Organization") {
+        userId = data.details[1].id;
+      }
+  
+      if (!userId) {
+        console.error("User ID not found.");
+        alert("Error: User ID is missing.");
+        return;
+      }
+  
+      // Prepare updated profile data
+      const updatedProfile = {
+        first_name: editName,
+        // role: editRole,
+        email: editMail,
+        mobile: editMobile,
+      };
+  
+      // Send update request
+      const response = await authService.saveprofile(userId, updatedProfile);
+      console.log("Profile Update Response:", response);
+  
+      if (response) {
+        // Update profile details in state
+        setName(editName);
+        setRole(editRole);
+        setMail(editMail);
+        setMobile(editMobile);
+  
+        setShowEditCard(false); // Hide the edit form
+        alert("Profile details updated successfully!");
+      } else {
+        alert("Failed to update profile details.");
       }
     } catch (error) {
-     
-    } finally {
-
+      console.error("Error updating profile details:", error);
+      alert("An error occurred while updating profile details.");
     }
-
-    setName(editName);
-    setRole(editRole);
-    setMail(editMail);
-    setMobile(editMobile);
-    setShowEditCard(false); // Hide the edit card after saving
-    alert("Profile details updated successfully!");
   };
+  
+
 
   const handleRemoveProfileImage = async () => {
     const data= await authService.details();
