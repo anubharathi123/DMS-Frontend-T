@@ -35,6 +35,7 @@ import DateRangeSearch from "./components/document search/DateRangeSearch";
 import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
+import SignatureComponent from "./components/Signature/SignatureComponent";
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
@@ -325,6 +326,14 @@ function AppContent() {
   }
 />
 
+<Route 
+  path="/SignatureComponent"
+  element={
+     // <PrivateRoute>
+      <SignatureComponent/>
+      // </PrivateRoute>
+  }
+/>
 
 
         {/* Fallback route for unmatched paths */}
