@@ -59,7 +59,7 @@ const UserList = () => {
           role: user.role.name,
           status:user.is_frozen,
           delete:user.is_delete,
-        }));
+        })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         const filteredUsers = users.filter(item => !item.delete);
         setData(filteredUsers);
         setFilteredData(filteredUsers);
@@ -76,16 +76,22 @@ const UserList = () => {
     fetchDetails();
   }, [refresh]);
 
-  const filteredData1 = (filteredData || []).filter((item) => {
-    const searchTermLower = searchTerm.toLowerCase();
-    const matchesSearch =
-      item.username.toLowerCase().includes(searchTermLower) ||
-      item.company_name.toLowerCase().includes(searchTermLower) || // Fix: company_name instead of name
-      item.email.toLowerCase().includes(searchTermLower) ||
-      item.createdAt.toLowerCase().includes(searchTermLower) ||
-      item.role.toLowerCase().includes(searchTermLower);
-  
-    return filter ? item.role === filter && matchesSearch : matchesSearch;
+  const filteredData1 = filteredData.filter((item) => {
+    if (filter === '') {
+      return item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.status.toLowerCase().includes(searchTerm.toLowerCase());
+    } else {
+      return item.username === filter && (
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.status.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
   });
 
    useEffect(() => {
@@ -174,7 +180,7 @@ const UserList = () => {
         <div className="userlist-search">
           <Search className="userlist_search_icon" />
           <input
-            type="search"
+            type="text"
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search"
