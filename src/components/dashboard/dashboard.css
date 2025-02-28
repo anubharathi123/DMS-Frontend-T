@@ -71,7 +71,7 @@
 
 .dashboard-table-container {
  height: 80%;
- width: 460px;
+ /* width: 460px; */
 }
 
 .dashboard-table-container::-webkit-scrollbar {
@@ -103,7 +103,7 @@
   width: 100%;
   table-layout: fixed;
   top: 0;
-  z-index: 10;
+  /* z-index: 10; */
   background-color: #f9fafb;
 }
 
@@ -375,7 +375,7 @@ left:74%;
 
 .dashboard-year-selector{
   font-size: 14px;
-  margin-right: 353px;
+  /* margin-right: 353px; */
 }
 
 
@@ -409,13 +409,13 @@ canvas {
 
 .slicer {
  position: relative;
- bottom: 12px;
- margin-right: 23px;
+ bottom: 40px;
+ /* margin-right: 23px; */
 }
 
 /* Dropdown Year Selector */
 .dashboard-year-selector {
-  padding: 3px;
+  /* padding: 3px; */
   border-radius: 6px;
   border: 1px solid #ddd;
 }
@@ -424,9 +424,10 @@ canvas {
   padding: 1px;
   border-radius: 6px;
   border: 1px solid #ddd;
-  position: relative;
+  /* position: relative;
   bottom: 21px;
   right: 22%;
+} */
 }
 
 .dashboard-linedata {

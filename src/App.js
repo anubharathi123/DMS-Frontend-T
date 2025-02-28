@@ -36,6 +36,7 @@ import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
 import SignatureComponent from "./components/Signature/SignatureComponent";
+import OrganizationDeletion from "./components/OrganizationDeletion";
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
@@ -148,6 +149,16 @@ function AppContent() {
           element={
             <PrivateRoute>
               <ProfileManagementPage />
+              </PrivateRoute> 
+            //  </PrivateRoute> 
+
+          }
+        />
+        <Route
+          path="/organizationdeletion"
+          element={
+            <PrivateRoute>
+              <OrganizationDeletion />
               </PrivateRoute> 
             //  </PrivateRoute> 
 
