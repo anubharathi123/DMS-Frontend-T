@@ -1,0 +1,319 @@
+.profile-container {
+	display: flex;
+	flex-wrap: wrap;
+	/* height:100vh; */
+	margin-top: 25px;
+	justify-content: center;
+	/* align-items: center; */
+	gap: 10px;
+	font-family: 'Arial', sans-serif;
+	padding-left: 180px;
+	position: relative;
+	transition: transform 0.7s ease-in-out;
+}
+
+/* Move profile card left when edit button is clicked */
+.profile-container.shift-left {
+	transform: translateX(-150px);
+}
+
+/* Profile Card */
+.profile-card {
+   
+    /* margin-top: 150px; */
+	background: #fff;
+	padding: 25px;
+	border-radius: 20px;
+	text-align: center;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	width: 250px;
+	border: 1px solid #e0e0e0;
+	/* height: 450px; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	top: 20px;
+	transition: transform 0.9s ease-in-out;
+}
+
+.profile-photo {
+	position: relative;
+}
+
+.profile_img {
+	
+	width: 130px;
+	height: 130px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-bottom: 10px;
+	transition: opacity 0.5s ease-in-out;
+}
+
+.profile-initials {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	/* background: #6c63ff; */
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 36px;
+	font-weight: 200;
+	text-transform: uppercase;
+	transition: background 0.5s ease-in-out;
+}
+
+.remove-profile-icon {
+	position: absolute;
+	top: 100px;
+	right: 5px;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	background: white;
+	border-radius: 50%;
+	padding: 4px;
+	transition: opacity 0.4s ease-in-out;
+}
+
+/* Profile Card Details */
+.profile-name {
+	font-size: 20px;
+	font-weight: 200;
+	margin-top: 5px;
+}
+
+.profile-role,
+.profile-location {
+	color: #666;
+	font-size: 15px;
+	margin: 5px 0;
+	line-height: 1.6;
+}
+
+/* Buttons */
+.upload-btn {
+	color: #6c63ff;
+	font-weight: bold;
+	background: none;
+	border: none;
+	cursor: pointer;
+	margin: 5px;
+}
+
+.upload-photo {
+	left: 30px;
+    position: relative;
+    bottom: 175px;
+    width: 38px;
+    height: 22px;
+    cursor: pointer;
+    background: none;
+    border-radius: 50%;
+    padding: 4px;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.edit-btn {
+	color: #6c63ff;
+	font-weight: bold;
+	background: none;
+	border: none;
+	cursor: pointer;
+	margin: 5px;
+}
+
+.edit-btn {
+	margin-left: 10px;
+	margin-bottom: 5px;
+}
+
+/* Profile Edit Card */
+.profile-edit-card {
+	/* margin-top: 150px;  */
+	background: #fff;
+	padding: 30px;
+	border-radius: 20px;
+	width: 600px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	border: 1px solid #e0e0e0;
+	position: relative;
+	height: 440px;
+	top: 20px;
+	opacity: 0;
+	transform: translateY(-20px);
+	transition: opacity 0.1s ease-in-out, transform 0.7s ease-in-out;
+}
+
+.profile-container.shift-left {
+	transform: translateX(20px); /* Reduced movement to prevent going out of frame */
+}
+.profile-container.shift-left .profile-edit-card {
+	/* margin-top: 150px;  */
+	opacity: 1;
+	transform: translateY(0);
+}
+/* @media screen and (min-width: 1262px) {
+	.profile-edit-card {
+		margin-top: 150px;
+	}
+  } */
+/* Input Fields */
+.input-group {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.input-group label {
+	font-size: 16px;
+	font-weight: 100;
+	color: #3b3939;
+	margin-bottom: 5px;
+}
+
+.input-group input,
+.input-group select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	background: #fff;
+}
+
+/* Save Button */
+.save-btn {
+	width: 20%;
+	font-weight: 200;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+	margin-top: 20px;
+	background: linear-gradient(135deg, #6C63FF, #544DCf);
+    color: white;
+    border-radius: 6px;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Divider */
+.divider-container {
+	margin: 10px;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.profile-divider {
+	width: 100%;
+	height: 2px;
+	background-color: #ddd;
+}
+
+/* 🖼️ Cropper Modal Styling - Sleek & Compact */
+.cropper-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Subtle dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Show modal smoothly */
+.cropper-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-title {
+	/* margin-left: 170px; */
+	place-self:center;
+	font-size: 18px;
+    color: #000b58;
+	
+}
+
+/* 🖼️ Cropper Container */
+.cropper-modal-content {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 380px; /* Smaller width */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transform: scale(0.85);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Smooth opening effect */
+.cropper-modal.show .cropper-modal-content {
+    transform: scale(1);
+}
+
+/* Header */
+.cropper-header {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+/* 🖼️ Smaller Cropper Area */
+.cropper-container {
+    width: 100%;
+    height: 220px; /* Reduced height */
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+}
+
+/* ✨ Action Buttons */
+.cropper-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.cropper-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    width: 45%;
+}
+
+/* ✅ Save Button */
+.btn-save-crop {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-save-crop:hover {
+    background-color: #218838;
+}
+
+/* ❌ Cancel Button */
+.btn-cancel-crop {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-cancel-crop:hover {
+    background-color: #c82333;
+}

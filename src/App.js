@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AsideBar_Header from "./pages/Asidebar_Header";
-import UploadDocument from "./components/upload document/UploadDocument";
+import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
 import VerifyDoc from "./components/verify Document/verifydoc";
 import CompanyCreation from "./components/company creation/CompanyCreation";
 import DocumentList from "./components/document list/DocumentList";
@@ -11,18 +11,43 @@ import Dashboard from "./components/dashboard/dashboard";
 import AuditLog from "./components/audit log/audit_log";
 import CreateUser from "./components/create user/CreateUser";
 import ResetPassword from "./components/resetpassword/ResetPassword";
-import EmployeeCreation from "./components/employee creation/EmployeeCreation";
-import NotificationPage from "./components/NotificationDropdown/NotificationDropdown";
-import Fileupload from "./components/fileuploadtestpage/file upload"
-import Test from './components/test/test'
-// import ProfileManagement from "./components/profile management/ProfileManagement";
-// import EmployeeProfile from "./components/employee profile/EmployeeProfile";
-// import ProfileManagement from "./components/profile management/ProfileManagement";
+import Fileupload from "./components/File Upload/file upload"
+import Profile from "./components/Profile/Profile";
+import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
+import OrganizationList from "./components/OrganizationList/OrganizationList";
+import Login1 from "./components/login1/login1";
+import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
+import ChangePassword1 from "./components/changepassword1/changepassword1";
+import AdminList from "./components/AdminList/AdminList";
+import { ProfileImageProvider } from "./context/ProfileImageContext"; 
+// import Header from "./components/Header";
+import AdminCreation from "./components/AdminCreation/AdminCreation";
+import { StyledEngineProvider } from '@mui/material/styles';
+import Login2 from "./login2/SignInSide";
+import LandingPage from "./landing Page/MarketingPage";
+// import Dash from './dashboard/routes/sections'
+// import { HomePage } from './dashboard/routes/sections';
+import UserList from './components/UserList/Userlist';
+import AdminCreation1 from "./components/Admin Creation1/AdminCreation";
+import OrganizationCreation from './components/Organization creation/CompanyCreation'
+import NotFoundView from "./error 404/pages/page-not-found";
+import DateRangeSearch from "./components/document search/DateRangeSearch";
+import ProfileCard from "./components/profile final/Profile";
+import ClientPage from "./components/clientpage/clientpage";
+import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
+import SignatureComponent from "./components/Signature/SignatureComponent";
+import OrganizationDeletion from "./components/OrganizationDeletion";
+// import AdminCreation Update from "./components/AdminCreation Update";
+// import OrganizationList from "./components/OrganizationList/OrganizationList";
+
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
-import AnnouncementCreation from "./components/AnnouncementCreation/AnnouncementCreation";
-
 import "./App.css";
+import styles from './index.css';
+import { IdCard } from "lucide-react";
+import UpdateAdmin from "./components/AdminCreation Update/UpdateAdmin";
+import UpdateUser from "./components/UpdateUser/UpdateUser";
+
 
 // Function to check authentication status
 const isAuthenticated = () => {
@@ -48,9 +73,11 @@ const TokenRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ProfileImageProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ProfileImageProvider>
   );
 }
 
@@ -66,104 +93,152 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/login","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
       {/* Static AsideBar with Logout functionality */}
       {shouldDisplayAsideBar && <AsideBar_Header onLogout={handleLogout} />}
-
+      <StyledEngineProvider injectFirst>
       {/* Main Content */}
       <Routes>
         {/* Route for Login */}
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        
+        <Route path="/login" element={<Login2 />} />
+        <Route path="/" element={<LandingPage />} />
+        {/* <Route path="/dash" element={<HomePage />} /> */}
+        <Route path="/NotFoundView" element={<NotFoundView />} />
 
-        {/* Reset Password (Unrestricted Access) */}
-        <Route path="/resetpassword" element={<ResetPassword />} />
+            
+        {/* <Route path="/login" element={<Login2 />} /> */}
+        {/* <Route path="/" element={<Login1 />} /> */}
 
+        {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
+        <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
+        <Route path="/OrganizationList" element={<OrganizationList />} />
+        <Route path="/profile-management" element={<ProfileManagementPage />} />
         {/* Change Password (Token Only) */}
-        <Route
+        {/* <Route
           path="/ChangePassword"
           element={
-            <TokenRoute>
               <ChangePassword />
-            </TokenRoute>
           }
+        /> */}
+
+        <Route
+          path="/ChangePassword1"
+          element={ 
+      
+            <ChangePassword1 />
+           }
         />
 
         {/* Protected Routes */}
         <Route
-          path="/"
+          path="/upload"
           element={
             <PrivateRoute>
-              <DocumentList />
+              <Fileupload />
             </PrivateRoute>
           }
         />
+        
         <Route
-          path="/UploadDocument"
+          path="/profilemanagement"
           element={
             <PrivateRoute>
-              <UploadDocument />
-            </PrivateRoute>
+              <ProfileManagementPage />
+              </PrivateRoute> 
+            //  </PrivateRoute> 
+
           }
         />
         <Route
-          path="/announcement"
+          path="/organizationdeletion"
           element={
             <PrivateRoute>
-              <AnnouncementCreation />
-            </PrivateRoute>
-          }
-        />
-        {/* <Route
-          path="/logout"
-          element={
-            handleLogout()
-          }
-        /> */}
-        <Route
-          path="/EmployeeCreation"
-          element={
-            <PrivateRoute>
-              <EmployeeCreation />
-            </PrivateRoute>
+              <OrganizationDeletion />
+              </PrivateRoute> 
+            //  </PrivateRoute> 
+
           }
         />
         <Route
-          path="/verifydoc"
+          path="/Clientpage"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
+              <ClientPage />
+            //  </PrivateRoute> 
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            // <PrivateRoute>
+        //       <Profile name="Rita Correia"
+				// age="32"
+				// city="London"
+				// followers="80K"
+				// likes="803K"
+				// photos="1.4K" />
+        <ProfileCard />
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/verifydocument"
+          element={
+            
               <VerifyDoc />
-            </PrivateRoute>
           }
         />
         <Route
-          path="/CompanyCreation"
+          path="/companycreation"
           element={
-            <PrivateRoute>
+          //  <PrivateRoute>
               <CompanyCreation />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
+
         <Route
-          path="/DocumentList"
+          path="/companyupdate/:id"
           element={
-            <PrivateRoute>
+           <PrivateRoute>
+              <CompanyUpdate />
+           </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/organizationlist"
+          element={
+            // <PrivateRoute>
+              <OrganizationList />
+            // {/* </PrivateRoute> */}
+          }
+        />
+
+        <Route
+          path="/documentlist"
+          element={
+            // <PrivateRoute>
               <DocumentList />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <Dashboard />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
         <Route
-          path="/AuditLog"
+          path="/auditlog"
           element={
             <PrivateRoute>
               <AuditLog />
@@ -171,85 +246,113 @@ function AppContent() {
           }
         />
         <Route
-          path="/CreateUser"
+          path="/createuser"
           element={
             <PrivateRoute>
               <CreateUser />
-            </PrivateRoute>
+             </PrivateRoute>
           }
         />
 
-<Route
-  path="/EmployeeProfile"
-  element={
-    <PrivateRoute>
-      <EmployeeProfile />
-    </PrivateRoute>
-  }
-/> 
+         <Route
+          path="/UpdateUser/:id"
+          element={
+            <PrivateRoute>
+              <UpdateUser />
+             </PrivateRoute>
+          }
+        />
 
- <Route
-  path="/ProfileManagement"
-  element={
-    <PrivateRoute>
-      <ProfileManagement />
-    </PrivateRoute>
-  }
-/>
-
-
-
-<Route
-  path="/Fileupload"
-  element={
-    <PrivateRoute>
-      <Fileupload />
-    </PrivateRoute>
-  }
-/>
-
-
-<Route
-  path="/Test"
-  element={
-    <PrivateRoute>
-      <Test />
-    </PrivateRoute>
-  }
-/>
-
+          <Route
+            path="/user-list"
+            element={
+              <PrivateRoute>
+              <UserList/>
+              </PrivateRoute>
+            }
+            />
 
          <Route
-          path="/NotificationDropdown"
+          path="/notificationdropdown"
           element={
             <PrivateRoute>
               <NotificationPage />
             </PrivateRoute>
           }
         />
+         <Route
+          path="/admincreation"
+          element={
+            <PrivateRoute>
+              <AdminCreation />
+           </PrivateRoute>
+          }
+        />
 
         <Route
-          path="/test"
+          path="/updateadmin/:id"
           element={
             <PrivateRoute>
-              <Test />
-            </PrivateRoute>
+              <UpdateAdmin />
+           </PrivateRoute>
           }
         />
 
-          <Route
-          path="/Upload"
+        <Route
+          path="/OrganizationList"
           element={
-            <PrivateRoute>
-              <Fileupload />
-            </PrivateRoute>
+             <PrivateRoute>
+              <OrganizationList />
+             </PrivateRoute>
           }
         />
+
+       <Route
+          path="/AdminList"
+          element={
+             <PrivateRoute>
+              <AdminList/>
+            </PrivateRoute> 
+
+          }
+        />
+
+
+<Route
+  path="/date-range-search"
+  element={
+    // <PrivateRoute>
+      <DateRangeSearch />
+    // </PrivateRoute>
+  }
+/>
+
+
+<Route
+  path="/profile-final"
+  element={
+    // <PrivateRoute>
+      <ProfileCard />
+    // </PrivateRoute>
+  }
+/>
+
+<Route 
+  path="/SignatureComponent"
+  element={
+     // <PrivateRoute>
+      <SignatureComponent/>
+      // </PrivateRoute>
+  }
+/>
+
 
         {/* Fallback route for unmatched paths */}
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<NotFoundView />} />
       </Routes>
+      </StyledEngineProvider>
     </div>
+
   );
 }
 

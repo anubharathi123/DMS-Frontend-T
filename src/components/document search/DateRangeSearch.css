@@ -1,0 +1,227 @@
+/* General styles */
+.date-range-body{
+    height: 100%;
+    width: 100%;
+    
+    
+}
+
+.date-range-search {
+    width: 600px;
+    margin: 100px auto ;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading styles */
+  .date-h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .date-h2 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  /* Date picker container styles */
+  .start-date,
+  .end-date {
+    margin-bottom: 15px;
+  }
+  
+  .date-label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+  
+  .react-datepicker__input-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+  }
+  
+  .react-datepicker__input-container input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Button styles */
+  .date-search-button {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .date-search-button button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .date-search-button button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .date-search-button button:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  /* Document list styles */
+  .date-range-documents {
+    margin-top: 30px;
+  }
+  
+  .date-ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .date-li {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .date-li:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+
+
+
+
+
+
+
+  .date-download-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .date-download-button:hover {
+    color: #007bff; /* Change color on hover */
+  }
+  
+  .date-download-button:focus {
+    outline: none;
+  }
+  
+
+
+
+
+  .date-li {
+    display: flex;
+    justify-content: space-between;  /* This will position the elements at both ends */
+    align-items: center;             /* This vertically aligns the content */
+    margin-bottom: 10px;             /* Optional: Adds some space between items */
+  }
+
+  .date-download-button {
+    margin-left: 10px;   /* Optional: Adds space between the document name and the button */
+  }
+  
+
+
+
+
+
+
+
+
+
+
+  /* .date-input-container {
+    position: relative;
+  }
+  
+  .date-icon-container {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  .date-icon-container svg {
+    color: #666;  
+  }
+   */
+
+
+
+
+
+
+   .custom-date-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .custom-date-input input {
+    width: 100%;
+    padding: 8px;
+    padding-right: 30px; /* Space for the calendar icon */
+    box-sizing: border-box;
+  }
+  
+  .calendar-icon {
+    position: absolute;
+    right: 10px;
+    font-size: 14px;
+    color: #888;
+  }
+  
+
+  
+
+
+
+
+
+
+.date-reset-button{
+  position: absolute;
+  top: 150px;
+  right: 340px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

@@ -1,21 +1,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri";  // Import the dropdown icon
+import { useNavigate } from 'react-router-dom';
 import './CreateUser.css';
+import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
+import Loader from "react-js-loader";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
     username: '',
-    companyName: '',
-    personName: '',
+    companyname: localStorage.getItem("company_name") || "",
+    name: '',
     mobile: '',
     email: '',
-    accessCreationDate: '',
-    accessExpiryDate: '',
+    created_at: '',
     role: ''
   });
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);  
 
-  const [roleOptions, setRoleOptions] = useState(["Compiler", "Approver", "Viewer"]);
+  const [roleOptions] = useState(["Compiler", "Approver", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
@@ -40,31 +45,39 @@ const CreateUser = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert('User created successfully!');
-    setFormData({
-      username: '',
-      companyName: '',
-      personName: '',
-      mobile: '',
-      email: '',
-      accessCreationDate: '',
-      accessExpiryDate: '',
-      role: ''
-    });
+    setIsLoading(true);
+    try {
+      
+      const response = await apiServices.register(formData);
+      setMessage('User registered successfully!');
+      navigate('/user-list');
+    } catch (error) {
+      // setIsLoading(false);
+      const errorMessage = error.response?.data?.error || error.error;
+      console.log('Error registering user:', errorMessage);
+      // console.error('Error registering user:', error);
+      setMessage(`Error: ${errorMessage}`);
+      setTimeout(() => {
+        setMessage(`Error: ${errorMessage}`);
+        setMessage(``);
+        // setLoading(false);
+      }, 3000);
+    }
+    finally {
+      setIsLoading(false); // End loading
+    }
   };
 
   const handleCancel = () => {
     setFormData({
       username: '',
-      companyName: '',
-      personName: '',
+      name: '',
       mobile: '',
       email: '',
-      accessCreationDate: '',
-      accessExpiryDate: '',
+      created_at: '',
       role: ''
     });
   };
@@ -76,6 +89,8 @@ const CreateUser = () => {
     });
     setIsDropdownVisible(true);  // Show dropdown when user types
   };
+
+  
 
   const handleKeyDown = (e) => {
     if (e.key === "ArrowDown") {
@@ -109,7 +124,14 @@ const CreateUser = () => {
 
   return (
     <div className="company-register-container">
-      <h2 className="company-register-title">User Register</h2>
+      
+      {/* {message && <div className="createuser_message">{message}</div>} */}
+      <h2 className="company-register-title">Access Management</h2>
+      {message && (
+        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+          {message}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         {/* Username */}
         <div className="company-form-group">
@@ -133,11 +155,12 @@ const CreateUser = () => {
           </label>
           <input
             type="text"
-            name="companyName"
-            value={formData.companyName}
+            name="companyname"
+            value={formData.companyname}
             onChange={handleChange}
             className="company-input"
             required
+            readOnly 
           />
         </div>
 
@@ -148,8 +171,8 @@ const CreateUser = () => {
           </label>
           <input
             type="text"
-            name="personName"
-            value={formData.personName}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             className="company-input"
             required
@@ -193,23 +216,8 @@ const CreateUser = () => {
           </label>
           <input
             type="date"
-            name="accessCreationDate"
-            value={formData.accessCreationDate}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
-
-        {/* Access Expiry Date */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Access Expiry Date <span className="mandatory">*</span>
-          </label>
-          <input
-            type="date"
-            name="accessExpiryDate"
-            value={formData.accessExpiryDate}
+            name="created_at"
+            value={formData.created_at}
             onChange={handleChange}
             className="company-input"
             required
@@ -255,10 +263,19 @@ const CreateUser = () => {
 
         {/* Button Group */}
         <div className="button-group">
-          <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn-submit">Create</button>
+          <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
+         
         </div>
       </form>
+      {isLoading && (
+        <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

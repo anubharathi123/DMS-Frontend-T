@@ -72,12 +72,14 @@ const Login = () => {
       alert('OTP Verified!');
       const details_data = await authService.details();
       console.log(details_data)
+      const name = details_data.details[5].name
+      console.log(name)
       const role = details_data.details[1].name
       console.log(role)
       localStorage.setItem('role', role);
       localStorage.setItem('access_status', true);
 
-      navigate('/');
+      navigate('/DocumentList');
     } catch (error) {
       console.error('OTP verification error:', error.message || error);
       setMessages([error.message || 'Invalid OTP. Please try again.']);
@@ -85,7 +87,6 @@ const Login = () => {
     }
   };
 
-  
   const handleResendOtp = async () => {
     try {
       setCounter(30);

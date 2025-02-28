@@ -4,9 +4,17 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  background-color: #000B58 !important; /* Updated to Light Blue */
   gap: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  position: relative; /* Ensure the dropdown is positioned correctly */
+  position: relative;
+}
+
+.header-profile-image {
+  /* width: 100%;         */
+  height: 100%;       
+  border-radius: 50%; 
+  /* object-fit: cover;   */
 }
 
 /* Search Bar */
@@ -14,24 +22,19 @@
   position: relative;
   display: flex;
   align-items: center;
-  /* background-color: #0b3041; */
   border-radius: 4px;
   padding: 5px;
-  width: 250px;
-  margin-right: -1%;
-}     
-
-
+  width: 220px;
+}
 
 .search-input {
   height: 30px;
-  width: 80% !important;
+  width: 100% !important;
   padding: 5px !important;
-  border: 1px solid #ddd !important;
+  border: 1px solid #006A67 !important; /* Updated to Teal */
   border-radius: 8px !important;
   font-size: 14px !important;
   color: #333;
-  margin-left: 27px;
 }
 
 .search_icon {
@@ -40,7 +43,6 @@
   position: absolute;
   right: 10px;
   cursor: pointer;
-  left: 82%;
 }
 
 .search-suggestions {
@@ -53,11 +55,11 @@
   list-style: none;
   max-height: 150px;
   overflow-y: auto;
-  border: 1px solid #ddd;
+  border: 1px solid #006A67; /* Updated to Teal */
   border-radius: 4px;
-  background: #fff;
+  background: #FFF4B7; /* Updated to Light Teal */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1; /* Ensure suggestions are above other content */
+  z-index: 1;
 }
 
 .suggestion-item {
@@ -68,7 +70,7 @@
 }
 
 .suggestion-item:hover {
-  background-color: #f0f0f0;
+  background-color: #006A67; 
 }
 
 .no-suggestions {
@@ -89,14 +91,13 @@
 }
 
 .notificationbtn:hover {
-  background: #43bade;
+  background: #66ccec; /* Updated to a light blue tone */
 }
 
 .notification-icon {
   width: 25px;
   height: 25px;
   filter: invert(1);
-  margin-left: -2px;
 }
 
 /* Notification Dropdown */
@@ -104,20 +105,19 @@
   position: absolute;
   top: 60px;
   right: 20px;
-  background: white;
-  width: 300px;
+  background: #f9f9f9; 
+  width: 380px;
   padding: 10px;
-  height: auto;
-  max-height: 300px;
-  /* overflow-y: auto; */
+  /* height: auto;
+  max-height: 300px; */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
+  border: 1px solid #006A67; /* Updated to Teal */
   z-index: 2;
 }
 
 .close-button {
-  background: rgb(150, 143, 143);
+  background: #000B58; /* Updated to Dark Blue */
   border: none;
   font-size: 20px;
   border-radius: 25px;
@@ -127,7 +127,7 @@
 }
 
 .close-button:hover {
-  background: rgb(75, 71, 71);
+  background: #003161; /* Updated to Light Blue */
   color: white;
 }
 
@@ -139,28 +139,37 @@
   background: none;
   border-radius: 20px;
   cursor: pointer;
+  color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
 }
 
-.profilebtn:hover {
-  background: #43bade;
-}
-
+/* Profile Image */
 .profile-image {
-  width: 25px;
-  height: 25px;
-  filter: invert(1);
+  width: 30px;
+  height: 30px;
+  object-fit: cover; /* Ensures the image covers the circular button */
+  border-radius: 50%;
 }
 
+/* Profile Button Hover Effect */
+.profilebtn:hover {
+  background: #66ccec;
+}
+
+/* Profile Dropdown */
 .profile-dropdown {
   position: absolute;
-  top: 70px; /* Adjust based on profile button position */
-  right: 10px; /* Adjust to align with the button */
-  background: white;
-  border: 1px solid #ccc;
+  top: 70px;
+  right: 10px;
+  background: #f9f9f9; /* Updated to Light Teal */
+  border: 1px solid #006A67; /* Updated to Teal */
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 230px;
+  width: 280px;
 }
 
 .profile-dropdown p {
@@ -182,10 +191,191 @@
   background: #c82333;
 }
 
+@media screen and (max-width: 931px) {
+  .Asidebar-header-mobile {
+    width: 100% !important;
+    position-area: y-end;
+  }
+}
+
+.name-input-container {
+  margin-right: 10px;
+}
+
+.name-input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.profile-icon1 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* .icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  background-color: lightgray; 
+} */
+
+
+
+.close-button {
+  background: #000B58; /* Updated to Dark Blue */
+  border: none;
+  font-size: 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-left: 270px;
+  margin-bottom: 10px;
+}
+
+.close-button:hover {
+  background: #003161; /* Updated to Light Blue */
+  color: white;
+}
+
+/* Profile Button */
+.profilebtn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+}
+
+/* Profile Image */
+.profile-image {
+  width: 30px;
+  height: 30px;
+  object-fit: cover; /* Ensures the image covers the circular button */
+  border-radius: 50%;
+}
+
+/* Profile Button Hover Effect */
+.profilebtn:hover {
+  background: #66ccec;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  background: #f9f9f9; /* Updated to Light Teal */
+  border: 1px solid #006A67; /* Updated to Teal */
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 280px;
+}
+
+.profile-dropdown p {
+  margin: 5px 0;
+}
+
+.signout-button {
+  margin-top: 10px;
+  width: 100%;
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-dropdown {
+  position: absolute;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  min-width: 180px;
+}
+
+.dropdown-menu {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.signout-button {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align-last: center;
+    background: antiquewhite;
+  font-size: 14px;
+  color: red;
+}
+
+.signout-button:hover {
+  background: #f8d7da;
+
+}
+
+.signout-button:hover {
+  background: #c82333;
+  color: antiquewhite;
+}
 
 @media screen and (max-width: 931px) {
   .Asidebar-header-mobile {
     width: 100% !important;
     position-area: y-end;
   }
+}
+
+.name-input-container {
+  margin-right: 10px;
+}
+
+.name-input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.profile-icon1 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #23c854;
 }

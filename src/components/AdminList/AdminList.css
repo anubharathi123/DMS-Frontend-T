@@ -1,0 +1,251 @@
+.adminlist_container{
+    display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 75%;
+  margin-left: 250px;
+  position: absolute;
+  top: 65px;
+}
+
+.adminlist_header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000b58;
+  text-align: left;
+  margin-bottom: 5px;
+  margin-top: 30px;
+}
+
+.admin_createbtn {
+  padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 20px;
+    background-color: #000b58;
+    color: white;
+    cursor: pointer;
+    width: fit-content;
+    font-size: 12px;
+    position: relative;
+    left: 88%;
+}
+
+.adminlist_controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 0.5rem !important;
+}
+
+.adminlist_search {
+  flex-direction: row-reverse;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.adminlist_search_input {
+  width: 260px;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  padding-left: .5rem !important;
+  border-radius: 7px;
+  font-size: 12px !important;
+}
+
+.adminlist_search_icon {
+  position: relative;
+  right: 33px;
+}
+
+.adminlist_searchinfo {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.adminlist-searchinfo-popup {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  top: 40px;
+  left: 10px;
+  z-index: 100;
+  font-size: 12px;
+  color: #333;
+}
+
+
+
+.adminlist_filter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.adminlist_filter_label {
+  font-size: 14px
+}
+
+.adminlist_filter_select { 
+  width: 200px;
+  font-size: 12px !important;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border-radius: 7px;
+}
+
+.adminlist_rows {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.adminlist_rows_label {
+  font-size: 14px
+}
+
+.adminlist_rows_select {
+  width: 200px;
+  font-size: 12px !important;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border-radius: 7px;
+}
+
+.adminlist_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px !important;
+}
+
+.adminlist_thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  top: 0;
+  z-index: 10;
+  background-color: #f9fafb;
+}
+
+.adminlist_th{
+  background-color: #f1f1f1;
+  padding: 8px;
+  text-align: left;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  color: #000b58;
+}
+
+.admin-list-calendarbtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.adminlist_tbody {
+  display: block;
+  max-height: 300px; /* Adjust based on desired height */
+  overflow-y: auto;
+}
+
+.adminlist_tbody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.adminlist_tbody::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.adminlist_tbody::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.adminlist_row {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: table-row;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.adminlist_td {
+  width: 20%;
+  word-wrap: break-word;
+}
+
+.adminlist-editbtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+}
+
+.adminlist-deletebtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: red;
+}
+
+.adminlist_pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+
+.adminlist_pageinfo_text {
+  font-size: 12px;
+}
+
+.adminlist_prev_button:disabled  {
+  margin-right: 40px;
+  background-color: #e5e7eb;
+  color: #495057;
+  cursor: not-allowed;
+  padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    font-size: 12px !important;
+}
+
+.adminlist_next_button {
+  background-color: #000b58;
+  color: white;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin-right: 40px; 
+  cursor: pointer;
+  padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    font-size: 12px !important;
+}
+
+.adminlist_prev_button {
+  background-color: #000b58;
+  color: white;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin-right: 40px; 
+  cursor: pointer;
+  padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    font-size: 12px !important;
+}

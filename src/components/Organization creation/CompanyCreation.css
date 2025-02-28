@@ -1,0 +1,272 @@
+:root {
+  --primary-color: #5a36a2;
+  --text-color: #333; /* Dark text for readability */
+  --light-bg: #f9f9f9; /* Very light background */
+  --border-color: #ddd; /* Light border color */
+  --input-bg: #fff; /* Input background color */
+ }
+ 
+ 
+ /* General body styles */
+ body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f0f2f5; /* A slightly different background */
+  /* color: var(--text-color); */
+  margin: 0;
+  padding: 10px;
+ }
+ 
+ 
+ /* Company Creation Container */
+ .company-creation-container1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  margin-left: 250px;
+  margin-top: 70px;
+  margin-bottom: 10px;
+  border-radius: 20px; /* This adds the curve effect */
+
+ }
+ 
+ 
+ /* Company Creation Inner Container */
+ .company-creation-inner-container1 {
+  max-width: 90%;
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  border-radius: 25px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+ }
+ 
+ 
+ /* Title */
+ .company-creation-title {
+  font-size: 18px;
+  /* font-weight: 500; */
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position: relative;
+  padding-bottom: 5px;
+  margin-right: 700px;
+  border-bottom: 2px solid #000;
+  display: inline-block;
+ }
+ 
+ 
+ /* Name Row */
+ .name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns for name fields */
+  gap: 15px;
+  margin-bottom: 12px;
+ }
+ 
+ 
+ /* Form Group */
+ .company-creation-form-group1 {
+  display:-ms-inline-grid;
+  flex-direction: column;
+  margin-bottom: 10px; 
+ }
+ 
+ 
+ .company-creation-label {
+  font-size: 14px; 
+  font-weight: 400;
+  color: #777;
+  margin-bottom: 3px; 
+  width: auto; 
+ }
+ 
+ 
+ .company-creation-mandatory {
+  color: #e74c3c;
+ }
+ 
+ .company-creation-input1 {
+  width: 100%;
+  padding: 6px; 
+  font-size: 15px; 
+  border: 10px solid var(--border-color);
+  border-radius: 4px; 
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  box-sizing: border-box;
+  margin-top: 5px;
+ }
+ 
+ 
+ .company-creation-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+ }
+ 
+ 
+
+.company-creation-upload-area1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* width: 100%; */
+  /* max-width: 450px; */
+  height: auto;
+  min-height: 100px;
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  background-color: #f8f9fc;
+  padding: 35px;
+  margin-left: 5px;
+  margin-top: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.company-creation-upload-area1:hover {
+  border-color: var(--primary-color);
+  background-color: #eef1f7;
+}
+
+.company-creation-upload-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-color);
+  text-align: center;
+  max-width: 90%;
+}
+
+.upload-icon {
+  font-size: 40px;
+  color: #fff;
+}
+
+.company-creation-upload-text p {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 0;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.company-creation-upload-text span {
+  font-size: 14px;
+  color: #888;
+  font-weight: 600;
+}
+
+.browse-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 600;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  max-width: 200px;
+}
+
+.browse-btn:hover {
+  background-color: #462f87;
+  transform: scale(1.05);
+}
+
+
+.company-creation-file-name {
+  font-size: 15px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.company-creation-remove-icon {
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+ 
+ 
+ .company-creation-submit,
+ .company-creation-cancel {
+  padding: 5px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 6px;
+ }
+ 
+ 
+ .company-creation-submit {
+  background-color: var(--primary-color);
+  color: #fff;
+ }
+ 
+ 
+ .company-creation-submit:hover {
+  background: #462f87;
+ }
+ 
+ 
+ .company-creation-cancel {
+  background-color: #95a5a6;
+  color: #fff;
+ }
+ 
+ 
+ .company-creation-cancel:hover {
+  background-color: #7f8c8d;
+ }
+ 
+ 
+ /* Responsive Design */
+ @media (max-width: 768px) {
+  .name-row {
+   grid-template-columns: 2fr; 
+  }
+ 
+ 
+  .company-creation-inner-container1 {
+  width: 95%;
+  padding: 12px;
+  margin: 10px auto;
+  }
+ 
+ 
+  .company-creation-buttons {
+  text-align: center;
+  justify-content: center;
+  }
+ 
+ 
+  .company-creation-submit,
+  .company-creation-cancel {
+  margin-left: 0;
+  margin-bottom: 10px;
+  }
+ }
+ 

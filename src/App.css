@@ -1,7 +1,7 @@
 /* App.css */
 .app {
   display: flex;
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
   /* background-color: #f4f4f4; */
   place-content: center;
@@ -12,6 +12,29 @@
 }
 body {
   /* background-color: #0b3041; */
+  background-color: #f4f6f8;
+}
+.css-7ly1ne-MuiStack-root{
+  height:95vh !important;
+}
+/* @media screen and (min-width: 1500px) {
+  .app{
+    height: 100vh;
+  }
+  
+} */
+
+.css-1fysxw9-MuiStack-root{
+  margin-top: 0;
+}
+
+[data-mui-color-scheme="dark"] .css-bxe83t-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill, 
+[data-mui-color-scheme="dark"] .css-cgi6xx-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill{
+  -webkit-box-shadow: 0 0 0 30px hsl(220, 35%, 3%) inset !important;
+}
+[data-mui-color-scheme="light"] .css-bxe83t-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill, 
+[data-mui-color-scheme="light"] .css-cgi6xx-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill{
+  -webkit-box-shadow: 0 0 0 30px hsl(0, 0%, 100%) inset !important;
 }
 
 .Inner_content_indent
@@ -30,4 +53,3 @@ body {
   overflow-y: auto; /* Allow content scrolling if needed */
   box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
-

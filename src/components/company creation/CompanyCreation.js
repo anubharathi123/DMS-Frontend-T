@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CompanyCreation.css';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import Loader from "react-js-loader";
+import authService from '../../ApiServices/ApiServices';
+import apiServices from '../../ApiServices/ApiServices';
+
 
 const CompanyCreation = () => {
   const [company, setCompany] = useState({
-    username: '',
+    username: 'AE-',
     companyName: '',
     personName: '',
     mobile: '',
@@ -13,9 +18,15 @@ const CompanyCreation = () => {
     accessExpiryDate: '',
   });
 
-  const [contractDocuments, setContractDocuments] = useState([]);
+  const [contractDocuments, setContractDocuments] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [fileInputClicked, setFileInputClicked] = useState(false);
+  const [error, setError] = useState(null); // For error handling
+  const [companyName, setCompanyName] = useState('');
+  const [newNotification, setNewNotification] = useState(null);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);  
+  
 
   // Handles input changes
   const handleChange = (e) => {
@@ -27,8 +38,26 @@ const CompanyCreation = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Only take the first file
     if (file) {
-      setContractDocuments([file]); // Replace the previous files with the selected one
-      setFileInputClicked(true);
+      setContractDocuments(file); // Store the selected file
+      setFileInputClicked(true); // Mark that a file is selected
+    }
+  };
+
+  const handleCreateCompany = async () => {
+    try {
+      const response = await apiServices.createCompany({ name: companyName });
+      
+      if (response.success) {
+        // Set notification when the company is successfully created
+        setNewNotification({
+          id: new Date().getTime(),
+          action: 'Organization Created',
+          entity_type: companyName,
+          description: 'Organization has been created successfully.',
+        });
+      }
+    } catch (error) {
+      console.error('Company creation failed:', error);
     }
   };
 
@@ -51,56 +80,55 @@ const CompanyCreation = () => {
     setDragging(false);
     const file = e.dataTransfer.files[0]; // Only take the first dropped file
     if (file) {
-      setContractDocuments([file]); // Replace the previous files with the selected one
-      setFileInputClicked(true);
+      setContractDocuments(file); // Replace the previous files with the selected one
+      setFileInputClicked(true); // Mark that a file is selected
     }
   };
 
-  // Removes a specific file
+  // Removes a specific file without triggering the file input dialog
   const handleRemoveFile = () => {
-    setContractDocuments([]); // Remove the file
-    setFileInputClicked(false); // Reset the file input click status
-  };
-
-  // Validate form
-  const validateForm = () => {
-    const { username, companyName, personName, mobile, email, accessCreationDate, accessExpiryDate } = company;
-    if (!username || !companyName || !personName || !mobile || !email || !accessCreationDate || !accessExpiryDate) {
-      return false;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\d{10}$/;
-    if (!emailRegex.test(email)) {
-      alert('Please enter a valid email address.');
-      return false;
-    }
-    if (!phoneRegex.test(mobile)) {
-      alert('Please enter a valid mobile number (10 digits).');
-      return false;
-    }
-    return true;
+    setContractDocuments(null); // Remove the file
+    setFileInputClicked(false); // Prevent the file input dialog from popping up
   };
 
   // Handles form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      const formData = { ...company, contractDocuments };
-      console.log('Submitted Data:', formData);
+  
+    // Check if contract document is uploaded
+    if (!contractDocuments) {
+      setError("Please upload the Master Services Agreement (MSA) before proceeding.");
+      setTimeout(() => setError(null), 3000);
+      return; // Stop form submission
+    }
+  
+    const formData = new FormData();
+    // Append company details to FormData
+    Object.keys(company).forEach((key) => {
+      formData.append(key, company[key]);
+    });
+  
+    formData.append('contractDocuments', contractDocuments); // Append file to FormData
+  
+    setIsLoading(true);
+  
+    try {
+      await authService.createOrganization(formData); // Call the API service
       alert('Company registered successfully!');
-      resetForm();
+      navigate('/OrganizationList');
+    } catch (error) {
+      setError(error.message || 'Something went wrong.');
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
+  
 
   // Handles cancel action
   const handleCancel = () => {
-    resetForm();
-  };
-
-  // Resets the form to initial state
-  const resetForm = () => {
     setCompany({
-      username: '',
+      username: 'AE-',
       companyName: '',
       personName: '',
       mobile: '',
@@ -108,21 +136,24 @@ const CompanyCreation = () => {
       accessCreationDate: '',
       accessExpiryDate: '',
     });
-    setContractDocuments([]);
+    setContractDocuments(null);
     setFileInputClicked(false);
   };
 
-  // Triggers file input dialog when clicking the upload area
+  // Triggers file input dialog when clicking anywhere on the upload area
   const handleUploadClick = () => {
-    if (!fileInputClicked) {
-      document.getElementById('file-input').click();
-    }
+    document.getElementById("file-input").click();
   };
 
   return (
     <div className="company-creation-container">
       <div className="company-creation-inner-container">
-        <h2 className="company-creation-title">Company Register</h2>
+        <h2 className="company-creation-title1">Company Hub</h2>
+        {error && (
+        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+          {error}
+        </div>
+      )}
         <form className="company-creation-form" onSubmit={handleSubmit}>
           {/* Username */}
           <div className="company-creation-form-group">
@@ -199,56 +230,80 @@ const CompanyCreation = () => {
             />
           </div>
 
-          
-          
-          {/* File Upload */}
-          <label className="company-creation-label">
-              Contract Document <span className="company-creation-mandatory">*</span>
-            </label>
-          <div
-            className={`company-creation-upload-container ${dragging ? 'dragging' : ''}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={handleUploadClick}
-          >
-            <FaCloudUploadAlt className="company-creation-upload-icon" />
-            {contractDocuments.length === 0 && (
-              <span> Drag & drop or select here </span>
-            )}
-            <input
-              type="file"
-              id="file-input"
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-            />
-            {contractDocuments.length > 0 && (
-              <div className="company-creation-file-names">
-                <div className="company-creation-file-item">
-                  <span className="file-name">{contractDocuments[0].name}</span>
-                  <button
-                    type="button"
-                    className="company-creation-remove-file-btn"
-                    onClick={handleRemoveFile}
-                  >
-                    X
-                  </button>
-                </div>
-              </div>
-            )}
+          {/* Date Inputs */}
+          <div className="company-creation-date-group">
+            <div className="company-creation-form-group">
+              <label className="company-creation-label">
+                Creation Date <span className="company-creation-mandatory">*</span>
+              </label>
+              <input
+                type="date"
+                name="accessCreationDate"
+                value={company.accessCreationDate}
+                onChange={handleChange}
+                className="company-creation-date-input"
+                required
+              />
+            </div>
           </div>
 
-          {/* Buttons */}
-          <div className="company-creation-button-group">
-            <button type="submit" className="company-creation-submit-button">
-              Submit
+          {/* Contract Document */}
+          <div className="company-creation-form-group">
+            <label className="company-creation-label">
+              Master Services Agreement(MSA) <span className="company-creation-mandatory">*</span>
+            </label>
+            <div className={`company-creation-upload-area ${dragging ? 'dragging' : ''}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={handleUploadClick} // Trigger file dialog on single click
+>
+            <input type="file" id="file-input" onChange={handleFileChange} className="company-creation-file-input"
+              hidden />
+            <div className="company-creation-upload-text">
+              <FaCloudUploadAlt />
+              {fileInputClicked ? (
+              <div className="company-creation-file-name">
+              {contractDocuments.name}
+              {/* Cross button to remove the file */}
+              <span className="company-creation-remove-icon" onClick={handleRemoveFile}>
+              &#10005;
+              </span>
+            </div>
+          ) : (
+        <p> Drag and drop or browse
+        <a href="#!">
+          here
+        </a>
+      </p>
+    )}
+  </div>
+</div>
+          </div>
+
+          {/* Error Message */}
+          {/* {error && <div className="company-creation-error">{error}</div>} */}
+
+          {/* Submit and Cancel */}
+          <div className="company-creation-buttons">
+            <button type="submit" className="company-creation-submit">
+              Create
             </button>
-            <button type="button" className="company-creation-cancel-button" onClick={handleCancel}>
+           
+            <button type="button" onClick={handleCancel} className="company-creation-cancel">
               Cancel
             </button>
           </div>
         </form>
       </div>
+      {isLoading && (
+        <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

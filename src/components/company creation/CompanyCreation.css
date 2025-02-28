@@ -1,170 +1,178 @@
-/* Container Styles */
+:root {
+  --teal: #006a67;
+  --dark-blue: #003158;
+  --light-teal: #67fff4;
+  --beige: #f4b7;
+}
+
 .company-creation-container {
-  width: 100%;
-  max-width: 800px;
-  padding: 20px;
-  margin-left: 250px; /* Adjusted for the AsideBar width */
-  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-left: 15%;
+  /* background-color: #f4f4f4; */
 }
 
-/* Inner Container */
 .company-creation-inner-container {
-  background-color: #D4EBF8; /* Light Blue */
-  padding: 2rem;
-  border-radius: 10px;
+  padding: 17px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 585px;
+  margin-top: 11%;
+  height: 417px;
+  background-color: #E6E6E6;
 }
 
-/* Title */
-.company-creation-title {
-  color: #003161; /* Light Blue */
+.company-creation-title1 {
   text-align: center;
-  margin-bottom: 1.5rem;
+  font-size: 21px;
+  margin-top: -10px;
+  color: var(--dark-blue);
 }
 
-/* Form Styling */
 .company-creation-form {
   display: flex;
   flex-direction: column;
 }
 
 .company-creation-form-group {
-  margin-bottom: 1rem;
-}
-
-.company-creation-form-group-btn {
   display: flex;
-  gap: 30px !important;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-/* Labels */
 .company-creation-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #006A67; /* Teal */
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 13px;
+  color: #555;
+  margin-right: 15px;
+  width: 30%;
 }
 
-/* Mandatory Field Indicator */
+.company-creation-input,
+.company-creation-date-input {
+  width: 435px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 13px;
+  height: 17px;
+}
+
+.company-creation-input:focus,
+.company-creation-date-input:focus {
+  outline: none;
+  border-color: var(--dark-blue);
+}
+
 .company-creation-mandatory {
   color: red;
 }
 
-/* Inputs */
-.company-creation-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #003161; /* Dark Blue */
-  border-radius: 5px;
-  background-color: #fff;
-  color: #003161; /* Dark Blue */
-  font-size: 1rem;
-}
-
-.company-creation-input:focus {
-  outline: none;
-  border-color: #006A67; /* Teal */
-  box-shadow: 0 0 5px rgba(0, 106, 103, 0.5);
-}
-
-/* File Upload Area */
-.company-creation-upload-container {
-  border: 2px dashed #003161; /* Dark Blue */
-  padding: 20px;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
+.company-creation-upload-area {
   position: relative;
+  padding: 8px;
+  border: 2px dashed #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  text-align: center;
+  width: 435px;
 }
 
-.company-creation-upload-container.dragging {
-  background-color: rgba(0, 106, 103, 0.1); /* Light Teal */
+.company-creation-upload-area.dragging {
+  border-color: var(--light-teal);
+  background-color: #e9ffe9;
 }
 
-.company-creation-upload-icon {
-  font-size: 50px;
-  color: #003161; /* Dark Blue */
-  margin-bottom: 10px;
-}
-
-.company-creation-file-names {
-  margin-top: 10px;
-}
-
-.company-creation-file-item {
+.company-creation-upload-text {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #D4EBF8; /* Light Blue */
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  justify-content: center;
+  cursor: pointer;
+  color: #555;
 }
 
-.company-creation-file-item .file-name {
-  color: #003161; /* Dark Blue */
+.company-creation-upload-text svg {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.company-creation-file-name {
   font-size: 14px;
+  color: #333;
 }
 
-.company-creation-remove-file-btn {
-  background: none;
-  color: #FF4B7F; /* Light Purple */
+.company-creation-remove-file {
+  margin-top: 10px;
+  background-color: #ff4c4c;
+  color: white;
   border: none;
+  padding: 5px 10px;
   font-size: 14px;
-  cursor: pointer;
-}
-
-.company-creation-remove-file-btn:hover {
-  text-decoration: underline;
-}
-
-/* Buttons */
-.company-creation-submit-button {
-  background-color: #006A67; /* Teal */
-  color: #FFF4B7; /* Light Teal */
-  padding: 0.75rem;
-  border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  margin-top: 1rem;
 }
 
-.company-creation-submit-button:hover {
-  background-color: #003161; /* Dark Blue */
+.company-creation-remove-file:hover {
+  background-color: #e03e3e;
 }
 
-.company-creation-cancel-button {
-  background-color: #FFF4B7; /* Light Teal */
-  color: #006A67; /* Teal */
-  padding: 0.75rem;
-  border: 1px solid #006A67; /* Teal */
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 1rem;
+.company-creation-error {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.company-creation-cancel-button:hover {
-  background-color: #006A67; /* Teal */
-  color: #FFF4B7; /* Light Teal */
-}
-
-.company-creation-button-group{
+.company-creation-buttons {
   display: flex;
-    column-gap: 30px;
-    align-self: center;
+  justify-content: center;
+  gap: 20px;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .company-creation-form-group {
-    width: 100%;
-  }
-  .company-creation-date-group {
-    flex-direction: column;
-  }
+.company-creation-submit {
+  background-color: var(--teal);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.company-creation-submit:hover {
+  background-color: #34727f;
+}
+
+.company-creation-cancel {
+  background-color: var(--teal);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.company-creation-cancel:hover {
+  background-color: #34727f;
+}
+
+.company-creation-file-name {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.company-creation-remove-icon {
+  margin-left: 50px;
+  cursor: pointer;
+  color: #de0f0f;
+}
+
+.company-creation-remove-icon:hover {
+  color: darkred;
 }

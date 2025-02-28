@@ -1,154 +1,245 @@
-import React, { useState, useEffect, useRef } from "react";
-import './header.css';
-import Notification from '../../assets/images/notification-icon.png';
-import CandidateProfile from '../../assets/images/candidate-profile.png';
-import SearchIcon from '../../assets/images/search_icon.png';
-import { Link, useNavigate, NavLink } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import "./header.css";
+import Notification from "../../assets/images/notification-icon.png";
+import CandidateProfile from "../../assets/images/candidate-profile.png";
+import SearchIcon from "../../assets/images/search_icon.png";
 import NotificationPage from "../NotificationDropdown/NotificationDropdown";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
+import avatar from "../../assets/images/candidate-profile.png";
+import { FaBullseye } from "react-icons/fa6";
+import ApiService from "../../ApiServices/ApiServices";
+
+
 
 const Header = () => {
-    const [query, setQuery] = useState(""); // State for search input
-    const [suggestions, setSuggestions] = useState([]); // State for suggestions
-    const [activeDropdown, setActiveDropdown] = useState(null); // Tracks which dropdown is open
-    const Navigate = useNavigate();
-    const dropdownRef = useRef(null); // Ref for the notification dropdown container
-    const profileDropdownRef = useRef(null); // Ref for the profile dropdown container
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [profileImage, setProfileImage] = useState( );
+  const [iconColor, setIconColor] = useState("#000");
+  const [imageToCrop, setImageToCrop] = useState(null);
+  const [cropperVisible, setCropperVisible] = useState(false);
 
-    const allSuggestions = [
-        "Find Company",
-        "Find Documents",
-        "Find Admin",
-        "Admin List",
-        "Company List",
-        "Announcement List",
-        "Audit Log",
-        "Settings",
-    ];
+  const fileInputRef = useRef();
+  const cropperRef = useRef();
+  const profileButtonRef = useRef();
+  const profileDropdownRef = useRef();
+  const notificationDropdownRef = useRef();
+  const notificationButtonRef = useRef();
+  const navigate = useNavigate();
+  const name = localStorage.getItem("name") || "User";
+  const email = localStorage.getItem("email") || "email";
 
-    const handleSearchInput = (event) => {
-        const value = event.target.value;
-        setQuery(value);
-        if (value) {
-            const filteredSuggestions = allSuggestions.filter((item) =>
-                item.toLowerCase().includes(value.toLowerCase())
-            );
-            setSuggestions(filteredSuggestions);
-        } else {
-            setSuggestions([]);
-        }
-    };
 
-    const handleLogout = () => {
-        localStorage.removeItem("username");
-        localStorage.removeItem("token");
-        localStorage.removeItem("access_status");
-        localStorage.removeItem("role");
-        Navigate('/login');
-    };
+  useEffect(() => {
+    // localStorage.removeItem("profileImage");
+    const updateProfileImage = async () =>  {
+      setProfileImage(localStorage.getItem("profileImage"));
+      };
+      const fetchProfileDetails = async () => {
+        try {
+          // const response = await authService.details();
+          const image = await ApiService.getprofile();
+          try{
+            console.log("Profile image response:",(image.profile_image.image) );
+            const url = (image.profile_image.image);
+            console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
+          }
+          catch(error){
+            console.log("Profile image response:",(image.organization_image.image) );
+            const url = (image.organization_image.image);
+            console.log("Profile image URL:", url);
+            const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+            // Ensure no double slashes in the URL
+            const fullImageUrl = `${baseUrl.replace(/\/$/, "")}${url}`;
+          
+            setProfileImage(fullImageUrl);
+            localStorage.setItem("profileImage", fullImageUrl);
+          }
+            
+            } catch (error) {
+              localStorage.setItem("profileImage", avatar);
+              console.error("Error fetching profile details:", error);
+              
+            }
+          };
+    fetchProfileDetails();
+    window.addEventListener("profileImageUpdated", updateProfileImage);
+    return () => window.removeEventListener("profileImageUpdated", updateProfileImage);
+  }, []);
 
+  const getInitials = (name) => {
+    if (!name.trim()) return "U";
+    return name
+      .split(" ")
+      .map((n) => n.charAt(0).toUpperCase())
+      .join("");
+  };
+
+  const allSuggestions = [
+    "Find Company",
+    "Find Documents",
+    "Find Admin",
+    "Admin List",
+    "Company List",
+    "Announcement List",
+    "Audit Log",
+    "Settings",
+  ];
+
+  // Updates profile image if it changes in localStorage
+  useEffect(() => {
     const handleClickOutside = (event) => {
-        // Close notification dropdown if clicked outside
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setActiveDropdown(null);
-        }
-        // Close profile dropdown if clicked outside
-        if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
-            setActiveDropdown(null);
-        }
+      if (
+        profileDropdownRef.current?.contains(event.target) ||
+        notificationDropdownRef.current?.contains(event.target) ||
+        profileButtonRef.current?.contains(event.target) ||
+        notificationButtonRef.current?.contains(event.target)
+      ) {
+        return;
+      }
+      setActiveDropdown();
     };
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-    return (
-        <div className="header-container" style={{ background: "#0b3041", padding: "10px", height: "45px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
-            {/* Search Bar with Suggestions */}
-            <div className="search-bar-container">
-                <input
-                    type="text"
-                    value={query}
-                    onChange={handleSearchInput}
-                    className="search-input"
-                    placeholder="Search..."
-                />
-                <img src={SearchIcon} alt="search_icon" className="search_icon"></img>
-                {suggestions.length > 0 && (
-                    <ul className="search-suggestions">
-                        {suggestions.map((suggestion, index) => (
-                            <li
-                                key={index}
-                                className="suggestion-item"
-                                onClick={() => {
-                                    setQuery(suggestion);
-                                    setSuggestions([]);
-                                }}
-                            >
-                                {suggestion}
-                            </li>
-                        ))}
-                    </ul>
-                )}
+  
 
-                {query && suggestions.length === 0 && (
-                    <p className="no-suggestions">No suggestions found</p>
-                )}
-            </div>
+  const handleLogout = async () => {
+    try {
+        await ApiService.logout(); // Call the logout API
+        localStorage.removeItem("access_status");
+        localStorage.removeItem("token");
+        navigate("/");
+    } catch (error) {
+        console.warn("Error logging out:", error.message);
+    }
+};
+const getRandomColor = () => {
+  return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+};
+useEffect(() => {
+  setIconColor(getRandomColor());
+}, []);
 
-            {/* Notification Button */}
-            <div ref={dropdownRef}>
-                <button
-                    type="button"
-                    className="notificationbtn"
-                    onClick={() => setActiveDropdown(activeDropdown === "notification" ? null : "notification")}
-                >
-                    <img
-                        src={Notification}
-                        alt="Notifications"
-                        className="notification-icon"
-                    />
-                </button>
+const handleNavigateHome =() => {
+  navigate("/Dashboard");
+}
 
-                {/* Notification Dropdown */}
-                {activeDropdown === "notification" && (
-                    <div className="notification-dropdown">
-                        <NotificationPage />
-                    </div>
-                )}
+const handleNavigate404 = () => {
+  navigate("/NotFoundView")
+}
 
-                {/* Profile Button */}
-                <button
-                    type="button"
-                    className="profilebtn"
-                    onClick={() => setActiveDropdown(activeDropdown === "profile" ? null : "profile")}
-                >
-                    <img
-                        src={CandidateProfile}
-                        alt="Candidate profile"
-                        className="profile-image"
-                    />
-                </button>
+ 
 
-                {/* Profile Dropdown */}
-                {activeDropdown === "profile" && (
-                    <div className="profile-dropdown" ref={profileDropdownRef}>
-                        <p><b>Name:</b> John Doe</p>
-                        <p><b>Email:</b> john.doe@example.com</p>
-                        <button
-                            type="button"
-                            className="signout-button"
-                            onClick={handleLogout}
-                        >
-                            LogOut
-                        </button>
-                    </div>
-                )}
-            </div>
+
+  return (
+    <div className="header-container">
+      <div className="search-bar-container">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => {
+            const value = e.target.value;
+            setQuery(value);
+            setSuggestions(
+              value
+                ? allSuggestions.filter((item) =>
+                    item.toLowerCase().includes(value.toLowerCase())
+                  )
+                : []
+            );
+          }}
+          className="search-input"
+          placeholder="Search..."
+        />
+        <img src={SearchIcon} alt="search_icon" className="search_icon" />
+        {suggestions.length > 0 && (
+          <ul className="search-suggestions">
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                className="suggestion-item"
+                onClick={() => setQuery(suggestion)}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
+        )}
+        {query && suggestions.length === 0 && (
+          <p className="no-suggestions">No suggestions found</p>
+        )}
+      </div>
+
+      {/* Notification Button */}
+      <button
+        type="button"
+        className="notificationbtn"
+        onClick={() =>
+          setActiveDropdown(activeDropdown === "notification" ? null : "notification")
+          
+        }
+      >
+        {activeDropdown === "notification" && (
+        <div className="notification-dropdown" ref={notificationDropdownRef}>
+          <NotificationPage />
         </div>
-    );
+      )}
+        <img src={Notification} alt="Notifications" className="notification-icon" />
+      </button>
+
+      {/* Profile Icon */}
+      <button
+        type="button"
+        className="profilebtn"
+        style={{ background: iconColor }}
+        onClick={() =>
+          setActiveDropdown(activeDropdown === "profile" ? null : "profile")
+        }
+        ref={profileButtonRef}
+      >
+        {profileImage ? (
+          <img src={profileImage} alt="Profile" className="profile-icon1" />
+        ) : (
+          <div className="profile-icon">{getInitials(name)}</div>
+        )}
+      </button>
+
+      {/* Notification Dropdown */}
+      
+
+      {/* Profile Dropdown */}
+      {activeDropdown === "profile" && (
+  <div className="profile-dropdown" ref={profileDropdownRef}>
+    <p><b></b> {name}</p>
+    <p><b></b> {email}</p>
+    <hr />
+    <ul className="dropdown-menu">
+      <li><button type="button" className="dropdown-item" onClick={handleNavigateHome}>Home</button></li>
+      <li><button type="button" className="dropdown-item" onClick={handleNavigate404}>Settings</button></li>
+      <li><button type="button" className="signout-button" onClick={handleLogout}>
+        LogOut
+      </button></li>
+    </ul>
+  </div>
+)}
+
+      {/* {renderCropperModal()} */}
+    </div>
+  );
 };
 
 export default Header;

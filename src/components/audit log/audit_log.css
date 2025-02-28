@@ -9,90 +9,84 @@
 
 .auditpage {
   background: rgb(248, 249, 250);
-  width: 70%;
-  height: 85%;
-  margin-top: 50px;
-  margin-left: 250px;
 }
 
 .audit-h1{
-  font-family: 'Arial', sans-serif;
-  text-align: center;
+  font-family:'Times New Roman', Times, serif;
+  color: var(--dark-blue);
+  margin-left: 150px;
+  margin-top: -90px;
 }
 
-.audit_mail-id_label {
-  margin-left: 50px;
-  font-weight: bold;
+.audit-mail-id_label{
+  font-weight: 600;
+  margin-right: 15px;
+  margin-left: 260px;
 }
 
-.audit_mail-id_input {
-  margin-left: 20px;
-  padding: 5px;
-  border-radius: 5px;
-  border-style: groove;
-  border-width: 1px;
-  border-color: black;
+.audit-mail-id_input {
+  width: 260px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  font-size: small;
+  border-radius: 7px;;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
 }
 
-.audit_actions-label {
-  margin-left: 50px;
-  font-weight: bold;
+.audit-actions_label{
+  font-weight: 600;
+  margin-right: 15px;
 }
 
-.audit_actions-input {
-  margin-left: 20px;
-  padding: 5px;
-  border-radius: 5px;
-  border-style: groove;
-  border-width: 1px;
-  border-color: black;
+.audit-actions_input {
+  width: 260px;
+  font-size: small;
+  border-radius: 7px;;
+  margin-right: 15px;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
 }
 
-
-.audit_to-date {
+.audit-from-date_input {
+  width: 260px;
   margin-left: 15px;
-  width: 250px;
+  font-size: small;
+  border-radius: 7px;;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
 }
 
-.audit_from-date_label {
-  margin-right: 15px;
-  margin-left: 50px;
-  font-weight: bold;
-}
-.audit_from-date_input {
-  margin-left: 22px;
-  width: 170px;
-  padding: 5px;
-  border-radius: 5px;
-  border-style: groove;
-  border-width: 1px;
-  border-color: black;
+.audit-to-date_input {
+  width: 260px;
+  margin-left: 49px;
+  font-size: small;
+  border-radius: 7px;;
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  border: 1px solid #ddd;
 }
 
-
-.audit_to-date_label {
-  margin-right: 15px;
-  margin-left: 50px;
-  font-weight: bold;
+.audit-from-date_label {
+  font-weight: 600;
 }
 
-.audit_to-date_input {
-  margin-left: 10px;
-  width: 170px;
-  padding: 5px;
-  border-radius: 5px;
-  border-style: groove;
-  border-width: 1px;
-  border-color: black;
+.audit-to-date_label {
+  font-weight: 600;
+  margin-left: 260px;
 }
 
 .apply-filterbtn {
-  margin-left: 30%;
+  margin-left: 50%;
   width: 110px;
   border: none;
-  background: #5fc3d7;
-  border-radius: 3px;
-  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--teal);
+  color: white;
+  padding: 10px;
   cursor: pointer;
 }
 
@@ -103,34 +97,24 @@
 
 
 .audit-table {
+  margin-top: 15px;
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 50%;
-  margin-top: 20px;
-  margin-left: 25%;
-  margin-bottom: 20px;
+  width: 40%;
+  margin-left: 40%;
 }
 
-.audit-table_header {
-  background: #156082;
-  color: white;
 
-}
-.audit-table th {
-padding: 8px;
-}
-
-.audit-table td {
+.audit-table-header{
+  font-weight: bold;
+  font-size: 0.9rem !important;
+  color: #000b58;
+  background-color:#f3f4f6;
   text-align: center;
-  padding: 8px;
-  border: 1px solid #ddd;
 }
 
-.editbtn {
-  border: none;
-  background:none;
-  cursor: pointer;
-
+.audit-table-th {
+  padding: 16px;
 }
 
 @media (prefers-reduced-motion: no-preference) {

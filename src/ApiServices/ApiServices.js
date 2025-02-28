@@ -1,7 +1,8 @@
 import axios from 'axios';
-import DocumentList from '../components/document list/DocumentList';
+// import AdminList from '../components/AdminList/AdminList';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
+const API_URL1 = process.env.REACT_APP_API_URL || 'http://localhost:8000/';
 
 // Create an Axios instance
 const apiClient = axios.create({
@@ -51,15 +52,16 @@ const handleResponse = async (request) => {
 const authService = {
   // Authentication APIs
   register: async (userData) => {
-    if (!userData.email || !userData.password) {
-      throw new Error('Email and password are required.');
-    }
+    // if (!userData.email || !userData.password) {
+    //   throw new Error('Email and password are required.');
+    // }
     return handleResponse(apiClient.post('auth/register/', userData));
   },
   login: async (credentials) => {
     if (!credentials.username || !credentials.password) {
       throw new Error('Email and password are required for login.');
     }
+    localStorage.removeItem('token');
     const response = await handleResponse(apiClient.post('auth/login/', credentials));
     if (response.token) {
       localStorage.setItem('token', response.token);
@@ -67,6 +69,7 @@ const authService = {
     return response;
   },
   sendOTP: async () => {
+    
     return handleResponse(apiClient.get('auth/otp/'));
   },
   verifyOTP: async (data) => {
@@ -75,16 +78,44 @@ const authService = {
     }
     return handleResponse(apiClient.post('auth/otp/', data));
   },
+  profile: async (image) => {
+    return handleResponse(apiClient.post('profileimage/', image));
+  },
+  media: async (url, params) => {
+    return handleResponse(axios.get(`${API_URL1}${url}`, { params, responseType: 'blob' }));
+},
+
+  getprofile: async () => {
+    return handleResponse(apiClient.get('profileimage/'));
+  },
+  delprofile: async (id) => {
+    return handleResponse(apiClient.delete(`profileimage/${id}/`));
+  },
   resendOTP: async () => {
     return handleResponse(apiClient.put('auth/otp/'));
   },
   details: async () => {
     return handleResponse(apiClient.get('details/'));
   },
+  users: async () => {
+    return handleResponse(apiClient.get('users/'));
+  },
+
+  getUsersbyId: async (id) => {
+    return handleResponse(apiClient.get(`user_details/${id}/`))
+  },
+
+  deleteuser: async (id) => {
+    return handleResponse(apiClient.delete(`auth/${id}/delete/`))
+  },
+
   resetPassword: async (data) => {
-    if (!data.email) {
+
+    if (!data) {
       throw new Error('Email, OTP, and new password are required for password reset.');
     }
+    localStorage.removeItem('token');
+    console.log(data)
     const response = await handleResponse(apiClient.post('auth/reset/', data));
     if (response.token) {
       localStorage.setItem('token', response.token);
@@ -92,31 +123,93 @@ const authService = {
     return response;
   },
   changePassword: async (data) => {
-    const response = await handleResponse(apiClient.post('auth/change-password/', data));
-    return response;
+    // if (data.confirmPassword == !data.new_password) {
+    //   throw new Error('Olpassword and new password are required.');
+    // }
+    const response = handleResponse(apiClient.post('auth/change-password/', data));
+    return response
   },
   logout: async () => {
     try {
       await apiClient.post('auth/logout/');
-      localStorage.removeItem('token');
+      // localStorage.removeItem('token');
     } catch (error) {
       console.warn('Error logging out:', error.message);
     }
   },
 
+  saveprofile: async (id,data) => {
+    return handleResponse(apiClient.put(`auth/register/${id}/`,data))
+  },
+
+  companyCount: async (data) => {
+    return handleResponse(apiClient.get('dashboard/', data))
+  },
+
+  organizationCount: async () => {
+    return handleResponse(apiClient.get('organizations/dashboard/'))
+  },
+
+  createAdmin: async (data) => {
+    return handleResponse(apiClient.post('AdminCreation/',data))
+  },
+
+  getAdmins: async (data) => {
+    return handleResponse(apiClient.get('admin/', data))
+  },
+
+  getAdminsbyID: async (id) => {
+    return handleResponse(apiClient.get(`user_details/${id}/`))
+  },
+
+  updateAdmin: async (id,data) => {
+    return handleResponse(apiClient.put(`auth/register/${id}/`,data))
+  },
+
+  deleteAdmin: async (id) => {
+    return handleResponse(apiClient.delete(`auth/${id}/delete/`))
+  },
+
+  AdminList: async (data) => {
+    return handleResponse(apiClient.post('AdminList/',data))
+  },
+  OrgNotification: async (url) => {
+    return handleResponse(apiClient.get(`organizations/${url}/`))
+  },
   // Organization APIs
   createOrganization: async (data) => {
-    if (!data.name || !data.owner_email) {
-      throw new Error('Organization name and owner email are required.');
-    }
-    return handleResponse(apiClient.post('organizations/', data));
+    // if (!data.name || !data.owner_email) {
+    //   throw new Error('Organization name and owner email are required.');
+    // }
+    return handleResponse(apiClient.post('organization/', data));
   },
-  getOrganizations: async () => handleResponse(apiClient.get('organizations/')),
+  getOrganizations: async () => handleResponse(apiClient.get('organization/')),
+  
+  OrganizationList: async (data) => {
+    // if (!data.name || !data.owner_email) {
+    //   throw new Error('Organization name and owner email are required.');
+    // }
+    return handleResponse(apiClient.post('OrganizationList/', data));
+  },
+
+  rangesearch: async (data) => {
+    console.log('data:', data);
+  //   const startDate = data.startDate.toISOString().split('T')[0];  // Format to 'yyyy-MM-dd'
+  // const endDate = data.endDate.toISOString().split('T')[0];      // Format to 'yyyy-MM-dd'
+
+
+    return handleResponse(apiClient.get('documents/download-range/',data));
+  },
+  getlinedata:async () => {
+    return handleResponse(apiClient.get('organizations/creation_stats/'))
+  },
+  
   getOrganizationById: async (orgId) => {
     if (!orgId) {
       throw new Error('Organization ID is required.');
     }
-    return handleResponse(apiClient.get(`organizations/${orgId}/`));
+
+    return handleResponse(apiClient.get(`organization_details/${orgId}/`));
   },
   freezeOrganization: async (orgId) => {
     if (!orgId) {
@@ -130,6 +223,13 @@ const authService = {
     }
     return handleResponse(apiClient.post(`organizations/${orgId}/resume/`));
   },
+  updateOrganization:async (orgId,Data) => {
+    return handleResponse(apiClient.put(`organization_update/${orgId}/`,Data))
+  },
+  deleteOrganization: async (orgId) => {
+    return handleResponse(apiClient.delete(`organization_delete1/${orgId}/`));
+  },
+
   addSubAdmin: async (orgId, data) => {
     if (!orgId || !data.email) {
       throw new Error('Organization ID and sub-admin email are required.');
@@ -146,7 +246,7 @@ const authService = {
     if (!orgId) {
       throw new Error('Organization ID is required to fetch employees.');
     }
-    return handleResponse(apiClient.get(`organizations/${orgId}/employees/`));
+    return handleResponse(apiClient.get(`user_details/${orgId}/`));
   },
   freezeEmployee: async (orgId, employeeId) => {
     if (!orgId || !employeeId) {
@@ -161,33 +261,25 @@ const authService = {
     return handleResponse(apiClient.post(`organizations/${orgId}/employees/${employeeId}/resume/`));
   },
 
-  // New Company API
-  createCompany: async (companyData) => {
-    if (!companyData.companyName || !companyData.personName || !companyData.email) {
-      throw new Error('Company name, person name, and email are required.');
-    }
-    return handleResponse(apiClient.post('companies/', companyData)); // Post to the `companies` endpoint
-  },
-
   // Document APIs
   uploadDocument: async (data) => {
-    if (!data.file || !data.metadata) {
-      throw new Error('File and metadata are required to upload a document.');
-    }
+    // console.log('data:', data); 
     return handleResponse(apiClient.post('documents/upload/', data));
   },
   getDocuments: async () => handleResponse(apiClient.get('documents/')),
+  checkdeclarationdoc: async (declaration) => handleResponse(apiClient.get(`documents/${Number(declaration)}/`)),
+
   getDocumentById: async (docId) => {
     if (!docId) {
       throw new Error('Document ID is required.');
     }
     return handleResponse(apiClient.get(`documents/${docId}/`));
   },
-  verifyDocument: async (docId) => {
+  verifyDocument: async (docId,data) => {
     if (!docId) {
       throw new Error('Document ID is required to verify a document.');
     }
-    return handleResponse(apiClient.post(`documents/${docId}/verify/`));
+    return handleResponse(apiClient.post(`documents/${docId}/verify/`,data));
   },
   reuploadDocument: async (docId, data) => {
     if (!docId || !data.file) {
@@ -195,13 +287,20 @@ const authService = {
     }
     return handleResponse(apiClient.post(`documents/${docId}/reupload/`, data));
   },
-  DocumentList: async (docId, data) => {
-    if (!docId || !data.file) {
-      throw new Error('Document ID and file are required for viewing the status of document.');
-    }
-    return handleResponse(apiClient.post(`documents/${docId}/DocumentList/`, data));
-  },
 
+  // Document Approval & Rejection APIs
+  approveDocument: async (docId) => {
+    if (!docId) {
+      throw new Error('Document ID is required to approve a document.');
+    }
+    return handleResponse(apiClient.post(`documents/${docId}/approve/`));
+  },
+  rejectDocument: async (docId, reason) => {
+    // if (!docId || !reason) {
+    //   throw new Error('Document ID and rejection reason are required.');
+    // }
+    return handleResponse(apiClient.post(`documents/${docId}/reject/`, { reason }));
+  },
   // Notifications APIs
   getNotifications: async () => handleResponse(apiClient.get('notifications/')),
   markNotificationAsRead: async (notificationId) => {
