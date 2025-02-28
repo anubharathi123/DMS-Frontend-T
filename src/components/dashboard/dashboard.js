@@ -48,7 +48,7 @@ const DashboardApp = () => {
   const [companyData, setCompanyData] = useState([]);
   const [rowLimit, setRowLimit] = useState('3');
   const username = localStorage.getItem('name') || "User";
-  // const [data, setData] = useState([])
+  const [data, setData] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,23 +106,36 @@ const DashboardApp = () => {
   }, [companyData]);
   
  
+  // const handleRowLimitChange = (e) => {
+  //   const value = e.target.value.trim() === "" ? 1 : parseInt(e.target.value, 10);
+  //   if (!isNaN(value) && value > 0) {
+  //     setRowLimit(value);
+  //   }
+  // };
   const handleRowLimitChange = (e) => {
-    const value = e.target.value.trim() === "" ? 1 : parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setRowLimit(value);
+    const value = e.target.value.trim(); 
+    if (value === "") {
+      setRowLimit(companyData.length); // Show all rows if input is empty
+      setRowLimit(""); // Show all rows if input is empty
+    } else {
+      const parsedValue = parseInt(value, 10);
+      if (!isNaN(parsedValue) && parsedValue > 0) {
+        setRowLimit(parsedValue);
+      }
     }
   };
+  
 
   const sortAscending = () => {
-    const sortedData = [...companyData].sort((a, b) => a.fileSize - b.fileSize);
+    const sortedData = [...companyData].sort((a, b) => parseFloat(a.doc_size) - parseFloat(b.doc_size));
     setCompanyData(sortedData);
   };
-
+  
   const sortDescending = () => {
-    const sortedData = [...companyData].sort((a, b) => b.fileSize - a.fileSize);
+    const sortedData = [...companyData].sort((a, b) => parseFloat(b.doc_size) - parseFloat(a.doc_size));
     setCompanyData(sortedData);
   };
-
+  
   // Define titles for each role
   const roleTitles = {
     PRODUCT_OWNER: "Dashboard",
@@ -149,48 +162,124 @@ const DashboardApp = () => {
 
   // 🔵 Line Chart (Growth Rate)
   
-  useEffect(() => {
+//   useEffect(() => {
+//   const fetchlineData = async () => {
+//     try {
+//       const response = await apiServices.getlinedata();
+//       console.log("company Trends:", response);
+//       if(response) {
+//         const companytrends = response.map(ct => ({
+//           count: ct.count,
+//           month: ct.month,
+//           year:  ct.year,
+//         }));
+//         setData(response)
+//         setSelectedYear(companytrends.map(ct =>ct.year));
+//         setCount(companytrends.map(ct => ct.count));
+//         setMonth(companytrends.map(ct => ct.month));
+//         console.log("Company Trends:", companytrends);
+//         console.log("selectedYear:", selectedYear);
+//         console.log("count:", count);
+//         console.log("month:", month);
+//         console.log("response:", response);
+//       }
+//     } 
+
+//     catch {
+
+//     } finally {
+
+//     }
+
+//   };
+//   fetchlineData();
+// })
+
+
+useEffect(() => {
   const fetchlineData = async () => {
     try {
       const response = await apiServices.getlinedata();
-      console.log("company Trends:", response);
-      if(response) {
-        const companytrends = response.companytrends.map(ct => ({
+      console.log("Company Trends API Response:", response);
+
+      if (response && response.length > 0) {
+        const companyTrends = response.map(ct => ({
           count: ct.count,
           month: ct.month,
           year: ct.year,
         }));
-        setSelectedYear(companytrends[0].year);
-        setCount(companytrends.map(ct => ct.count));
-        setMonth(companytrends.map(ct => ct.month));
+
+        setData(companyTrends);
+
+        // Extract unique years and set the first one as default
+        const uniqueYears = [...new Set(companyTrends.map(ct => ct.year))];
+        const defaultYear = uniqueYears[0] || '2023';
+        setSelectedYear(defaultYear);
+
+        // Ensure all months are present
+        const allMonths = [
+          "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        const filteredData = companyTrends.filter(ct => ct.year === defaultYear);
+
+        // Create a mapping of existing data
+        const monthDataMap = filteredData.reduce((acc, curr) => {
+          acc[curr.month] = curr.count;
+          return acc;
+        }, {});
+
+        // Fill missing months with zero
+        const finalCounts = allMonths.map(month => monthDataMap[month] || 0);
+
+        setMonth(allMonths);
+        setCount(finalCounts);
+
+        console.log("Processed Company Trends:", finalCounts);
       }
-    } 
-
-    catch {
-
-    } finally {
-
+    } catch (error) {
+      console.error("Error fetching company trends:", error);
     }
-
   };
+
   fetchlineData();
-})
+}, []);
+
 
 const lineData = {
-  
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  labels: month, // Ensures all 12 months are listed
   datasets: [
     {
       label: `Growth Rate (${selectedYear})`,
-      data: (count, month),
+      data: count, // Includes counts for all months, missing ones filled with 0
       borderColor: '#1661a9',
-      borderWidth: 1,
+      borderWidth: 2,
       tension: 0.4,
       pointBackgroundColor: '#0d6abf',
       pointRadius: 3,
     },
   ],
 };
+
+
+// const chartOptions = {
+//   responsive: true,
+//   scales: {
+//     y: {
+//       ticks: {
+//         callback: function (value) {
+//           return Math.round(value); // Ensures only integer values are displayed
+//         },
+//         precision: 0, // Forces the display of whole numbers only
+//       },
+//     },
+//   },
+//   plugins: {
+//     legend: { display: false },
+//     tooltip: { backgroundColor: '#333', titleColor: '#fff' },
+//   },
+// };
 
   const chartOptions = {
     responsive: true,
@@ -200,6 +289,29 @@ const lineData = {
     },
     
   };
+  const handleYearChange = (e) => {
+    const year = e.target.value;
+    setSelectedYear(year);
+  
+    const filteredData = data.filter(ct => ct.year === year);
+  
+    const monthDataMap = filteredData.reduce((acc, curr) => {
+      acc[curr.month] = curr.count;
+      return acc;
+    }, {});
+  
+    const finalCounts = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ].map(month => monthDataMap[month] || 0);
+  
+    setMonth([
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ]);
+    setCount(finalCounts);
+  };
+  
 
   // Check if the role should have the cards displayed
   const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
@@ -241,7 +353,7 @@ const lineData = {
                     </tr>
                     </thead>
                     <tbody className='dashboard-tbody'>
-                    {companyData.slice(0, rowLimit).map((company, index) => (
+                    {companyData.slice(0, rowLimit === "" ? companyData.length : rowLimit).map((company, index) => (
                     <tr key={index} className='dashboard-table-row hover:bg-gray-50'>
                       <td className='dashboard-table-td'>{company.org_name}</td>
                       <td className='dashboard-table-td'>{company.username}</td>
@@ -253,15 +365,18 @@ const lineData = {
                 </table>
                 </div>
               </div>
- 
+              {data.map}
               <div className="chart">
                 <p className='dashboard_text'><center>Company Trends</center></p>
                 <center>
                 <div className="slicer">
                   <label className='dashboard-year-selector'>Select Year: </label>
-                  <select className="dashboard-year-select" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
-                    <option value={selectedYear}>2025</option>
-                  </select>
+                  <select className="dashboard-year-select" value={selectedYear} onChange={handleYearChange}>
+  {[...new Set(data.map(ct => ct.year))].map(year => (
+    <option key={year} value={year}>{year}</option>
+  ))}
+</select>
+
                 </div>
                 </center>
                 <Line className="dashboard-linedata" data={lineData} options={chartOptions} />
