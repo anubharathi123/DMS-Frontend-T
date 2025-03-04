@@ -116,22 +116,26 @@ const calendarRef = useRef(null);
       
       
 
-    const filteredData = data.filter(org => {
+      const filteredData = data.filter(org => {
         const matchesSearch = searchTerm
             ? org.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              org.org_name.toLowerCase().includes(searchTerm.toLowerCase())
+              org.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
             : true;
     
         const matchesStatus = statusFilter
             ? (statusFilter === "Active" ? org.status === false : org.status === true)
             : true;
     
-            const matchesDate = filterDate
+        const matchesDate = filterDate
             ? new Date(org.created_date).toDateString() === new Date(filterDate).toDateString()
             : true;
     
         return matchesSearch && matchesStatus && matchesDate;
     });
+    
     
     const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
@@ -153,6 +157,25 @@ const calendarRef = useRef(null);
         setIsCalendarOpen(false);
         setCurrentPage(1);
     };
+
+    const handleDownloadFile = async (fileUrl, fileName) => {
+    try {
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+  
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
     
 
     const handleDelete = async (id) => {
@@ -193,7 +216,7 @@ const calendarRef = useRef(null);
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
-                    <input type="search" 
+                    <input type="text" 
                         value={searchTerm}
                          onChange={handleSearch}
                             placeholder="Search" 
@@ -271,16 +294,16 @@ const calendarRef = useRef(null);
   {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
 </td>
                                 <td className="organization-table-td">
-                                    {org.msa_doc ? (
-                                        <a href={(url+org.msa_doc)} 
-                                        title={org.msa_doc.split('/').pop()}
-                                        target='_blank' rel='noopener noreferrer'>
-                                        {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
-                                        </a>                                        
-
-                                    ) : (
-                                    "Null"  
-                                    )}
+                                {org.msa_doc ? (
+        <a
+            title={org.msa_doc.split('/').pop()}
+            onClick={() => handleDownloadFile(`${url}/${org.msa_doc}`, org.msa_doc.split('/').pop())}
+            style={{ cursor: "pointer", textDecoration: "underline" }}>
+            {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+        </a>
+    ) : (
+        <span style={{ color: "gray" }}>No Document</span>
+    )}
                                     </td>
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 {/* <td className="organization-table-td">

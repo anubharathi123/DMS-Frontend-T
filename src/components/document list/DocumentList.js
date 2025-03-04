@@ -274,13 +274,14 @@ const DocumentTable = () => {
       console.error("Download failed:", error);
     }
   };
+  
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
   const filedownload = async (file) => {
     try {
-      const response = await apiServices.media1({ file });
+      const response = await apiServices.media({ file });
   
       if (!response || response.status !== 200) {
         throw new Error("Failed to download file");
@@ -436,9 +437,8 @@ const DocumentTable = () => {
               <td className="documenttable_td px-6 py-4">
               <a
               title={item.fileName.split('/').pop()}
-  onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
-  style={{ cursor: "pointer", textDecoration: "underline" }}
->
+              onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
+              style={{ cursor: "pointer", textDecoration: "underline" }}>
   {item.fileName.split('/').pop().substring(0, 20) + '...'}
 </a>
               </td>
@@ -460,7 +460,9 @@ const DocumentTable = () => {
               </td>
               <td className="documenttable_td px-6 py-4">
               {item.status === "REJECTED" && (
-                        <span>{item.rejectionReason.split('/').pop().substring(0, 20) + '...'}</span>
+                        <span
+                        title={item.rejectionReason.split('/').pop()}
+                        >{item.rejectionReason.split('/').pop().substring(0, 20) + '...'}</span>
                       )}
                 {item.status == "APPROVED" && (
                         <span> NULL</span>

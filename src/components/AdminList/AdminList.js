@@ -28,108 +28,105 @@ const AdminList = () => {
   const [refresh, setRefresh] = useState(false); // Track when to refresh data
   const navigate = useNavigate();
   
-    const searchInfoRef = useRef(null); // Reference for search info popup
+  const searchInfoRef = useRef(null); // Reference for search info popup
   
-    const handleSearchInfo = () => {
-      setShowSearchInfo(!showSearchInfo);
+  const handleSearchInfo = () => {
+    setShowSearchInfo(!showSearchInfo);
+  };
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
+        setShowSearchInfo(false);
+      }
     };
   
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
-          setShowSearchInfo(false);
-        }
-      };
+    if (showSearchInfo) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
   
-      if (showSearchInfo) {
-        document.addEventListener("mousedown", handleClickOutside);
-      }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSearchInfo]);
   
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [showSearchInfo]);
-  
-
-    useEffect(() =>   {
-      const fetchAdmins = async () => {
-        try {
-          setIsLoading(true);
-          const response = await apiServices.getAdmins(); // Adjust based on API
-          console.log(response)
-          const admins = response.product_admins.map(admin => ({
-            id:admin.id,
-            username: admin.auth_user.username,
-            name: admin.auth_user.first_name,
-            email: admin.auth_user.email,
-            createdAt: admin.created_at,
-            role: admin.role.name,
-            delete: admin.is_delete,
-          }));
-          console.log(admins)
-          const filterdata = admins.filter(item => !item.delete)
-          setData(filterdata);
-          setFilteredData(filterdata);
-    
-          if (admins.length === 0) {
-            setActionMessage('No admins available.');
-          }
-        } catch (error) {
-          console.error('Error fetching admins:', error);
-          setActionMessage('Error fetching admins. Please try again later.');
-        } finally {
-          setIsLoading(false); // End loading
-        }
-      };
-      fetchAdmins();
-    }, [refresh]); // <-- Refresh the list when `refresh` changes
-
-    const filteredData1 = filteredData.filter((item) => {
-      if (filter === 'All' || filter === '') {
-        return item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.role.toLowerCase().includes(searchTerm.toLowerCase());
-      } else {
-        return item.role === filter && (
-          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.role.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-    });
-    
 
   useEffect(() => {
-    // Filter admins based on the selected filter date
-    const filteredAdmins = data.filter((item) => {
-      if (filterDate) {
-        const itemDate = new Date(item.createdAt);
-        const selectedDate = new Date(filterDate);
-        // Only show items that match the selected date
-        return itemDate.toLocaleDateString() === selectedDate.toLocaleDateString();
+    const fetchAdmins = async () => {
+      try {
+        setIsLoading(true);
+        const response = await apiServices.getAdmins(); // Adjust based on API
+        console.log(response)
+        const admins = response.product_admins.map(admin => ({
+          id: admin.id,
+          username: admin.auth_user.username,
+          name: admin.auth_user.first_name,
+          email: admin.auth_user.email,
+          createdAt: admin.created_at,
+          role: admin.role.name,
+          delete: admin.is_delete,
+        })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        console.log(admins)
+        const filterdata = admins.filter(item => !item.delete)
+        setData(filterdata);
+        setFilteredData(filterdata);
+  
+        if (admins.length === 0) {
+          setActionMessage('No admins available.');
+        }
+      } catch (error) {
+        console.error('Error fetching admins:', error);
+        setActionMessage('Error fetching admins. Please try again later.');
+      } finally {
+        setIsLoading(false); // End loading
       }
-      return true; // If no filter date, show all items
-    });
+    };
+    fetchAdmins();
+  }, [refresh]); // <-- Refresh the list when refresh changes
 
-    setFilteredData(filteredAdmins);
-  }, [filterDate, data]);
-
+  // This is the main filtering function that will handle all filter types
+  
   useEffect(() => {
     const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
     setCurrentPage((prevPage) => Math.min(prevPage, totalPages));
   }, [filteredData, rowsPerPage]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
-
-  const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
-
-
+  
 
   const handleCreateAdmin = () => {
-    navigate(`/AdminCreation`);
+    navigate('/AdminCreation');
   }
+
+  const filteredData1 = filteredData.filter((item) => {
+    if (filter === '') {
+      return item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.role.toLowerCase().includes(searchTerm.toLowerCase());
+    } else {
+      return item.username === filter && (
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.role.toLowerCase().includes(searchTerm.toLowerCase()) 
+      );
+    }
+  });
+
+
+   useEffect(() => {
+      const filteredAdmins = data.filter((item) => {
+        if (filterDate) {
+          const itemDate = new Date(item.createdAt);
+          const selectedDate = new Date(filterDate);
+          return itemDate.toLocaleDateString() === selectedDate.toLocaleDateString();
+        }
+        return true;
+      });
+  
+      setFilteredData(filteredAdmins);
+    }, [filterDate, data]);
 
   const handleResetFilter = () => {
     setSearchTerm('');
@@ -137,51 +134,51 @@ const AdminList = () => {
     setFilterDate(null);
     setIsCalendarOpen(false);
     setCurrentPage(1);
-};
+  };
 
-const handleEditAdmin = (id) => {
-  navigate(`/updateadmin/${id}`);
-};
+  const handleEditAdmin = (id) => {
+    navigate(`/updateadmin/${id}`);
+  };
 
-const handleDeleteAdmin = async (id) => {
-  const confirmDelete = window.confirm(`Are you sure you want to delete admin "${id}"?`);
+  const handleDeleteAdmin = async (id) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete admin "${id}"?`);
 
-  if (confirmDelete) {
-    try {
-      setIsLoading(true);
+    if (confirmDelete) {
+      try {
+        setIsLoading(true);
 
-      // Call the API to delete the admin
-      const response = await apiServices.deleteAdmin(id);
+        // Call the API to delete the admin
+        const response = await apiServices.deleteAdmin(id);
 
-      console.log("Delete API Response:", response); // Log full response
+        console.log("Delete API Response:", response); // Log full response
 
-      // Verify response structure
-      if (response.message) {
-        console.log("Admin deleted successfully, updating state...");
+        // Verify response structure
+        if (response.message) {
+          console.log("Admin deleted successfully, updating state...");
 
-        // Update the state to remove the deleted admin
-        setData((prevData) => {
-          console.log("Previous Data:", prevData);
-          return prevData.filter(item => item.id !== id);
-        });
+          // Update the state to remove the deleted admin
+          setData((prevData) => {
+            console.log("Previous Data:", prevData);
+            return prevData.filter(item => item.id !== id);
+          });
 
-        // Set success message
-        // setActionMessage(`Admin "${id}" deleted successfully.`);
-      } else {
-        // Handle API failure
-        console.error("Failed to delete admin:", response?.data?.message);
-        setActionMessage(response?.data?.message || "Failed to delete admin.");
+          // Set success message
+          // setActionMessage(`Admin "${id}" deleted successfully.`);
+        } else {
+          // Handle API failure
+          console.error("Failed to delete admin:", response?.data?.message);
+          setActionMessage(response?.data?.message || "Failed to delete admin.");
+        }
+      } catch (error) {
+        // Handle any errors
+        console.error("Error deleting admin:", error);
+        setActionMessage("Error deleting admin. Please try again.");
+      } finally {
+        // Reset loading state
+        setIsLoading(false);
       }
-    } catch (error) {
-      // Handle any errors
-      console.error("Error deleting admin:", error);
-      setActionMessage("Error deleting admin. Please try again.");
-    } finally {
-      // Reset loading state
-      setIsLoading(false);
     }
-  }
-};
+  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -202,7 +199,9 @@ const handleDeleteAdmin = async (id) => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const totalPages = Math.max(1, Math.ceil(filteredData1.length / rowsPerPage));
 
+  const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
   return (
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Details</h1>
@@ -212,7 +211,7 @@ const handleDeleteAdmin = async (id) => {
         <div className="adminlist_search">
           <Search className="adminlist_search_icon" />
           <input
-            type="search"
+            type="text"
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search"
@@ -230,7 +229,7 @@ const handleDeleteAdmin = async (id) => {
         <div className="adminlist_filter">
           <label className="adminlist_filter_label">Filter by Role:</label>
           <select value={filter} onChange={handleFilter} className="adminlist_filter_select">
-            <option value="All">All</option>
+            <option value="">All</option>
             <option value="PRODUCT_ADMIN">PRODUCT_ADMIN</option>
             {/* <option value="SuperAdmin">SuperAdmin</option> */}
           </select>
@@ -280,34 +279,26 @@ const handleDeleteAdmin = async (id) => {
         </thead>
         <tbody className="adminlist_tbody">
         {paginatedData.map((item, index) => (
-    <tr
-      key={index}
-      className="adminlist_row">
-              <td className="documenttable_td px-6 py-4 ">{item.username}</td>
-              <td className="documenttable_td px-6 py-4 ">{item.name}</td>
-              <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
-              <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
-              <td className='documenttable_td px-6 py-4'>
-                <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
-                <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.id)}><FontAwesomeIcon icon={faTrash} /></button>
-              </td>
-            </tr>
-          ))}
+          <tr
+            key={index}
+            className="adminlist_row">
+            <td className="documenttable_td px-6 py-4 ">{item.username}</td>
+            <td className="documenttable_td px-6 py-4 ">{item.name}</td>
+            <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
+            <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+            <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
+            <td className='documenttable_td px-6 py-4'>
+              <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
+              <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.id)}><FontAwesomeIcon icon={faTrash} /></button>
+            </td>
+          </tr>
+        ))}
         </tbody>
       </table>
       <div className="adminlist_pagination">
         <div className="adminlist_pageinfo">
-          <p className="adminlist_pageinfo_text">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
+          <p className="adminlist_pageinfo_text">Page {currentPage} of {totalPages}</p>
         </div>
-        {/* Reset Filter Button */}
-      {(searchTerm || statusFilter || filterDate) && (
-             <button className="reset-filter-btn" onClick={handleResetFilter} 
-                        disabled={!searchTerm && !statusFilter && !filterDate}>
-                            Reset Filter 
-                            <img className='refresh-icon' src={refreshIcon}/>
-                            </button>
-                            )}
         <div className="adminlist_paging">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -318,7 +309,7 @@ const handleDeleteAdmin = async (id) => {
           </button>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
-           disabled={currentPage >= totalPages}
+            disabled={currentPage >= totalPages}
             className="adminlist_next_button"
           >
             Next
@@ -327,12 +318,12 @@ const handleDeleteAdmin = async (id) => {
       </div>
       {/* Reset Filter Button */}
       {(searchTerm || statusFilter || filterDate) && (
-             <button className="reset-filter-btn" onClick={handleResetFilter} 
-                        disabled={!searchTerm && !statusFilter && !filterDate}>
-                            Reset Filter 
-                            <img className='refresh-icon' src={refreshIcon}/>
-                            </button>
-                            )}
+        <button className="reset-filter-btn" onClick={handleResetFilter} 
+          disabled={!searchTerm && !statusFilter && !filterDate}>
+          Reset Filter 
+          <img className='refresh-icon' src={refreshIcon} alt="Reset"/>
+        </button>
+      )}
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">
