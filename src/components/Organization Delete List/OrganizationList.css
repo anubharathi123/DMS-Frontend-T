@@ -23,8 +23,8 @@
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 20px;
-    background-color: #000b58;
-    color: white;
+    /* background-color: #000b58; */
+    color: rgb(0, 0, 0);
     cursor: pointer;
     width: 160px;
     font-size: 12px;

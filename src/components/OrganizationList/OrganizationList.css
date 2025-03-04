@@ -17,21 +17,24 @@
     margin-top: 30px;
 }
 
-.org_createbtn {
+.org_createbtn1 {
     padding-right: 1.5rem !important;
     padding-left: 1.5rem !important;
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 20px;
-    background-color: #000b58;
-    color: white;
+    /* background-color: #000b58; */
+    color: rgb(0, 0, 0);
     cursor: pointer;
-    width: 160px;
+    width: 170px;
     font-size: 12px;
     position: relative;
-    left: 83%;
+    margin-right: 10px;
+    left: 68%;
 }
-
+.org_createbtn1 :hover{
+    background-color: #000b58 !important;
+}
 .organization-container_controls {
     display: flex;
     justify-content: space-between;

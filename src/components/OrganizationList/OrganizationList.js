@@ -99,6 +99,9 @@ const calendarRef = useRef(null);
       const handleCreateOrganization = () => {
         navigate(`/CompanyCreation`);
       }
+      const handledeleteOrganization = () => {
+        navigate(`/OrganizationDeleteList`);
+      }
 
     const handleSearch = (e) => {
         console.log("Search Term:", e.target.value);
@@ -209,10 +212,14 @@ const calendarRef = useRef(null);
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Details</h1>
-            {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
-  <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 
-  
+{(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
+  <div>
+    <button className='org_createbtn1' onClick={handleCreateOrganization} > + Create Organization</button>
+
+    <button className='org_createbtn1' onClick={handledeleteOrganization} > Deleted List</button> 
+  </div>
 )}
+
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
@@ -278,7 +285,7 @@ const calendarRef = useRef(null);
                                         </div>
                                 )}
                         </th>
-                        {/* <th className="organization-table-th">Status</th> */}
+                        <th className="organization-table-th">Status</th>
                         <th className="organization-table-th">Actions</th>
                     </tr>
                 </thead>
@@ -306,9 +313,9 @@ const calendarRef = useRef(null);
     )}
                                     </td>
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                                {/* <td className="organization-table-td">
+                                <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}
-</td> */}
+</td>
                                 <td className="organization-table-td">
                                     <button className='organization-edit' onClick={() => handleEdit(org.id)}>
                                     <FontAwesomeIcon icon={faPencil} />
