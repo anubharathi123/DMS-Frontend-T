@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import DatePicker from 'react-datepicker';
-import apiServices from '../../ApiServices/ApiServices';
+import apiServices, {API_URL1} from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
@@ -35,7 +35,7 @@ const DocumentTable = () => {
   const [filteredBackupData, setFilteredBackupData] = useState([]);
   const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
-  const url = "http://localhost:3000"
+  const url = API_URL1
   const navigate = useNavigate();
   const mappings = {
     'declaration': 'Declaration',
@@ -76,7 +76,7 @@ const DocumentTable = () => {
         const documents = response.documents.map(doc => ({
           declarationNumber: doc.declaration_number,
           file: doc.current_version?.file_path,
-          fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path: '',
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
