@@ -203,7 +203,7 @@ const DocumentTable = () => {
             responseType: 'blob'  // Ensures the response is a file
         });
 
-        console.log("Response status:", response.status);
+        console.log("Response:", response);
 
         if (response.status === 404) {
             alert("No files found for the selected date range.");
@@ -217,7 +217,9 @@ const DocumentTable = () => {
 
         // ✅ Download the ZIP file
         const blob = new Blob([response], { type: "application/zip" });
+        console.log(blob)
         const url = window.URL.createObjectURL(blob);
+        console.log(url)
 
         const link = document.createElement("a");
         link.href = url;

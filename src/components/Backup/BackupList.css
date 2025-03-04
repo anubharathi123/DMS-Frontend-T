@@ -1,0 +1,159 @@
+/* Backup List Container */
+.backuplist_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 75%;
+  margin-left: 250px;
+  position: absolute;
+  top: 65px;
+}
+
+/* Header */
+.backuplist_header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000b58;
+  text-align: left;
+  margin-bottom: 5px;
+  margin-top: 30px;
+}
+
+/* Create Backup Button */
+.backup_createbtn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  background-color: #000b58;
+  color: white;
+  cursor: pointer;
+  width: fit-content;
+  font-size: 12px;
+  position: relative;
+  left: 91%;
+}
+
+/* Table Styling */
+.backuplist_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.backuplist_thead {
+  background-color: #000b58;
+  color: white;
+}
+
+.backuplist_th, .backuplist_td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.backuplist_downloadbtn {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.backuplist_downloadbtn:hover {
+  background-color: #218838;
+}
+
+/* Popup Overlay */
+.backuplist_popup_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Popup Window */
+.backuplist_popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  width: 350px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+.backuplist_popup h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Radio Options */
+.backuplist_popup_option {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.backuplist_popup_option input {
+  margin-right: 8px;
+}
+
+/* Date Inputs */
+.backuplist_date_inputs {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.backuplist_date_inputs label {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.backuplist_date_inputs input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Popup Buttons */
+.backuplist_popup_buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.backuplist_popup_close {
+  padding: 8px 12px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.backuplist_popup_close:hover {
+  background: #c9302c;
+}
+
+.backuplist_popup_confirm {
+  padding: 8px 12px;
+  background-color: #000b58;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.backuplist_popup_confirm:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

@@ -4,6 +4,8 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/';
 const API_URL1 = process.env.REACT_APP_API_URL || 'http://localhost:8000/';
 
+
+export { API_URL1 };  // Ensure this is exported
 // Create an Axios instance
 const apiClient = axios.create({
   baseURL: API_URL,
@@ -200,6 +202,22 @@ const authService = {
 
     return handleResponse(apiClient.get('documents/download-range/',data));
   },
+  autobackup: async () => {
+    // console.log('data:', data);
+  //   const startDate = data.startDate.toISOString().split('T')[0];  // Format to 'yyyy-MM-dd'
+  // const endDate = data.endDate.toISOString().split('T')[0];      // Format to 'yyyy-MM-dd'
+
+
+    return handleResponse(apiClient.get('backup/auto/'));
+  },
+  backuplist:async () => {
+    return handleResponse(apiClient.get('backuplist'))
+  },
+  backupdownload:async (id) => {
+    return handleResponse(apiClient.get(`backup/download/${id}/`))
+  },
+
+
   getlinedata:async () => {
     return handleResponse(apiClient.get('organizations/creation_stats/'))
   },

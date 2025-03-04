@@ -55,7 +55,7 @@
 }
 
 .dashboard_num-input {
-  width: 25px;
+  width: 35px;
   height: 15px;
   border: 1px solid #b3b2b2 ;
   padding: 4px;
@@ -393,7 +393,7 @@ left:74%;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 67%;
+  width: 50%;
   height: 90%;
   transition: transform 0.3s ease;
   /* margin-left: -27px; */

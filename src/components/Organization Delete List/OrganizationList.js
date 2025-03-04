@@ -62,7 +62,8 @@ const calendarRef = useRef(null);
                     status: org.is_frozen,
                     delete: org.is_delete,
                 }));
-                const filterdata = organization.filter(org => !org.delete)
+                console.log(organization)
+                const filterdata = organization.filter(org => org.delete === true)
                 setData(filterdata);
     
                 if (organization.length === 0) {
@@ -178,7 +179,7 @@ const calendarRef = useRef(null);
     };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    const paginatedData = filteredData.filter(org => !org.delete).slice(
+    const paginatedData = filteredData.slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
     );
@@ -186,10 +187,10 @@ const calendarRef = useRef(null);
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Details</h1>
-            {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
+            {/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
   <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 
   
-)}
+)} */}
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
@@ -207,14 +208,14 @@ const calendarRef = useRef(null);
                                           </div>
                                         )}
                 </div>
-                <div className="organization-filter">
+                {/* <div className="organization-filter">
                     <label className="organization_filter-label">Filter by Status:</label>
                     <select value={statusFilter} onChange={handleStatusFilter}className="organization-filter-select">
                         <option value="">All</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select> 
-                </div>
+                </div> */}
                 <div className='organization_row'>
                     <label className="organization_row_label">Rows per Page:</label>
                     <select value={rowsPerPage} onChange={handleRowsPerPage} className="organization_row_select">
@@ -256,7 +257,7 @@ const calendarRef = useRef(null);
                                 )}
                         </th>
                         {/* <th className="organization-table-th">Status</th> */}
-                        <th className="organization-table-th">Actions</th>
+                        {/* <th className="organization-table-th">Actions</th> */}
                     </tr>
                 </thead>
                 
@@ -275,7 +276,7 @@ const calendarRef = useRef(null);
                                         <a href={(url+org.msa_doc)} 
                                         title={org.msa_doc.split('/').pop()}
                                         target='_blank' rel='noopener noreferrer'>
-                                        {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+                                        {org.msa_doc.split('/').pop().substring(0, 30) + '...'}
                                         </a>                                        
 
                                     ) : (
@@ -286,7 +287,7 @@ const calendarRef = useRef(null);
                                 {/* <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}
 </td> */}
-                                <td className="organization-table-td">
+                                {/* <td className="organization-table-td">
                                     <button className='organization-edit' onClick={() => handleEdit(org.id)}>
                                     <FontAwesomeIcon icon={faPencil} />
                                     </button>
@@ -299,7 +300,7 @@ const calendarRef = useRef(null);
                                         <FontAwesomeIcon icon={faTrash} />
 
                                     </button>
-                                </td>
+                                </td> */}
                             </tr>
                         ))
                     ) : (
