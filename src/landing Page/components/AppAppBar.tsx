@@ -56,30 +56,48 @@ export default function AppAppBar() {
       }}
     >
       {/* Top Bar for Contact Info */}
-      <Container maxWidth="xl" sx={{ mb: 1 }}> {/* Added margin-bottom */}
+      <Container maxWidth="xl" sx={{ mb: 2 }}>
         <Box
           sx={{
             display: "flex",
-            justifyContent: "flex-start", // Align to the left
+            justifyContent: "space-between", 
             alignItems: "center",
-            bgcolor: "#007aff", // Light Blue Background
+            bgcolor: "#007aff", 
             color: "white",
             py: 0.5,
             px: 2,
             fontSize: "0.875rem",
-            gap: 2, // Adds spacing between phone and email
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <PhoneIcon fontSize="small" />
-            <Typography variant="body2">987654343</Typography>
+          {/* Left Side - Contact Info */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <PhoneIcon fontSize="small" />
+              <Typography variant="body2">987654343</Typography>
+            </Box>
+
+            <Divider orientation="vertical" flexItem sx={{ bgcolor: "darkblue", height: 16 }} />
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <EmailIcon fontSize="small" />
+              <Typography variant="body2">Inten@vdartinc.com</Typography>
+            </Box>
           </Box>
 
-          <Divider orientation="vertical" flexItem sx={{ bgcolor: "darkblue", height: 16 }} />
+          {/* Right Side - Sign In / Sign Up Buttons */}
+          <Box sx={{ display: "flex", gap: 1 }}>
+          <Button 
+  variant="outlined" 
+  size="small" 
+  sx={{ color: "white", borderColor: "white" }} 
+  onClick={() => window.location.href = '/login'}
+>
+  Sign in
+</Button>
+<Button color="primary" variant="contained" size="small">
+  Sign up
+</Button>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <EmailIcon fontSize="small" />
-            <Typography variant="body2">Inten@vdartinc.com</Typography>
           </Box>
         </Box>
       </Container>
@@ -113,7 +131,7 @@ export default function AppAppBar() {
               onClose={toggleDrawer(false)}
               PaperProps={{ sx: { top: 0 } }}
             >
-              <Box sx={{ p: 2, backgroundColor: "background.default" }}>
+              <Box sx={{ p: 5, backgroundColor: "background.default" }}>
                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <IconButton onClick={toggleDrawer(false)}>
                     <CloseRoundedIcon />
