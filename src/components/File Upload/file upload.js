@@ -122,7 +122,16 @@ const FileUploadPage = () => {
   };
   
   const handleFileChange = (e, type) => {
-    setFiles((prevFiles) => ({ ...prevFiles, [type]: e.target.files[0] }));
+    const file = e.target.files[0];
+    
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        alert("File size should not exceed 5MB.");
+        return;
+      }
+  
+      setFiles((prevFiles) => ({ ...prevFiles, [type]: file }));
+    }
   };
 
   const handleFileDelete = (type) => {

@@ -299,6 +299,14 @@ const AdminList = () => {
         <div className="adminlist_pageinfo">
           <p className="adminlist_pageinfo_text">Page {currentPage} of {totalPages}</p>
         </div>
+        {/* Reset Filter Button */}
+      {(searchTerm || statusFilter || filterDate) && (
+        <button className="adminlist-reset-filter-btn" onClick={handleResetFilter} 
+          disabled={!searchTerm && !statusFilter && !filterDate}>
+          Reset Filter 
+          <img className='refresh-icon' src={refreshIcon} alt="Reset"/>
+        </button>
+      )}
         <div className="adminlist_paging">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -316,14 +324,7 @@ const AdminList = () => {
           </button>
         </div>
       </div>
-      {/* Reset Filter Button */}
-      {(searchTerm || statusFilter || filterDate) && (
-        <button className="reset-filter-btn" onClick={handleResetFilter} 
-          disabled={!searchTerm && !statusFilter && !filterDate}>
-          Reset Filter 
-          <img className='refresh-icon' src={refreshIcon} alt="Reset"/>
-        </button>
-      )}
+      
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">

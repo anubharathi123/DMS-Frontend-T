@@ -230,23 +230,6 @@ const CompanyCreation = () => {
             />
           </div>
 
-          {/* Date Inputs */}
-          <div className="company-creation-date-group">
-            <div className="company-creation-form-group">
-              <label className="company-creation-label">
-                Creation Date <span className="company-creation-mandatory">*</span>
-              </label>
-              <input
-                type="date"
-                name="accessCreationDate"
-                value={company.accessCreationDate}
-                onChange={handleChange}
-                className="company-creation-date-input"
-                required
-              />
-            </div>
-          </div>
-
           {/* Contract Document */}
           <div className="company-creation-form-group">
             <label className="company-creation-label">

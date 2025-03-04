@@ -22,15 +22,19 @@
     padding-left: 1.5rem !important;
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
-    border-radius: 20px;
-    background-color: #000b58;
-    color: white;
+    border-radius: 20px;  
     cursor: pointer;
     width: fit-content;
     font-size: 12px;
     position: relative;
     left: 88%;
 }
+
+.admin_createbtn:hover {
+  background-color: #000b58 !important;
+    color: white;
+}
+
 
 .adminlist_controls {
   display: flex;
@@ -247,5 +251,17 @@
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 7px;
+    font-size: 12px !important;
+}
+
+.adminlist-reset-filter-btn {
+  background-color: #000b58;
+    color: white;
+    padding: 8px;
+    width: 100px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 7px;
+    margin-left: 51%;
     font-size: 12px !important;
 }

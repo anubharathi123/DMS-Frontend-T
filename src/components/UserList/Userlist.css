@@ -7,6 +7,19 @@
     
     top: 65px;
   }
+
+  .reset-filter-btn {
+    background-color: #000b58;
+    color: white;
+    padding: 8px;
+    width: 100px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 7px;
+    position: fixed;
+    left: 67%;
+    font-size: 12px !important;
+}
   
   .userlist-header {
     font-size: 18px;
@@ -23,13 +36,16 @@
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 20px;
-    background-color: #000b58;
-    color: white;
     cursor: pointer;
     width: fit-content;
     font-size: 12px;
     position: relative;
     left: 89%;
+  }
+
+  .user_createbtn:hover {
+    background-color: #000b58 !important;
+    color: white;
   }
   
   .userlist-controls {

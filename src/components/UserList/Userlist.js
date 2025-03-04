@@ -77,22 +77,21 @@ const UserList = () => {
   }, [refresh]);
 
   const filteredData1 = filteredData.filter((item) => {
+    const searchValue = searchTerm.toLowerCase();
+    
+    const usernameMatch = item.username.toLowerCase().includes(searchValue);
+    const emailMatch = item.email.toLowerCase().includes(searchValue);
+    const createdAtMatch = item.createdAt ? item.createdAt.toLowerCase().includes(searchValue) : false;
+    const roleMatch = item.role.toLowerCase().includes(searchValue);
+    const statusMatch = (item.status ? "inactive" : "active").toLowerCase().includes(searchValue);
+  
     if (filter === '') {
-      return item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.status.toLowerCase().includes(searchTerm.toLowerCase());
+      return usernameMatch || emailMatch || createdAtMatch || roleMatch || statusMatch;
     } else {
-      return item.username === filter && (
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.status.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      return item.role === filter && (usernameMatch || emailMatch || createdAtMatch || roleMatch || statusMatch);
     }
   });
+  
 
    useEffect(() => {
     const filterUsers = data.filter((item) => {
@@ -202,6 +201,9 @@ const UserList = () => {
             <option value="">All Roles</option>
             <option value="Admin">Admin</option>
             <option value="User">User</option>
+            <option value="Uploader">Uploader</option>
+            <option value="Approver">Approver</option>
+            <option value="Reviewer">Reviewer</option>
           </select>
         </div>
 
