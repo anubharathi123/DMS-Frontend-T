@@ -329,7 +329,7 @@ const lineData = {
            
               <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />}  />
               <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} />
-              <Card title="Deleted Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
+              <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
               <Card title="User" value={OrgCount.clientAdmins} icon={<IoPeople />} />
             </div>
               
@@ -349,7 +349,7 @@ const lineData = {
                       <th className='dashboard-table-th'>Company Name</th>
                       <th className='dashboard-table-th'>Username</th>
                       <th className='dashboard-table-th'>Doc Count</th>
-                      <th className='dashboard-table-th'>File Size (Kb)</th>
+                      <th className='dashboard-table-th'>File Size (KB)</th>
                     </tr>
                     </thead>
                     <tbody className='dashboard-tbody'>
@@ -358,7 +358,7 @@ const lineData = {
                       <td className='dashboard-table-td'>{company.org_name}</td>
                       <td className='dashboard-table-td'>{company.username}</td>
                       <td className='dashboard-table-td'>{company.doc_count}</td>
-                      <td className='dashboard-table-td'>{company.doc_size} Kb</td>
+                      <td className='dashboard-table-td'>{company.doc_size}</td>
                     </tr>
               ))}
             </tbody>
