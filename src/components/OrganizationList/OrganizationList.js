@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { Search } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import apiServices from '../../ApiServices/ApiServices';
+import apiServices,{API_URL1} from '../../ApiServices/ApiServices';
 import './OrganizationList.css';
 import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
@@ -37,7 +37,7 @@ const OrganizationList = () => {
 const calendarRef = useRef(null);
      const searchInfoRef = useRef(null); // Reference for search info popup
      const role = localStorage.getItem('role');
-     const url = "http://localhost:8000"
+     const url = API_URL1
 
      const handleEdit = (id) => {
         navigate(`/CompanyUpdate/${id}`);

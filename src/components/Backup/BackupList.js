@@ -275,7 +275,7 @@ return (
                 {["PRODUCT_OWNER", "PRODUCT_ADMIN"].includes(role) && (
                   <td className="backuplist_td">{backup.organization}</td>
                 )}
-                <td className="backuplist_td">{backup.end_datetime}</td>
+                <td className="backuplist_td">{backup.end_datetime.split("T")[0]}</td>
                 <td className="backuplist_td">
                   <button
                     className="backuplist_downloadbtn"

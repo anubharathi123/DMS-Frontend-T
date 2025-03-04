@@ -164,6 +164,7 @@
   padding: 0; /* Remove any default padding */
   margin: 0; /* Remove any margin */
   position: absolute;
+  left: 164px;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 5px; /* Match input's rounded corners */

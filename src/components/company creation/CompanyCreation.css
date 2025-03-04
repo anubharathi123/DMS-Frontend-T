@@ -52,8 +52,7 @@
   width: 30%;
 }
 
-.company-creation-input,
-.company-creation-date-input {
+.company-creation-input {
   width: 435px;
   padding: 5px;
   border: 1px solid #ddd;
@@ -62,8 +61,7 @@
   height: 17px;
 }
 
-.company-creation-input:focus,
-.company-creation-date-input:focus {
+.company-creation-input:focus {
   outline: none;
   border-color: var(--dark-blue);
 }

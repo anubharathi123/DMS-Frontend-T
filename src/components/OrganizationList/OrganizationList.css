@@ -23,7 +23,6 @@
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 20px;
-    /* background-color: #000b58; */
     color: rgb(0, 0, 0);
     cursor: pointer;
     width: 170px;
@@ -32,8 +31,9 @@
     margin-right: 10px;
     left: 68%;
 }
-.org_createbtn1 :hover{
+.org_createbtn1:hover {
     background-color: #000b58 !important;
+    color: white;
 }
 .organization-container_controls {
     display: flex;
@@ -139,8 +139,8 @@
     display: flex;
     cursor: pointer;
     border-radius: 7px;
-    position: relative;
-    left: 27%;
+    position: fixed;
+    left: 26%;
     font-size: 12px !important;
 }
 
