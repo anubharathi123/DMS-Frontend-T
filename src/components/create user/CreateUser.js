@@ -20,7 +20,7 @@ const CreateUser = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);  
 
-  const [roleOptions] = useState(["Compiler", "Approver", "Viewer"]);
+  const [roleOptions] = useState(["Uploader", "Approver", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
@@ -210,7 +210,7 @@ const CreateUser = () => {
         </div>
 
         {/* Access Creation Date */}
-        <div className="company-form-group">
+        {/* <div className="company-form-group">
           <label className="company-label">
             Access Creation Date <span className="mandatory">*</span>
           </label>
@@ -222,7 +222,7 @@ const CreateUser = () => {
             className="company-input"
             required
           />
-        </div>
+        </div> */}
 
         {/* Role with Dropdown */}
         <div className="company-form-group">
