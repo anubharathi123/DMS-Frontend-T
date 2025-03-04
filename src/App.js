@@ -15,6 +15,7 @@ import Fileupload from "./components/File Upload/file upload"
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
 import OrganizationList from "./components/OrganizationList/OrganizationList";
+import OrganizationDelList from "./components/Organization Delete List/OrganizationList";
 import Login1 from "./components/login1/login1";
 import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
 import ChangePassword1 from "./components/changepassword1/changepassword1";
@@ -25,6 +26,7 @@ import AdminCreation from "./components/AdminCreation/AdminCreation";
 import { StyledEngineProvider } from '@mui/material/styles';
 import Login2 from "./login2/SignInSide";
 import LandingPage from "./landing Page/MarketingPage";
+import BackupList from "./components/Backup/BackupList";
 // import Dash from './dashboard/routes/sections'
 // import { HomePage } from './dashboard/routes/sections';
 import UserList from './components/UserList/Userlist';
@@ -36,7 +38,7 @@ import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
 import SignatureComponent from "./components/Signature/SignatureComponent";
-import OrganizationDeletion from "./components/OrganizationDeletion";
+// import OrganizationDeletion from "./components/OrganizationDeletion";
 
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -110,6 +112,7 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         {/* <Route path="/dash" element={<HomePage />} /> */}
         <Route path="/NotFoundView" element={<NotFoundView />} />
+        <Route path="/backup" element={<BackupList />} />
 
             
         {/* <Route path="/login" element={<Login2 />} /> */}
@@ -118,6 +121,7 @@ function AppContent() {
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
         <Route path="/OrganizationList" element={<OrganizationList />} />
+        <Route path="/OrganizationDeleteList" element={<OrganizationDelList />} />
         <Route path="/profile-management" element={<ProfileManagementPage />} />
         {/* Change Password (Token Only) */}
         {/* <Route
@@ -156,7 +160,7 @@ function AppContent() {
 
           }
         />
-        <Route
+        {/* <Route
           path="/organizationdeletion"
           element={
             <PrivateRoute>
@@ -165,7 +169,7 @@ function AppContent() {
             //  </PrivateRoute> 
 
           }
-        />
+        /> */}
         <Route
           path="/Clientpage"
           element={

@@ -62,7 +62,8 @@ const calendarRef = useRef(null);
                     status: org.is_frozen,
                     delete: org.is_delete,
                 }));
-                const filterdata = organization.filter(org => !org.delete)
+                console.log(organization)
+                const filterdata = organization.filter(org => org.delete === true)
                 setData(filterdata);
     
                 if (organization.length === 0) {
@@ -99,9 +100,6 @@ const calendarRef = useRef(null);
       const handleCreateOrganization = () => {
         navigate(`/CompanyCreation`);
       }
-      const handledeleteOrganization = () => {
-        navigate(`/OrganizationDeleteList`);
-      }
 
     const handleSearch = (e) => {
         console.log("Search Term:", e.target.value);
@@ -119,26 +117,22 @@ const calendarRef = useRef(null);
       
       
 
-      const filteredData = data.filter(org => {
+    const filteredData = data.filter(org => {
         const matchesSearch = searchTerm
             ? org.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              org.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
+              org.org_name.toLowerCase().includes(searchTerm.toLowerCase())
             : true;
     
         const matchesStatus = statusFilter
             ? (statusFilter === "Active" ? org.status === false : org.status === true)
             : true;
     
-        const matchesDate = filterDate
+            const matchesDate = filterDate
             ? new Date(org.created_date).toDateString() === new Date(filterDate).toDateString()
             : true;
     
         return matchesSearch && matchesStatus && matchesDate;
     });
-    
     
     const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
@@ -160,25 +154,6 @@ const calendarRef = useRef(null);
         setIsCalendarOpen(false);
         setCurrentPage(1);
     };
-
-    const handleDownloadFile = async (fileUrl, fileName) => {
-    try {
-      const response = await fetch(fileUrl);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-  
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-  
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
-  };
     
 
     const handleDelete = async (id) => {
@@ -204,7 +179,7 @@ const calendarRef = useRef(null);
     };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    const paginatedData = filteredData.filter(org => !org.delete).slice(
+    const paginatedData = filteredData.slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
     );
@@ -212,18 +187,14 @@ const calendarRef = useRef(null);
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Details</h1>
-{(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
-  <div>
-    <button className='org_createbtn1' onClick={handleCreateOrganization} > + Create Organization</button>
-
-    <button className='org_createbtn1' onClick={handledeleteOrganization} > Deleted List</button> 
-  </div>
-)}
-
+            {/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
+  <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 
+  
+)} */}
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
-                    <input type="text" 
+                    <input type="search" 
                         value={searchTerm}
                          onChange={handleSearch}
                             placeholder="Search" 
@@ -237,14 +208,14 @@ const calendarRef = useRef(null);
                                           </div>
                                         )}
                 </div>
-                <div className="organization-filter">
+                {/* <div className="organization-filter">
                     <label className="organization_filter-label">Filter by Status:</label>
                     <select value={statusFilter} onChange={handleStatusFilter}className="organization-filter-select">
                         <option value="">All</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select> 
-                </div>
+                </div> */}
                 <div className='organization_row'>
                     <label className="organization_row_label">Rows per Page:</label>
                     <select value={rowsPerPage} onChange={handleRowsPerPage} className="organization_row_select">
@@ -285,8 +256,8 @@ const calendarRef = useRef(null);
                                         </div>
                                 )}
                         </th>
-                        <th className="organization-table-th">Status</th>
-                        <th className="organization-table-th">Actions</th>
+                        {/* <th className="organization-table-th">Status</th> */}
+                        {/* <th className="organization-table-th">Actions</th> */}
                     </tr>
                 </thead>
                 
@@ -301,22 +272,22 @@ const calendarRef = useRef(null);
   {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
 </td>
                                 <td className="organization-table-td">
-                                {org.msa_doc ? (
-        <a
-            title={org.msa_doc.split('/').pop()}
-            onClick={() => handleDownloadFile(`${url}/${org.msa_doc}`, org.msa_doc.split('/').pop())}
-            style={{ cursor: "pointer", textDecoration: "underline" }}>
-            {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
-        </a>
-    ) : (
-        <span style={{ color: "gray" }}>No Document</span>
-    )}
+                                    {org.msa_doc ? (
+                                        <a href={(url+org.msa_doc)} 
+                                        title={org.msa_doc.split('/').pop()}
+                                        target='_blank' rel='noopener noreferrer'>
+                                        {org.msa_doc.split('/').pop().substring(0, 30) + '...'}
+                                        </a>                                        
+
+                                    ) : (
+                                    "Null"  
+                                    )}
                                     </td>
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                                <td className="organization-table-td">
+                                {/* <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}
-</td>
-                                <td className="organization-table-td">
+</td> */}
+                                {/* <td className="organization-table-td">
                                     <button className='organization-edit' onClick={() => handleEdit(org.id)}>
                                     <FontAwesomeIcon icon={faPencil} />
                                     </button>
@@ -329,7 +300,7 @@ const calendarRef = useRef(null);
                                         <FontAwesomeIcon icon={faTrash} />
 
                                     </button>
-                                </td>
+                                </td> */}
                             </tr>
                         ))
                     ) : (

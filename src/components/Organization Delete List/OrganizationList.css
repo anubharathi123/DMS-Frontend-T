@@ -17,7 +17,7 @@
     margin-top: 30px;
 }
 
-.org_createbtn1 {
+.org_createbtn {
     padding-right: 1.5rem !important;
     padding-left: 1.5rem !important;
     padding-top: .5rem !important;
@@ -26,15 +26,12 @@
     /* background-color: #000b58; */
     color: rgb(0, 0, 0);
     cursor: pointer;
-    width: 170px;
+    width: 160px;
     font-size: 12px;
     position: relative;
-    margin-right: 10px;
-    left: 68%;
+    left: 83%;
 }
-.org_createbtn1 :hover{
-    background-color: #000b58 !important;
-}
+
 .organization-container_controls {
     display: flex;
     justify-content: space-between;
@@ -72,7 +69,7 @@
     align-items: center;
     gap: 5px;
     flex-direction: row-reverse;
-    width: 300px;
+    width: 30%;
     position:relative;
     
     
@@ -140,7 +137,7 @@
     cursor: pointer;
     border-radius: 7px;
     position: relative;
-    left: 27%;
+    right: 29%;
     font-size: 12px !important;
 }
 
