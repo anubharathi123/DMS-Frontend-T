@@ -6,6 +6,8 @@ import { Search } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import apiServices,{API_URL1} from '../../ApiServices/ApiServices';
 import './OrganizationList.css';
+import { RiCheckboxBlankCircleLine } from 'react-icons/ri';
+import { RiCheckboxCircleLine } from 'react-icons/ri';
 import { MdDeleteOutline } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Loader from "react-js-loader";
@@ -78,6 +80,53 @@ const calendarRef = useRef(null);
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
     
+
+    const handleFreeze = async (id, status) => {
+        try {
+            if (!status) {
+                if (!window.confirm("Are you sure you want to freeze this organization?")) {
+                    return;
+                }
+                setIsLoading(true);
+                const response = await apiServices.freezeOrganization(id);
+                console.log("API Response:", response.message);
+                if (response.success) {
+                    // Update UI to reflect frozen status
+                    const updatedData = data.map(org =>
+                        org.id === id ? { ...org, status: true } : org
+                    );
+                    setData(updatedData);
+                    setOrgData(updatedData);
+                    alert(response.message || "Organization frozen successfully.");
+                } else {
+                    alert(response.message || "Failed to freeze organization.");
+                }
+            } else {
+                if (!window.confirm("Are you sure you want to resume this organization?")) {
+                    return;
+                }
+                setIsLoading(true);
+                const response = await apiServices.resumeOrganization(id);
+                console.log("API Response:", response.message);
+                if (response.success) {
+                    // Update UI to reflect active status
+                    const updatedData = data.map(org =>
+                        org.id === id ? { ...org, status: false } : org
+                    );
+                    setData(updatedData);
+                    setOrgData(updatedData);
+                    alert(response.message || "Organization resumed successfully.");
+                } else {
+                    alert(response.message || "Failed to resume organization.");
+                }
+            }
+        } catch (error) {
+            console.error("Error freezing/resuming organization:", error);
+            alert("An error occurred while freezing/resuming.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
     
       useEffect(() => {
         const handleClickOutside = (event) => {
@@ -320,7 +369,12 @@ const calendarRef = useRef(null);
                                     <button className='organization-edit' onClick={() => handleEdit(org.id)}>
                                     <FontAwesomeIcon icon={faPencil} />
                                     </button>
-                                    
+                                    <button 
+                                        onClick={() => handleFreeze(org.id, org.status)} 
+                                        disabled={isLoading}
+                                        className='organization-freeze'>
+                                        {org.status ? <RiCheckboxCircleLine /> : <RiCheckboxBlankCircleLine /> }
+                                    </button>
                                     <button
                                         className="organization-delete"
                                         onClick={() => handleDelete(org.id)}
