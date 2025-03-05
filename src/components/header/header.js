@@ -131,7 +131,10 @@ const getRandomColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
 };
 useEffect(() => {
-  setIconColor(getRandomColor());
+  const iconColor1 = getRandomColor();
+  setIconColor(iconColor1);
+  console.log("Icon color", iconColor1);
+  localStorage.setItem("iconColor", iconColor1);
 }, []);
 
 const handleNavigateHome =() => {
