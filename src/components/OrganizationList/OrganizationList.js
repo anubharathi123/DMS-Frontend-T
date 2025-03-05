@@ -6,14 +6,16 @@ import { Search } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import apiServices,{API_URL1} from '../../ApiServices/ApiServices';
 import './OrganizationList.css';
-import { MdDeleteOutline } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import { RiCheckboxBlankCircleLine } from 'react-icons/ri';
+import { RiCheckboxCircleLine } from 'react-icons/ri';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+
 
 const OrganizationList = () => {
     const [data, setData] = useState([]);
@@ -77,6 +79,52 @@ const calendarRef = useRef(null);
     
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
+    
+
+    // const handleFreeze = async (id, status) => {
+    //     try {
+    //         const confirmMsg = status ? "Resume" : "Freeze";
+    //         if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
+    //         setIsLoading(true);
+    //         const response = status ? await apiServices.resumeOrganization(id) : await apiServices.freezeOrganization(id);
+    //         if (response.error) {
+    //             setData(prevData => prevData.map(org => org.id === id ? { ...org, status: !status } : org));
+    //         }
+    //     } catch (error) {
+    //         console.error("Error freezing organization:", error);
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
+
+    const handleFreeze = async (id, status) => {
+        try {
+            const confirmMsg = status ? "Resume" : "Freeze";
+            if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
+            setIsLoading(true);
+    
+            const response = status ? await apiServices.resumeOrganization(id) : await apiServices.freezeOrganization(id);
+    
+            if (response && !response.error) {
+                // Refetch the organization list after successful update
+                const updatedResponse = await apiServices.getOrganizations();
+                const updatedOrganization = updatedResponse.organization.map(org => ({
+                    id: org.id,
+                    username: org.auth_user.username,
+                    org_name: org.company_name,
+                    msa_doc: org.contract_doc,
+                    created_date: org.created_at,
+                    status: org.is_frozen,
+                    delete: org.is_delete,
+                })).filter(org => !org.delete);
+                setData(updatedOrganization);
+            }
+        } catch (error) {
+            console.error("Error freezing organization:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
     
     
       useEffect(() => {
@@ -320,7 +368,12 @@ const calendarRef = useRef(null);
                                     <button className='organization-edit' onClick={() => handleEdit(org.id)}>
                                     <FontAwesomeIcon icon={faPencil} />
                                     </button>
-                                    
+                                    <button 
+                                        onClick={() => handleFreeze(org.id, org.status)} 
+                                        disabled={isLoading}
+                                        className='organization-freeze'>
+                                        {org.status ? <FontAwesomeIcon icon={faToggleOff} /> : <FontAwesomeIcon icon={faToggleOn} /> }
+                                    </button>
                                     <button
                                         className="organization-delete"
                                         onClick={() => handleDelete(org.id)}
