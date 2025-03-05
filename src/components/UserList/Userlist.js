@@ -77,22 +77,21 @@ const UserList = () => {
   }, [refresh]);
 
   const filteredData1 = filteredData.filter((item) => {
+    const searchValue = searchTerm.toLowerCase();
+    
+    const usernameMatch = item.username.toLowerCase().includes(searchValue);
+    const emailMatch = item.email.toLowerCase().includes(searchValue);
+    const createdAtMatch = item.createdAt ? item.createdAt.toLowerCase().includes(searchValue) : false;
+    const roleMatch = item.role.toLowerCase().includes(searchValue);
+    const statusMatch = (item.status ? "inactive" : "active").toLowerCase().includes(searchValue);
+  
     if (filter === '') {
-      return item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.status.toLowerCase().includes(searchTerm.toLowerCase());
+      return usernameMatch || emailMatch || createdAtMatch || roleMatch || statusMatch;
     } else {
-      return item.username === filter && (
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.status.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      return item.role === filter && (usernameMatch || emailMatch || createdAtMatch || roleMatch || statusMatch);
     }
   });
+  
 
    useEffect(() => {
     const filterUsers = data.filter((item) => {
@@ -195,16 +194,19 @@ const UserList = () => {
             </div>
           )}
         </div>
-
+        
         <div className="userlist-filter">
           <label className="userlist_filter_label">Filter by Role:</label>
+          
           <select value={filter} onChange={handleFilter} className="userlist_filter_select">
-            <option value="">All Roles</option>
-            <option value="Admin">Admin</option>
-            <option value="User">User</option>
+          <option value="">All</option>,
+          {data.map((item, index) => (
+          <option value={item.role}>{item.role}</option>
+          ))}
           </select>
+                
         </div>
-
+  
         <div className="userlist_rows">
           <label className="userlist_rows_label">Rows per Page:</label>
           <select value={rowsPerPage} onChange={handleRowsPerPage} className="userlist_rows_select">

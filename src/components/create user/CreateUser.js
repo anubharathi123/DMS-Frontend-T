@@ -20,7 +20,7 @@ const CreateUser = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);  
 
-  const [roleOptions] = useState(["Uploader", "Approver", "Viewer"]);
+  const [roleOptions] = useState(["Uploader", "Reviewer", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 

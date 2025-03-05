@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import DatePicker from 'react-datepicker';
-import apiServices from '../../ApiServices/ApiServices';
+import apiServices, {API_URL1} from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
@@ -34,7 +35,8 @@ const DocumentTable = () => {
   const [filteredBackupData, setFilteredBackupData] = useState([]);
   const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
-  const url = "http://localhost:8000"
+  const url = API_URL1
+  const navigate = useNavigate();
   const mappings = {
     'declaration': 'Declaration',
     'invoice': 'Invoice',
@@ -74,7 +76,7 @@ const DocumentTable = () => {
         const documents = response.documents.map(doc => ({
           declarationNumber: doc.declaration_number,
           file: doc.current_version?.file_path,
-          fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path: '',
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
@@ -135,7 +137,7 @@ const DocumentTable = () => {
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   const handleBackupClick = () => {
-    setIsBackupOpen(true);
+    navigate('/backup');
   };
 
   const handleResetFilter = (e) => {
@@ -314,49 +316,6 @@ const DocumentTable = () => {
   <button className='doc-backup' onClick={handleBackupClick}>Backup</button> 
 )}
  
-      {isBackupOpen && (
-        <>
-        <div className="backup-overlay" onClick={handleCloseBackup}/>
-        <div className="backup-popup">
-          <div className="backup-popup-content">
-            <h2 className='backup-popup-h2'>Backup Documents</h2>
-            <label className='popup-content-label'>Start Date:</label>
-            {/* <input type='date' className="popup-content-input" selected={startDate} onChange={(date) => setStartDate(date)} /> */}
-            <input
-  type="date"
-  className="popup-content-input"
-  value={startDate} 
-  onChange={(e) => setStartDate(e.target.value)} 
-/>
-            <label className='popup-content-label'>End Date:</label>
-            {/* <input type='date' className="popup-content-input" selected={endDate} onChange={(date) => setEndDate(date)} /> */}
-            <input
-  type="date"
-  className="popup-content-input"
-  value={endDate} 
-  onChange={(e) => setEndDate(e.target.value)} 
-/>
-            {/* <h3 className='backup-popup-h3'>Documents Included:</h3> */}
-            <div className='backup-documentlist'>
-            {/* <ul className="backup-documentlist-ul">  */}
-            {/* {filteredBackupData.length > 0 ? (
-              filteredBackupData.map((doc, index) => (
-                <li className="backup-documentlist-li" key={index}>{doc.fileName} ({new Date(doc.updatedDate).toLocaleDateString()})</li>
-              ))
-            ) : (
-              <li>No documents found for selected dates.</li>
-            )
-            } */}
-            {/* </ul> */}
-            </div>
-            <div className='backup-actions'>
-            <button className="document-downloadbtn" onClick={handleDownload}>Download</button>
-            <button className="backup-closebtn" onClick={handleCloseBackup}>Close</button>
-            </div>
-          </div>
-        </div>
-        </>
-      )}
       {actionMessage && <div className="documenttable_action_message">{actionMessage}</div>}
       <div className="documenttable_controls flex justify-between mb-4">
         <div className="documenttable_search flex items-center">
@@ -459,17 +418,14 @@ const DocumentTable = () => {
                 </span>
               </td>
               <td className="documenttable_td px-6 py-4">
-              {item.status === "REJECTED" && (
-                        <span
-                        title={item.rejectionReason.split('/').pop()}
-                        >{item.rejectionReason.split('/').pop().substring(0, 20) + '...'}</span>
-                      )}
-                {item.status == "APPROVED" && (
-                        <span> NULL</span>
-                      )}
-                {item.status == "PENDING" && (
-                        <span> NULL</span>
-                      )}
+              {item.status === "REJECTED" ? (
+    <div className="tooltip-container">
+      <span className="tooltip-trigger">{item.rejectionReason.split('/').pop().substring(0,20)+'.......'}</span>
+      <div className="tooltip-content">{item.rejectionReason}</div>
+    </div>
+  ) : (
+    <span>NULL</span>
+  )}
                      
               </td>
             </tr>

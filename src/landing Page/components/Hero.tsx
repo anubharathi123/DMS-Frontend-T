@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import visuallyHidden from '@mui/utils/visuallyHidden';
 import { styled } from '@mui/material/styles';
-import background from '../../assets/images/background.png';
+// import background from '../../assets/images/background.png';
 
 const StyledBox = styled('div')(({ theme }) => ({
   alignSelf: 'center',
@@ -50,7 +50,7 @@ export default function Hero() {
         // ...theme.applyStyles('dark', {
         //   backgroundImage:
         //     'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
-        backgroundImage: `url(${background})`,
+        // backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
         ...theme.applyStyles('dark', {
         }),

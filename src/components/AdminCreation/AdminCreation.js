@@ -145,21 +145,6 @@ const AdminCreation = () => {
           />
         </div>
 
-        {/* Admin Creation Date */}
-        <div className="admincreation-form-group">
-          <label className="admincreation-label">
-            Admin Creation Date <span className="mandatory">*</span>
-          </label>
-          <input
-            type="date"
-            name="created_at"
-            value={formData.created_at}
-            onChange={handleChange}
-            className="admincreation-input"
-            required
-          />
-        </div>
-
         {/* Button Group */}
         <div className="admincreation-button-group">
           <button type="submit" className="admincreation-btn-submit">
