@@ -194,19 +194,19 @@ const UserList = () => {
             </div>
           )}
         </div>
-
+        
         <div className="userlist-filter">
           <label className="userlist_filter_label">Filter by Role:</label>
+          
           <select value={filter} onChange={handleFilter} className="userlist_filter_select">
-            <option value="">All Roles</option>
-            <option value="Admin">Admin</option>
-            <option value="User">User</option>
-            <option value="Uploader">Uploader</option>
-            <option value="Approver">Approver</option>
-            <option value="Reviewer">Reviewer</option>
+          <option value="">All</option>,
+          {data.map((item, index) => (
+          <option value={item.role}>{item.role}</option>
+          ))}
           </select>
+                
         </div>
-
+  
         <div className="userlist_rows">
           <label className="userlist_rows_label">Rows per Page:</label>
           <select value={rowsPerPage} onChange={handleRowsPerPage} className="userlist_rows_select">
