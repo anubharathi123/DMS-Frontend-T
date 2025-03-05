@@ -85,7 +85,7 @@ function ProfileCard() {
   };
 
   const getRandomColor = () => {
-    return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+    return localStorage.getItem('iconColor') || `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
   };
   useEffect(() => {
     setIconColor(getRandomColor());
