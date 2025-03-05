@@ -38,6 +38,8 @@ import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
 import SignatureComponent from "./components/Signature/SignatureComponent";
+import DeletedAdminList from "./components/DeletedAdminList/AdminList";
+import DeletedUsers from "./components/DeletedUsers/DeletedUsers";
 // import OrganizationDeletion from "./components/OrganizationDeletion";
 
 // import AdminCreation Update from "./components/AdminCreation Update";
@@ -122,6 +124,8 @@ function AppContent() {
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
         <Route path="/OrganizationList" element={<OrganizationList />} />
         <Route path="/OrganizationDeleteList" element={<OrganizationDelList />} />
+        <Route path="/DeletedAdminList" element={<DeletedAdminList />} />
+        <Route path="/DeletedUsers" element={<DeletedUsers />} />
         <Route path="/profile-management" element={<ProfileManagementPage />} />
         {/* Change Password (Token Only) */}
         {/* <Route

@@ -67,7 +67,7 @@ const AdminList = () => {
           delete: admin.is_delete,
         })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         console.log(admins)
-        const filterdata = admins.filter(item => !item.delete)
+        const filterdata = admins.filter(item => item.delete === true);
         setData(filterdata);
         setFilteredData(filterdata);
   
@@ -90,12 +90,6 @@ const AdminList = () => {
     const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
     setCurrentPage((prevPage) => Math.min(prevPage, totalPages));
   }, [filteredData, rowsPerPage]);
-
-  
-
-  const handleCreateAdmin = () => {
-    navigate('/AdminCreation');
-  }
 
   const filteredData1 = filteredData.filter((item) => {
     if (filter === '') {
@@ -136,54 +130,6 @@ const AdminList = () => {
     setCurrentPage(1);
   };
 
-  const handleEditAdmin = (id) => {
-    navigate(`/updateadmin/${id}`);
-  };
-
-  const handleDeleteAdmin = async (id) => {
-    const confirmDelete = window.confirm(`Are you sure you want to delete admin "${id}"?`);
-
-    if (confirmDelete) {
-      try {
-        setIsLoading(true);
-
-        // Call the API to delete the admin
-        const response = await apiServices.deleteAdmin(id);
-
-        console.log("Delete API Response:", response); // Log full response
-
-        // Verify response structure
-        if (response.message) {
-          console.log("Admin deleted successfully, updating state...");
-
-          // Update the state to remove the deleted admin
-          setData((prevData) => {
-            console.log("Previous Data:", prevData);
-            return prevData.filter(item => item.id !== id);
-          });
-
-          // Set success message
-          // setActionMessage(`Admin "${id}" deleted successfully.`);
-        } else {
-          // Handle API failure
-          console.error("Failed to delete admin:", response?.data?.message);
-          setActionMessage(response?.data?.message || "Failed to delete admin.");
-        }
-      } catch (error) {
-        // Handle any errors
-        console.error("Error deleting admin:", error);
-        setActionMessage("Error deleting admin. Please try again.");
-      } finally {
-        // Reset loading state
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const handleDeleteList = async () => {
-    navigate('/DeletedAdminList');
-  }
-
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -207,13 +153,10 @@ const AdminList = () => {
   const totalPages = Math.max(1, Math.ceil(filteredData1.length / rowsPerPage));
 
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
   return (
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Details</h1>
-      <div>
-      <button className='admin_createbtn' onClick={handleCreateAdmin} > + New Admin</button>
-      <button className='admin_createbtn' onClick={handleDeleteList} > Deleted Admin List</button> 
-      </div>
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
       <div className="adminlist_controls">
         <div className="adminlist_search">
@@ -281,8 +224,6 @@ const AdminList = () => {
                 </div>
               )}
             </th>
-            <th className="adminlist_th">Role</th>
-            <th className="adminlist_th">Actions</th>
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
@@ -294,11 +235,6 @@ const AdminList = () => {
             <td className="documenttable_td px-6 py-4 ">{item.name}</td>
             <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
             <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-            <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
-            <td className='documenttable_td px-6 py-4'>
-              <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
-              <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.id)}><FontAwesomeIcon icon={faTrash} /></button>
-            </td>
           </tr>
         ))}
         </tbody>

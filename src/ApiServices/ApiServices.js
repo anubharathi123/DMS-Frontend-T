@@ -233,6 +233,7 @@ const authService = {
     if (!orgId) {
       throw new Error('Organization ID is required to freeze an organization.');
     }
+    console.log('orgId:', orgId);
     return handleResponse(apiClient.post(`organizations/${orgId}/freeze/`));
   },
   resumeOrganization: async (orgId) => {
