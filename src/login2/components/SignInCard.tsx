@@ -326,7 +326,7 @@ export default function SignInCard() {
           
         )}
 
-        <Typography sx={{ textAlign: 'center' }}>
+        {/* <Typography sx={{ textAlign: 'center' }}>
           Don&rsquo;t have an account?{' '}
           <span>
             <Link
@@ -337,10 +337,10 @@ export default function SignInCard() {
               Sign up
             </Link>
           </span>
-        </Typography>
+        </Typography> */}
       </Box>
-      <Divider>or</Divider>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      {/* <Divider>or</Divider> */}
+      {/* <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Button
           fullWidth
           variant="outlined"
@@ -357,7 +357,7 @@ export default function SignInCard() {
         >
           Sign in with GitHub
         </Button>
-      </Box>
+      </Box> */}
       <ForgotPassword open={open} handleClose={handleClose} />
     </Card>
 

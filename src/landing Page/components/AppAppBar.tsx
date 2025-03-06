@@ -20,6 +20,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import ColorModeIconDropdown from "../theme/ColorModeIconDropdown";
 import DartLogo from "../../assets/images/VDart-dark-logo.png";
 import WhiteLogo from "../../assets/images/company_logo.png";
+import Logo1 from "../../assets/images/Logo.png";
 
 // Custom Styled Toolbar
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -39,7 +40,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const logo = theme.palette.mode === "light" ? DartLogo : WhiteLogo;
+  const logo = theme.palette.mode === "light" ? Logo1 : Logo1;
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -57,7 +58,7 @@ export default function AppAppBar() {
     >
       {/* Top Bar for Contact Info */}
       <Container maxWidth="xl" sx={{ mb: 2 }}>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "space-between", 
@@ -68,7 +69,7 @@ export default function AppAppBar() {
             px: 2,
             fontSize: "0.875rem",
           }}
-        >
+        > */}
           {/* Left Side - Contact Info */}
           {/* <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}> */}
             {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -98,7 +99,7 @@ export default function AppAppBar() {
   Sign up
 </Button> */}
 
-          </Box>
+          {/* </Box> */}
         {/* </Box> */}
       </Container>
 
@@ -106,7 +107,7 @@ export default function AppAppBar() {
       <Container maxWidth="xl">
         <StyledToolbar variant="dense" disableGutters>
           <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}>
-            <img src={logo} alt="Vdart Logo" style={{ height: "40px", marginRight: "20px" }} />
+            <img src={logo} alt="Vdart Logo" style={{ height: "30px", marginRight: "30px"}} />
           </Box>
 
           {/* Navigation Links */}
