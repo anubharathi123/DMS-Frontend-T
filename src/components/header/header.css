@@ -95,23 +95,23 @@
 }
 
 .notification-icon {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
   filter: invert(1);
 }
 
 .notification-badge {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background: red;
-  color: white;
+  top: 5px;
+  right: 58px;
+  background:white;
+  color: black;
   font-size: 12px;
   font-weight: bold;
-  padding: 4px 6px;
+ 
   border-radius: 50%;
-  min-width: 20px;
-  min-height: 20px;
+  min-width: 15px;
+  min-height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;

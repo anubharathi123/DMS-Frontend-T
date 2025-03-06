@@ -221,8 +221,10 @@ const handleNotificationClick = () => {
       <button
         type="button"
         className="notificationbtn"
-        onClick={handleNotificationClick}>
-          {notificationCount > 0 && <span className="notification-badge">{notificationCount}</span>}
+        onClick={handleNotificationClick}
+        ref={notificationButtonRef}>
+          <span className="notification-badge">{notificationCount}</span>
+        
         {activeDropdown === "notification" && (
         <div className="notification-dropdown" ref={notificationDropdownRef}>
           <NotificationPage />
