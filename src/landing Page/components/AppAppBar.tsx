@@ -71,35 +71,35 @@ export default function AppAppBar() {
         >
           {/* Left Side - Contact Info */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <PhoneIcon fontSize="small" />
               <Typography variant="body2">987654343</Typography>
-            </Box>
+            </Box> */}
 
             <Divider orientation="vertical" flexItem sx={{ bgcolor: "darkblue", height: 16 }} />
 
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <EmailIcon fontSize="small" />
               <Typography variant="body2">Inten@vdartinc.com</Typography>
-            </Box>
+            </Box> */}
           </Box>
 
           {/* Right Side - Sign In / Sign Up Buttons */}
-          <Box sx={{ display: "flex", gap: 1 }}>
-          <Button 
-  variant="outlined" 
+          {/* <Box sx={{ display: "flex", gap: 1 }}> */}
+          {/* <Button 
+   variant="outlined" 
   size="small" 
-  sx={{ color: "white", borderColor: "white" }} 
+ sx={{ color: "white", borderColor: "white" }} 
   onClick={() => window.location.href = '/login'}
->
-  Sign in
+> */}
+  {/* Sign in
 </Button>
 <Button color="primary" variant="contained" size="small">
   Sign up
-</Button>
+</Button> */}
 
           </Box>
-        </Box>
+        {/* </Box> */}
       </Container>
 
       {/* Main Navbar */}

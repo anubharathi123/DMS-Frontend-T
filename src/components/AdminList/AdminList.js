@@ -8,8 +8,10 @@ import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+// import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
+
 
 const AdminList = () => {
   const [data, setData] = useState([]);
@@ -63,6 +65,8 @@ const AdminList = () => {
           name: admin.auth_user.first_name,
           email: admin.auth_user.email,
           createdAt: admin.created_at,
+          status: admin.is_frozen,
+          OrgId: admin.organization.id,
           role: admin.role.name,
           delete: admin.is_delete,
         })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -96,6 +100,41 @@ const AdminList = () => {
   const handleCreateAdmin = () => {
     navigate('/AdminCreation');
   }
+
+  const handleFreeze = async (id,orgId, status) => {
+    try {
+        const confirmMsg = status ? "Resume" : "Freeze";
+        if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
+        setIsLoading(true);
+
+        const response = status ? await apiServices.resumeEmployee(orgId,id) : await apiServices.freezeEmployee(orgId,id);
+
+        if (response && !response.error) {
+            // Refetch the organization list after successful update
+            const response = await apiServices.getAdmins(); // Adjust based on API
+        console.log(response)
+        const admins = response.product_admins.map(admin => ({
+          id: admin.id,
+          username: admin.auth_user.username,
+          name: admin.auth_user.first_name,
+          email: admin.auth_user.email,
+          createdAt: admin.created_at,
+          status: admin.is_frozen,
+          OrgId: admin.organization.id,
+          role: admin.role.name,
+          delete: admin.is_delete,
+        })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        console.log(admins)
+        const filterdata = admins.filter(item => !item.delete)
+        setData(filterdata);
+        setFilteredData(filterdata);
+        }
+    } catch (error) {
+        console.error("Error freezing organization:", error);
+    } finally {
+        setIsLoading(false);
+    }
+};
 
   const filteredData1 = filteredData.filter((item) => {
     if (filter === '') {
@@ -282,6 +321,7 @@ const AdminList = () => {
               )}
             </th>
             <th className="adminlist_th">Role</th>
+            <th className="adminlist_th">Status</th>
             <th className="adminlist_th">Actions</th>
           </tr>
         </thead>
@@ -295,8 +335,18 @@ const AdminList = () => {
             <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
             <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
             <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
+            <td className="documenttable_td px-6 py-4 ">
+              
+  {item.status ? "Inactive" : "Active"}
+</td>
             <td className='documenttable_td px-6 py-4'>
               <button className='adminlist-editbtn' onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
+              <button 
+              onClick={() => handleFreeze(item.id, item.OrgId, item.status)} 
+              disabled={isLoading}
+              className='organization-freeze'>
+              {item.status ? <FontAwesomeIcon icon={faToggleOff} /> : <FontAwesomeIcon icon={faToggleOn} /> }
+            </button>
               <button className='adminlist-deletebtn' onClick={() => handleDeleteAdmin(item.id)}><FontAwesomeIcon icon={faTrash} /></button>
             </td>
           </tr>

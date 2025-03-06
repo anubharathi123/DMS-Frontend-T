@@ -261,6 +261,8 @@ const authService = {
     }
     return handleResponse(apiClient.post(`organizations/${orgId}/employees/`, data));
   },
+
+  
   getEmployees: async (orgId) => {
     if (!orgId) {
       throw new Error('Organization ID is required to fetch employees.');
@@ -271,13 +273,13 @@ const authService = {
     if (!orgId || !employeeId) {
       throw new Error('Organization ID and employee ID are required to freeze an employee.');
     }
-    return handleResponse(apiClient.post(`organizations/${orgId}/employees/${employeeId}/freeze/`));
+    return handleResponse(apiClient.patch(`organizations/${orgId}/employees/${employeeId}/freeze/`));
   },
   resumeEmployee: async (orgId, employeeId) => {
     if (!orgId || !employeeId) {
       throw new Error('Organization ID and employee ID are required to resume an employee.');
     }
-    return handleResponse(apiClient.post(`organizations/${orgId}/employees/${employeeId}/resume/`));
+    return handleResponse(apiClient.patch(`organizations/${orgId}/employees/${employeeId}/resume/`));
   },
 
   // Document APIs
