@@ -40,6 +40,7 @@ import CompanyUpdate from "./components/Organization update/CompanyUpdate";
 import SignatureComponent from "./components/Signature/SignatureComponent";
 import DeletedAdminList from "./components/DeletedAdminList/AdminList";
 import DeletedUsers from "./components/DeletedUsers/DeletedUsers";
+import ContractForm from './components/ContractForm/contractform';
 // import OrganizationDeletion from "./components/OrganizationDeletion";
 
 // import AdminCreation Update from "./components/AdminCreation Update";
@@ -195,6 +196,14 @@ function AppContent() {
 				// photos="1.4K" />
         <ProfileCard />
             // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/contractform"
+          element={
+            // <PrivateRoute>
+              <ContractForm />
+            //  </PrivateRoute> 
           }
         />
         <Route
