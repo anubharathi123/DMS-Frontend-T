@@ -125,7 +125,7 @@ const UserList = () => {
         const response = status ? await apiServices.resumeEmployee(id, empId) : await apiServices.freezeEmployee(id, empId);
         console.log(response)
         let users = response.map((user) => ({
-          id:user.id,
+          id:user.organization.id,
           empId: user.auth_user.id,
           username: user.auth_user.first_name || "N/A",
           // company_name: user.organization.company_name,
