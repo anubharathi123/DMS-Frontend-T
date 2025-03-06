@@ -5,11 +5,9 @@ import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Loader from "react-js-loader";
 import apiServices from "../../ApiServices/ApiServices"; // Adjust path if needed
-import "./Userlist.css";
+import "./DeletedUsers.css";
 import refreshIcon from '../../assets/images/refresh-icon.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 const UserList = () => {
   const [data, setData] = useState([]);
@@ -61,7 +59,7 @@ const UserList = () => {
           status:user.is_frozen,
           delete:user.is_delete,
         })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        const filteredUsers = users.filter(item => !item.delete);
+        const filteredUsers = users.filter(item => item.delete === true);
         setData(filteredUsers);
         setFilteredData(filteredUsers);
         if (users.length === 0) {
@@ -108,84 +106,6 @@ const UserList = () => {
 
   const paginatedData = filteredData1.filter(item => !item.delete).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
-  const handleCreateUser = () => {
-    navigate(`/createuser`);
-  }
-
-  const handleEditAdmin = (id) => {
-    navigate(`/UpdateUser/${id}`);
-  };
-
-  const handleFreeze = async (id, empId, status) => {
-    try {
-        const confirmMsg = status ? "Resume" : "Freeze";
-        if (!window.confirm(`Are you sure you want to ${confirmMsg} this user?`)) return;
-        setIsLoading(true);
-
-        const response = status ? await apiServices.resumeEmployee(id, empId) : await apiServices.freezeEmployee(id, empId);
-        console.log(response)
-        let users = response.map((user) => ({
-          id:user.id,
-          empId: user.auth_user.id,
-          username: user.auth_user.first_name || "N/A",
-          // company_name: user.organization.company_name,
-          email: user.auth_user.email,
-          createdAt: user.created_at,
-          role: user.role.name,
-          status:user.is_frozen,
-          delete:user.is_delete,
-        })).filter(item => !item.delete);
-        setData(users);
-        setFilteredData(users);
-
-       
-    } catch (error) {
-        console.error("Error freezing User:", error);
-    } finally {
-        setIsLoading(false);
-    }
-};
-
-  const handleDeleteUser = async (id) => {
-    const confirmDelete = window.confirm(`Are you sure you want to delete user "${id}"?`);
-
-    if (confirmDelete) {
-      try {
-        setIsLoading(true);
-  
-        // Call the API to delete the admin
-        const response = await apiServices.deleteAdmin(id);
-  
-        console.log("Delete API Response:", response); // Log full response
-  
-        // Verify response structure
-        if (response.message) {
-          console.log("user deleted successfully, updating state...");
-  
-          // Update the state to remove the deleted admin
-          setData((prevData) => {
-            console.log("Previous Data:", prevData);
-            return prevData.filter(item => item.id !== id);
-          });
-  
-          // Set success message
-          // setActionMessage(`Admin "${id}" deleted successfully.`);
-        } else {
-          // Handle API failure
-          console.error("Failed to delete user:", response?.data?.message);
-          setActionMessage(response?.data?.message || "Failed to delete user.");
-        }
-      } catch (error) {
-        // Handle any errors
-        console.error("Error deleting user:", error);
-        setActionMessage("Error deleting user. Please try again.");
-      } finally {
-        // Reset loading state
-        setIsLoading(false);
-      }
-    }
-  };
-
   const handleResetFilter = (e) => {
     setSearchTerm('');
     setFilter(e.target.value);
@@ -199,15 +119,11 @@ const UserList = () => {
   const handleRowsPerPage = (e) => setRowsPerPage(parseInt(e.target.value));
   const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
-  const handleDelete = () => { navigate('/deletedusers') }
+  
 
   return (
     <div className="userlist-container">
       <h1 className="userlist-header">User Details</h1>
-      <div>
-      <button className='user_createbtn' onClick={handleCreateUser} > + New User</button> 
-      <button className='user_createbtn' onClick={handleDelete} > Deleted User List</button> 
-      </div>
       {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 
       <div className="userlist-controls">
@@ -276,8 +192,6 @@ const UserList = () => {
               )}
             </th>
             <th className="userlist_th">Role</th>
-            <th className="userlist_th">Status</th>
-            <th className="userlist_th">Actions</th>
           </tr>
         </thead>
         <tbody className="userlist_tbody">
@@ -288,15 +202,6 @@ const UserList = () => {
               <td className="userlist_td">{item.email}</td>
               <td className="userlist_td">
                 {new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-              </td>
-              <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
-              <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
-              <td className="userlist_td">
-                 <button className='adminlist-editbtn' title="Edit" onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
-                 <button className='adminlist-freezebtn' disabled={isLoading} title="Freeze" onClick={() => handleFreeze(item.id, item.status)}>
-                  {item.status ? <FontAwesomeIcon icon={faToggleOff}/> : <FontAwesomeIcon icon={faToggleOn}/>}
-                  </button>
-                  <button className='adminlist-deletebtn' title="Delete" onClick={() => handleDeleteUser(item.id)}><FontAwesomeIcon icon={faTrash}/></button>
               </td>
             </tr>
           ))}

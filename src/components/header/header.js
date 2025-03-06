@@ -17,6 +17,8 @@ const Header = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
   const [profileImage, setProfileImage] = useState( );
   const [iconColor, setIconColor] = useState("#000");
   const [imageToCrop, setImageToCrop] = useState(null);
@@ -31,6 +33,26 @@ const Header = () => {
   const navigate = useNavigate();
   const name = localStorage.getItem("name") || "User";
   const email = localStorage.getItem("email") || "email";
+
+  useEffect(() => {
+    // Fetch notifications when the component mounts
+    const fetchNotifications = async () => {
+      try {
+        const response = await ApiService.getNotifications(); // Replace with actual API call
+        setNotifications(response.notifications || []);
+        const unreadCount = response.notifications.filter((n) => !n.read).length;
+        setNotificationCount(unreadCount);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    fetchNotifications();
+
+    // Poll for new notifications every 30 seconds (adjust as needed)
+    const interval = setInterval(fetchNotifications, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
 
   useEffect(() => {
@@ -145,7 +167,15 @@ const handleNavigate404 = () => {
   navigate("/NotFoundView")
 }
 
- 
+const handleNotificationClick = () => {
+  setActiveDropdown(activeDropdown === "notification" ? null : "notification");
+
+  if (notificationCount > 0) {
+    // Mark all notifications as read when opening the dropdown
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setNotificationCount(0); // Reset count
+  }
+};
 
 
   return (
@@ -191,11 +221,8 @@ const handleNavigate404 = () => {
       <button
         type="button"
         className="notificationbtn"
-        onClick={() =>
-          setActiveDropdown(activeDropdown === "notification" ? null : "notification")
-          
-        }
-      >
+        onClick={handleNotificationClick}>
+          {notificationCount > 0 && <span className="notification-badge">{notificationCount}</span>}
         {activeDropdown === "notification" && (
         <div className="notification-dropdown" ref={notificationDropdownRef}>
           <NotificationPage />
