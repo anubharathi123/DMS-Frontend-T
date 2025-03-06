@@ -52,7 +52,7 @@ const UserList = () => {
         console.log(response)
         let users = response.map((user) => ({
           id:user.id,
-          empId: user.auth_user.id,
+          orgId: user.organization.id,
           username: user.auth_user.first_name || "N/A",
           // company_name: user.organization.company_name,
           email: user.auth_user.email,
@@ -116,17 +116,21 @@ const UserList = () => {
     navigate(`/UpdateUser/${id}`);
   };
 
-  const handleFreeze = async (id, empId, status) => {
+  const handleFreeze = async (id,orgId, status) => {
     try {
         const confirmMsg = status ? "Resume" : "Freeze";
-        if (!window.confirm(`Are you sure you want to ${confirmMsg} this user?`)) return;
+        if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
         setIsLoading(true);
 
-        const response = status ? await apiServices.resumeEmployee(id, empId) : await apiServices.freezeEmployee(id, empId);
+        const response = status ? await apiServices.resumeEmployee(orgId,id) : await apiServices.freezeEmployee(orgId,id);
+
+        if (response && !response.error) {
+            // Refetch the organization list after successful update
+            const response = await apiServices.users();
         console.log(response)
         let users = response.map((user) => ({
-          id:user.organization.id,
-          empId: user.auth_user.id,
+          id:user.id,
+          orgId: user.organization.id,
           username: user.auth_user.first_name || "N/A",
           // company_name: user.organization.company_name,
           email: user.auth_user.email,
@@ -134,13 +138,16 @@ const UserList = () => {
           role: user.role.name,
           status:user.is_frozen,
           delete:user.is_delete,
-        })).filter(item => !item.delete);
-        setData(users);
-        setFilteredData(users);
-
-       
+        })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const filteredUsers = users.filter(item => !item.delete);
+        setData(filteredUsers);
+        setFilteredData(filteredUsers);
+        if (users.length === 0) {
+          setActionMessage("No users available.");
+        }
+        }
     } catch (error) {
-        console.error("Error freezing User:", error);
+        console.error("Error freezing organization:", error);
     } finally {
         setIsLoading(false);
     }
@@ -293,7 +300,7 @@ const UserList = () => {
               <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
               <td className="userlist_td">
                  <button className='adminlist-editbtn' title="Edit" onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
-                 <button className='adminlist-freezebtn' disabled={isLoading} title="Freeze" onClick={() => handleFreeze(item.id, item.status)}>
+                 <button className='adminlist-freezebtn' disabled={isLoading} title="Freeze" onClick={() => handleFreeze(item.id, item.orgId, item.status)}>
                   {item.status ? <FontAwesomeIcon icon={faToggleOff}/> : <FontAwesomeIcon icon={faToggleOn}/>}
                   </button>
                   <button className='adminlist-deletebtn' title="Delete" onClick={() => handleDeleteUser(item.id)}><FontAwesomeIcon icon={faTrash}/></button>
