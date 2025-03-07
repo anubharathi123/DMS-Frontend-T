@@ -9,6 +9,9 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import visuallyHidden from '@mui/utils/visuallyHidden';
 import { styled } from '@mui/material/styles';
+import Logo from "../../assets/images/Logo.png";
+import LogoBG from "../../assets/images/HomeBG.png";
+
 // import background from '../../assets/images/background.png';
 
 const StyledBox = styled('div')(({ theme }) => ({
@@ -43,6 +46,7 @@ export default function Hero() {
       id="hero"
       sx={(theme) => ({
         width: '100%',
+        // backgroundImage:{LogoBG},
         backgroundRepeat: 'no-repeat',
 
         // backgroundImage:
@@ -50,7 +54,8 @@ export default function Hero() {
         // ...theme.applyStyles('dark', {
         //   backgroundImage:
         //     'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
-        // backgroundImage: `url(${background})`,
+        backgroundImage: `url(${LogoBG})`,
+        opacity:"0.8",
         backgroundSize: 'cover',
         ...theme.applyStyles('dark', {
         }),
@@ -65,10 +70,13 @@ export default function Hero() {
           pb: { xs: 8, sm: 12 },
         }}
       >
+        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}>
+            <img src={Logo} alt="Vdart Logo" style={{ height: "130px", marginLeft: "20px"}} />
+          </Box>
         <Stack
           spacing={2}
           useFlexGap
-          sx={{ alignItems: 'center', width: { xs: '100%', sm: '70%' } }}
+          sx={{ alignItems: 'center', width: { xs: '100%', sm: '70%' }, marginTop:"0px" }}
         >
           <Typography
             variant="h1"
@@ -76,10 +84,23 @@ export default function Hero() {
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
               alignItems: 'center',
-              fontSize: 'clamp(3rem, 10vw, 3.5rem)',
+              fontSize: 'clamp(2rem, 10vw, 2.5rem)',
             }}
           >
-            Smart&nbsp;Secure&nbsp;
+            Smart&nbsp;
+            <Typography
+              component="span"
+              variant="h1"
+              sx={(theme) => ({
+                fontSize: 'inherit',
+                color: 'hsl(0deg 100% 52.35%);',
+                ...theme.applyStyles('dark', {
+                  color: 'primary.light',
+                }),
+              })}
+            >
+              Secure&nbsp;
+            </Typography>
             <Typography
               component="span"
               variant="h1"
@@ -91,7 +112,7 @@ export default function Hero() {
                 }),
               })}
             >
-              Shift
+              Swift
             </Typography>
           </Typography>
           <Typography
@@ -127,16 +148,17 @@ export default function Hero() {
                 },
               }}
             /> */}
-            {/* <Button
+            <Button
               variant="contained"
               color="primary"
               size="small"
+              onClick={() => window.location.href = '/login'}
               sx={{ minWidth: 'fit-content' }}
             >
               Start now
-            </Button> */}
+            </Button>
           </Stack>
-          {/* <Typography
+          <Typography
             variant="caption"
             color="text.secondary"
             sx={{ textAlign: 'center' }}
@@ -146,7 +168,7 @@ export default function Hero() {
               Terms & Conditions
             </Link>
             .
-          </Typography> */}
+          </Typography>
         </Stack>
         {/* <StyledBox id="image" /> */}
       </Container>
