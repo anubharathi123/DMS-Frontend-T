@@ -138,6 +138,7 @@ const CompanyCreation = () => {
     });
     setContractDocuments(null);
     setFileInputClicked(false);
+    navigate('/OrganizationList');
   };
 
   // Triggers file input dialog when clicking anywhere on the upload area
