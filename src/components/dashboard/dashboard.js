@@ -9,6 +9,9 @@ import apiServices from '../../ApiServices/ApiServices';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
+// import donutData from './donutData';
+
 import {
   Chart as ChartJS,
   BarElement,
@@ -146,19 +149,89 @@ const DashboardApp = () => {
     REVIEWER: "Reviewer Dashboard",
     VIEWER: "Viewer Dashboard",
   };
+// // Calculate total documents to get percentages
+// const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
 
-  // 🟠 Doughnut Chart (Total Uploads)
-  const donutData = {
-    labels: ['Total Uploads', 'Pending Documents', 'Rejected Documents'],
-    datasets: [
-      {
-        data: [50000, 10000, 5000],
-        backgroundColor: ['#5C8FE0', '#6691D6', '#99B5E4'],
-        borderWidth: 3,
-        cutout: '',
+// // Ensure no division by zero
+// const approvedPercentage = totalDocs ? ((OrgCount.approvedDocuments / totalDocs) * 100).toFixed(1) : 0;
+// const pendingPercentage = totalDocs ? ((OrgCount.pendingDocuments / totalDocs) * 100).toFixed(1) : 0;
+// const rejectedPercentage = totalDocs ? ((OrgCount.rejectedDocuments / totalDocs) * 100).toFixed(1) : 0;
+
+// const donutData = {
+//   labels: [
+//     `Approved (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+//     `Pending (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+//     `Rejected (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+//     // `Pending (${pendingPercentage}%)`,
+//     // `Rejected (${rejectedPercentage}%)`
+//   ],
+//   datasets: [
+//     {
+//       data: [OrgCount.approvedDocuments, OrgCount.pendingDocuments, OrgCount.rejectedDocuments],
+//       backgroundColor: ['#077E8C', '#F7CB73', '#D9512C'],
+//       borderWidth: 3,
+//       cutout: '',
+//     },
+//   ],
+// };
+//   // 🟠 Doughnut Chart (Total Uploads)
+//   const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
+
+// const chartOptions = {
+//   responsive: true,
+//   plugins: {
+//     legend: { display: true },
+//     datalabels: {
+//       color: "#fff",
+//       font: { weight: "bold", size: 14 },
+//       formatter: (value, ctx) => {
+//         let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
+//         return `${percentage}%`; // Show percentage inside chart
+//       },
+//     },
+//   },
+// };
+const donutData = {
+  
+  labels: [
+    `Approved (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+    `Pending (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+    `Rejected (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+    // `Pending (${pendingPercentage}%)`,
+    // `Rejected (${rejectedPercentage}%)`
+  ],
+  datasets: [
+    {
+      
+      data: [OrgCount.approvedDocuments, OrgCount.pendingDocuments, OrgCount.rejectedDocuments],
+      backgroundColor: ['#077E8C', '#F7CB73', '#D9512C'],
+      borderWidth: 3,
+      cutout: '',
+    },
+  ],
+};
+// 🟠 Doughnut Chart (Total Uploads)
+const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
+
+const chartOptions = {
+  
+  responsive: true,
+  plugins: {
+    legend: { display: true },
+    datalabels: {
+      color: "#fff",
+      font: { weight: "bold", size: 14 },
+      formatter: (value, ctx) => {
+        let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
+        return `${percentage}%`; // Show percentage inside chart
       },
-    ],
-  };
+    },
+  },
+};
+
+
+
+
 
   // 🔵 Line Chart (Growth Rate)
   
@@ -281,14 +354,14 @@ const lineData = {
 //   },
 // };
 
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { backgroundColor: '#333', titleColor: '#fff' },
-    },
+  // const chartOptions = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: { display: false },
+  //     tooltip: { backgroundColor: '#333', titleColor: '#fff' },
+  //   },
     
-  };
+  // };
   const handleYearChange = (e) => {
     const year = e.target.value;
     setSelectedYear(year);
@@ -389,7 +462,7 @@ const lineData = {
           <>
             <div className="cards-container1">
               <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} role={role} bgColor={'#d2eafd'}  />
-              <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} bgColor={'#eed9ff'}/>
+              <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} bgColor={'#AFE1AF'}/>
               <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} role={role} bgColor={'#fff3d0'}/>
               <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} bgColor={'#ffe5d6'} />
             </div>

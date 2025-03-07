@@ -48,11 +48,11 @@ const darkLogos = [
 
 const logoStyle = {
   marginTop:'30px',
-  width: '120px',
-  height: '40px',
-  margin: '0 32px',
+  width: '160px',
+  height: '60px',
+  margin: '30px 32px',
   filter: 'grayscale(100%)', // Initially black and white
-  transition: 'filter 0.5s ease-in-out', // Smooth transition effect
+  transition: 'filter 0.3s ease-in-out', // Smooth transition effect
 };
 
 const hoverStyle = {
@@ -73,7 +73,7 @@ export default function LogoCollection() {
         align="center"
         sx={{ color: 'text.secondary' }}
       >
-        <Typography variant="body2" sx={{ fontWeight: 'bold',fontSize: '1.5rem', color: 'black' }}>
+        <Typography variant="body2" sx={{ fontWeight: 'bold',fontSize: '1.5rem', color: 'gray' }}>
         TRUSTED PARTNERS
           </Typography>
         

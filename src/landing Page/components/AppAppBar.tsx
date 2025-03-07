@@ -125,7 +125,7 @@ export default function AppAppBar() {
 >
   Sign In
 </Button>
-            <ColorModeIconDropdown />
+            {/* <ColorModeIconDropdown /> */}
           </Box>
 
           {/* Mobile Menu */}
