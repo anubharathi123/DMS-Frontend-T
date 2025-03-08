@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import Notification from "../../assets/images/notification-icon.png";
-import CandidateProfile from "../../assets/images/candidate-profile.png";
 import SearchIcon from "../../assets/images/search_icon.png";
 import NotificationPage from "../NotificationDropdown/NotificationDropdown";
-import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import avatar from "../../assets/images/candidate-profile.png";
-import { FaBullseye } from "react-icons/fa6";
 import ApiService from "../../ApiServices/ApiServices";
 
 
@@ -21,11 +18,8 @@ const Header = () => {
   const [notifications, setNotifications] = useState([]);
   const [profileImage, setProfileImage] = useState( );
   const [iconColor, setIconColor] = useState("#000");
-  const [imageToCrop, setImageToCrop] = useState(null);
-  const [cropperVisible, setCropperVisible] = useState(false);
-
-  const fileInputRef = useRef();
-  const cropperRef = useRef();
+  
+  const previousNotificationIds = useRef(new Set()); // Store previous notification IDs persistently
   const profileButtonRef = useRef();
   const profileDropdownRef = useRef();
   const notificationDropdownRef = useRef();
@@ -35,22 +29,35 @@ const Header = () => {
   const email = localStorage.getItem("email") || "email";
 
   useEffect(() => {
-    // Fetch notifications when the component mounts
     const fetchNotifications = async () => {
       try {
-        const response = await ApiService.getNotifications(); // Replace with actual API call
-        setNotifications(response.notifications || []);
-        const unreadCount = response.notifications.filter((n) => !n.read).length;
-        setNotificationCount(unreadCount);
+        const response = await ApiService.getNotifications();
+        const newNotifications = response.notifications || [];
+
+        console.log("Fetched Notifications:", newNotifications); // Debugging log
+
+        // Get new notification IDs
+        const newNotificationIds = new Set(newNotifications.map((n) => n.id));
+
+        // Compare with previous notification IDs to check for new notifications
+        const hasNewNotifications = [...newNotificationIds].some(id => !previousNotificationIds.current.has(id));
+
+        if (hasNewNotifications || newNotificationIds.size !== previousNotificationIds.current.size) {
+          previousNotificationIds.current = newNotificationIds;
+          
+          // Count unread notifications
+          const unreadCount = newNotifications.filter((n) => !n.read).length;
+          console.log("Unread Count:", unreadCount); // Debugging log
+          
+          setNotifications(newNotifications);
+          setNotificationCount(unreadCount);
+        }
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
     };
-
-    fetchNotifications();
-
-    // Poll for new notifications every 30 seconds (adjust as needed)
-    const interval = setInterval(fetchNotifications, 30000);
+    fetchNotifications(); // Initial fetch
+    const interval = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -171,9 +178,15 @@ const handleNotificationClick = () => {
   setActiveDropdown(activeDropdown === "notification" ? null : "notification");
 
   if (notificationCount > 0) {
-    // Mark all notifications as read when opening the dropdown
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    setNotificationCount(0); // Reset count
+    // Mark all notifications as read
+    const updatedNotifications = notifications.map((n) => ({ ...n, read: true }));
+    setNotifications(updatedNotifications);
+    setNotificationCount(0);
+
+    // Optionally sync with backend
+    ApiService.markNotificationAsRead()
+      .then(() => console.log("Notifications marked as read"))
+      .catch((error) => console.error("Failed to mark notifications as read:", error));
   }
 };
 

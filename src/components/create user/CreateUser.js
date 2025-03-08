@@ -80,6 +80,7 @@ const CreateUser = () => {
       created_at: '',
       role: ''
     });
+    navigate('/user-list');
   };
 
   const handleRoleChange = (e) => {
