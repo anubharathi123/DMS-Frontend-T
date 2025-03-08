@@ -66,18 +66,30 @@ const isAuthenticated = () => {
 const hasToken = () => {
   return localStorage.getItem("token");
 };
+const hasMsi = () => {
+  console.log(localStorage.getItem("msi"))
+  return localStorage.getItem("msi");
+};
 
 // Private Route Wrapper
 const PrivateRoute = ({ children }) => {
   return isAuthenticated() ? children : <Navigate to="/login" />;
 };
 
+// const TokenRoute = ({ children }) => {
+//   return isAuthenticated() ? children : <Navigate to="/login" />;
+// };
+
 // Token-only Route Wrapper (for Change Password)
-const TokenRoute = ({ children }) => {
-  return hasToken() ? children : <Navigate to="/login" />;
+const MsiRoute = ({ children }) => {
+  return hasMsi() ? children : <Navigate to="/SignatureComponent" />;
 };
 
 function App() {
+  React.useEffect(() => {
+    localStorage.setItem("mui-mode", 'light');
+  }, []);
+
   return (
     <ProfileImageProvider>
       <Router>
@@ -99,13 +111,14 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/","/SignatureComponent","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
       {/* Static AsideBar with Logout functionality */}
       {shouldDisplayAsideBar && <AsideBar_Header onLogout={handleLogout} />}
       <StyledEngineProvider injectFirst>
+        
       {/* Main Content */}
       <Routes>
         {/* Route for Login */}
@@ -175,27 +188,23 @@ function AppContent() {
 
           }
         /> */}
-        <Route
+        {/* <Route
           path="/Clientpage"
           element={
             // <PrivateRoute>
               <ClientPage />
             //  </PrivateRoute> 
           }
-        />
+        /> */}
 
         <Route
           path="/profile"
           element={
-            // <PrivateRoute>
-        //       <Profile name="Rita Correia"
-				// age="32"
-				// city="London"
-				// followers="80K"
-				// likes="803K"
-				// photos="1.4K" />
-        <ProfileCard />
-            // </PrivateRoute>
+          <PrivateRoute>
+            <MsiRoute >
+            <ProfileCard />
+            </MsiRoute>
+          </PrivateRoute>
           }
         />
         <Route

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
@@ -12,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
+import ChangePassword from '../components/ChangePassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 
 // Additional imports
@@ -41,6 +43,7 @@ export default function SignInCard() {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);  
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
@@ -53,6 +56,7 @@ export default function SignInCard() {
   const [counter, setCounter] = React.useState(30);
   const [isResendEnabled, setIsResendEnabled] = React.useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
+  const [first, setFirst] = useState(false);
 
   const navigate = useNavigate();
 
@@ -127,7 +131,9 @@ export default function SignInCard() {
     try {
       const loginResponse = await authService.login({ username, password });
       console.log('Login successful:', loginResponse);
-      
+      localStorage.setItem('msi',loginResponse.msi);
+      setFirst(loginResponse.first);
+
       setIsOtpVisible(true);
       setCounter(30);
       setIsResendEnabled(false);
@@ -159,9 +165,20 @@ export default function SignInCard() {
       // Handle successful verification
       // const details_data = await authService.details();
       // console.log(details_data);
+      console.log(first)
+      if (first){
+        console.log('change password')
+        localStorage.setItem('first', 'true');
+        setIsChangePasswordOpen(true);
+        // handleClose();
+        console.log('change password close')
+
+      }
+      else{
       setIsLoginSuccessful(true);
       localStorage.setItem('access_status', 'true');
       navigate('/profile');
+      }
 
     } catch (error: any) {
       console.error('OTP verification error:', error.message || error);
@@ -359,6 +376,7 @@ export default function SignInCard() {
         </Button>
       </Box> */}
       <ForgotPassword open={open} handleClose={handleClose} />
+      <ChangePassword open={isChangePasswordOpen} handleClose={() => setIsChangePasswordOpen(false)} />
     </Card>
 
   );
