@@ -67,8 +67,8 @@ const hasToken = () => {
   return localStorage.getItem("token");
 };
 const hasMsi = () => {
-  console.log(localStorage.getItem("msi"))
-  return localStorage.getItem("msi");
+  console.log(localStorage.getItem("msi"));
+  return localStorage.getItem("msi") === "true";
 };
 
 // Private Route Wrapper
@@ -82,7 +82,7 @@ const PrivateRoute = ({ children }) => {
 
 // Token-only Route Wrapper (for Change Password)
 const MsiRoute = ({ children }) => {
-  return hasMsi() ? children : <Navigate to="/SignatureComponent" />;
+  return hasMsi() ? children : <Navigate to="/contractform" />;
 };
 
 function App() {
@@ -111,7 +111,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/","/SignatureComponent","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/","/contractform","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -201,8 +201,8 @@ function AppContent() {
           path="/profile"
           element={
           <PrivateRoute>
-            <MsiRoute >
-            <ProfileCard />
+            <MsiRoute>
+              <ProfileCard />
             </MsiRoute>
           </PrivateRoute>
           }

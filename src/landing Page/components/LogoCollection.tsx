@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { margin, useTheme } from '@mui/system';
+import vouch from '../../assets/images/Vouch Logo.png'
 
 const whiteLogos = [
   'https://www.trustpeople.com/wp-content/uploads/2024/10/Image20241007152103.png',
@@ -21,9 +22,12 @@ const whiteLogos = [
 const darkLogos = [
   'https://www.vdart.com/wp-content/uploads/2020/02/vdart.svg',
   "https://www.dimiour.io/wp-content/uploads/2024/03/Dimiour_Logo-2048x573.png",
-  'https://trustpeople.io/assets/images/trust-people-logo-png.png',
+  "https://www.trustpeople.com/wp-content/uploads/2024/10/Image20241007152103.png",
+  // 'https://trustpeople.io/assets/images/trust-people-logo-png.png',
   'https://ledgrinc.com/img/ledgr_black_vert.svg',
-  'https://s3-us-west-2.amazonaws.com/cbi-image-service-prd/modified/57769620-6bf6-494c-a529-48ec26e003d7.png',
+  // 'https://ledgrinc.com/img/ledgr_black_vert.svg',
+  // 'https://s3-us-west-2.amazonaws.com/cbi-image-service-prd/modified/57769620-6bf6-494c-a529-48ec26e003d7.png',
+  vouch
   // 'https://media.licdn.com/dms/image/v2/D560BAQE50lD3RY_IiA/company-logo_200_200/company-logo_200_200/0/1688577144631/dimiour_logo?e=2147483647&v=beta&t=o2Ea-zyuRXKjdBhfNGO0hMGe9lKhhan1jTBMX17suNw',
 //  'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.globenewswire.com%2Fnews-release%2F2017%2F05%2F01%2F975236%2F32766%2Fen%2FTony-Maley-Joins-As-Chief-Technology-Officer-of-VDart-Digital.html&psig=AOvVaw3PSn9oH6IAiy6HtRUWBr7M&ust=1741328536282000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJjz5Lno9IsDFQAAAAAdAAAAABAE',
 //   'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/655f4d4d8b829a89976a419c_Bern-black.svg',
@@ -48,7 +52,7 @@ const darkLogos = [
 
 const logoStyle = {
   marginTop:'30px',
-  width: '160px',
+  width: '190px',
   height: '60px',
   margin: '30px 32px',
   filter: 'grayscale(100%)', // Initially black and white

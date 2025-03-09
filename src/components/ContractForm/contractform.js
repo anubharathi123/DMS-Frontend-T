@@ -1,7 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
 import SignatureCanvas from 'react-signature-canvas';
 import { jsPDF } from 'jspdf'; // Import jsPDF for PDF generation
 import './contractform.css';
+import authService from '../../ApiServices/ApiServices';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const CompanyContractForm = () => {
   const [signature, setSignature] = useState(null);
@@ -12,12 +17,16 @@ const CompanyContractForm = () => {
   const [selectedFont, setSelectedFont] = useState('Arial');
   const [uploadedImage, setUploadedImage] = useState(null);
   const sigCanvas = useRef();
-
-  const [companyName, setCompanyName] = useState('');
+  const [contractDocuments, setContractDocuments] = useState(null);
+  const [companyName, setCompanyName] = useState(localStorage.getItem('company_name') || '');
   const [contractTitle, setContractTitle] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [dateOfAgreement, setDateOfAgreement] = useState('');
+  const [id, setId] = useState('');
+  const [error, setError] = useState(null); // For error handling
+  const navigate = useNavigate();
+  
 
   const buttonStyle = {
     padding: '8px 16px',
@@ -60,6 +69,87 @@ const CompanyContractForm = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const details_data = await authService.details();
+        console.log(details_data)
+        
+        if (details_data.type === "Organization") {
+          const name = details_data.details[5].first_name;
+          // localStorage.setItem("name", name);
+          const Company_name = details_data.details[1].company_name;
+          const empId  = details_data.details[1].id
+          setId(empId)
+          // localStorage.setItem("company_name", Company_name);
+          // const fetchedRole = details_data.details[3].name;
+
+          // if (fetchedRole === "ADMIN") {
+          //   localStorage.setItem("role", fetchedRole);
+          //   setRole(fetchedRole);
+          // }
+          // if (fetchedRole === "Organization Admin") {
+          //   localStorage.setItem("role", "ADMIN");
+          //   setRole("ADMIN");
+          // }
+        }
+      } catch (error) {
+        console.error("Error fetching details:", error);
+      }
+    };
+
+    fetchDetails();
+  }, []);
+
+
+  // const handleSubmit1 = async (e) => {
+  //   e.preventDefault(); 
+    
+  //   if (!contractDocuments) {
+  //     setError("Please upload the Master Services Agreement (MSA) before proceeding.");
+  //     setTimeout(() => setError(null), 3000);
+  //     return;
+  //   }
+  
+  //   const formData = new FormData();
+  
+  //   // Append company details
+  //   // Object.keys(company).forEach((key) => {
+  //   //   if (company[key]) {
+  //   //     formData.append(key, company[key]);
+  //   //   }
+  //   // });
+  
+  //   // Append file
+  //   if (contractDocuments) {
+  //     const contractFile = new File([contractDocuments], `${companyName}_contract.pdf`, { type: 'application/pdf' });
+  //     formData.append('contractDocuments', contractFile);
+  //   }
+  
+  //   // console.log("FormData entries:");
+  //   // for (let [key, value] of formData.entries()) {
+  //   //   console.log(`${key}: ${value}`);
+  //   // }
+  
+  //   // setIsLoading(true);
+  
+  //   try {
+  //     const response = await authService.updateOrganization(id, formData);
+  //     console.log("Update Response:", response);
+  //     alert("Company Details have been updated successfully!");
+  //     setTimeout(() => {
+  //       navigate('/OrganizationList');
+  //     }, 500); 
+  
+  //   } catch (error) {
+  //     setError(error.message || "Something went wrong.");
+  //     setTimeout(() => setError(null), 3000);
+  //   } finally {
+  //     // setIsLoading(false);
+  //   }
+  // };
+  
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
@@ -101,9 +191,9 @@ const CompanyContractForm = () => {
     (mode === 'type' && typedSignature.trim() !== '') ||
     (mode === 'upload' && uploadedImage);
 
-    const generatePDF = () => {
+    const generatePDF = async () => {
       const doc = new jsPDF();
-      
+    
       // Set title and date at the top-left
       doc.setFont('Arial', 'B', 16);
       doc.text('Company Contract Agreement', 20, 20);
@@ -117,21 +207,21 @@ const CompanyContractForm = () => {
       const addContentWithPageBreaks = (content, fontSize, startX, startY) => {
         let y = startY;
         const lineHeight = fontSize === 10 ? 5 : 7;
-        
+    
         const splitContent = doc.splitTextToSize(content, 180); // Split content to fit within page width
-        
+    
         for (let i = 0; i < splitContent.length; i++) {
-          if (y + lineHeight > 280) {  // Check if the content is going to overflow
-            doc.addPage();  // Add a new page if the content overflows
-            y = 20;  // Reset y-position for the new page
+          if (y + lineHeight > 280) { // Check if the content is going to overflow
+            doc.addPage(); // Add a new page if the content overflows
+            y = 20; // Reset y-position for the new page
           }
-          doc.text(splitContent[i], startX, y);  // Add the current line of content
-          y += lineHeight;  // Move down for the next line
+          doc.text(splitContent[i], startX, y); // Add the current line of content
+          y += lineHeight; // Move down for the next line
         }
       };
     
       // Terms and Conditions Section
-      doc.setFont('Arial', '', 10);  // Set smaller font size for the terms content
+      doc.setFont('Arial', '', 10); // Set smaller font size for the terms content
       doc.text('Terms and Conditions:', 10, 30);
       const termsContent = `
       Introduction:
@@ -185,10 +275,11 @@ const CompanyContractForm = () => {
 
                Any disputes arising from these Terms shall first be resolved through informal negotiations. If the dispute cannot be resolved through negotiations, it shall be settled through binding arbitration in [Location].
       `;
-      
+    
+    
       // Add terms content with page breaks if necessary
       addContentWithPageBreaks(termsContent, 10, 20, 40);
-      
+    
       // Contract Details Section - Left side
       doc.setFont('Arial', '', 12);
       let yPosition = 150; // Start position for contract details section
@@ -200,25 +291,65 @@ const CompanyContractForm = () => {
       // Move to next page if necessary
       if (yPosition + 30 > 280) {
         doc.addPage();
-        yPosition = 20;  // Reset y-position for new page
+        yPosition = 20; // Reset y-position for new page
       }
     
       // Signature Section - Right side
       doc.text(`Date of Agreement: ${dateOfAgreement}`, 130, yPosition + 40);
       doc.text('Signature:', 130, yPosition + 50);
-      
+    
       if (mode === 'upload' && uploadedImage) {
-        doc.addImage(uploadedImage, 'JPEG', 160, yPosition + 45, 40, 20);  // Adjust position and size for uploaded image
+        doc.addImage(uploadedImage, 'JPEG', 160, yPosition + 45, 40, 20); // Adjust position and size for uploaded image
       } else if (mode === 'type' && typedSignature) {
         doc.setFont('Arial', 'I', 14);
-        doc.text(typedSignature, 155, yPosition + 50);  // Right-align the typed signature
+        doc.text(typedSignature, 155, yPosition + 50); // Right-align the typed signature
       } else if (mode === 'draw' && signature) {
-        doc.addImage(signature, 'PNG', 160, yPosition + 40, 40, 20);  // Increased vertical position (further down)
-
-    }
-      // Save the PDF
+        doc.addImage(signature, 'PNG', 160, yPosition + 40, 40, 20); // Increased vertical position (further down)
+      }
+    
+      // Save the PDF to a Blob
+      const pdfBlob = doc.output('blob');
+    
+      // Create a File object directly from the Blob
+      const contractFile = new File([pdfBlob], `${companyName}_contract.pdf`, { type: 'application/pdf' });
+    
+      // Call handleSubmit1 with the file instead of relying on state
+      await handleSubmit1({ preventDefault: () => {} }, contractFile);
+    
+      // Save and navigate
       doc.save('contract.pdf');
+      navigate('/profile');
     };
+    
+    // Fix handleSubmit1 to accept contractFile as a parameter
+    const handleSubmit1 = async (e, contractFile) => {
+      e.preventDefault();
+    
+      if (!contractFile) {
+        setError("Please upload the Master Services Agreement (MSA) before proceeding.");
+        setTimeout(() => setError(null), 3000);
+        return;
+      }
+    
+      const formData = new FormData();
+    
+      // Append file directly
+      formData.append('contractDocuments', contractFile);
+    
+      try {
+        const response = await authService.updateOrganization(id, formData);
+        console.log("Update Response:", response);
+        alert("Company Details have been updated successfully!");
+        setTimeout(() => {
+          navigate('/OrganizationList');
+        }, 500);
+      } catch (error) {
+        setError(error.message || "Something went wrong.");
+        setTimeout(() => setError(null), 3000);
+      }
+    };
+    
+    
   return (
     <div className="contract-form">
       <div className="date-display">
