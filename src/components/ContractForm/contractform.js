@@ -318,6 +318,7 @@ const CompanyContractForm = () => {
     
       // Save and navigate
       doc.save('contract.pdf');
+      localStorage.setItem('msi','true')
       navigate('/profile');
     };
     
@@ -341,7 +342,7 @@ const CompanyContractForm = () => {
         console.log("Update Response:", response);
         alert("Company Details have been updated successfully!");
         setTimeout(() => {
-          navigate('/OrganizationList');
+          navigate('/profile');
         }, 500);
       } catch (error) {
         setError(error.message || "Something went wrong.");
