@@ -338,7 +338,7 @@ const CompanyContractForm = () => {
       formData.append('contractDocuments', contractFile);
     
       try {
-        const response = await authService.updateOrganization(id, formData);
+        const response = await authService.updateOrganization1(id, formData);
         console.log("Update Response:", response);
         alert("Company Details have been updated successfully!");
         setTimeout(() => {

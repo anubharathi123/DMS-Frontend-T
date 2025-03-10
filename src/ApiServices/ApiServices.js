@@ -245,6 +245,9 @@ const authService = {
   updateOrganization:async (orgId,Data) => {
     return handleResponse(apiClient.put(`organization_update/${orgId}/`,Data))
   },
+  updateOrganization1:async (orgId,Data) => {
+    return handleResponse(apiClient.put(`organization_update1/${orgId}/`,Data))
+  },
   deleteOrganization: async (orgId) => {
     return handleResponse(apiClient.delete(`organization_delete1/${orgId}/`));
   },
