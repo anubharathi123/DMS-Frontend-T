@@ -67,7 +67,7 @@ const hasToken = () => {
 };
 const hasMsi = () => {
   console.log(localStorage.getItem("msi"));
-  return localStorage.getItem("msi") === "true";
+  return localStorage.getItem("msi") === 'true';
 };
 
 // Private Route Wrapper
