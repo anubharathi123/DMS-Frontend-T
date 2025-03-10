@@ -23,7 +23,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
   const [token, setToken] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false); // State for Change Password dialog
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false); 
   const [counter, setCounter] = useState(30);
   const [isResendEnabled, setIsResendEnabled] = useState(false);
   const navigate = useNavigate();
@@ -99,6 +99,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
       await authService.verifyOTP({ token, otp });
       setSuccessMessage('OTP verified successfully!');
       setIsChangePasswordOpen(true); // Open Change Password popup
+      navigate('/login');
       handleClose();
     } catch (error: any) {
       setErrorMessage(error.message || 'Invalid OTP. Please try again.');

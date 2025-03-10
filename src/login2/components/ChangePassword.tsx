@@ -57,7 +57,15 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
       setSuccessMessage('Password changed successfully!');
       setTimeout(() => {
         handleClose();
-        navigate('/login');
+        if (localStorage.getItem('first') == "true"){
+          console.log('redirect to profile')
+          localStorage.removeItem('first')
+          localStorage.setItem('access_status', 'true');
+          navigate('/profile');
+        } else {
+          navigate('/login');
+        }
+        // navigate('/login');
       }, 2000);
     } catch (error: any) {
       setErrorMessage(error.message || 'Failed to change password. Please try again.');
