@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import authService from '../../ApiServices/ApiServices'; // Adjust the path as necessary
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 
-const Card = styled(MuiCard)(({ theme }) => ({
+const Card = styled(MuiCard)<{ component?: React.ElementType }>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignSelf: 'center',
@@ -33,10 +33,10 @@ const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     width: '450px',
   },
-  ...theme.applyStyles('dark', {
+  ...(theme.applyStyles && theme.applyStyles('dark', {
     boxShadow:
       'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
-  }),
+  })),
 }));
 
 export default function SignInCard() {
