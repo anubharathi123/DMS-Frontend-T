@@ -11,7 +11,6 @@ const AdminCreation = () => {
     name: "",
     mobile: "",
     email: "",
-    created_at: "",
     role:"Product Admin"
   });
 
@@ -55,7 +54,6 @@ const AdminCreation = () => {
       name: "",
       mobile: "",
       email: "",
-      created_at: "",
     });
   };
 

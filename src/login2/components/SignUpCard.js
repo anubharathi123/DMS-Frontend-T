@@ -7,6 +7,9 @@ import MuiCard from '@mui/material/Card';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
@@ -18,15 +21,16 @@ const Card = styled(MuiCard)(({ theme }) => ({
   flexDirection: 'column',
   alignSelf: 'center',
   width: '100%',
+  marginTop: '10%',
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   boxShadow: '0px 5px 15px rgba(0,0,0,0.1)',
   [theme.breakpoints.up('sm')]: {
-    width: '450px',
+    width: '500px',
   },
 }));
 
-export default function SignUpCard() {
+export default function SignUpCard({ onSwitch }) {
   const [formData, setFormData] = useState({
     username: '',
     companyName: '',
@@ -37,6 +41,7 @@ export default function SignUpCard() {
     address: '',
     contractAgreed: false,
   });
+  const [contractSigned, setContractSigned] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -48,19 +53,28 @@ export default function SignUpCard() {
     setFormData({ ...formData, contractAgreed: !formData.contractAgreed });
   };
 
+  const handleContractSign = () => {
+    setContractSigned(true);
+    setFormData({ ...formData, contractAgreed: true }); // Automatically check the box
+  };
+
   const validateForm = () => {
     let tempErrors = {};
     if (!formData.username) tempErrors.username = 'Username is required';
     if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
     if (!formData.firstName) tempErrors.firstName = 'First Name is required';
     if (!formData.lastName) tempErrors.lastName = 'Last Name is required';
-    if (!formData.mobile.match(/^\d{10}$/)) tempErrors.mobile = 'Enter a valid 10-digit mobile number';
+    if (!formData.created_date.match(/^\d{10}$/)) tempErrors.mobile = 'Enter a valid 10-digit mobile number';
     if (!formData.email.match(/\S+@\S+\.\S+/)) tempErrors.email = 'Enter a valid email';
-    if (!formData.address) tempErrors.address = 'Address is required';
+   
     if (!formData.contractAgreed) tempErrors.contractAgreed = 'You must agree to the contract';
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
+
+  const handlePendingOrganization = () => {
+    navigate('/OrganizationPending');
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -77,7 +91,7 @@ export default function SignUpCard() {
 
   return (
     <Card variant="outlined">
-      <Typography component="h1" variant="h4" sx={{ textAlign: 'center' }}>
+      <Typography component="h1" variant="h4" sx={{ textAlign: 'left' }}>
         Sign Up
       </Typography>
       <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -86,39 +100,41 @@ export default function SignUpCard() {
           <TextField name="username" value={formData.username} onChange={handleChange} error={!!errors.username} helperText={errors.username} />
         </FormControl>
         <FormControl>
-          <FormLabel>Company Name *</FormLabel>
+          <FormLabel>Organization Name *</FormLabel>
           <TextField name="companyName" value={formData.companyName} onChange={handleChange} error={!!errors.companyName} helperText={errors.companyName} />
         </FormControl>
         <FormControl>
-          <FormLabel>First Name</FormLabel>
-          <TextField name="firstName" value={formData.firstName} onChange={handleChange} error={!!errors.firstName} helperText={errors.firstName} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Last Name</FormLabel>
-          <TextField name="lastName" value={formData.lastName} onChange={handleChange} error={!!errors.lastName} helperText={errors.lastName} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Mobile *</FormLabel>
-          <TextField name="mobile" value={formData.mobile} onChange={handleChange} error={!!errors.mobile} helperText={errors.mobile} />
+          <FormLabel>Creation Date *</FormLabel>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker/>
+          </LocalizationProvider>
         </FormControl>
         <FormControl>
           <FormLabel>Mail ID *</FormLabel>
           <TextField name="email" value={formData.email} onChange={handleChange} error={!!errors.email} helperText={errors.email} />
         </FormControl>
-        <FormControl>
-          <FormLabel>Address</FormLabel>
-          <TextField name="address" value={formData.address} onChange={handleChange} error={!!errors.address} helperText={errors.address} />
-        </FormControl>
+       
         <FormControl>
           <FormLabel>Contract Agreement *</FormLabel>
-          <Link href="/contractform" target="_blank" sx={{ textDecoration: 'underline' }}>
+          <Link href="/contractform" target="_blank" sx={{ textDecoration: 'underline' }} onClick={handleContractSign}>
             Read and Sign the Contract
           </Link>
-          <Checkbox checked={formData.contractAgreed} onChange={handleCheckboxChange} /> I agree to the contract
+          <Box display="flex" alignItems="center">
+            <Checkbox checked={formData.contractAgreed} onChange={handleCheckboxChange} />
+            <Typography>I agree to the contract</Typography>
+          </Box>
+          {contractSigned && (
+            <Typography color="success.main" sx={{ fontSize: 14 }}>
+              Contract Document has been signed
+            </Typography>
+          )}
           {errors.contractAgreed && <Typography color="error">{errors.contractAgreed}</Typography>}
         </FormControl>
-        <Button type="submit" variant="contained" fullWidth>
+        <Button type="submit" variant="contained" onClick={handlePendingOrganization} fullWidth>
           Sign Up
+        </Button>
+        <Button onClick={onSwitch}>
+          Already have an account? Sign In
         </Button>
       </Box>
     </Card>

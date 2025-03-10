@@ -17,32 +17,7 @@
     margin-top: 30px;
 }
 
-.org_createbtn1 {
-    padding-right: 1.5rem !important;
-    padding-left: 1.5rem !important;
-    padding-top: .5rem !important;
-    padding-bottom: .5rem !important;
-    border-radius: 20px;
-    color: rgb(0, 0, 0);
-    cursor: pointer;
-    width: 170px;
-    font-size: 12px;
-    position: relative;
-    margin-right: 10px;
-    left: 48%;
-}
-.org_createbtn1:hover {
-    background-color: #000b58 !important;
-    color: white;
-}
-.organization-freeze {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    position: relative;
-    top: 3px;
-}
+
 .organization-container_controls {
     display: flex;
     justify-content: space-between;
@@ -220,15 +195,18 @@
     padding: 10px;
 }
 
-.organization-edit {
-    background: transparent;
+.organization-approve {
+    color: green;
     border: none;
+    background: none;
+    font-size: 20px;
     cursor: pointer;
 }
 
-.organization-delete {
-    background: transparent;
+.organization-reject {
     border: none;
+    background: none;
+    font-size: 20px;
     cursor: pointer;
     color: red;
 }

@@ -318,7 +318,7 @@ const CompanyContractForm = () => {
     
       // Save and navigate
       doc.save('contract.pdf');
-      navigate('/profile');
+      navigate('/sign-up');
     };
     
     // Fix handleSubmit1 to accept contractFile as a parameter

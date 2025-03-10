@@ -37,17 +37,16 @@ import DateRangeSearch from "./components/document search/DateRangeSearch";
 import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
+import SignUpCard from "./login2/components/SignUpCard";
 import SignatureComponent from "./components/Signature/SignatureComponent";
 import DeletedAdminList from "./components/DeletedAdminList/AdminList";
 import DeletedUsers from "./components/DeletedUsers/DeletedUsers";
 import ContractForm from './components/ContractForm/contractform';
-// import OrganizationDeletion from "./components/OrganizationDeletion";
-
+import OrganizationPending from "./components/OrganizationPending/OrganizationPending";
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
 import "./App.css";
 import styles from './index.css';
 import { IdCard } from "lucide-react";
@@ -111,7 +110,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/","/contractform","/ResetPassword1","/Login1","/login","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/","/contractform","/ResetPassword1","/Login1","/login","/sign-up","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
 
   return (
     <div className="app">
@@ -125,6 +124,7 @@ function AppContent() {
         {/* <Route path="/login" element={<Login />} /> */}
         
         <Route path="/login" element={<Login2 />} />
+        <Route path="/sign-up" element={<SignUpCard />} />
         <Route path="/" element={<LandingPage />} />
         {/* <Route path="/dash" element={<HomePage />} /> */}
         <Route path="/NotFoundView" element={<NotFoundView />} />
@@ -137,6 +137,7 @@ function AppContent() {
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
         <Route path="/OrganizationList" element={<OrganizationList />} />
+        <Route path="/OrganizationPending" element={<OrganizationPending />} />
         <Route path="/OrganizationDeleteList" element={<OrganizationDelList />} />
         <Route path="/DeletedAdminList" element={<DeletedAdminList />} />
         <Route path="/DeletedUsers" element={<DeletedUsers />} />

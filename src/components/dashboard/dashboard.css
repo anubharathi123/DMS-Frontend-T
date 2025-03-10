@@ -374,15 +374,6 @@ left:74%;
   width: 220px;
 } */
 
-.dashboard-year-selector{
-  font-size: 14px;
-  /* margin-right: 353px; */
-}
-
-
-
-
-
 .charts-container {
   display: flex;
   justify-content: space-between;
@@ -417,9 +408,10 @@ canvas {
 
 /* Dropdown Year Selector */
 .dashboard-year-selector {
-  /* padding: 3px; */
+  padding: 3px;
   border-radius: 6px;
   border: 1px solid #ddd;
+  font-size: 15px;
 }
 
 .dashboard-year-select {

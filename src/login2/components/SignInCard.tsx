@@ -39,7 +39,7 @@ const Card = styled(MuiCard)<{ component?: React.ElementType }>(({ theme }) => (
   })),
 }));
 
-export default function SignInCard() {
+export default function SignInCard({ onSwitch }: { onSwitch: () => void }) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -343,18 +343,11 @@ export default function SignInCard() {
           
         )}
 
-        {/* <Typography sx={{ textAlign: 'center' }}>
-          Don&rsquo;t have an account?{' '}
-          <span>
-            <Link
-              href="./sign-in/"
-              variant="body2"
-              sx={{ alignSelf: 'center' }}
-            >
-              Sign up
-            </Link>
-          </span>
-        </Typography> */}
+        <Typography sx={{ textAlign: 'center' }}>
+        <Button onClick={onSwitch} sx={{ mt: 2 }}>
+          Don't have an account? Sign Up
+        </Button>
+        </Typography>
       </Box>
       {/* <Divider>or</Divider> */}
       {/* <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
