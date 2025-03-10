@@ -9,11 +9,15 @@ import apiServices from '../../ApiServices/ApiServices';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
+import { Doughnut } from "react-chartjs-2";
+// import { Chart as  Tooltip, Legend } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
 // import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import donutData from './donutData';
 
 import {
-  Chart as ChartJS,
+   Chart as ChartJS,
   BarElement,
   ArcElement,
   LineElement,
@@ -150,7 +154,7 @@ const DashboardApp = () => {
     VIEWER: "Viewer Dashboard",
   };
 // // Calculate total documents to get percentages
-// const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
+const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
 
 // // Ensure no division by zero
 // const approvedPercentage = totalDocs ? ((OrgCount.approvedDocuments / totalDocs) * 100).toFixed(1) : 0;
@@ -177,44 +181,7 @@ const DashboardApp = () => {
 //   // 🟠 Doughnut Chart (Total Uploads)
 //   const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
 
-// const chartOptions = {
-//   responsive: true,
-//   plugins: {
-//     legend: { display: true },
-//     datalabels: {
-//       color: "#fff",
-//       font: { weight: "bold", size: 14 },
-//       formatter: (value, ctx) => {
-//         let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
-//         return `${percentage}%`; // Show percentage inside chart
-//       },
-//     },
-//   },
-// };
-const donutData = {
-  
-  labels: [
-    `Approved (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
-    `Pending (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
-    `Rejected (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
-    // `Pending (${pendingPercentage}%)`,
-    // `Rejected (${rejectedPercentage}%)`
-  ],
-  datasets: [
-    {
-      
-      data: [OrgCount.approvedDocuments, OrgCount.pendingDocuments, OrgCount.rejectedDocuments],
-      backgroundColor: ['#077E8C', '#F7CB73', '#D9512C'],
-      borderWidth: 3,
-      cutout: '',
-    },
-  ],
-};
-// 🟠 Doughnut Chart (Total Uploads)
-const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
-
 const chartOptions = {
-  
   responsive: true,
   plugins: {
     legend: { display: true },
@@ -228,12 +195,117 @@ const chartOptions = {
     },
   },
 };
+// const donutData = {
+  
+//   labels: [
+//     `Approved (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+//     `Pending (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+//     `Rejected (${((OrgCount.approvedDocuments / OrgCount.totalDocuments) * 100).toFixed(1)}%)`,
+//     // `Pending (${pendingPercentage}%)`,
+//     // `Rejected (${rejectedPercentage}%)`
+//   ],
+//   datasets: [
+//     {
+      
+//       data: [OrgCount.approvedDocuments, OrgCount.pendingDocuments, OrgCount.rejectedDocuments],
+//       backgroundColor: ['#077E8C', '#F7CB73', '#D9512C'],
+//       borderWidth: 3,
+//       cutout: '',
+//     },
+//   ],
+// };
+// // 🟠 Doughnut Chart (Total Uploads)
+// const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
 
+// const chartOptions = {
+  
+//   responsive: true,
+//   plugins: {
+//     legend: { display: true },
+//     datalabels: {
+//       color: "#fff",
+//       font: { weight: "bold", size: 14 },
+//       formatter: (value, ctx) => {
+//         let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
+//         return `${percentage}%`; // Show percentage inside chart
+//       },
+//     },
+//   },
+// };
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
+const donutData = ({ OrgCount }) => {
+  const totalDocs =
+    OrgCount.approvedDocuments +
+    OrgCount.pendingDocuments +
+    OrgCount.rejectedDocuments;
 
+  const donutData = {
+    labels: [
+      `Approved (${((OrgCount.approvedDocuments / totalDocs) * 100).toFixed(1)}%)`,
+      `Pending (${((OrgCount.pendingDocuments / totalDocs) * 100).toFixed(1)}%)`,
+      `Rejected (${((OrgCount.rejectedDocuments / totalDocs) * 100).toFixed(1)}%)`,
+    ],
+    datasets: [
+      {
+        data: [
+          OrgCount.approvedDocuments,
+          OrgCount.pendingDocuments,
+          OrgCount.rejectedDocuments,
+        ],
+        backgroundColor: ["#077E8C", "#F7CB73", "#D9512C"],
+        borderWidth: 3,
+        cutout: "60%", // Adjust to control thickness
+      },
+    ],
+  };
 
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom", // Keep legend on the right
+        align: "center", // Align legend vertically in the middle
+     
+        labels: {
+          usePointStyle: true, // Display legend as small circles
+          boxWidth: 8, // Reduce dot size
+          padding: 4, // Reduce spacing between legend items
+        },
+      },
+      datalabels: {
+        color: "#fff",
+        font: { weight: "bold", size: 14 },
+        formatter: (value, ctx) => {
+          let totalDocs = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+          let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
+          return `${percentage}%`;
+        },
+      },
+    },
+    layout: {
+      padding: {
+        right: 50, // Adjust this value to bring legend closer
+        align: "center", // Align legend vertically in the middle
+        
+        
 
-  // 🔵 Line Chart (Growth Rate)
+       
+      },
+    },
+  };
+  
+  
+
+  return (
+    <div className="w-[300px] mx-auto">
+      <Doughnut data={donutData} options={chartOptions} />
+    </div>
+  );
+};
+
+ // 🔵 Line Chart (Growth Rate)
   
 //   useEffect(() => {
 //   const fetchlineData = async () => {
@@ -468,7 +540,7 @@ const lineData = {
             </div>
             {role === 'ADMIN' && (
               <div className="chart">
-                <Pie data={donutData} options={chartOptions} />
+                {donutData({ OrgCount })}
 
               </div>
             )}
