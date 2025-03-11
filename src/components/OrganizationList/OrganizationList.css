@@ -43,6 +43,16 @@
     position: relative;
     top: 3px;
 }
+.organization-select {
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    border-radius: 7px;
+    width: 100px;
+    font-size: 12px !important;
+    position: relative;
+    left: 90%;
+}
+
 .organization-container_controls {
     display: flex;
     justify-content: space-between;

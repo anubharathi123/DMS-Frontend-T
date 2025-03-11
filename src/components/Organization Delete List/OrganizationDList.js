@@ -5,15 +5,11 @@ import DatePicker from 'react-datepicker';
 import { Search } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import apiServices from '../../ApiServices/ApiServices';
-import './OrganizationList.css';
-import { MdDeleteOutline } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import './OrganizationDList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 const OrganizationList = () => {
     const [data, setData] = useState([]);
@@ -155,6 +151,8 @@ const calendarRef = useRef(null);
         setCurrentPage(1);
     };
     
+    const handleNavigate = () => {
+        navigate('/OrganizationList');  };
 
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this organization?")) {
@@ -186,7 +184,8 @@ const calendarRef = useRef(null);
 
     return (
         <div className="organization-main">
-            <h1 className="organization-header">Organization Details</h1>
+            <h1 className="organization-header">Organization Deleted Details</h1>
+            <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
             {/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
   <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 
   
@@ -306,7 +305,7 @@ const calendarRef = useRef(null);
                     ) : (
                         <tr>
                             <td colSpan="4" className="organization-table-td">
-                                No organizations found for the selected date.
+                               No deleted organizations found!!!!!
                             </td>
                         </tr>
                     )}
@@ -326,6 +325,7 @@ const calendarRef = useRef(null);
                             <img className='refresh-icon' src={refreshIcon}/>
                             </button>
                             )}
+                
                 <div className="organization_paging">
                     <button
                         className="prev-button"
@@ -342,7 +342,9 @@ const calendarRef = useRef(null);
                         Next
                     </button>
                 </div>
+                
             </div>
+            
             
             {isLoading && (
         <div className="loading-popup">

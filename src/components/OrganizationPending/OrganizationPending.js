@@ -258,11 +258,14 @@ const calendarRef = useRef(null);
         currentPage * rowsPerPage
     );
 
+    const handleNavigate = () => {
+        navigate('/OrganizationList');  };
     
 
     return (
         <div className="organization-main">
-            <h1 className="organization-header">Organization Pending Details</h1>
+            <h1 className="organization-header">Organization Pending for Approval</h1>
+            <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
@@ -371,7 +374,7 @@ const calendarRef = useRef(null);
                     ) : (
                         <tr>
                             <td colSpan="4" className="organization-table-td">
-                                No organizations found for the selected date.
+                                No registered organizations found!!!
                             </td>
                         </tr>
                     )}
@@ -423,6 +426,7 @@ const calendarRef = useRef(null);
                     >
                         Next
                     </button>
+                    
                 </div>
             </div>
             

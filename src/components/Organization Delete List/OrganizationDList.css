@@ -137,7 +137,7 @@
     cursor: pointer;
     border-radius: 7px;
     position: relative;
-    right: 29%;
+    left: 30%;
     font-size: 12px !important;
 }
 
@@ -261,6 +261,16 @@
       font-size: 12px !important;
 }
 
+.organization-backbtn {
+    background-color: #000b58;
+    color: white;
+    padding: 8px;
+    width: 80px;
+    cursor: pointer;
+    border-radius: 7px;
+    font-size: 12px !important;
+    align-self: self-end;
+}
 
 
 

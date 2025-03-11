@@ -194,6 +194,10 @@ const authService = {
     return handleResponse(apiClient.post('OrganizationList/', data));
   },
 
+  createuserOrganization: async (data) => {
+    return handleResponse(apiClient.post('userorganization/', data));
+  },
+
   rangesearch: async (data) => {
     console.log('data:', data);
   //   const startDate = data.startDate.toISOString().split('T')[0];  // Format to 'yyyy-MM-dd'
