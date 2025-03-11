@@ -10,29 +10,64 @@ import { styled } from '@mui/material/styles';
 import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
 import EdgesensorHighRoundedIcon from '@mui/icons-material/EdgesensorHighRounded';
 import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import CloudDoneIcon from '@mui/icons-material/CloudDone';
 
 const items = [
   {
-    icon: <ViewQuiltRoundedIcon />,
-    title: 'Dashboard',
-    description:
-      'This item could provide a snapshot of the most important metrics or data points related to the product.',
+    icon: <DocumentScannerIcon />,
+    title: 'Document Management',
+    description: (
+      <React.Fragment>
+        <Typography>🔹 Ensure authenticity with a robust verification process before storage.</Typography>
+        <Typography>🔹 Track document status: Uploaded, Verified, Approved, or Rejected.</Typography>
+        <Typography>🔹 Maintain audit trails for compliance with industry regulations.</Typography>
+      </React.Fragment>
+    ),
     imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/dash-light.png")`,
     imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/dash-dark.png")`,
   },
   {
-    icon: <EdgesensorHighRoundedIcon />,
-    title: 'Mobile integration',
-    description:
-      'This item could provide information about the mobile app version of the product.',
-    imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/mobile-light.png")`,
+    icon: <CloudDoneIcon />,
+    title: 'Effortless Upload & Categorization',
+    description:(<React.Fragment>
+      <Typography>🔹 Upload multiple audit documents quickly and securely.</Typography>
+      <Typography>🔹 Categorize files by shipment, compliance, or audit type.</Typography>
+      <Typography>🔹 Use auto-tagging for fast identification and retrieval.</Typography>
+    </React.Fragment>),
+     imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/mobile-light.png")`,
     imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/mobile-dark.png")`,
   },
   {
     icon: <DevicesRoundedIcon />,
-    title: 'Available on all platforms',
-    description:
-      'This item could let users know the product is available on all platforms, such as web, mobile, and desktop.',
+    title: 'Advanced Search & Quick Retrieval',
+    description:(<React.Fragment>
+      <Typography>🔹 Find documents instantly using filters, keywords, and metadata search.</Typography>
+      <Typography>🔹 Retrieve historical records in seconds.</Typography>
+    </React.Fragment>),
+    imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-light.png")`,
+    imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-dark.png")`,
+  },
+  {
+    icon: <DevicesRoundedIcon />,
+    title: 'Seamless Approval Workflow',
+    description:(<React.Fragment>
+      <Typography>🔹 Automate document verification, approval, and rework requests.</Typography>
+      <Typography>🔹 Role-based access for uploaders, reviewers, and approvers.</Typography>
+      <Typography>🔹 Get real-time notifications for pending approvals or rework.</Typography>
+    </React.Fragment>),
+    imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-light.png")`,
+    imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-dark.png")`,
+  },
+  {
+    icon: <DevicesRoundedIcon />,
+    title: 'Version Control & Compliance Tracking',
+    description:(<React.Fragment>
+      <Typography>🔹 Maintain a complete version history for all documents.</Typography>
+      <Typography>🔹 Ensure compliance with logistics and audit regulations.</Typography>
+      <Typography>🔹 Prevent unauthorized changes while preserving past versions.</Typography>
+    </React.Fragment>),
     imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-light.png")`,
     imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-dark.png")`,
   },
@@ -144,23 +179,32 @@ export default function Features() {
 
   return (
     <Container id="features" sx={{ py: { xs: 8, sm: 16 } }}>
-      <Box sx={{ width: { sm: '100%', md: '60%' } }}>
+      <Box sx={{ width: { sm: '100%', md: '80%' } }}>
         <Typography
           component="h2"
           variant="h4"
           gutterBottom
+          textAlign={"left"}
           sx={{ color: 'text.primary' }}
         >
-          Product features
+          Streamline Your Document Workflow with Our Powerful DMS
         </Typography>
         <Typography
           variant="body1"
           sx={{ color: 'text.secondary', mb: { xs: 2, sm: 4 } }}
         >
-          Provide a brief overview of the key features of the product. For example,
-          you could list the number of features, their types or benefits, and
-          add-ons.
+          Ensure compliance and accuracy with our secure Document Management System (DMS), 
+          designed for logistics audit documents. Streamline storage, verification, and approval while eliminating manual errors for seamless compliance.
         </Typography>
+        <Typography
+          variant="body1"
+          sx={{ color: 'text.secondary', mb: { xs: 2, sm: 4 } }}
+        >
+🔹 Centralized & Secure Document Storage<br />
+🔹 Store all logistics audit documents in a single, secure repository.<br />
+🔹 Organize files with metadata and structured categorization.<br />
+🔹 Access documents anytime with cloud-based storage.<br />
+ </Typography>
       </Box>
       <Box
         sx={{

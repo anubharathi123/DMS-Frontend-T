@@ -52,8 +52,8 @@ const darkLogos = [
 
 const logoStyle = {
   marginTop:'30px',
-  width: '190px',
-  height: '60px',
+  // width: '170px',
+  // height: '40px',
   margin: '30px 32px',
   filter: 'grayscale(100%)', // Initially black and white
   transition: 'filter 0.3s ease-in-out', // Smooth transition effect

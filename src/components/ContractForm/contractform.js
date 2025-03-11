@@ -318,7 +318,8 @@ const CompanyContractForm = () => {
     
       // Save and navigate
       doc.save('contract.pdf');
-      navigate('/sign-up');
+      localStorage.setItem('msi','true')
+      navigate('/profile');
     };
     
     // Fix handleSubmit1 to accept contractFile as a parameter
@@ -341,6 +342,7 @@ const CompanyContractForm = () => {
         console.log("Update Response:", response);
         alert("Company Details have been updated successfully!");
         setTimeout(() => {
+          localStorage.setItem('msi','true')
           navigate('/profile');
         }, 500);
       } catch (error) {
