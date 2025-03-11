@@ -154,16 +154,6 @@ const calendarRef = useRef(null);
         
       }, [showSearchInfo]);
 
-      const handleCreateOrganization = () => {
-        navigate(`/CompanyCreation`);
-      }
-      const handledeleteOrganization = () => {
-        navigate(`/OrganizationDeleteList`);
-      }
-      const handlePendingOrganization = () => {
-        navigate(`/OrganizationPending`);
-      }
-
     const handleSearch = (e) => {
         console.log("Search Term:", e.target.value);
         setSearchTerm(e.target.value);
@@ -223,6 +213,16 @@ const calendarRef = useRef(null);
         setCurrentPage(1);
     };
 
+    const handleDropdownChange = (value) => {
+        if (value === "Create Organization") {
+          navigate(`/CompanyCreation`);
+        } else if (value === "Deleted List") {
+          navigate(`/OrganizationDeleteList`);
+        } else if (value === "Registered List") {
+          navigate(`/OrganizationPending`);
+        }
+      };
+
     const handleDownloadFile = async (fileUrl, fileName) => {
     try {
       const response = await fetch(fileUrl);
@@ -277,12 +277,19 @@ const calendarRef = useRef(null);
         <div className="organization-main">
             <h1 className="organization-header">Organization Details</h1>
 {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
-  <div>
-    <button className='org_createbtn1' onClick={handleCreateOrganization} > + Create Organization</button>
+     <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+     <option value="">Actions</option>
+     <option value="Create Organization">Create Organization</option>
+     <option value="Deleted List">Deleted List</option>
+     <option value="Registered List">Registered List</option>
+   </select>
 
-    <button className='org_createbtn1' onClick={handledeleteOrganization} > Deleted List</button>
-    <button className='org_createbtn1' onClick={handlePendingOrganization}> Pending List</button> 
-  </div>
+//   <div>
+//     <button className='org_createbtn1' onClick={handleCreateOrganization} > + Create Organization</button>
+
+//     <button className='org_createbtn1' onClick={handledeleteOrganization} > Deleted List</button>
+//     <button className='org_createbtn1' onClick={handlePendingOrganization}> Pending List</button> 
+//   </div>
 )}
 
             <div className='organization-container_controls'>

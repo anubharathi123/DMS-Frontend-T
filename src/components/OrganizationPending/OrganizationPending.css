@@ -122,8 +122,8 @@
     display: flex;
     cursor: pointer;
     border-radius: 7px;
-    position: fixed;
-    left: 26%;
+    position: relative;
+    left: 22%;
     font-size: 12px !important;
 }
 

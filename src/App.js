@@ -15,7 +15,7 @@ import Fileupload from "./components/File Upload/file upload"
 import Profile from "./components/Profile/Profile";
 import ProfileManagementPage from "./components/ProfileManagementPage/ProfileManagementPage";
 import OrganizationList from "./components/OrganizationList/OrganizationList";
-import OrganizationDelList from "./components/Organization Delete List/OrganizationList";
+import OrganizationDelList from "./components/Organization Delete List/OrganizationDList";
 import Login1 from "./components/login1/login1";
 import Forgot_Pwd1 from "./components/forgot1/forgot_pwd1";
 import ChangePassword1 from "./components/changepassword1/changepassword1";
@@ -37,7 +37,7 @@ import DateRangeSearch from "./components/document search/DateRangeSearch";
 import ProfileCard from "./components/profile final/Profile";
 import ClientPage from "./components/clientpage/clientpage";
 import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
-import SignUpCard from "./login2/components/SignUpCard";
+import SignUpCard from "./login2/SignUpSide";
 import SignatureComponent from "./components/Signature/SignatureComponent";
 import DeletedAdminList from "./components/DeletedAdminList/AdminList";
 import DeletedUsers from "./components/DeletedUsers/DeletedUsers";

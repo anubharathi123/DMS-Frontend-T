@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiServices from "../../ApiServices/ApiServices"; // Adjust the path if necessary
 import Loader from "react-js-loader";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import "./AdminCreation.css";
 
 const AdminCreation = () => {
@@ -118,11 +120,11 @@ const AdminCreation = () => {
           <label className="admincreation-label">
             Mobile <span className="mandatory">*</span>
           </label>
-          <input
+          <PhoneInput
             type="tel"
             name="mobile"
             value={formData.mobile}
-            onChange={handleChange}
+            onChange={(value) => handleChange({ target: { value } })}
             className="admincreation-input"
             required
           />

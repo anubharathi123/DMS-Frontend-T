@@ -2,7 +2,7 @@ import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import AppTheme from './theme/AppTheme';
-import SignInCard from './components/SignInCard';
+import SignUpCard from './components/SignUpCard';
 import Content from './components/Content';
 
 export default function SignInSide(props: { disableCustomTheme?: boolean }) {
@@ -74,7 +74,9 @@ export default function SignInSide(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <Content />
-            <SignInCard/>
+            <SignUpCard onSwitch={function (): void {
+                throw new Error('Function not implemented.');
+              } } />
           </Stack>
         </Stack>
       </Stack>
