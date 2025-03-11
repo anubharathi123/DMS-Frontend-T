@@ -16,6 +16,8 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 // import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import donutData from './donutData';
 
+
+
 import {
    Chart as ChartJS,
   BarElement,
@@ -56,6 +58,9 @@ const DashboardApp = () => {
   const [rowLimit, setRowLimit] = useState('3');
   const username = localStorage.getItem('name') || "User";
   const [data, setData] = useState([])
+  
+  
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -265,7 +270,7 @@ const donutData = ({ OrgCount }) => {
     plugins: {
       legend: {
         display: true,
-        position: "bottom", // Keep legend on the right
+        position: "right", // Keep legend on the right
         align: "center", // Align legend vertically in the middle
      
         labels: {
@@ -286,7 +291,7 @@ const donutData = ({ OrgCount }) => {
     },
     layout: {
       padding: {
-        right: 50, // Adjust this value to bring legend closer
+        // right: 250, // Adjust this value to bring legend closer
         align: "center", // Align legend vertically in the middle
         
         
@@ -556,6 +561,17 @@ const Card = ({ title, value = 1, icon, role, bgColor }) => {
     backgroundColor: ['ADMIN', 'UPLOADER', 'REVIEWER', 'VIEWER'].includes(role) ? bgColor : "",
     marginTop: ['UPLOADER', 'REVIEWER', 'VIEWER'].includes(role) ? "10%" : "",
   };
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {/* {filteredCompanies.map((company) => (
+    <Card key={company.id} className="shadow-md">
+      <CardContent>
+        <h3 className="text-lg font-semibold">{company.name}</h3>
+        <p>Status: {company.isActive ? "Active" : "Inactive"}</p>
+        <p>File Size: {company.fileSize} MB</p>
+      </CardContent>
+    </Card>
+  ))} */}
+</div>
     
   
   
