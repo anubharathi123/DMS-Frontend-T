@@ -69,13 +69,13 @@
 }
 
 .company-creation-input1 {
-  width: 300px;
+  width: 435px;
   padding: 5px;
-  border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 13px;
+  font-size: 18px;
   height: 17px;
 }
+
 
 .company-creation-input {
   width: 435px;
@@ -199,3 +199,4 @@
 .company-creation-remove-icon:hover {
   color: darkred;
 }
+

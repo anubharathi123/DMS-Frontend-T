@@ -5,6 +5,8 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import Loader from "react-js-loader";
 import authService from '../../ApiServices/ApiServices';
 import apiServices from '../../ApiServices/ApiServices';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 
 const CompanyCreation = () => {
@@ -206,14 +208,11 @@ const CompanyCreation = () => {
             <label className="company-creation-label">
               Mobile <span className="company-creation-mandatory">*</span>
             </label>
-            <input
-              type="tel"
-              name="mobile"
+            <PhoneInput
+              className='company-creation-input1'
               value={company.mobile}
-              onChange={handleChange}
-              className="company-creation-input"
-              required
-            />
+              onChange={(value) => handleChange({ target: { value } })} 
+              />
           </div>
 
           {/* Email */}
@@ -231,8 +230,8 @@ const CompanyCreation = () => {
             />
           </div>
 
-          {/* Contract Document */}
-          <div className="company-creation-form-group">
+         
+          {/* <div className="company-creation-form-group">
             <label className="company-creation-label">
               Master Services Agreement(MSA) <span className="company-creation-mandatory">*</span>
             </label>
@@ -241,29 +240,29 @@ const CompanyCreation = () => {
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onClick={handleUploadClick} // Trigger file dialog on single click
->
-            <input type="file" id="file-input" onChange={handleFileChange} className="company-creation-file-input"
-              hidden />
-            <div className="company-creation-upload-text">
+> */}
+            {/* <input type="file" id="file-input" onChange={handleFileChange} className="company-creation-file-input"
+              hidden /> */}
+            {/* <div className="company-creation-upload-text">
               <FaCloudUploadAlt />
-              {fileInputClicked ? (
-              <div className="company-creation-file-name">
+              {fileInputClicked ? ( */}
+              {/* <div className="company-creation-file-name">
               {contractDocuments.name}
               {/* Cross button to remove the file */}
-              <span className="company-creation-remove-icon" onClick={handleRemoveFile}>
+              {/* <span className="company-creation-remove-icon" onClick={handleRemoveFile}>
               &#10005;
-              </span>
-            </div>
-          ) : (
+              </span>  */}
+            {/* </div> */}
+          {/* ) : (
         <p> Drag and drop or browse
-        <a href="#!">
-          here
+        <a href="#!"> */}
+          {/* here
         </a>
-      </p>
-    )}
+      </p> */}
+    {/* )}
   </div>
 </div>
-          </div>
+          </div> */}
 
           {/* Error Message */}
           {/* {error && <div className="company-creation-error">{error}</div>} */}
