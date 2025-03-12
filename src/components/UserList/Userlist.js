@@ -112,6 +112,14 @@ const UserList = () => {
     navigate(`/createuser`);
   }
 
+  const handleDropdownChange = (value) => {
+    if (value === "New User") {
+      navigate(`/createuser`);
+    } else if (value === "Deleted List") {
+      navigate(`/DeletedUsers`);
+    } 
+  };
+
   const handleEditAdmin = (id) => {
     navigate(`/UpdateUser/${id}`);
   };
@@ -211,10 +219,15 @@ const UserList = () => {
   return (
     <div className="userlist-container">
       <h1 className="userlist-header">User Details</h1>
-      <div>
+      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+      <option value="">Select</option>
+     <option value="New User">New User</option>
+     <option value="Deleted List">Deleted List</option>
+   </select>
+      {/* <div>
       <button className='user_createbtn' onClick={handleCreateUser} > + New User</button> 
       <button className='user_createbtn' onClick={handleDelete} > Deleted User List</button> 
-      </div>
+      </div> */}
       {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 
       <div className="userlist-controls">

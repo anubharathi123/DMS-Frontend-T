@@ -278,7 +278,7 @@ const calendarRef = useRef(null);
             <h1 className="organization-header">Organization Details</h1>
 {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-     <option value="">Select Page to Navigate</option>
+        <option value="">Select an option</option>
      <option value="Create Organization">Create Organization</option>
      <option value="Deleted List">Deleted List</option>
      <option value="Registered List">Registered List</option>
@@ -369,12 +369,14 @@ const calendarRef = useRef(null);
                            
                             <tr key={index} className="organization-table-row">
                                 <td className="organization-table-td">{org.username}</td>
-                                <td className="organization-table-td">
+                                <td className="organization-table-td"
+                                title={org.org_name}>
   {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
 </td>
                                 <td className="organization-table-td">
                                 {org.msa_doc ? (
                                     <button
+                                        title={org.msa_doc}
                                         className="file-button"
                                         onClick={() => handleOpenFile(org.msa_doc)}
                                     >

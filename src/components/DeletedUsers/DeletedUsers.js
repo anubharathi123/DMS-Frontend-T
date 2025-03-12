@@ -106,6 +106,9 @@ const UserList = () => {
 
   const paginatedData = filteredData1.filter(item => !item.delete).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
+  const handleNavigate = () => {
+    navigate('/UserList');  };
+
   const handleResetFilter = (e) => {
     setSearchTerm('');
     setFilter(e.target.value);
@@ -123,7 +126,8 @@ const UserList = () => {
 
   return (
     <div className="userlist-container">
-      <h1 className="userlist-header">User Details</h1>
+      <h1 className="userlist-header">User Deleted Details</h1>
+      <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
       {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 
       <div className="userlist-controls">
@@ -198,13 +202,16 @@ const UserList = () => {
           {paginatedData.map((item, index) => (
             <tr key={index} className="userlist_row">
               <td className="userlist_td">{item.username}</td>
-              
               <td className="userlist_td">{item.email}</td>
               <td className="userlist_td">
                 {new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
               </td>
             </tr>
+  
           ))}
+          <tr>
+              <td className="userlist_td">No Deleted Users Found!!!</td>
+            </tr>
         </tbody>
       </table>
 

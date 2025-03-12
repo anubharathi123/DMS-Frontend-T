@@ -21,6 +21,8 @@ const OrganizationList = () => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [filterDate, setFilterDate] = useState(null);
     const [actionMessage, setActionMessage] = useState('');
+    const [filterdata1, setfilterdata1] = useState([]);
+    // const [errorMessage, setErrorMessage] = useState('');
     const [selectedFile, setSelectedFile] = useState(null); // To store selected file URL
     // const [organization, setOrganization] = useState([])
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -104,34 +106,34 @@ const calendarRef = useRef(null);
     //     }
     // };
 
-    const handleFreeze = async (id, status) => {
-        try {
-            const confirmMsg = status ? "Resume" : "Freeze";
-            if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
-            setIsLoading(true);
+    // const handleFreeze = async (id, status) => {
+    //     try {
+    //         const confirmMsg = status ? "Resume" : "Freeze";
+    //         if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
+    //         setIsLoading(true);
     
-            const response = status ? await apiServices.resumeOrganization(id) : await apiServices.freezeOrganization(id);
+    //         const response = status ? await apiServices.resumeOrganization(id) : await apiServices.freezeOrganization(id);
     
-            if (response && !response.error) {
-                // Refetch the organization list after successful update
-                const updatedResponse = await apiServices.getOrganizations();
-                const updatedOrganization = updatedResponse.organization.map(org => ({
-                    id: org.id,
-                    username: org.auth_user.username,
-                    org_name: org.company_name,
-                    msa_doc: org.contract_doc,
-                    created_date: org.created_at,
-                    email: org.auth_user.email,
-                    delete: org.is_delete,
-                })).filter(org => !org.delete);
-                setData(updatedOrganization);
-            }
-        } catch (error) {
-            console.error("Error freezing organization:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    //         if (response && !response.error) {
+    //             // Refetch the organization list after successful update
+    //             const updatedResponse = await apiServices.getOrganizations();
+    //             const updatedOrganization = updatedResponse.organization.map(org => ({
+    //                 id: org.id,
+    //                 username: org.auth_user.username,
+    //                 org_name: org.company_name,
+    //                 msa_doc: org.contract_doc,
+    //                 created_date: org.created_at,
+    //                 email: org.auth_user.email,
+    //                 delete: org.is_delete,
+    //             })).filter(org => !org.delete);
+    //             setData(updatedOrganization);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error freezing organization:", error);
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
     
     
       useEffect(() => {
@@ -228,6 +230,66 @@ const calendarRef = useRef(null);
       console.error("Download failed:", error);
     }
   };
+
+  const handleApprove = async (id, newStatus) => {
+    setActionMessage('');
+    setIsLoading(true);
+  
+    try {
+      console.log('Approval:', id, newStatus);
+      await apiServices.approveOrganization(id, { approval_status: newStatus });
+  
+      // Remove the approved/rejected organization from the current list
+      const updatedData = data.filter((org) => org.id !== id);
+      setData(updatedData);
+      setActionMessage(`Organization ${id} has been ${newStatus}`);
+      setTimeout(() => {
+        setActionMessage('');
+      }, 3000);
+  
+    } catch (error) {
+      console.error('Error during approval/rejection:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+
+      const handleReject = async (id) => {
+        //   if (!rejectionReason.trim()) {
+        //     alert("Please enter a reason for rejection.");
+        //     return;
+        //   }
+        
+          try {
+            setIsLoading(true);
+            await apiServices.rejectOrganization(id, {
+              approval_status: "Rejected",
+            });
+            console.log('Rejected:', id);
+        
+            // Update the status with the rejection reason
+            const updatedData = data.map((org) =>
+              org.id === id
+                ? { ...org, status: "Rejected"}
+                : org
+            );
+        
+            setData(updatedData);
+            // setFilteredData(updatedData);
+            // setRejectPopupOpen(false);
+            // setRejectReason("");
+        
+            // // Display alert and navigate after submission
+            // alert("Rejection Reason has been submitted");
+            // navigate("/Documentlist", { state: { id } });
+          } catch (error) {
+            console.error("Error rejecting Organization:", error);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+    
     
 
     const handleDelete = async (id) => {
@@ -300,8 +362,8 @@ const calendarRef = useRef(null);
                         <option value="20">20</option>
                     </select>
                 </div>
-                
             </div>
+ 
             
             <table className="organization-table">
                 <thead className='organization-thead'>
@@ -343,12 +405,14 @@ const calendarRef = useRef(null);
                            
                             <tr key={index} className="organization-table-row">
                                 <td className="organization-table-td">{org.username}</td>
-                                <td className="organization-table-td">
-  {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
+                                <td className="organization-table-td"
+                                title={org.org_name}>
+  {org.org_name.length > 10 ? org.org_name.substring(0, 10) + "..." : org.org_name}
 </td>
                                 <td className="organization-table-td">
                                 {org.msa_doc ? (
                                     <button
+                                        title={org.msa_doc}
                                         className="file-button"
                                         onClick={() => handleOpenFile(org.msa_doc)}
                                     >
@@ -362,10 +426,10 @@ const calendarRef = useRef(null);
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td className="organization-table-td">{org.email}</td>
                                 <td className="organization-table-td">
-                                    <button className='organization-approve'>
+                                    <button className='organization-approve' onClick={() => handleApprove(org.id, 'Approved')}>
                                     <IoIosCheckmarkCircle />
                                     </button>
-                                    <button className='organization-reject'>
+                                    <button className='organization-reject' onClick={() => handleReject(org.id, 'Rejected')}>
                                     <MdCancel />
                                     </button>
                                 </td>
