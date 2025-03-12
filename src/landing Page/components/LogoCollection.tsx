@@ -3,7 +3,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { margin, useTheme } from '@mui/system';
-import vouch from '../../assets/images/Vouch Logo.png'
+import vouch from '../../assets/images/Vouch.png'
+import Dimiour from '../../assets/images/Dimiour.png'
+import VDart from '../../assets/images/Vdart1.png'
+import VValidate from '../../assets/images/V Validate.png'
+import Ledgr from '../../assets/images/Ledgr.png'
+import TrustPeople from '../../assets/images/TrustPeople.png'
+
 
 const whiteLogos = [
   'https://www.trustpeople.com/wp-content/uploads/2024/10/Image20241007152103.png',
@@ -20,12 +26,18 @@ const whiteLogos = [
 ];
 
 const darkLogos = [
+  // VDart,
+  
+  
+  // Ledgr,
   'https://www.vdart.com/wp-content/uploads/2020/02/vdart.svg',
-  "https://www.dimiour.io/wp-content/uploads/2024/03/Dimiour_Logo-2048x573.png",
+  Dimiour,
+  // "https://www.dimiour.io/wp-content/uploads/2024/03/Dimiour_Logo-2048x573.png",
   "https://www.trustpeople.com/wp-content/uploads/2024/10/Image20241007152103.png",
+  // TrustPeople,
   // 'https://trustpeople.io/assets/images/trust-people-logo-png.png',
-  'https://ledgrinc.com/img/ledgr_black_vert.svg',
   // 'https://ledgrinc.com/img/ledgr_black_vert.svg',
+  'https://ledgrinc.com/img/ledgr_black_vert.svg',
   // 'https://s3-us-west-2.amazonaws.com/cbi-image-service-prd/modified/57769620-6bf6-494c-a529-48ec26e003d7.png',
   vouch
   // 'https://media.licdn.com/dms/image/v2/D560BAQE50lD3RY_IiA/company-logo_200_200/company-logo_200_200/0/1688577144631/dimiour_logo?e=2147483647&v=beta&t=o2Ea-zyuRXKjdBhfNGO0hMGe9lKhhan1jTBMX17suNw',
@@ -52,8 +64,8 @@ const darkLogos = [
 
 const logoStyle = {
   marginTop:'30px',
-  // width: '170px',
-  // height: '40px',
+  // width: '160px',
+  height: '30px',
   margin: '30px 32px',
   filter: 'grayscale(100%)', // Initially black and white
   transition: 'filter 0.3s ease-in-out', // Smooth transition effect

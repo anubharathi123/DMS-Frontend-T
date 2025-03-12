@@ -63,8 +63,8 @@ const calendarRef = useRef(null);
             try {
                 setIsLoading(true);
                 const response = await apiServices.getOrganizations();
-    
-                const organization = response.organization.map(org => ({
+                console.log("Organization Data:", response);
+                const organization = response.approved_organizations.map(org => ({
                     id: org.id,
                     username: org.auth_user.username,
                     org_name: org.company_name,
@@ -190,7 +190,7 @@ const calendarRef = useRef(null);
         return matchesSearch && matchesStatus && matchesDate;
     });
     
-   
+  
     
     const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
@@ -271,14 +271,13 @@ const calendarRef = useRef(null);
         currentPage * rowsPerPage
     );
 
-    
-
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Details</h1>
+           
 {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-     <option value="">Actions</option>
+        <option value="">Select an option</option>
      <option value="Create Organization">Create Organization</option>
      <option value="Deleted List">Deleted List</option>
      <option value="Registered List">Registered List</option>
@@ -369,12 +368,14 @@ const calendarRef = useRef(null);
                            
                             <tr key={index} className="organization-table-row">
                                 <td className="organization-table-td">{org.username}</td>
-                                <td className="organization-table-td">
+                                <td className="organization-table-td"
+                                title={org.org_name}>
   {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
 </td>
                                 <td className="organization-table-td">
                                 {org.msa_doc ? (
                                     <button
+                                        title={org.msa_doc}
                                         className="file-button"
                                         onClick={() => handleOpenFile(org.msa_doc)}
                                     >

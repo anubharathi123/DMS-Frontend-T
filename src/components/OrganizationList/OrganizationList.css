@@ -92,8 +92,6 @@
     flex-direction: row-reverse;
     width: 300px;
     position:relative;
-    
-    
 }
 
 .organization-search-input {
@@ -162,11 +160,12 @@
     font-size: 12px !important;
 }
 
-.organization-table {
+/* .organization-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12px !important;
-}
+    align-self: anchor-center;
+} */
 
 .organization-thead {
     display: table;
@@ -227,7 +226,7 @@
     width: 20%;
     word-wrap: break-word;
     text-align: LEFT;
-    padding: 10px;
+    padding: 8px;
 }
 
 .organization-edit {

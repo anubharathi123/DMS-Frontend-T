@@ -94,12 +94,10 @@ const AdminList = () => {
     const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
     setCurrentPage((prevPage) => Math.min(prevPage, totalPages));
   }, [filteredData, rowsPerPage]);
-
   
-
-  const handleCreateAdmin = () => {
-    navigate('/AdminCreation');
-  }
+  // const handleCreateAdmin = () => {
+  //   navigate('/AdminCreation');
+  // }
 
   const handleFreeze = async (id,orgId, status) => {
     try {
@@ -219,10 +217,17 @@ const AdminList = () => {
     }
   };
 
-  const handleDeleteList = async () => {
-    navigate('/DeletedAdminList');
-  }
+  // const handleDeleteList = async () => {
+  //   navigate('/DeletedAdminList');
+  // }
 
+  const handleDropdownChange = (value) => {
+    if (value === "New Admin") {
+      navigate(`/AdminCreation`);
+    } else if (value === "Deleted List") {
+      navigate(`/DeletedAdminList`);
+    } 
+  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -249,10 +254,15 @@ const AdminList = () => {
   return (
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Details</h1>
-      <div>
+      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+      <option value="">Select</option>
+     <option value="New Admin">New Admin</option>
+     <option value="Deleted List">Deleted List</option>
+   </select>
+      {/* <div>
       <button className='admin_createbtn' onClick={handleCreateAdmin} > + New Admin</button>
       <button className='admin_createbtn' onClick={handleDeleteList} > Deleted Admin List</button> 
-      </div>
+      </div> */}
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
       <div className="adminlist_controls">
         <div className="adminlist_search">

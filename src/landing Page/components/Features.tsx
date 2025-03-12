@@ -11,6 +11,8 @@ import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
 import EdgesensorHighRoundedIcon from '@mui/icons-material/EdgesensorHighRounded';
 import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import SearchIcon from '@mui/icons-material/Search';
+import TaskIcon from '@mui/icons-material/Task';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 
@@ -40,7 +42,7 @@ const items = [
     imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/mobile-dark.png")`,
   },
   {
-    icon: <DevicesRoundedIcon />,
+    icon: <SearchIcon />,
     title: 'Advanced Search & Quick Retrieval',
     description:(<React.Fragment>
       <Typography>🔹 Find documents instantly using filters, keywords, and metadata search.</Typography>
@@ -50,7 +52,7 @@ const items = [
     imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-dark.png")`,
   },
   {
-    icon: <DevicesRoundedIcon />,
+    icon: <TaskIcon />,
     title: 'Seamless Approval Workflow',
     description:(<React.Fragment>
       <Typography>🔹 Automate document verification, approval, and rework requests.</Typography>

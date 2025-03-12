@@ -128,9 +128,10 @@
 }
 
 .organization-table {
-    width: 100%;
+    width: 95%;
     border-collapse: collapse;
     font-size: 12px !important;
+    align-self: anchor-center;
 }
 
 .organization-thead {
@@ -192,7 +193,8 @@
     width: 20%;
     word-wrap: break-word;
     text-align: LEFT;
-    padding: 10px;
+    padding: 8px;
+    font-size: 11px;
 }
 
 .organization-approve {

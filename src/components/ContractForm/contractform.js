@@ -18,7 +18,7 @@ const CompanyContractForm = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const sigCanvas = useRef();
   const [contractDocuments, setContractDocuments] = useState(null);
-  const [companyName, setCompanyName] = useState(localStorage.getItem('company_name') || '');
+  const [companyName, setCompanyName] = useState('');
   const [contractTitle, setContractTitle] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
@@ -81,6 +81,7 @@ const CompanyContractForm = () => {
           const Company_name = details_data.details[1].company_name;
           const empId  = details_data.details[1].id
           setId(empId)
+          setCompanyName(Company_name);
           // localStorage.setItem("company_name", Company_name);
           // const fetchedRole = details_data.details[3].name;
 

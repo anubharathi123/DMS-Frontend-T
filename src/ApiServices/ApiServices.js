@@ -204,6 +204,19 @@ const authService = {
     return handleResponse(apiClient.post('organization/', data));
   },
   getOrganizations: async () => handleResponse(apiClient.get('organization/')),
+  pendingOrganizations: async () => handleResponse(apiClient.get('organization/pending/')),
+  approveOrganization: async (orgId) => { 
+    if (!orgId) { 
+      throw new Error('Organization ID is required to approve an organization.');
+    }
+    return handleResponse(apiClient.post(`organization/${orgId}/approve/`));
+  },
+  rejectOrganization: async (orgId) => {
+    if (!orgId) {
+      throw new Error('Organization ID is required to reject an organization.');
+    }
+    return handleResponse(apiClient.post(`organization/${orgId}/reject/`));  
+  },
   
   OrganizationList: async (data) => {
     // if (!data.name || !data.owner_email) {
