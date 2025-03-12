@@ -63,8 +63,8 @@ const calendarRef = useRef(null);
             try {
                 setIsLoading(true);
                 const response = await apiServices.getOrganizations();
-    
-                const organization = response.organization.map(org => ({
+                console.log("Organization Data:", response);
+                const organization = response.approved_organizations.map(org => ({
                     id: org.id,
                     username: org.auth_user.username,
                     org_name: org.company_name,
@@ -278,7 +278,7 @@ const calendarRef = useRef(null);
             <h1 className="organization-header">Organization Details</h1>
 {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-     <option value="">Actions</option>
+     <option value="">Select Page to Navigate</option>
      <option value="Create Organization">Create Organization</option>
      <option value="Deleted List">Deleted List</option>
      <option value="Registered List">Registered List</option>

@@ -186,6 +186,7 @@ const authService = {
     return handleResponse(apiClient.post('organization/', data));
   },
   getOrganizations: async () => handleResponse(apiClient.get('organization/')),
+  pendingOrganizations: async () => handleResponse(apiClient.get('organization/pending/')),
   
   OrganizationList: async (data) => {
     // if (!data.name || !data.owner_email) {

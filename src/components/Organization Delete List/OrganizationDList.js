@@ -48,8 +48,8 @@ const calendarRef = useRef(null);
             try {
                 setIsLoading(true);
                 const response = await apiServices.getOrganizations();
-    
-                const organization = response.organization.map(org => ({
+                console.log(response)
+                const organization = response.approved_organizations.map(org => ({
                     id: org.id,
                     username: org.auth_user.username,
                     org_name: org.company_name,
