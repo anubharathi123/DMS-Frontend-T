@@ -152,6 +152,24 @@ const authService = {
     return handleResponse(apiClient.get('organizations/dashboard/'))
   },
 
+
+
+
+
+
+  organizationCountDas: async () => {
+    return handleResponse(apiClient.get('organizations/count/'))
+  },
+  
+  DashboardView: async () => {
+    return handleResponse(apiClient.get('dashboard/'))
+  },
+  
+
+
+
+
+
   createAdmin: async (data) => {
     return handleResponse(apiClient.post('AdminCreation/',data))
   },

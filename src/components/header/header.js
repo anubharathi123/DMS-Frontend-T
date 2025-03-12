@@ -28,38 +28,38 @@ const Header = () => {
   const name = localStorage.getItem("name") || "User";
   const email = localStorage.getItem("email") || "email";
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await ApiService.getNotifications();
-        const newNotifications = response.notifications || [];
+  // useEffect(() => {
+  //   const fetchNotifications = async () => {
+  //     try {
+  //       const response = await ApiService.getNotifications();
+  //       const newNotifications = response.notifications || [];
 
-        console.log("Fetched Notifications:", newNotifications); // Debugging log
+  //       console.log("Fetched Notifications:", newNotifications); // Debugging log
 
-        // Get new notification IDs
-        const newNotificationIds = new Set(newNotifications.map((n) => n.id));
+  //       // Get new notification IDs
+  //       const newNotificationIds = new Set(newNotifications.map((n) => n.id));
 
-        // Compare with previous notification IDs to check for new notifications
-        const hasNewNotifications = [...newNotificationIds].some(id => !previousNotificationIds.current.has(id));
+  //       // Compare with previous notification IDs to check for new notifications
+  //       const hasNewNotifications = [...newNotificationIds].some(id => !previousNotificationIds.current.has(id));
 
-        if (hasNewNotifications || newNotificationIds.size !== previousNotificationIds.current.size) {
-          previousNotificationIds.current = newNotificationIds;
+  //       if (hasNewNotifications || newNotificationIds.size !== previousNotificationIds.current.size) {
+  //         previousNotificationIds.current = newNotificationIds;
           
-          // Count unread notifications
-          const unreadCount = newNotifications.filter((n) => !n.read).length;
-          console.log("Unread Count:", unreadCount); // Debugging log
+  //         // Count unread notifications
+  //         const unreadCount = newNotifications.filter((n) => !n.read).length;
+  //         console.log("Unread Count:", unreadCount); // Debugging log
           
-          setNotifications(newNotifications);
-          setNotificationCount(unreadCount);
-        }
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    };
-    fetchNotifications(); // Initial fetch
-    const interval = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
-    return () => clearInterval(interval);
-  }, []);
+  //         setNotifications(newNotifications);
+  //         setNotificationCount(unreadCount);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching notifications:", error);
+  //     }
+  //   };
+  //   fetchNotifications(); // Initial fetch
+  //   const interval = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+  //   return () => clearInterval(interval);
+  // }, []);
 
 
   useEffect(() => {

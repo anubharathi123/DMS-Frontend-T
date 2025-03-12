@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './dashboard.css';
 import { IoPeople } from "react-icons/io5";
 import { HiBuildingOffice2 } from "react-icons/hi2";
+import { FaBuildingCircleXmark } from "react-icons/fa6";
+import { FaBuildingCircleExclamation } from "react-icons/fa6";
 import { IoMdCloudUpload } from "react-icons/io";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdPending, MdCancel, MdMargin } from "react-icons/md";
 import apiServices from '../../ApiServices/ApiServices';
-import { Bar, Pie, Line } from 'react-chartjs-2';
+// import { Bar, Pie } from 'react-chartjs-2';
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import { Doughnut } from "react-chartjs-2";
@@ -16,6 +18,15 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 // import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import donutData from './donutData';
 
+ import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
 
 
 import {
@@ -26,10 +37,31 @@ import {
   PointElement,
   CategoryScale,
   LinearScale,
-  Tooltip,
-  Legend,
+   Legend,
 } from 'chart.js';
+// import { margin } from '@mui/system';
 
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        borderRadius: "8px",
+        padding: "10px",
+        border: "1px solid #ccc",
+        boxShadow: "2px 2px 5px rgba(0,0,0,0.1)",
+        transition: "all 0.3s ease-in-out",
+        fontSize: "14px",
+        fontWeight: "bold",
+        color: "#333",
+      }}>
+        <p>{payload[0].payload.name}</p>
+        <p style={{ color: "#007bff" }}>File Size: {payload[0].value} KB</p>
+      </div>
+    );
+  }
+  return null;
+};
 
 ChartJS.register(
   BarElement,
@@ -38,8 +70,7 @@ ChartJS.register(
   PointElement,
   CategoryScale,
   LinearScale,
-  Tooltip,
-  Legend
+   Legend
 );
 
 const Dashboard = ({ title }) => (
@@ -53,12 +84,67 @@ const DashboardApp = () => {
   const [selectedYear, setSelectedYear] = useState('2023');
   const [OrgCount,setOrgCount] = useState([]);
   const [count, setCount] = useState([]);
+ 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [month, setMonth] = useState([]);
   const [companyData, setCompanyData] = useState([]);
   const [rowLimit, setRowLimit] = useState('3');
   const username = localStorage.getItem('name') || "User";
   const [data, setData] = useState([])
-  
+  useEffect(() => {
+  const fetchlineData = async () => {
+    try {
+      const response = await apiServices.getlinedata();
+      console.log("Company Trends API Response:", response);
+
+      if (response && response.length > 0) {
+        const companyTrends = response.map(ct => ({
+          count: ct.count,
+          month: ct.month,
+          year: ct.year,
+        }));
+
+        setData(companyTrends);
+
+        // Extract unique years and set the first one as default
+        const uniqueYears = [...new Set(companyTrends.map(ct => ct.year))];
+        const defaultYear = uniqueYears[0] || '2023';
+        setSelectedYear(defaultYear);
+
+        // Ensure all months are present
+        const allMonths = [
+          "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        const filteredData = companyTrends.filter(ct => ct.year === defaultYear);
+
+        // Create a mapping of existing data
+        const monthDataMap = filteredData.reduce((acc, curr) => {
+          acc[curr.month] = curr.count;
+          return acc;
+        }, {});
+
+        // Fill missing months with zero
+        const finalCounts = allMonths.map(month => monthDataMap[month] || 0);
+
+        setMonth(allMonths);
+        setCount(finalCounts);
+
+        console.log("Processed Company Trends:", finalCounts);
+      }
+    } catch (error) {
+      console.error("Error fetching company trends:", error);
+    }
+  };
+
+  fetchlineData();
+}, []);   
+
+ 
   
 
 
@@ -74,9 +160,13 @@ const DashboardApp = () => {
             username: db.organization_user,
             doc_count: db.total_files_all,
             doc_size: db.total_file_size_all,
+            emp:db.total_employees
+
           }));
   
           setCompanyData(dashboard);  
+
+
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -84,39 +174,123 @@ const DashboardApp = () => {
     };
   
     fetchData();
-  }, []); // ✅ Removed `companyData` from dependencies
-  
+  }, []);  
+
+
+
+
+  const openModal = (company) => {
+    setSelectedCompany(company);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedCompany(null);
+    setIsModalOpen(false);
+  };
+
+
+
   useEffect(() => {
-    const fetchCount = async () => {
+    const newFetchData = async () => {
       try {
-        const response = await apiServices.companyCount();
-        console.log("company Response:", response);
+       
   
-        if (response) {
-          setOrgCount({
-            totalCompanies: response.organization_count || 0,
-            activeCompanies: response.active_org_count || 0,
-            inactiveCompanies: response.deleted_org_count || 0,
-            clientAdmins: response.user_count || 0,
-            totalDocuments: response.document_count || 0,
-            approvedDocuments: response.approved_count || 0,
-            pendingDocuments: response.pending_count || 0,
-            rejectedDocuments: response.rejected_count || 0,
-          });
-        }
+   
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
   
-    fetchCount();
-  }, []); // ✅ Removed companyData from dependencies
+    newFetchData();
+  }, []); 
+
+
+
+
+
+
+  
+
+
+
+
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      // Reset to original OrgCount when search is empty
+      const fetchData = async () => {
+        try {
+          const companyResponse = await apiServices.companyCount();
+          const orgResponse = await apiServices.organizationCount();
+          console.log("orgResponse",orgResponse)
+          console.log("companyResponse",companyResponse)
+          
+  
+          if (companyResponse) {
+            setOrgCount({
+              totalCompanies: companyResponse.organization_count || 0,
+              activeCompanies: companyResponse.active_org_count || 0,
+              inactiveCompanies: companyResponse.deleted_org_count || 0,
+              clientAdmins: companyResponse.user_count || 0,
+              totalDocuments: companyResponse.document_count || 0,
+              approvedDocuments: companyResponse.approved_count || 0,
+              pendingDocuments: companyResponse.pending_org_count  || 0,
+              rejectedDocuments: companyResponse.rejected_count || 0,
+              user_count: companyResponse.user_count || 0,
+              deleted_org_count: companyResponse.deleted_org_count|| 0,
+            });
+          }
+  
+          if (orgResponse) {
+            const dashboard = orgResponse.map(db => ({
+              org_name: db.organization_name,
+              username: db.organization_user,
+              doc_count: db.total_files_all,
+              doc_size: db.total_file_size_all,
+              emp: db.total_employees // Assuming `emp > 0` means active
+            }));
+            setCompanyData(dashboard);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    } else {
+      // 🔹 Filter Company Data based on Search
+      const filteredCompanies = companyData.filter(company =>
+        company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.username.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+  
+      // 🔹 Ensure `activeCompanies` updates correctly
+      const totalCompanies = filteredCompanies.length;
+      const activeCompanies = filteredCompanies.filter(c => c.emp > 0).length; // Now counts all active companies
+      const inactiveCompanies = totalCompanies - activeCompanies;
+  
+      setOrgCount(prev => ({
+        ...prev,
+         activeCompanies,
+        inactiveCompanies,
+      }));
+  
+      setCompanyData(filteredCompanies);
+    }
+  }, [searchTerm]);
+
+
+
+
+
+
+  
   
   // Monitor companyData state updates
   useEffect(() => {
     console.log("Updated Company Data:", companyData);
   }, [companyData]);
-  
+
+ 
  
   // const handleRowLimitChange = (e) => {
   //   const value = e.target.value.trim() === "" ? 1 : parseInt(e.target.value, 10);
@@ -185,21 +359,56 @@ const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCo
 // };
 //   // 🟠 Doughnut Chart (Total Uploads)
 //   const totalDocs = OrgCount.approvedDocuments + OrgCount.pendingDocuments + OrgCount.rejectedDocuments;
+ 
 
-const chartOptions = {
-  responsive: true,
-  plugins: {
-    legend: { display: true },
-    datalabels: {
-      color: "#fff",
-      font: { weight: "bold", size: 14 },
-      formatter: (value, ctx) => {
-        let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
-        return `${percentage}%`; // Show percentage inside chart
-      },
-    },
-  },
-};
+
+// const chartOptions = {
+//   responsive: true,
+//   maintainAspectRatio: false,
+//   plugins: {
+//     legend: {
+//       display: true,
+//       position: "top", // Moves legend to top
+//       labels: {
+//         font: {
+//           size: 14,
+//           weight: "bold",
+//         },
+//       },
+//     },
+//     tooltip: {
+//       backgroundColor: "rgba(0,0,0,0.8)",
+//       titleFont: { size: 14 },
+//       bodyFont: { size: 12 },
+//       cornerRadius: 6,
+//       padding: 10,
+//     },
+//   },
+//   scales: {
+//     x: {
+//       grid: {
+//         display: false, // Removes extra grid lines
+//       },
+//       ticks: {
+//         color: "#333",
+//         font: { size: 12, weight: "bold" },
+//       },
+//     },
+//     y: {
+//       grid: {
+//         color: "rgba(200, 200, 200, 0.3)", // Softer gridlines
+//         borderDash: [5, 5], // Dashed lines for better design
+//       },
+//       ticks: {
+//         color: "#333",
+       
+//         font: { size: 12, weight: "bold" },
+//         callback: (value) => `${value} KB`, // Adds "KB" unit to values
+//       },
+//     },
+//   },
+// };
+
 // const donutData = {
   
 //   labels: [
@@ -237,7 +446,7 @@ const chartOptions = {
 //     },
 //   },
 // };
-ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+ChartJS.register(ArcElement, Legend, ChartDataLabels);
 
 const donutData = ({ OrgCount }) => {
   const totalDocs =
@@ -360,6 +569,8 @@ useEffect(() => {
         }));
 
         setData(companyTrends);
+        console.log(companyData,"DDDDDDDDDDD")
+        console.log(companyTrends,"TTTTTTTTTTTTT")
 
         // Extract unique years and set the first one as default
         const uniqueYears = [...new Set(companyTrends.map(ct => ct.year))];
@@ -397,20 +608,60 @@ useEffect(() => {
 }, []);
 
 
-const lineData = {
-  labels: month, // Ensures all 12 months are listed
-  datasets: [
-    {
-      label: `Growth Rate (${selectedYear})`,
-      data: count, // Includes counts for all months, missing ones filled with 0
-      borderColor: '#1661a9',
-      borderWidth: 2,
-      tension: 0.4,
-      pointBackgroundColor: '#0d6abf',
-      pointRadius: 3,
-    },
-  ],
-};
+
+const fileSizeChartData = companyData
+  .filter(company => 
+    company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    company.username.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+  .map(company => ({
+    name: company.org_name, // X-Axis: Company Name
+    fileSize: parseFloat(company.doc_size) || 0, // Y-Axis: File Size (KB)
+  }));
+  const fileSizeLabels = companyData
+  .filter(company => 
+    company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    company.username.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+  .map(company => company.org_name);  
+
+
+  // const lineData = {
+  //   labels: fileSizeLabels, // X-axis labels (company names)
+  //   datasets: [
+  //     {
+  //       label: `File Size (KB)`,
+  //       data: fileSizeData,
+  //       borderColor: '#007bff', // Modern blue color
+  //       borderWidth: 3,
+  //       backgroundColor: 'rgba(0, 123, 255, 0.2)', // Light blue area fill
+  //       fill: true, // Adds area shading
+  //       tension: 0.4, // Smoother curve
+  //       pointBackgroundColor: '#0056b3', // Darker blue points
+  //       pointRadius: 6, // Larger points for better visibility
+  //       pointHoverRadius: 8, // Bigger points on hover
+  //       pointBorderColor: "#fff", // White border for contrast
+  //     },
+  //   ],
+  // };
+
+
+
+
+// const lineData = {
+//   labels: month, // Ensures all 12 months are listed
+//   datasets: [
+//     {
+//       label: `Growth Rate (${selectedYear})`,
+//       data: count, // Includes counts for all months, missing ones filled with 0
+//       borderColor: '#1661a9',
+//       borderWidth: 2,
+//       tension: 0.4,
+//       pointBackgroundColor: '#0d6abf',
+//       pointRadius: 3,
+//     },
+//   ],
+// };
 
 
 // const chartOptions = {
@@ -465,32 +716,123 @@ const lineData = {
 
   // Check if the role should have the cards displayed
   const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
+ 
 
 
+
+    console.log(OrgCount,"HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+
+    console.log(companyData,"AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    const totalUsers = companyData
+    .filter(company => 
+      company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      company.username.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .reduce((sum, company) => sum + (company.emp || 0), 0); // Summing `emp` values
+  
   return (
-    <div className='dashboard-body'>
+    <div className='dashboard-body '>
       <div className='dashboard-container' >
+      <input 
+  type="text" 
+  placeholder="Search Company..." 
+  className="dashboard-search" 
+  value={searchTerm} 
+  onChange={(e) => setSearchTerm(e.target.value)}
+/>
+
        {/* <Dashboard title="Visionboard" />*/}
         <h2 className='dashboard-h2'>Welcome, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()} </h2>
 
-        {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
-          <>
+
+
+    {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
+      <>
             <div className="cards-container">
+              
            
-              <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />}  />
-              <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: 'green'}} />} />
-              <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: '#b22d2d' }} />}/>
-              <Card title="Users" value={OrgCount.clientAdmins} icon={<IoPeople />} />
+            <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />} />
+      <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: "green" }} />} />
+      <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: "#b22d2d" }} />} />
+<Card title="Deleted Companies" value={OrgCount.deletedCompanies} icon={<FaBuildingCircleXmark style={{ color: "red" }} />} />
+      <Card title="Pending Documents" value={OrgCount.pending_org_count} icon={<FaBuildingCircleExclamation style={{ color: "yellow" }} />} />
+      <Card title="Users" value={OrgCount.user_count} icon={<IoPeople />} />
             </div>
+
+
+
+
+
+
+
+
+            
               
             <div className="charts-container">
+
+            {data.map}
+              <div className="chart">
+              <p className='dashboard_text'><center>File Size Trends</center></p>
+              <center>
+                <div className="slicer">
+                  <label className='dashboard-year-selector'>Select Year: </label>
+                  <select className="dashboard-year-select" value={selectedYear} onChange={handleYearChange}>
+                    
+  {[...new Set(data.map(ct => ct.year))].map(year => (
+    <option key={year} value={year}>{year}</option>
+  ))}
+</select>
+
+                </div>
+                </center>
+ <div className="chart">
+ <ResponsiveContainer width="100%" height="110%">
+ <LineChart data={fileSizeChartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <Line 
+                type="monotone" 
+                dataKey="fileSize" 
+                stroke="#007bff" 
+                strokeWidth={3} 
+                dot={{ fill: "#0056b3", r: 6, stroke: "#fff", strokeWidth: 2 }} 
+                activeDot={{ r: 8, fill: "#ff7300", stroke: "#fff", strokeWidth: 3 }}
+              />
+              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+              <XAxis dataKey="name" tick={{ fontSize: 12, fontWeight: "bold", fill: "#333" }} />
+              <YAxis tick={{ fontSize: 12, fontWeight: "bold", fill: "#333" }} tickFormatter={(value) => `${value} KB`} />
+              <Tooltip /> 
+            </LineChart>
+          </ResponsiveContainer>
+      
+      
+      </div>
+              </div>
+
+
+
+
+
+
+
+
+
               <div className="chart">
                 <p className='dashboard_text'><center>Company File Size</center></p>
                 <div className='dashboard-btngrp'>
-                  <button className='dashboard-top' onClick={sortAscending}><FaArrowUp /></button>
-                  <button className='dashboard-bottom' onClick={sortDescending}><FaArrowDown /></button>
-                  <input type='number' value={rowLimit} className='dashboard_num-input' onChange={handleRowLimitChange}/>
-                </div>
+  <button className='dashboard-top' onClick={sortAscending}>
+    <FaArrowUp />
+  </button>
+  <button className='dashboard-bottom' onClick={sortDescending}>
+    <FaArrowDown />
+  </button>
+  <input 
+    type='number' 
+    value={rowLimit} 
+    className='dashboard_num-input' 
+    onChange={handleRowLimitChange}
+  />
+</div>
+
+
                 
                 <div className='dashboard-table-container' style={{ maxHeight: '250px', overflowY: rowLimit > 5 ? 'scroll' : 'auto', position: "relative", bottom: "25px"}}>
                 <table className='dashboard_table'>
@@ -502,36 +844,73 @@ const lineData = {
                       <th className='dashboard-table-th'>File Size (KB)</th>
                     </tr>
                     </thead>
-                    <tbody className='dashboard-tbody'>
-                    {companyData.slice(0, rowLimit === "" ? companyData.length : rowLimit).map((company, index) => (
-                    <tr key={index} className='dashboard-table-row hover:bg-gray-50'>
-                      <td className='dashboard-table-td'>{company.org_name}</td>
-                      <td className='dashboard-table-td'>{company.username}</td>
-                      <td className='dashboard-table-td'>{company.doc_count}</td>
-                      <td className='dashboard-table-td'>{company.doc_size}</td>
-                    </tr>
-              ))}
-            </tbody>
+                   
+
+
+                    <tbody className="dashboard-tbody">
+          {companyData
+            .filter(
+              (company) =>
+                company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                company.username.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .slice(0, rowLimit === "" ? companyData.length : rowLimit)
+            .map((company, index) => (
+              <tr
+                key={index}
+                className="dashboard-table-row hover:bg-gray-50 cursor-pointer"
+                onClick={() => openModal(company)}
+              >
+                <td className="dashboard-table-td">{company.org_name}</td>
+                <td className="dashboard-table-td">{company.username}</td>
+                <td className="dashboard-table-td">{company.doc_count}</td>
+                <td className="dashboard-table-td">{company.doc_size}</td>
+              </tr>
+            ))}
+        </tbody>
+
+
+
                 </table>
-                </div>
-              </div>
-              {data.map}
-              <div className="chart">
-                <p className='dashboard_text'><center>Company Trends</center></p>
-                <center>
-                <div className="slicer">
-                  <label className='dashboard-year-selector'>Select Year: </label>
-                  <select className="dashboard-year-select" value={selectedYear} onChange={handleYearChange}>
-  {[...new Set(data.map(ct => ct.year))].map(year => (
-    <option key={year} value={year}>{year}</option>
-  ))}
-</select>
+
+                {isModalOpen && selectedCompany && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Company Details</h2>
+            <p><strong>Company Name:</strong> {selectedCompany.org_name}</p>
+            <p><strong>Username:</strong> {selectedCompany.username}</p>
+            <p><strong>Document Count:</strong> {selectedCompany.doc_count}</p>
+            <p><strong>File Size:</strong> {selectedCompany.doc_size} KB</p>
+            <p><strong>Users:</strong> {selectedCompany.emp}</p>
+            <button className="modal-close-btn" onClick={closeModal}>Close</button>
+          </div>
+        </div>
+      )}
 
                 </div>
-                </center>
-                <Line className="dashboard-linedata" data={lineData} options={chartOptions} />
-              </div>
+</div>
+
             </div>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </>
         )}
 
