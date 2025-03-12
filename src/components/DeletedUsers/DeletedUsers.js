@@ -107,7 +107,7 @@ const UserList = () => {
   const paginatedData = filteredData1.filter(item => !item.delete).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   const handleNavigate = () => {
-    navigate('/UserList');  };
+    navigate('/user-list');  };
 
   const handleResetFilter = (e) => {
     setSearchTerm('');
