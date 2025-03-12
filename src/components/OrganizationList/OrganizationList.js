@@ -58,34 +58,36 @@ const calendarRef = useRef(null);
         setShowSearchInfo(!showSearchInfo);
       };
 
-      useEffect(() => {
-        const fetchOrganization = async () => {
-            try {
-                setIsLoading(true);
-                const response = await apiServices.getOrganizations();
-                console.log("Organization Data:", response);
-                const organization = response.approved_organizations.map(org => ({
-                    id: org.id,
-                    username: org.auth_user.username,
-                    org_name: org.company_name,
-                    msa_doc: org.contract_doc,
-                    created_date: org.created_at,
-                    status: org.is_frozen,
-                    delete: org.is_delete,
-                }));
-                const filterdata = organization.filter(org => !org.delete)
-                setData(filterdata);
-                console.log("Organization Data:", organization);
-    
-                if (organization.length === 0) {
-                    setActionMessage("No Organizations are found in the list.");
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
+      const fetchOrganization = async () => {
+        try {
+            setIsLoading(true);
+            const response = await apiServices.getOrganizations();
+            console.log("Organization Data:", response);
+            const organization = response.approved_organizations.map(org => ({
+                id: org.id,
+                username: org.auth_user.username,
+                org_name: org.company_name,
+                msa_doc: org.contract_doc,
+                created_date: org.created_at,
+                status: org.is_frozen,
+                delete: org.is_delete,
+            }));
+            const filterdata = organization.filter(org => !org.delete)
+            setData(filterdata);
+            console.log("Organization Data:", organization);
+
+            if (organization.length === 0) {
+                setActionMessage("No Organizations are found in the list.");
             }
-        };
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+      useEffect(() => {
+       
     
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
@@ -115,19 +117,20 @@ const calendarRef = useRef(null);
     
             const response = status ? await apiServices.resumeOrganization(id) : await apiServices.freezeOrganization(id);
     
-            if (response && !response.error) {
+            if (response) {
                 // Refetch the organization list after successful update
-                const updatedResponse = await apiServices.getOrganizations();
-                const updatedOrganization = updatedResponse.organization.map(org => ({
-                    id: org.id,
-                    username: org.auth_user.username,
-                    org_name: org.company_name,
-                    msa_doc: org.contract_doc,
-                    created_date: org.created_at,
-                    status: org.is_frozen,
-                    delete: org.is_delete,
-                })).filter(org => !org.delete);
-                setData(updatedOrganization);
+                // const updatedResponse = await apiServices.getOrganizations();
+                // const updatedOrganization = updatedResponse.organization.map(org => ({
+                //     id: org.id,
+                //     username: org.auth_user.username,
+                //     org_name: org.company_name,
+                //     msa_doc: org.contract_doc,
+                //     created_date: org.created_at,
+                //     status: org.is_frozen,
+                //     delete: org.is_delete,
+                // })).filter(org => !org.delete);
+                // setData(updatedOrganization);
+                fetchOrganization()
             }
         } catch (error) {
             console.error("Error freezing organization:", error);
@@ -254,7 +257,7 @@ const calendarRef = useRef(null);
             // Call API to delete the organization
             const response = await apiServices.deleteOrganization(id);
             console.log(response,response.success,response.message)
-            if (response.error) { // Ensure API returns success
+            if (response) { // Ensure API returns success
                 setData(prevData => prevData.filter(org => org.id !== id));
             }
         } catch (error) {
