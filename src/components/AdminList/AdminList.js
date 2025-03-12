@@ -94,12 +94,10 @@ const AdminList = () => {
     const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
     setCurrentPage((prevPage) => Math.min(prevPage, totalPages));
   }, [filteredData, rowsPerPage]);
-
   
-
-  const handleCreateAdmin = () => {
-    navigate('/AdminCreation');
-  }
+  // const handleCreateAdmin = () => {
+  //   navigate('/AdminCreation');
+  // }
 
   const handleFreeze = async (id,orgId, status) => {
     try {
@@ -219,9 +217,9 @@ const AdminList = () => {
     }
   };
 
-  const handleDeleteList = async () => {
-    navigate('/DeletedAdminList');
-  }
+  // const handleDeleteList = async () => {
+  //   navigate('/DeletedAdminList');
+  // }
 
   const handleDropdownChange = (value) => {
     if (value === "New Admin") {

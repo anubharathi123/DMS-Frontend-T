@@ -108,6 +108,8 @@ const AdminList = () => {
     }
   });
 
+  const handleNavigate = () => {
+    navigate('/AdminList');  };
 
    useEffect(() => {
       const filteredAdmins = data.filter((item) => {
@@ -157,6 +159,7 @@ const AdminList = () => {
   return (
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Details</h1>
+      <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
       <div className="adminlist_controls">
         <div className="adminlist_search">
@@ -237,6 +240,9 @@ const AdminList = () => {
             <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
           </tr>
         ))}
+        <tr>
+          <td className="documenttable_td px-6 py-4 ">No Deleted Admins Found!!!</td>
+        </tr>
         </tbody>
       </table>
       <div className="adminlist_pagination">

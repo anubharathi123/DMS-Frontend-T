@@ -190,7 +190,7 @@ const calendarRef = useRef(null);
         return matchesSearch && matchesStatus && matchesDate;
     });
     
-   
+  
     
     const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
@@ -271,11 +271,10 @@ const calendarRef = useRef(null);
         currentPage * rowsPerPage
     );
 
-    
-
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Details</h1>
+           
 {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
         <option value="">Select an option</option>

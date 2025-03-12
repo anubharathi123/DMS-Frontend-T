@@ -182,11 +182,11 @@ const calendarRef = useRef(null);
             ? (statusFilter === "Active" ? org.status === false : org.status === true)
             : true;
     
-        const matchesDate = filterDate
-            ? new Date(org.created_date).toDateString() === new Date(filterDate).toDateString()
-            : true;
+        // const matchesDate = filterDate
+        //     ? new Date(org.created_date).toDateString() === new Date(filterDate).toDateString()
+        //     : true;
     
-        return matchesSearch && matchesStatus && matchesDate;
+        return matchesSearch && matchesStatus ;
     });
     
    
