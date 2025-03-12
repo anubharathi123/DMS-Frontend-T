@@ -32,6 +32,7 @@ const DocumentTable = () => {
   const [isBackupOpen, setIsBackupOpen] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null); // To store selected file URL
   const [filteredBackupData, setFilteredBackupData] = useState([]);
   const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
@@ -173,7 +174,13 @@ const DocumentTable = () => {
     handleDateChange();
   }, [startDate, endDate]);
 
-  
+  const handleOpenFile = (msa_doc) => {
+    if (msa_doc) {
+        setSelectedFile(`${url}${msa_doc}`);
+    } else {
+        alert("No file available.");
+    }
+};
 
   const handleDownload = async () => {
     if (!startDate || !endDate) {
@@ -240,7 +247,9 @@ const DocumentTable = () => {
     }
 };
 
-
+const handleClosePopup = () => {
+  setSelectedFile(null);
+};
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -281,6 +290,7 @@ const DocumentTable = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  
   const filedownload = async (file) => {
     try {
       const response = await apiServices.media({ file });
@@ -394,12 +404,22 @@ const DocumentTable = () => {
               
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documenttable_td px-6 py-4">
-              <a
+              {item.fileName ? (
+                                    <button
+                                        className="file-button"
+                                        onClick={() => handleOpenFile(item.fileName)}
+                                    >
+                                        {item.fileName.split('/').pop().substring(0, 20) + '...'}
+                                    </button>
+                                ) : (
+                                    "Null"
+                                )}
+              {/* <a
               title={item.fileName.split('/').pop()}
               onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
               style={{ cursor: "pointer", textDecoration: "underline" }}>
   {item.fileName.split('/').pop().substring(0, 20) + '...'}
-</a>
+</a> */}
               </td>
 
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
@@ -436,6 +456,25 @@ const DocumentTable = () => {
         <div className="documenttable_pageinfo flex items-center">
           <p className="documenttable_pageinfo_text mr-2">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
         </div>
+
+        {selectedFile && (
+    <div className="popup-overlay">
+        <div className="popup-content">
+            <button className="popup-close" onClick={handleClosePopup}>✖</button>
+            <iframe 
+                src={selectedFile} 
+                title="Document Viewer" 
+                className="popup-iframe"
+                style={{ width: "100%", height: "500px" }} 
+            />
+        
+              <button className='file-download' >
+                Download
+            </button>
+        </div>
+    </div>
+)}
+
         {/* Reset Filter Button */}
               {(searchTerm || filter || filterDate) && (
                      <button className="reset-filter-btn" onClick={handleResetFilter} 

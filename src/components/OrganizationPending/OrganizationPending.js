@@ -60,9 +60,9 @@ const calendarRef = useRef(null);
         const fetchOrganization = async () => {
             try {
                 setIsLoading(true);
-                const response = await apiServices.getOrganizations();
-    
-                const organization = response.organization.map(org => ({
+                const response = await apiServices.pendingOrganizations();
+                console.log(response)
+                const organization = response.pending_organizations.map(org => ({
                     id: org.id,
                     username: org.auth_user.username,
                     org_name: org.company_name,
