@@ -277,7 +277,7 @@ export default function Features() {
         <Box
           sx={{
             display: { xs: 'none', sm: 'flex' },
-            width: { xs: '100%', md: '70%' },
+            width: { xs: '70%', md: '50%' },
             height: 'var(--items-image-height)',
           }}
         >

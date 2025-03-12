@@ -58,7 +58,7 @@ export default function Hero() {
           </Typography>
           <Stack>
             <Button variant="contained" color="primary" size="small" onClick={() => window.location.href = '/login'} sx={{ minWidth: 'fit-content' }}>
-              Start now
+              Start Demo
             </Button>
           </Stack>
           <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center' }}>
