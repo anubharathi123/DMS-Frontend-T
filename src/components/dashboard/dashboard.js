@@ -84,7 +84,8 @@ const DashboardApp = () => {
   const [selectedYear, setSelectedYear] = useState('2023');
   const [OrgCount,setOrgCount] = useState([]);
   const [count, setCount] = useState([]);
- 
+  const [chartData, setChartData] = useState([]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -786,6 +787,7 @@ const fileSizeChartData = companyData
                 </div>
                 </center>
  <div className="chart">
+
  <ResponsiveContainer width="100%" height="110%">
  <LineChart data={fileSizeChartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <Line 
@@ -801,8 +803,7 @@ const fileSizeChartData = companyData
               <YAxis tick={{ fontSize: 12, fontWeight: "bold", fill: "#333" }} tickFormatter={(value) => `${value} KB`} />
               <Tooltip /> 
             </LineChart>
-          </ResponsiveContainer>
-      
+          </ResponsiveContainer>  
       
       </div>
               </div>
@@ -835,6 +836,9 @@ const fileSizeChartData = companyData
 
                 
                 <div className='dashboard-table-container' style={{ maxHeight: '250px', overflowY: rowLimit > 5 ? 'scroll' : 'auto', position: "relative", bottom: "25px"}}>
+                {companyData.length === 0 ? (
+        <p style={{ textAlign: "center", fontSize: "16px", color: "red" }}>No data found</p>
+      ) : (
                 <table className='dashboard_table'>
                 <thead className='dashboard_thead'>
                     <tr>
@@ -872,6 +876,7 @@ const fileSizeChartData = companyData
 
 
                 </table>
+      )}
 
                 {isModalOpen && selectedCompany && (
         <div className="modal-overlay">
