@@ -584,14 +584,14 @@ border-radius: 4px;  background-color: transparent;
 }
 
 /* Hide scrollbar for Firefox */
-html {
+/* html {
   scrollbar-width: none;
-}
+} */
 
 /* Prevent horizontal scrolling */
-body {
+/* body {
   overflow: hidden;
-}
+} */
 
 
 .icon {
