@@ -106,8 +106,14 @@ const UserList = () => {
 
   const paginatedData = filteredData1.filter(item => !item.delete).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
-  const handleNavigate = () => {
-    navigate('/user-list');  };
+  const handleDropdownChange = (value) => {
+    if (value === "User List") {
+      navigate('/user-list');
+    }
+  };
+
+  // const handleNavigate = () => {
+  //   navigate('/user-list');  };
 
   const handleResetFilter = (e) => {
     setSearchTerm('');
@@ -127,7 +133,11 @@ const UserList = () => {
   return (
     <div className="userlist-container">
       <h1 className="userlist-header">User Deleted Details</h1>
-      <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
+      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+        <option value="">Select an option</option>
+     <option value="User List">User List</option>
+     </select>
+      {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
       {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 
       <div className="userlist-controls">

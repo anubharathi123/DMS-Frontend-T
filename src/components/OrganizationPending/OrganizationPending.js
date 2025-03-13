@@ -254,6 +254,11 @@ const calendarRef = useRef(null);
     }
   };
   
+  const handleDropdownChange = (value) => {
+    if (value === "Organization List") {
+      navigate('/OrganizationList');
+    }
+  };
 
       const handleReject = async (id) => {
         //   if (!rejectionReason.trim()) {
@@ -327,7 +332,11 @@ const calendarRef = useRef(null);
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Pending for Approval</h1>
-            <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
+            <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+        <option value="">Select an option</option>
+     <option value="Organization List">Organization List</option>
+     </select>
+            {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>

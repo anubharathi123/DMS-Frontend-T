@@ -6,7 +6,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import { Search } from 'lucide-react';
 import Loader from "react-js-loader";
 import './verifydoc.css';
-import apiServices from '../../ApiServices/ApiServices'; // Adjust path if necessary
+import apiServices,{API_URL1} from '../../ApiServices/ApiServices';
 import { MdCancel } from "react-icons/md";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoMdInformationCircleOutline } from "react-icons/io";
@@ -31,6 +31,7 @@ const DocumentApproval = () => {
   const [rejectionReason, setRejectReason] = useState("");
   const [rejectDocumentId, setRejectDocumentId] = useState(null);
   const [showSearchInfo, setShowSearchInfo] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null); // To store selected file URL
   const [lastViewedId, setLastViewedId] = useState(null);
   
   const navigate = useNavigate();  
@@ -59,6 +60,7 @@ const DocumentApproval = () => {
 
   const host = 'http://localhost:3000';
   const calendarRef = useRef(null);
+  const url = API_URL1
 
   useEffect(() => {
     fetchDocuments();
@@ -227,6 +229,18 @@ const DocumentApproval = () => {
     applyFilters();
   }, [filterDate, filterDoc]);
 
+  const handleOpenFile = (msa_doc) => {
+    if (msa_doc) {
+        setSelectedFile(`${url}${msa_doc}`);
+    } else {
+        alert("No file available.");
+    }
+};
+
+const handleClosePopup = () => {
+  setSelectedFile(null);
+};
+
   const handleDocumentTypeChange = (e) => {
     setFilterDoc(e.target.value);
   };
@@ -348,14 +362,16 @@ const DocumentApproval = () => {
             <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
               <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documentapproval_td documentapproval_td_name px-6 py-4">
-  <button
-    className={`documentapproval_file_link underline ${item.viewed ? 'text-blue-600' : 'text-gray-800'}`}
-    onClick={() => handleFileOpen(item)}
-    aria-label={`View ${item.fileName}`}
-    title={item.fileName.split('/').pop()}
-  >
-    {item.fileName.length > 20 ? item.fileName.substring(0, 20) + "..." : item.fileName}
-  </button>
+              {item.fileName ? (
+                                    <button
+                                        className="file-button"
+                                        onClick={() => handleOpenFile(item.fileName)}
+                                    >
+                                        {item.fileName.split('/').pop().substring(0, 20) + '...'}
+                                    </button>
+                                ) : (
+                                    "Null"
+                                )}
   {lastViewedId === item.file_id && <span className="text-green-500 text-xs ml-2">(Last Viewed)</span>}
 </td>
 
@@ -373,6 +389,24 @@ const DocumentApproval = () => {
           ))}
         </tbody>
       </table>
+
+      {selectedFile && (
+    <div className="popup-overlay">
+        <div className="popup-content">
+            <button className="popup-close" onClick={handleClosePopup}>✖</button>
+            <iframe 
+                src={selectedFile} 
+                title="Document Viewer" 
+                className="popup-iframe"
+                style={{ width: "100%", height: "500px" }} 
+            />
+        
+              <button className='file-download' >
+                Download
+            </button>
+        </div>
+    </div>
+)}
 
       {isRejectPopupOpen && (
   <div className="reject-popup">

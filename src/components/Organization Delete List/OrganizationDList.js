@@ -151,30 +151,33 @@ const calendarRef = useRef(null);
         setCurrentPage(1);
     };
     
-    const handleNavigate = () => {
-        navigate('/OrganizationList');  };
+    const handleDropdownChange = (value) => {
+        if (value === "Organization List") {
+          navigate('/OrganizationList');
+        }
+      };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this organization?")) {
-            return;
-        }
+    // const handleDelete = async (id) => {
+    //     if (!window.confirm("Are you sure you want to delete this organization?")) {
+    //         return;
+    //     }
     
-        try {
-            setIsLoading(true);
+    //     try {
+    //         setIsLoading(true);
     
-            // Call API to delete the organization
-            const response = await apiServices.deleteOrganization(id);
-            console.log(response,response.success,response.message)
-            if (response.error) { // Ensure API returns success
-                setData(prevData => prevData.filter(org => org.id !== id));
-            }
-        } catch (error) {
-            console.error("Error deleting organization:", error);
-            alert("An error occurred while deleting.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    //         // Call API to delete the organization
+    //         const response = await apiServices.deleteOrganization(id);
+    //         console.log(response,response.success,response.message)
+    //         if (response.error) { // Ensure API returns success
+    //             setData(prevData => prevData.filter(org => org.id !== id));
+    //         }
+    //     } catch (error) {
+    //         console.error("Error deleting organization:", error);
+    //         alert("An error occurred while deleting.");
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.slice(
@@ -185,7 +188,11 @@ const calendarRef = useRef(null);
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Deleted Details</h1>
-            <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
+            <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+        <option value="">Select an option</option>
+     <option value="Organization List">Organization List</option>
+     </select>
+            {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             {/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
   <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 
   
