@@ -35,6 +35,7 @@ import OrganizationCreation from './components/Organization creation/CompanyCrea
 import NotFoundView from "./error 404/pages/page-not-found";
 import DateRangeSearch from "./components/document search/DateRangeSearch";
 import ProfileCard from "./components/profile final/Profile";
+// import OrganizationDeletion from "./components/OrganizationDeletion/OrganizationDeletion";
 import ClientPage from "./components/clientpage/clientpage";
 import CompanyUpdate from "./components/Organization update/CompanyUpdate"; 
 import SignUpCard from "./login2/SignUpSide";
@@ -43,6 +44,7 @@ import DeletedAdminList from "./components/DeletedAdminList/AdminList";
 import DeletedUsers from "./components/DeletedUsers/DeletedUsers";
 import ContractForm from './components/ContractForm/contractform';
 import OrganizationPending from "./components/OrganizationPending/OrganizationPending";
+import DeletedOrganizationList from './components/DeletedOrganizationList';
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
@@ -158,6 +160,8 @@ function AppContent() {
            }
         />
 
+
+ 
         {/* Protected Routes */}
         <Route
           path="/upload"
@@ -167,6 +171,23 @@ function AppContent() {
             </PrivateRoute>
           }
         />
+        
+        <Route
+          path="/DeletedOrganizationList"
+          element={
+            <PrivateRoute>
+              <DeletedOrganizationList />
+            </PrivateRoute>
+          }
+        />
+         {/* <Route
+          path="/Organizationdeletion"
+          element={
+            <PrivateRoute>
+              <OrganizationDeletion />
+            </PrivateRoute>
+          }
+        /> */}
         
         
         <Route
