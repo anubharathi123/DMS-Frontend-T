@@ -189,8 +189,12 @@ const CreateUser = () => {
             type="tel"
             name="mobile"
             value={formData.mobile}
-            onChange={(value) => handleChange({ target: { value } })}
+            onChange={(value) => setFormData((prevData) => ({ 
+              ...prevData, 
+              mobile: value || "" // Ensure it updates under "mobile"
+            }))}
             className="company-input"
+            maxLength='20'
             required
           />
         </div>

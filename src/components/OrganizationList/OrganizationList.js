@@ -69,8 +69,10 @@ const OrganizationList = () => {
                 created_date: org.created_at,
                 status: org.is_frozen,
                 delete: org.is_delete,
+                approve: org.is_approved,
             }));
             const filterdata = organization.filter(org => !org.delete)
+            .filter(org => org.approve === true)
             setData(filterdata);
             console.log("Organization Data:", organization);
 
@@ -86,7 +88,7 @@ const OrganizationList = () => {
 
       useEffect(() => {
        
-    
+
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
     

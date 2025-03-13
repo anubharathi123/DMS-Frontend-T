@@ -364,6 +364,7 @@ const handleClosePopup = () => {
               <td className="documentapproval_td documentapproval_td_name px-6 py-4">
               {item.fileName ? (
                                     <button
+                                        title={item.fileName}
                                         className="file-button"
                                         onClick={() => handleOpenFile(item.fileName)}
                                     >
