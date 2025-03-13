@@ -45,6 +45,7 @@ const OrganizationList = () => {
             alert("No file available.");
         }
     };
+    
 
     // Function to close the popup
     const handleClosePopup = () => {
