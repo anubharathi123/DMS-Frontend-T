@@ -15,7 +15,6 @@ const CreateUser = () => {
     name: '',
     mobile: '',
     email: '',
-    created_at: '',
     role: ''
   });
   const [message, setMessage] = useState('');
@@ -79,7 +78,6 @@ const CreateUser = () => {
       name: '',
       mobile: '',
       email: '',
-      created_at: '',
       role: ''
     });
     navigate('/user-list');

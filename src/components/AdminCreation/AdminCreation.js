@@ -21,11 +21,19 @@ const AdminCreation = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if (typeof e === "string") {
+      // This means it's coming from PhoneInput
+      setFormData((prevData) => ({
+        ...prevData,
+        mobile: e,  // Update mobile correctly
+      }));
+    } else {
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -124,7 +132,11 @@ const AdminCreation = () => {
             type="tel"
             name="mobile"
             value={formData.mobile}
-            onChange={(value) => handleChange({ target: { value } })}
+            onChange={(value) => setFormData((prevData) => ({ 
+              ...prevData, 
+              mobile: value || "" // Ensure it updates under "mobile"
+            }))}
+            maxLength="14"
             className="admincreation-input"
             required
           />

@@ -44,7 +44,7 @@ import DeletedAdminList from "./components/DeletedAdminList/AdminList";
 import DeletedUsers from "./components/DeletedUsers/DeletedUsers";
 import ContractForm from './components/ContractForm/contractform';
 import OrganizationPending from "./components/OrganizationPending/OrganizationPending";
-import DeletedOrganizationList from './components/DeletedOrganizationList';
+// import DeletedOrganizationList from './components/DeletedOrganizationList';
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 
@@ -172,14 +172,14 @@ function AppContent() {
           }
         />
         
-        <Route
+        {/* <Route
           path="/DeletedOrganizationList"
           element={
             <PrivateRoute>
               <DeletedOrganizationList />
             </PrivateRoute>
           }
-        />
+        /> */}
          {/* <Route
           path="/Organizationdeletion"
           element={

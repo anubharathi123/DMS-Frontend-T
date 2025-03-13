@@ -72,8 +72,10 @@ const calendarRef = useRef(null);
                     created_date: org.created_at,
                     email: org.auth_user.email,
                     delete: org.is_delete,
+                    approve:org.is_approve,
                 }));
-                const filterdata = organization.filter(org => !org.delete)
+                const filterdata = organization.filter(org => !org.approve)
+
                 setData(filterdata);
     
                 if (organization.length === 0) {
