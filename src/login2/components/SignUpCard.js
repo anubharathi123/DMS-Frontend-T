@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,6 +10,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import { styled } from '@mui/material/styles';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/material.css';
 import authService from '../../ApiServices/ApiServices';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -38,6 +40,7 @@ export default function SignUpCard({ onSwitch }) {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  // const role = localStorage.getItem('role');
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -62,19 +65,34 @@ export default function SignUpCard({ onSwitch }) {
     return Object.keys(tempErrors).length === 0;
   };
 
+  useEffect(() => {
+    const savedData = localStorage.getItem('signupFormData');
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateForm()) return;
-
+  
     try {
       const response = await authService.createuserOrganization(formData);
       alert('Company registered successfully!');
-      navigate('/login');
-      console.log('API Response:', response);
+      
+      // Clear stored form data after successful signup
+      localStorage.removeItem('signupFormData');
+  
+      navigate('/login'); // Redirect to login page after registration
     } catch (error) {
       console.error('Signup failed:', error);
       alert('Signup failed. Please try again later.');
     }
+  };
+
+  const handleContractClick = () => {
+    localStorage.setItem('signupFormData', JSON.stringify(formData));
+    navigate('/contractform');
   };
 
   return (
@@ -125,14 +143,24 @@ export default function SignUpCard({ onSwitch }) {
         </FormControl>
         <FormControl>
           <FormLabel>Mobile <span className="mandatory">*</span></FormLabel>
-          <TextField
+          <PhoneInput
+  // country={'us'}
+  value={''} // Keeps the input field empty
+  onChange={(value) => {
+    setFormData((prevData) => ({ ...prevData, mobile: value }));
+  }}
+  inputStyle={{ width: '100%', paddingTop:'8px', paddingBottom:'8px',}}
+  enableSearch
+/>
+  {errors.mobile && <Typography color="error">{errors.mobile}</Typography>}
+          {/* <TextField
             name="mobile"
             value={formData.mobile}
             onChange={handleChange}
             inputProps={{ maxLength: 10 }}
             error={!!errors.mobile}
             helperText={errors.mobile}
-          />
+          /> */}
         </FormControl>
         <FormControl>
           <FormLabel>Password <span className="mandatory">*</span></FormLabel>
@@ -144,6 +172,14 @@ export default function SignUpCard({ onSwitch }) {
             error={!!errors.password}
             helperText={errors.password}
           />
+        </FormControl>
+        <FormControl>
+          <Box display="flex" alignItems="center">
+            <Button type='button' onClick={handleContractClick}>
+            <Typography>Read and Sign the Contract</Typography>
+            </Button>
+          </Box>
+          {errors.contractAgreed && <Typography color="error">{errors.contractAgreed}</Typography>}
         </FormControl>
         <FormControl>
           <Box display="flex" alignItems="center">

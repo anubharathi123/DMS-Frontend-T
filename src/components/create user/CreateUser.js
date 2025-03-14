@@ -194,7 +194,7 @@ const CreateUser = () => {
               mobile: value || "" // Ensure it updates under "mobile"
             }))}
             className="company-input"
-            maxLength='20'
+            maxLength='15'
             required
           />
         </div>

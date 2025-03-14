@@ -38,6 +38,16 @@ const CompanyContractForm = () => {
 
   const fontStyles = ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana'];
 
+  const isFormComplete = () => {
+    return (
+      companyName.trim() !== '' &&
+      contractTitle.trim() !== '' &&
+      companyAddress.trim() !== '' &&
+      dateOfAgreement.trim() !== '' &&
+      signature
+    );
+  };
+
   const clearSignature = () => {
     if (sigCanvas.current) {
       sigCanvas.current.clear();
@@ -273,7 +283,7 @@ const CompanyContractForm = () => {
       // Save and navigate
       doc.save('contract.pdf');
       localStorage.setItem('msi','true')
-      navigate('/profile');
+      navigate('/sign-up');
     };
     
     // Fix handleSubmit1 to accept contractFile as a parameter
@@ -445,7 +455,7 @@ const CompanyContractForm = () => {
         </div>
 
         <div style={{ marginTop: '20px' }}>
-          <button type="button" onClick={generatePDF} style={buttonStyle}>Save and Download PDF</button>
+          <button type="button" onClick={generatePDF} style={buttonStyle} disabled={!isFormComplete()}>Save and Download PDF</button>
         </div>
       </form>
 

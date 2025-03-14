@@ -136,7 +136,7 @@ const AdminCreation = () => {
               ...prevData, 
               mobile: value || "" // Ensure it updates under "mobile"
             }))}
-            maxLength="14"
+            maxLength="16"
             className="admincreation-input"
             required
           />
