@@ -72,8 +72,10 @@ const calendarRef = useRef(null);
                     created_date: org.created_at,
                     email: org.auth_user.email,
                     delete: org.is_delete,
+                    approve:org.is_approve,
                 }));
-                const filterdata = organization.filter(org => !org.delete)
+                const filterdata = organization.filter(org => !org.approve)
+
                 setData(filterdata);
     
                 if (organization.length === 0) {
@@ -246,6 +248,7 @@ const calendarRef = useRef(null);
       setTimeout(() => {
         setActionMessage('');
       }, 3000);
+      alert(`Organization ${id} has been ${newStatus}`);
   
     } catch (error) {
       console.error('Error during approval/rejection:', error);
@@ -254,28 +257,35 @@ const calendarRef = useRef(null);
     }
   };
   
+  const handleDropdownChange = (value) => {
+    if (value === "Organization List") {
+      navigate('/OrganizationList');
+    }
+  };
 
       const handleReject = async (id) => {
         //   if (!rejectionReason.trim()) {
         //     alert("Please enter a reason for rejection.");
         //     return;
         //   }
+        setActionMessage('');
+        setIsLoading(true);
         
           try {
             setIsLoading(true);
-            await apiServices.rejectOrganization(id, {
-              approval_status: "Rejected",
-            });
+            console.log('Reject:', id);
+            await apiServices.rejectOrganization(id, { approval_status: "Rejected",});
             console.log('Rejected:', id);
-        
+            setTimeout(() => {
+                setActionMessage('');
+              }, 3000);
             // Update the status with the rejection reason
-            const updatedData = data.map((org) =>
-              org.id === id
-                ? { ...org, status: "Rejected"}
-                : org
-            );
-        
+            const updatedData = data.filter((org) => org.id !== id);
             setData(updatedData);
+            alert(`Organization ${id} has been Rejected`);
+          }
+        
+            // setData(updatedData);
             // setFilteredData(updatedData);
             // setRejectPopupOpen(false);
             // setRejectReason("");
@@ -283,7 +293,7 @@ const calendarRef = useRef(null);
             // // Display alert and navigate after submission
             // alert("Rejection Reason has been submitted");
             // navigate("/Documentlist", { state: { id } });
-          } catch (error) {
+           catch (error) {
             console.error("Error rejecting Organization:", error);
           } finally {
             setIsLoading(false);
@@ -292,27 +302,27 @@ const calendarRef = useRef(null);
     
     
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this organization?")) {
-            return;
-        }
+    // const handleDelete = async (id) => {
+    //     if (!window.confirm("Are you sure you want to delete this organization?")) {
+    //         return;
+    //     }
     
-        try {
-            setIsLoading(true);
+    //     try {
+    //         setIsLoading(true);
     
-            // Call API to delete the organization
-            const response = await apiServices.deleteOrganization(id);
-            console.log(response,response.success,response.message)
-            if (response.error) { // Ensure API returns success
-                setData(prevData => prevData.filter(org => org.id !== id));
-            }
-        } catch (error) {
-            console.error("Error deleting organization:", error);
-            alert("An error occurred while deleting.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    //         // Call API to delete the organization
+    //         const response = await apiServices.deleteOrganization(id);
+    //         console.log(response,response.success,response.message)
+    //         if (response.error) { // Ensure API returns success
+    //             setData(prevData => prevData.filter(org => org.id !== id));
+    //         }
+    //     } catch (error) {
+    //         console.error("Error deleting organization:", error);
+    //         alert("An error occurred while deleting.");
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.filter(org => !org.delete).slice(
@@ -327,7 +337,11 @@ const calendarRef = useRef(null);
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Pending for Approval</h1>
-            <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
+            <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+        <option value="">Select an option</option>
+     <option value="Organization List">Organization List</option>
+     </select>
+            {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             <div className='organization-container_controls'>
                 <div className='organization-search'>
                     <Search className='org_search-icon'></Search>
@@ -494,7 +508,7 @@ const calendarRef = useRef(null);
                 </div>
             </div>
             
-            {isLoading && (
+        {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">
             <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={100} />

@@ -38,6 +38,16 @@ const CompanyContractForm = () => {
 
   const fontStyles = ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Verdana'];
 
+  const isFormComplete = () => {
+    return (
+      companyName.trim() !== '' &&
+      contractTitle.trim() !== '' &&
+      companyAddress.trim() !== '' &&
+      dateOfAgreement.trim() !== '' &&
+      signature
+    );
+  };
+
   const clearSignature = () => {
     if (sigCanvas.current) {
       sigCanvas.current.clear();
@@ -193,120 +203,73 @@ const CompanyContractForm = () => {
     (mode === 'upload' && uploadedImage);
 
     const generatePDF = async () => {
-      const doc = new jsPDF();
+        const doc = new jsPDF();
     
-      // Set title and date at the top-left
-      doc.setFont('Arial', 'B', 16);
-      doc.text('Company Contract Agreement', 20, 20);
+        // Set title
+        doc.setFont('Arial', 'bold');
+        doc.text('Company Contract Agreement', 60, 20);
     
-      // Set current date at the top-right
-      const currentDate = new Date().toLocaleDateString();
-      doc.setFont('Arial', '', 12);
-      doc.text(`Date: ${currentDate}`, 160, 20);
+        // Set current date at the top-right
+        const currentDate = new Date().toLocaleDateString();
+        doc.setFontSize(12);
+        doc.text(`Date: ${currentDate}`, 160, 20);
     
-      // Define a function to add content to the document with page breaks if necessary
-      const addContentWithPageBreaks = (content, fontSize, startX, startY) => {
-        let y = startY;
-        const lineHeight = fontSize === 10 ? 5 : 7;
+        // Define a function to add formatted content
+        const addFormattedText = (title, content, yPosition , xPosition) => {
+            doc.setFont('Arial', 'bold');
+            doc.setFontSize(12)
+            doc.text(title, 10, yPosition);
+            doc.setFont('Arial', '', 10);
+            let splitText = doc.splitTextToSize(content, 180);
+            doc.text(splitText, 10, yPosition + 6);
+            return yPosition + (splitText.length * 7) + 4; // Adjust for line spacing
+        };
     
-        const splitContent = doc.splitTextToSize(content, 180); // Split content to fit within page width
+        // Add Terms and Conditions Content
+        let yPosition = 30;
+         yPosition = addFormattedText("Terms and Conditions", "", yPosition);
+        yPosition = addFormattedText("Introduction:", "The DMS provides an online platform for storing, managing, and sharing documents. The Service is intended for use by individuals, organizations, and businesses seeking an efficient way to manage documents electronically.", yPosition);
+        
+        yPosition = addFormattedText("User Responsibilities:", "- Ensure accuracy and completeness of data submitted.\n- Do not upload or distribute unlawful, defamatory, or inappropriate content.\n- Maintain the confidentiality of your account credentials and take responsibility for all activities under your account.\n- Ensure that all users of the system under your account comply with these Terms and Conditions.", yPosition);
+        
+        yPosition = addFormattedText("Privacy and Data Protection:", "We collect personal information for registration and usage purposes. We use secure storage methods to protect your data but cannot guarantee absolute security.", yPosition-5);
+        
+        yPosition = addFormattedText("Subscription and Payment:", "Some features of the DMS are available on a subscription basis. You agree to pay the applicable fees based on your subscription plan. Fees are non-refundable. If you fail to make payments, we reserve the right to suspend or terminate your account.", yPosition);
+        
+        yPosition = addFormattedText("Termination:", "We reserve the right to suspend or terminate your account in case of violations of the Terms. You can terminate your account at any time by providing a written notice to our support team.", yPosition);
+        
+        yPosition = addFormattedText("Governing Law:", "These Terms are governed by the laws of [Your Country/State]. Any disputes will be subject to the jurisdiction of the courts located in [Your Jurisdiction].", yPosition);
+        
+        yPosition = addFormattedText("Indemnification:", "You agree to indemnify, defend, and hold harmless DMS, its affiliates, and its employees from any claims, damages, liabilities, and expenses arising out of your use of the Service, or any violation of these Terms.", yPosition);
+        
+        yPosition = addFormattedText("Limitation of Liability:", "In no event shall DMS be liable for any indirect, incidental, special, or consequential damages arising out of your use or inability to use the Service, even if we have been advised of the possibility of such damages.", yPosition);
     
-        for (let i = 0; i < splitContent.length; i++) {
-          if (y + lineHeight > 280) { // Check if the content is going to overflow
-            doc.addPage(); // Add a new page if the content overflows
-            y = 20; // Reset y-position for the new page
-          }
-          doc.text(splitContent[i], startX, y); // Add the current line of content
-          y += lineHeight; // Move down for the next line
+        // Contract Details Section
+        yPosition += 10;
+         doc.setFont('Arial', 'bold');
+        doc.text("Contract Details:", 10, yPosition);
+        doc.setFont('Arial', '', 10);
+        yPosition += 6;
+        doc.text(`Company Name: ${companyName}`, 10, yPosition+3);
+        yPosition += 6;
+        doc.text(`Authority Name: ${contractTitle}`, 10, yPosition+5);
+        yPosition += 6;
+        doc.text(`Place: ${companyAddress}`, 10, yPosition+7);
+        yPosition += 6;
+        doc.text(`Date of Agreement: ${dateOfAgreement}`, 140, yPosition-20);
+    
+        // Signature Section
+        yPosition += 10;
+        doc.setFont('Arial', 'bold', 22);
+        doc.text("Signature:", 140, yPosition-20);
+        if (mode === 'upload' && uploadedImage) {
+            doc.addImage(uploadedImage, 'JPEG', 10, yPosition + 5, 50, 25);
+        } else if (mode === 'type' && typedSignature) {
+            doc.setFont('Arial', 'italic', 14);
+            doc.text(typedSignature, 15, yPosition + 10);
+        } else if (mode === 'draw' && signature) {
+            doc.addImage(signature, 'PNG', 140, yPosition - 15, 50, 25);
         }
-      };
-    
-      // Terms and Conditions Section
-      doc.setFont('Arial', '', 10); // Set smaller font size for the terms content
-      doc.text('Terms and Conditions:', 10, 30);
-      const termsContent = `
-      Introduction:
-
-          The DMS provides an online platform for storing, managing, and sharing documents. The Service is intended for use by individuals, organizations, and businesses seeking an efficient way to manage documents electronically.
-    
-      User Responsibilities:
-
-        - Ensure accuracy and completeness of data submitted.
-        - Do not upload or distribute unlawful, defamatory, or inappropriate content.
-        - Maintain the confidentiality of your account credentials and take responsibility for all activities under your account.
-        - Ensure that all users of the system under your account comply with these Terms and Conditions.
-    
-      Privacy and Data Protection:
-
-              We collect personal information for registration and usage purposes. We use secure storage methods to protect your data but cannot guarantee absolute security.
-    
-      Subscription and Payment:
-
-              Some features of the DMS are available on a subscription basis. You agree to pay the applicable fees based on your subscription plan. Fees are non-refundable. If you fail to make payments, we reserve the right to suspend or terminate your account.
-    
-      Termination:
-
-              We reserve the right to suspend or terminate your account in case of violations of the Terms. You can terminate your account at any time by providing a written notice to our support team.
-    
-      Governing Law:
-
-               These Terms are governed by the laws of [Your Country/State]. Any disputes will be subject to the jurisdiction of the courts located in [Your Jurisdiction].
-    
-      Indemnification:
-
-               You agree to indemnify, defend, and hold harmless DMS, its affiliates, and its employees from any claims, damages, liabilities, and expenses arising out of your use of the Service, or any violation of these Terms.
-    
-      Limitation of Liability:
-
-               In no event shall DMS be liable for any indirect, incidental, special, or consequential damages arising out of your use or inability to use the Service, even if we have been advised of the possibility of such damages.
-    
-      Service Availability:
-
-               DMS does not guarantee that the Service will be available at all times or without interruption. We will make reasonable efforts to ensure availability, but we cannot be held liable for any downtime or service interruptions.
-    
-      Changes to Terms:
-
-               We reserve the right to modify or update these Terms at any time. We will notify you of any material changes via email or notification on the platform. Continued use of the Service after such changes constitutes acceptance of the updated Terms.
-    
-      Ownership and Intellectual Property:
-
-               All intellectual property rights related to the Service and its content, including but not limited to copyrights, trademarks, and logos, are owned by DMS or its licensors. You are granted a limited, non-transferable license to use the Service.
-    
-      Dispute Resolution:
-
-               Any disputes arising from these Terms shall first be resolved through informal negotiations. If the dispute cannot be resolved through negotiations, it shall be settled through binding arbitration in [Location].
-      `;
-    
-    
-      // Add terms content with page breaks if necessary
-      addContentWithPageBreaks(termsContent, 10, 20, 40);
-    
-      // Contract Details Section - Left side
-      doc.setFont('Arial', '', 12);
-      let yPosition = 150; // Start position for contract details section
-    
-      doc.text(`Company Name: ${companyName}`, 20, yPosition + 40);
-      doc.text(`Authority Name: ${contractTitle}`, 20, yPosition + 50);
-      doc.text(`Place: ${companyAddress}`, 20, yPosition + 60);
-    
-      // Move to next page if necessary
-      if (yPosition + 30 > 280) {
-        doc.addPage();
-        yPosition = 20; // Reset y-position for new page
-      }
-    
-      // Signature Section - Right side
-      doc.text(`Date of Agreement: ${dateOfAgreement}`, 130, yPosition + 40);
-      doc.text('Signature:', 130, yPosition + 50);
-    
-      if (mode === 'upload' && uploadedImage) {
-        doc.addImage(uploadedImage, 'JPEG', 160, yPosition + 45, 40, 20); // Adjust position and size for uploaded image
-      } else if (mode === 'type' && typedSignature) {
-        doc.setFont('Arial', 'I', 14);
-        doc.text(typedSignature, 155, yPosition + 50); // Right-align the typed signature
-      } else if (mode === 'draw' && signature) {
-        doc.addImage(signature, 'PNG', 160, yPosition + 40, 40, 20); // Increased vertical position (further down)
-      }
     
       // Save the PDF to a Blob
       const pdfBlob = doc.output('blob');
@@ -320,7 +283,7 @@ const CompanyContractForm = () => {
       // Save and navigate
       doc.save('contract.pdf');
       localStorage.setItem('msi','true')
-      navigate('/profile');
+      navigate('/sign-up');
     };
     
     // Fix handleSubmit1 to accept contractFile as a parameter
@@ -492,7 +455,7 @@ const CompanyContractForm = () => {
         </div>
 
         <div style={{ marginTop: '20px' }}>
-          <button type="button" onClick={generatePDF} style={buttonStyle}>Save and Download PDF</button>
+          <button type="button" onClick={generatePDF} style={buttonStyle} disabled={!isFormComplete()}>Save and Download PDF</button>
         </div>
       </form>
 

@@ -12,9 +12,6 @@ import refreshIcon from '../../assets/images/refresh-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FaDownload } from "react-icons/fa";
-
-
 
 const OrganizationList = () => {
     const [data, setData] = useState([]);
@@ -27,17 +24,17 @@ const OrganizationList = () => {
     // const [organization, setOrganization] = useState([])
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
-      const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
       
     const itemsPerPage = 5;
     const navigate = useNavigate();
-     const [showSearchInfo, setShowSearchInfo] = useState(false);
-const calendarRef = useRef(null);
-     const searchInfoRef = useRef(null); // Reference for search info popup
-     const role = localStorage.getItem('role');
-     const url = API_URL1
+    const [showSearchInfo, setShowSearchInfo] = useState(false);
+    const calendarRef = useRef(null);
+    const searchInfoRef = useRef(null); // Reference for search info popup
+    const role = localStorage.getItem('role');
+    const url = API_URL1
 
-     const handleEdit = (id) => {
+    const handleEdit = (id) => {
         navigate(`/CompanyUpdate/${id}`);
     };
 
@@ -48,17 +45,18 @@ const calendarRef = useRef(null);
             alert("No file available.");
         }
     };
+    
 
     // Function to close the popup
     const handleClosePopup = () => {
         setSelectedFile(null);
     };
 
-     const handleSearchInfo = () => {
+    const handleSearchInfo = () => {
         setShowSearchInfo(!showSearchInfo);
       };
 
-      const fetchOrganization = async () => {
+    const fetchOrganization = async () => {
         try {
             setIsLoading(true);
             const response = await apiServices.getOrganizations();
@@ -71,8 +69,10 @@ const calendarRef = useRef(null);
                 created_date: org.created_at,
                 status: org.is_frozen,
                 delete: org.is_delete,
+                approve: org.is_approved,
             }));
             const filterdata = organization.filter(org => !org.delete)
+            .filter(org => org.approve === true)
             setData(filterdata);
             console.log("Organization Data:", organization);
 
@@ -88,7 +88,7 @@ const calendarRef = useRef(null);
 
       useEffect(() => {
        
-    
+
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
     
@@ -140,8 +140,8 @@ const calendarRef = useRef(null);
     };
     
     
-      useEffect(() => {
-        const handleClickOutside = (event) => {
+    useEffect(() => {
+    const handleClickOutside = (event) => {
           if (searchInfoRef.current && !searchInfoRef.current.contains(event.target)) {
             setShowSearchInfo(false);
           }
@@ -162,7 +162,7 @@ const calendarRef = useRef(null);
         setSearchTerm(e.target.value);
       };
 
-      const handleStatusFilter = (e) => {
+    const handleStatusFilter = (e) => {
         setStatusFilter(e.target.value);
         setCurrentPage(1);
     };
@@ -173,7 +173,7 @@ const calendarRef = useRef(null);
       
       
 
-      const filteredData = data.filter(org => {
+    const filteredData = data.filter(org => {
         const matchesSearch = searchTerm
             ? org.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
               org.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||

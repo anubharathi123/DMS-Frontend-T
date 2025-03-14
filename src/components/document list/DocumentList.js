@@ -406,6 +406,7 @@ const handleClosePopup = () => {
               <td className="documenttable_td px-6 py-4">
               {item.fileName ? (
                                     <button
+                                        title={item.fileName}
                                         className="file-button"
                                         onClick={() => handleOpenFile(item.fileName)}
                                     >

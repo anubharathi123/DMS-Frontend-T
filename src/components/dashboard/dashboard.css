@@ -776,9 +776,14 @@ cursor: pointer;
 }
 
 /* Hide scrollbar for Firefox */
- 
+/* html {
+  scrollbar-width: none;
+} */
 
- 
+/* Prevent horizontal scrolling */
+/* body {
+  overflow: hidden;
+} */
 
 
 .icon {

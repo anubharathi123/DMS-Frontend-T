@@ -256,7 +256,7 @@ const AdminList = () => {
       <h1 className="adminlist_header">Admin Details</h1>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
       <option value="">Select</option>
-     <option value="New Admin">New Admin</option>
+     <option value="New Admin">Add Admin</option>
      <option value="Deleted List">Deleted List</option>
    </select>
       {/* <div>

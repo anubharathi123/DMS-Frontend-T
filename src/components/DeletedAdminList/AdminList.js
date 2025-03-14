@@ -108,8 +108,14 @@ const AdminList = () => {
     }
   });
 
-  const handleNavigate = () => {
-    navigate('/AdminList');  };
+  const handleDropdownChange = (value) => {
+    if (value === "Admin List") {
+      navigate('/AdminList');
+    }
+  };
+
+  // const handleNavigate = () => {
+  //   navigate('/AdminList');  };
 
    useEffect(() => {
       const filteredAdmins = data.filter((item) => {
@@ -158,8 +164,12 @@ const AdminList = () => {
 
   return (
     <div className="adminlist_container">
-      <h1 className="adminlist_header">Admin Details</h1>
-      <button className='organization-backbtn' onClick={handleNavigate} >Back</button>
+      <h1 className="adminlist_header">Admin Deleted Details</h1>
+      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+        <option value="">Select an option</option>
+     <option value="Admin List">Admin List</option>
+     </select>
+      {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
       <div className="adminlist_controls">
         <div className="adminlist_search">
