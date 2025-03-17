@@ -200,3 +200,63 @@
   color: darkred;
 }
 
+.company-phone-input .react-tel-input {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  position: relative;
+  width: 100% !important;
+  left: 21px;
+  bottom: 9px;
+}
+
+.company-phone-input .react-tel-input .special-label {
+  position: absolute;
+  z-index: 1;
+  top: -7px;
+  left: 25px;
+  display: none !important;
+  background: white;
+  padding: 0 5px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.company-phone-input .react-tel-input .form-control {
+  font-size: 15px;
+  background: #FFFFFF;
+  border: 1px solid #CACACA;
+  position: relative !important;
+  top: 8px !important;
+  right: 21px !important;
+  border-radius: 5px !important;
+  width: 398px !important;
+  height: 35px !important;
+  padding: 11px 20px 10px 48px !important;
+  outline: none;
+  transition: box-shadow ease .25s, border-color ease .25s;
+}
+
+.company-phone-input .react-tel-input .flag-dropdown {
+  background: none !important;
+  border: none !important;
+}
+
+.company-phone-input .react-tel-input .selected-flag {
+  width: auto !important;
+  /* padding-left: 10px !important; */
+  padding-top: 46px !important;
+}
+
+.company-phone-input .react-tel-input .selected-flag:hover {
+ background: none;
+}
+
+.company-phone-input .react-tel-input .selected-flag .flag {
+  position: absolute !important;
+    top: 56% !important;
+    right: 0;
+  
+    /* margin-top: -12px; */
+}
+
+

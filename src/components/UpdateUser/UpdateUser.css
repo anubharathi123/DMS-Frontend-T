@@ -86,7 +86,7 @@
   height: 30px;
   padding: 10px;
   font-size: 14px;
-  border: 1px solid #ddd;
+  border: none;
   border-radius: 5px;
   box-sizing: border-box;
 }

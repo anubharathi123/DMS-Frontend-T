@@ -15,9 +15,24 @@ import Logo from '../../assets/images/Logo.png';
 import PhoneInput from 'react-phone-input-2';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import apiservices from '../../ApiServices/ApiServices'
+import "./footer.css"
 // import SitemarkIcon from './SitemarkIcon';
-
 function Copyright() {
+
+  // const fetchData = async () => {
+  //   const response = await apiservices.formenquiry();
+  //   const data = await response.json();
+  //   console.log('Form Response:', response)
+  //   if(response){
+  //       console.log(response)
+  //   }
+  //   console.log(data);
+  // }
+  // fetchData();
+
+
+
   return (
     <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
       {'Copyright © '}
@@ -148,20 +163,27 @@ export default function Footer() {
             Contact
           </Link>*/}
        
-        <Stack spacing={2} sx={{ width: '100%' }} >
-          <TextField label="Name" fullWidth variant="outlined" size="small" />
-          <TextField type="email" label="Email" fullWidth variant="outlined" size="small" />
+        <Stack spacing={1} sx={{ textAlign:"left"}} >
+          <FormLabel >Name</FormLabel>
+          <TextField fullWidth variant="outlined" size="small" className='name'/>
+          <FormLabel >Email</FormLabel>
+          <TextField type="email" fullWidth variant="outlined" size="small" />
           {/* <TextField label="Mobile" fullWidth variant="outlined" size="small" /> */}
+          <FormLabel >Mobile</FormLabel>
           <PhoneInput
-                // country={'us'}
+                country={'ae'}
                 value={''} // Keeps the input field empty
                 inputStyle={{ width: '100%',height:"40px", paddingTop:'8px', paddingBottom:'8px',}}
                 enableSearch
               />
-          <TextField label="Country" fullWidth variant="outlined" size="small" />
-          <TextField label="Company Name" fullWidth variant="outlined" size="small" />
-          <TextField label="Designation" fullWidth variant="outlined" size="small" />
-          <TextField label="Team Size" fullWidth variant="outlined" size="small" />
+              <FormLabel >Country</FormLabel>
+          <TextField fullWidth variant="outlined" size="small" />
+          <FormLabel >Company Name</FormLabel>
+          <TextField fullWidth variant="outlined" size="small" />
+          <FormLabel >Designation</FormLabel>
+          <TextField  fullWidth variant="outlined" size="small" />
+          <FormLabel >Team Size</FormLabel>
+          <TextField fullWidth variant="outlined" size="small" />
             <FormControl>
               <FormLabel>Contact Timing <span className="mandatory">*</span></FormLabel>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -171,6 +193,7 @@ export default function Footer() {
                   fullWidth
                   variant="outlined"
                   size="small"
+                  className='country-name'
                   SelectProps={{
                     native: true,
                   }}
@@ -194,7 +217,8 @@ export default function Footer() {
               </Box>
               
             </FormControl>
-          <textarea name="comment" form="usrform" style={{borderRadius: '5px', borderColor: 'lightgray'}}>Enter text here...</textarea>
+            <FormLabel >Comments</FormLabel>
+          <textarea name="comment" form="usrform" style={{borderRadius: '5px', borderColor: 'lightgray', height:"100px"}}>Enter text here...</textarea>
           <Button variant="contained" color="primary" size="large">
             Submit
           </Button>

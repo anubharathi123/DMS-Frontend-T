@@ -308,8 +308,8 @@ const CompanyUpdate = () => {
             </div>
           </div>
 
-          {/* Contract Document */}
-          <div className="company-creation-form-group">
+       
+          {/* <div className="company-creation-form-group">
             <label className="company-creation-label">
               Master Services Agreement(MSA) <span className="company-creation-mandatory">*</span>
             </label>
@@ -318,8 +318,8 @@ const CompanyUpdate = () => {
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onClick={handleUploadClick} // Trigger file dialog on single click
->
-            <input type="file" id="contract_doc" onChange={handleFileChange} className="company-creation-file-input"
+> */}
+            {/* <input type="file" id="contract_doc" onChange={handleFileChange} className="company-creation-file-input"
               hidden />
             <div className="company-creation-upload-text">
               <FaCloudUploadAlt />
@@ -327,21 +327,20 @@ const CompanyUpdate = () => {
               <div className="company-creation-file-name">
               {company?.contract_doc}
               {/* Cross button to remove the file */}
-              <span className="company-creation-remove-icon" onClick={handleRemoveFile}>
+              {/* <span className="company-creation-remove-icon" onClick={handleRemoveFile}>
               &#10005;
               </span>
-            </div>
-          ) : (
-        <p> Drag and drop or browse 
+            </div> */}
+          {/* ) : ( */}
+        {/* <p> Drag and drop or browse 
             
             <a href="#!">
                 here
             </a>
-      </p>
-    )}
-  </div>
-</div>
-          </div>
+      </p> */}
+  {/* </div>
+</div> */}
+          {/* </div> */}
 
           {/* Error Message */}
           {/* {error && <div className="company-creation-error">{error}</div>} */}

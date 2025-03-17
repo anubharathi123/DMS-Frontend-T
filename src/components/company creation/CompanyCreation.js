@@ -5,8 +5,8 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import Loader from "react-js-loader";
 import authService from '../../ApiServices/ApiServices';
 import apiServices from '../../ApiServices/ApiServices';
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 
 const CompanyCreation = () => {
@@ -204,15 +204,20 @@ const CompanyCreation = () => {
             <label className="company-creation-label">
               Mobile <span className="company-creation-mandatory">*</span>
             </label>
+            <div className='company-phone-input'>
             <PhoneInput
-              className='company-creation-input1'
+              className='phone'
+              country={'ae'}                                      
               value={company.mobile}
               // pattern="[0-9]{10}"
+              placeholder="+971"
               maxLength="15"
+              enableSearch
               required
               onChange={(value) => handleChange({ target: { value } })} 
-              
+              countryCodeEditable={false} // Prevents users from changing the country code manually
               />
+              </div>
           </div>
 
           {/* Email */}

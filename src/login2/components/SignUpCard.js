@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import { styled } from '@mui/material/styles';
 import PhoneInput from 'react-phone-input-2';
+import './SignUpCard.css'
 import 'react-phone-input-2/lib/material.css';
 import authService from '../../ApiServices/ApiServices';
 
@@ -144,12 +145,12 @@ export default function SignUpCard({ onSwitch }) {
         <FormControl>
           <FormLabel>Mobile <span className="mandatory">*</span></FormLabel>
           <PhoneInput
-  // country={'us'}
+  country={'ae'}
   value={''} // Keeps the input field empty
   onChange={(value) => {
     setFormData((prevData) => ({ ...prevData, mobile: value }));
   }}
-  inputStyle={{ width: '100%', paddingTop:'8px', paddingBottom:'8px',}}
+  inputStyle={{ width: '432px', paddingTop:'8px', paddingBottom:'8px',}}
   enableSearch
 />
   {errors.mobile && <Typography color="error">{errors.mobile}</Typography>}

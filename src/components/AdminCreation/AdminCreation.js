@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiServices from "../../ApiServices/ApiServices"; // Adjust the path if necessary
 import Loader from "react-js-loader";
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import "./AdminCreation.css";
 
 const AdminCreation = () => {
@@ -128,9 +128,11 @@ const AdminCreation = () => {
           <label className="admincreation-label">
             Mobile <span className="mandatory">*</span>
           </label>
+          <div className="custom-phone-input">
           <PhoneInput
             type="tel"
             name="mobile"
+            country={'ae'}
             value={formData.mobile}
             onChange={(value) => setFormData((prevData) => ({ 
               ...prevData, 
@@ -140,6 +142,7 @@ const AdminCreation = () => {
             className="admincreation-input"
             required
           />
+          </div>
         </div>
 
         {/* Email */}
