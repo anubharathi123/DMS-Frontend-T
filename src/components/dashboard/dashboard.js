@@ -163,12 +163,19 @@ const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.coun
     const [companyData, setCompanyData] = useState([]);
     const [uniqueYears, setUniqueYears] = useState([]); // Store unique years for dropdown
     const [isLoading, setIsLoading] = useState(false);
-  
+    const [searchTermAdmin, setSearchTermAdmin] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+
     const [rowLimit, setRowLimit] = useState('4');
     const username = localStorage.getItem('name') || "User";
     const [data, setData] = useState([]);
   
-  
+   const filteredDataAdmin = filteredMockData.filter(
+    (user) =>
+      user.username.toLowerCase().includes(searchTermAdmin.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchTermAdmin.toLowerCase())
+  );
 
 
 
@@ -906,37 +913,69 @@ const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.coun
 
   {/* Right Side: Table */}
   <div className="table-container">
-  {(isAdminOrDocumentRole) && (
-    <table className="company-data-table">
-      <thead>
-        <tr>
-           <th>Username</th>
-          <th>Doc Count</th>
-          <th>File Size (KB)</th>
-          <th>Role</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredMockData.length > 0 ? (
-          filteredMockData.map((user) => (
-            <tr key={user.id}>
-               <td>{user.username}</td>
-              <td>{user.docCount}</td>
-              <td>{user.fileSize}</td>
-              <td>{user.role}</td>
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan="5" style={{ textAlign: "center", color: "red", fontWeight: "bold" }}>
-              No data found for {selectedRole}
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  )}
-</div>
+      {isAdminOrDocumentRole && (
+        <>
+          {/* 🔍 Search Input */}
+          <div className="search-container" style={{ marginBottom: "10px", textAlign: "right" }}>
+            {!isSearchFocused && !searchTermAdmin ? (
+              <FaSearch
+                style={{ cursor: "pointer", fontSize: "18px", color: "#555" }}
+                onClick={() => setIsSearchFocused(true)}
+              />
+            ) : (
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTermAdmin}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => {
+                  if (!searchTermAdmin) setIsSearchFocused(false);
+                }}
+                onChange={(e) => setSearchTermAdmin(e.target.value)}
+                style={{
+                  border: "none",
+                  borderBottom: "2px solid #555",
+                  outline: "none",
+                  fontSize: "14px",
+                  width: isSearchFocused ? "180px" : "60px",
+                  transition: "width 0.3s ease-in-out",
+                }}
+              />
+            )}
+          </div>
+
+          {/* 📝 Table */}
+          <table className="company-data-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Doc Count</th>
+                <th>File Size (KB)</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredDataAdmin.length > 0 ? (
+                filteredDataAdmin.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.username}</td>
+                    <td>{user.docCount}</td>
+                    <td>{user.fileSize}</td>
+                    <td>{user.role}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center", color: "red", fontWeight: "bold" }}>
+                    No data found for {selectedRole}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </>
+      )}
+    </div>
 
 </div>
  )}
