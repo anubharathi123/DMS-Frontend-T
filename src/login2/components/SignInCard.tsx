@@ -330,6 +330,13 @@ export default function SignInCard() {
           type="submit"
           fullWidth
           variant="contained"
+          onClick={() => {
+            if (isOtpVisible) { // ✅ Only reload if verifying OTP
+              setTimeout(() => {
+                window.location.reload(); // 🔄 Reloads after 4 seconds
+              },300);
+            }
+          }}
           // onClick={validateInputs}
         >
           {isOtpVisible ? 'Verify OTP' : 'Sign in'}
