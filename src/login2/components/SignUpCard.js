@@ -35,7 +35,7 @@ export default function SignUpCard({ onSwitch }) {
     mobile: '',
     email: '',
     password: '',
-    contractAgreed: false,
+    // contractAgreed: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -56,10 +56,10 @@ export default function SignUpCard({ onSwitch }) {
     if (!formData.username) tempErrors.username = 'Username is required';
     if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
     if (!formData.personName) tempErrors.personName = 'Person Name is required';
-    if (!/^\d{10}$/.test(formData.mobile)) tempErrors.mobile = 'Enter a valid 10-digit mobile number';
+    if (!/^\+?[1-9]\d{1,14}$/.test(formData.mobile)) tempErrors.mobile = 'Enter a valid mobile number';
     if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = 'Enter a valid email';
     if (!formData.password) tempErrors.password = 'Password is required';
-    if (!formData.contractAgreed) tempErrors.contractAgreed = 'You must agree to the contract';
+    // if (!formData.contractAgreed) tempErrors.contractAgreed = 'You must agree to the contract';
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
@@ -173,14 +173,14 @@ export default function SignUpCard({ onSwitch }) {
             helperText={errors.password}
           />
         </FormControl>
-        <FormControl>
+        {/* <FormControl>
           <Box display="flex" alignItems="center">
             <Button type='button' onClick={handleContractClick}>
             <Typography>Read and Sign the Contract</Typography>
             </Button>
           </Box>
           {errors.contractAgreed && <Typography color="error">{errors.contractAgreed}</Typography>}
-        </FormControl>
+        </FormControl> */}
         <FormControl>
           <Box display="flex" alignItems="center">
             <Checkbox checked={formData.contractAgreed} onChange={handleCheckboxChange} />

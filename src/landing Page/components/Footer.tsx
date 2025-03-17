@@ -12,6 +12,9 @@ import FacebookIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/X';
 import Logo from '../../assets/images/Logo.png';
+import PhoneInput from 'react-phone-input-2';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 // import SitemarkIcon from './SitemarkIcon';
 
 function Copyright() {
@@ -45,6 +48,7 @@ export default function Footer() {
           flexDirection: { xs: 'column', sm: 'row' },
           width: '100%',
           justifyContent: 'space-between',
+          alignSelf:"center",
         }}
       >
         <Box
@@ -53,9 +57,10 @@ export default function Footer() {
             flexDirection: 'column',
             gap: 4,
             minWidth: { xs: '100%', sm: '60%' },
+            alignSelf:"center",
           }}
         >
-          <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
+          <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
             <img src={Logo} alt="Vdart Logo" style={{ height: '40px', marginRight:"20px" }} />
             {/* <SitemarkIcon /> */}
             <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, mt: 2 }}>
@@ -64,43 +69,27 @@ export default function Footer() {
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
               Subscribe for weekly updates. No spams ever!
             </Typography>
-            <InputLabel htmlFor="email-newsletter">Email</InputLabel>
-            <Stack direction="row" spacing={1} useFlexGap>
-              <TextField
-                id="email-newsletter"
-                hiddenLabel
-                size="small"
-                variant="outlined"
-                fullWidth
-                aria-label="Enter your email address"
-                placeholder="Your email address"
-                slotProps={{
-                  htmlInput: {
-                    autoComplete: 'off',
-                    'aria-label': 'Enter your email address',
-                  },
-                }}
-                sx={{ width: '250px' }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                sx={{ flexShrink: 0 }}
-              >
-                Subscribe
-              </Button>
-            </Stack>
+            {/* <InputLabel htmlFor="email-newsletter">Email</InputLabel> */}
+            
           </Box>
         </Box>
         <Box
           sx={{
             display: { xs: 'none', sm: 'flex' },
             flexDirection: 'column',
+            width:"100%",
             gap: 1,
+            padding:'16px',
+            borderRadius:'12px',
+            background:"White",
+            
+            boxShadow:"var(--Paper-shadow);",
+            border:"1px solid",
+            borderColor:"hsla(220, 20%, 80%, 0.4)",
+          
           }}
         >
-          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+          {/* <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
             Product
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
@@ -157,8 +146,60 @@ export default function Footer() {
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
             Contact
-          </Link>
-        </Box>
+          </Link>*/}
+       
+        <Stack spacing={2} sx={{ width: '100%' }} >
+          <TextField label="Name" fullWidth variant="outlined" size="small" />
+          <TextField type="email" label="Email" fullWidth variant="outlined" size="small" />
+          {/* <TextField label="Mobile" fullWidth variant="outlined" size="small" /> */}
+          <PhoneInput
+                // country={'us'}
+                value={''} // Keeps the input field empty
+                inputStyle={{ width: '100%',height:"40px", paddingTop:'8px', paddingBottom:'8px',}}
+                enableSearch
+              />
+          <TextField label="Country" fullWidth variant="outlined" size="small" />
+          <TextField label="Company Name" fullWidth variant="outlined" size="small" />
+          <TextField label="Designation" fullWidth variant="outlined" size="small" />
+          <TextField label="Team Size" fullWidth variant="outlined" size="small" />
+            <FormControl>
+              <FormLabel>Contact Timing <span className="mandatory">*</span></FormLabel>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <TextField
+                  select
+                  label="Country"
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  SelectProps={{
+                    native: true,
+                  }}
+                >
+                  <option value="us">United States</option>
+                  <option value="ca">Canada</option>
+                  <option value="gb">United Kingdom</option>
+                  <option value="au">Australia</option>
+                  <option value="in">India</option>
+                  {/* Add more countries as needed */}
+                </TextField>
+                <TextField
+                  type="time"
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              
+            </FormControl>
+          <textarea name="comment" form="usrform" style={{borderRadius: '5px', borderColor: 'lightgray'}}>Enter text here...</textarea>
+          <Button variant="contained" color="primary" size="large">
+            Submit
+          </Button>
+        </Stack>
+            </Box> 
       </Box>
       <Box
         sx={{

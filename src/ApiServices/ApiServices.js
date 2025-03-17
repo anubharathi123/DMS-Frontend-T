@@ -106,6 +106,10 @@ const authService = {
     return handleResponse(apiClient.get(`user_details/${id}/`))
   },
 
+  getUsersbyId1: async (id) => {
+    return handleResponse(apiClient.get(`user_detail/${id}/`))
+  },
+
   deleteuser: async (id) => {
     return handleResponse(apiClient.delete(`auth/${id}/delete/`))
   },
@@ -216,6 +220,7 @@ const authService = {
   },
   getOrganizations: async () => handleResponse(apiClient.get('organization/')),
   pendingOrganizations: async () => handleResponse(apiClient.get('organization/pending/')),
+  pendingMsiOrganizations: async () => handleResponse(apiClient.get('organization/pending/msi/')),
   approveOrganization: async (orgId) => { 
     if (!orgId) { 
       throw new Error('Organization ID is required to approve an organization.');
@@ -227,6 +232,19 @@ const authService = {
       throw new Error('Organization ID is required to reject an organization.');
     }
     return handleResponse(apiClient.post(`organization/${orgId}/reject/`));  
+  },
+
+  approvemsiOrganization: async (orgId) => { 
+    if (!orgId) { 
+      throw new Error('Organization ID is required to approve an organization.');
+    }
+    return handleResponse(apiClient.post(`organization/${orgId}/approve/msi/`));
+  },
+  rejectmsiOrganization: async (orgId) => {
+    if (!orgId) {
+      throw new Error('Organization ID is required to reject an organization.');
+    }
+    return handleResponse(apiClient.post(`organization/${orgId}/reject/msi/`));  
   },
   
   OrganizationList: async (data) => {
@@ -291,8 +309,8 @@ const authService = {
   updateOrganization:async (orgId,Data) => {
     return handleResponse(apiClient.put(`organization_update/${orgId}/`,Data))
   },
-  updateOrganization1:async (orgId,Data) => {
-    return handleResponse(apiClient.put(`organization_update1/${orgId}/`,Data))
+  updateOrganizationmsi:async (orgId,Data) => {
+    return handleResponse(apiClient.put(`organization_msi/${orgId}/`,Data))
   },
   deleteOrganization: async (orgId) => {
     return handleResponse(apiClient.delete(`organization_delete1/${orgId}/`));

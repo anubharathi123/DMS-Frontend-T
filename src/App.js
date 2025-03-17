@@ -47,11 +47,13 @@ import OrganizationPending from "./components/OrganizationPending/OrganizationPe
 // import DeletedOrganizationList from './components/DeletedOrganizationList';
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
+import MsiPending from "./components/OrganizationMsiPending/OrganizationMsiPending"
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import styles from './index.css';
 import { IdCard } from "lucide-react";
+import ConfirmationPage from "./components/SuccessMessage/ConfirmationPage";
 import UpdateAdmin from "./components/AdminCreation Update/UpdateAdmin";
 import UpdateUser from "./components/UpdateUser/UpdateUser";
 
@@ -112,7 +114,7 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/","/contractform","/ResetPassword1","/Login1","/login","/sign-up","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname);
+  const shouldDisplayAsideBar = !["/NotFoundView","/","/Comfirm","/ResetPassword1","/Login1","/login","/sign-up","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname) && !/^\/contractform\/.*$/.test(location.pathname);
 
   return (
     <div className="app">
@@ -140,9 +142,11 @@ function AppContent() {
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
         <Route path="/OrganizationList" element={<OrganizationList />} />
         <Route path="/OrganizationPending" element={<OrganizationPending />} />
+        <Route path="/MsiPending" element={<MsiPending />} />
         <Route path="/OrganizationDeleteList" element={<OrganizationDelList />} />
         <Route path="/DeletedAdminList" element={<DeletedAdminList />} />
         <Route path="/DeletedUsers" element={<DeletedUsers />} />
+        <Route path="/Comfirm" element={<ConfirmationPage />} />
         <Route path="/profile-management" element={<ProfileManagementPage />} />
         {/* Change Password (Token Only) */}
         {/* <Route
@@ -230,7 +234,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/contractform"
+          path="/contractform/:id"
           element={
             // <PrivateRoute>
               <ContractForm />

@@ -4,7 +4,7 @@ import SignatureCanvas from 'react-signature-canvas';
 import { jsPDF } from 'jspdf'; // Import jsPDF for PDF generation
 import './contractform.css';
 import authService from '../../ApiServices/ApiServices';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 
 
 
@@ -17,13 +17,14 @@ const CompanyContractForm = () => {
   const [selectedFont, setSelectedFont] = useState('Arial');
   const [uploadedImage, setUploadedImage] = useState(null);
   const sigCanvas = useRef();
+  const { id } = useParams();
   const [contractDocuments, setContractDocuments] = useState(null);
   const [companyName, setCompanyName] = useState('');
   const [contractTitle, setContractTitle] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [dateOfAgreement, setDateOfAgreement] = useState('');
-  const [id, setId] = useState('');
+  // const [id, setId] = useState('');
   const [error, setError] = useState(null); // For error handling
   const navigate = useNavigate();
   
@@ -82,15 +83,15 @@ const CompanyContractForm = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const details_data = await authService.details();
+        const details_data = await authService.getUsersbyId1(id);
         console.log(details_data)
         
         if (details_data.type === "Organization") {
-          const name = details_data.details[5].first_name;
+          const name = details_data.details.auth_user.first_name;
           // localStorage.setItem("name", name);
-          const Company_name = details_data.details[1].company_name;
-          const empId  = details_data.details[1].id
-          setId(empId)
+          const Company_name = details_data.details.company_name;
+          const empId  = details_data.details.id
+          // setId(empId)
           setCompanyName(Company_name);
           // localStorage.setItem("company_name", Company_name);
           // const fetchedRole = details_data.details[3].name;
@@ -106,6 +107,7 @@ const CompanyContractForm = () => {
         }
       } catch (error) {
         console.error("Error fetching details:", error);
+        navigate('/NotFoundView')
       }
     };
 
@@ -283,7 +285,7 @@ const CompanyContractForm = () => {
       // Save and navigate
       doc.save('contract.pdf');
       localStorage.setItem('msi','true')
-      navigate('/sign-up');
+      navigate('/Comfirm');
     };
     
     // Fix handleSubmit1 to accept contractFile as a parameter
@@ -302,12 +304,12 @@ const CompanyContractForm = () => {
       formData.append('contractDocuments', contractFile);
     
       try {
-        const response = await authService.updateOrganization1(id, formData);
+        const response = await authService.updateOrganizationmsi(id, formData);
         console.log("Update Response:", response);
         alert("Company Details have been updated successfully!");
         setTimeout(() => {
           localStorage.setItem('msi','true')
-          navigate('/profile');
+          navigate('/Comfirm');
         }, 500);
       } catch (error) {
         setError(error.message || "Something went wrong.");

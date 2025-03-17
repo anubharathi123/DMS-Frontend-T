@@ -11,6 +11,7 @@ import Features from './components/Features';
 import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
+import Leader from './components/leadership'
 
 export default function MarketingPage(props: { disableCustomTheme?: boolean }) {
   return (
@@ -28,6 +29,8 @@ export default function MarketingPage(props: { disableCustomTheme?: boolean }) {
         {/* <Highlights /> */}
         {/* <Divider /> */}
         {/* <Pricing /> */}
+        <Divider />
+        <Leader />
         <Divider />
         <FAQ />
         <Divider />

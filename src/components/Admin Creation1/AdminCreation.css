@@ -6,13 +6,12 @@
 }
 
 /* Body */
-body {
+/* body {
   font-family: "Roboto", sans-serif;
   background-color: #f0f2f5;
-  /* color: var(--text-color); */
   margin: 0;
   padding: 10px;
-}
+} */
 
 /* Container */
 .admin-container {
