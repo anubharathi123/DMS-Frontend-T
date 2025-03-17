@@ -320,13 +320,16 @@ const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.coun
       
 
 
-      // if (isLoading) {
-      //   return (
-      //     <div className="loading-overlay">
-      //     {/* <LoadingText progress={loadingPercentage} /> */}
-      //   </div>
-      //   );
-      // }
+      if (isLoading) {
+        return (
+          <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <p>Loading...</p>
+          </div>
+        </div>
+        );
+      }
 
 
 
@@ -471,34 +474,7 @@ const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.coun
     ? chartData.filter((item) => item.company === selectedCompany)
     : chartData.filter((item) => filteredCompanies.includes(item.company));
       
-    {/* Apply body opacity when loading */}
-{isLoading && (
-  <div style={{
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    textAlign: "center",
-    zIndex: 9999, // Ensure it's above everything
-    background: "rgba(255, 255, 255, 0.8)", // Light overlay effect
-    width: "100vw",
-    height: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }}>
-    <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={100} />
-    <p style={{ color: "#000b58", fontSize: "16px", fontWeight: "bold", marginTop: "10px" }}>
-      Loading...
-    </p>
-  </div>
-)}
-
-{/* Apply opacity to entire body when loading */}
-<style>
-  {isLoading ? "body { opacity: 0.3; pointer-events: none; }" : "body { opacity: 1; }"}
-</style>
-
+ 
     return (
       <div className='dashboard-body boy bg'>
         <div className='dashboard-container' >
@@ -793,7 +769,7 @@ const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.coun
   
   
                   {isModalOpen && selectedCompany && (
-          <div className="modal-overlay"style={{zIndex:"1"}}>
+          <div className="modal-overlay"style={{zIndex:"999"}}>
             <div className="modal-content">
               <h2>Company Details</h2>
               <p><strong>Company Name:</strong> {selectedCompany.org_name}</p>
@@ -916,7 +892,7 @@ const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.coun
       {isAdminOrDocumentRole && (
         <>
           {/* 🔍 Search Input */}
-          <div className="search-container" style={{ marginBottom: "10px", textAlign: "right" }}>
+          <div className="search-container" style={{ marginBottom: "10px", textAlign: "right"  }}>
             {!isSearchFocused && !searchTermAdmin ? (
               <FaSearch
                 style={{ cursor: "pointer", fontSize: "18px", color: "#555" }}
@@ -1015,5 +991,7 @@ const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.coun
           </div>
         </div>
       )}
+
+   
       
       export default DashboardApp;
