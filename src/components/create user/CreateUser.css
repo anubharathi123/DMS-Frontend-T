@@ -86,7 +86,7 @@
   height: 30px;
   padding: 10px;
   font-size: 14px;
-  border: 1px solid #ddd;
+  border: none;
   border-radius: 5px;
   box-sizing: border-box;
 }
@@ -234,4 +234,57 @@
 
 .dropdown-list li:hover {
   background-color: #f1f1f1;
+}
+
+.user-phone-input .react-tel-input {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  position: relative;
+  width: 100% !important;
+  left: 21px;
+  bottom: 9px;
+}
+
+.user-phone-input .react-tel-input .special-label {
+  position: absolute;
+  z-index: 1;
+  top: -7px;
+  left: 25px;
+  display: none !important;
+  background: white;
+  padding: 0 5px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.user-phone-input .react-tel-input .form-control {
+  font-size: 15px;
+  background: #FFFFFF;
+  border: 1px solid #CACACA;
+  position: relative !important;
+  bottom: 6px !important;
+  right: 16px;
+  border-radius: 5px !important;
+  width: 437px !important;
+  padding: 15px 20px 13px 48px !important;
+  outline: none;
+  transition: box-shadow ease .25s, border-color ease .25s;
+}
+
+.user-phone-input .react-tel-input .flag-dropdown {
+  background: none !important;
+  border: none !important;
+}
+
+.user-phone-input .react-tel-input .selected-flag {
+  width: auto !important;
+  padding-left: 10px !important;
+  padding-top: 46px !important;
+}
+
+.user-phone-input .react-tel-input .selected-flag .flag {
+  position: absolute !important;
+    top: 51% !important;
+    left: -5px;
+    /* margin-top: -12px; */
 }

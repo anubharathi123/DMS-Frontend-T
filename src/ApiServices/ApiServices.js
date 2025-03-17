@@ -102,6 +102,10 @@ const authService = {
     return handleResponse(apiClient.get('users/'));
   },
 
+  // formenquiry: async (data) => {
+  //   return handleResponse(apiClient.post('enquiry/', data));    
+  // },
+
   getUsersbyId: async (id) => {
     return handleResponse(apiClient.get(`user_details/${id}/`))
   },

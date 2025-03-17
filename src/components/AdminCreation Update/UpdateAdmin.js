@@ -164,7 +164,7 @@ const UpdateAdmin = () => {
             name="mobile"
             value={selectedadmin?.mobile || ""}
             onChange={handleChange}
-            className="admincreation-input"
+            className="admincreation-input1"
             required
           />
         </div>

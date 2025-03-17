@@ -1,0 +1,23 @@
+.react-tel-input .special-label {
+    position: absolute;
+    z-index: 1;
+    top: -7px;
+    left: 25px;
+    display: none !important;
+    background: white;
+    padding: 0 5px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.react-tel-input .form-control {
+    font-size: 16px;
+    background: #FFFFFF;
+    border: 1px solid #CACACA;
+    border-radius: 5px;
+    width: 300px;
+    height: 39px !important;
+    outline: none;
+    padding: 18px 20px 19.5px 59px !important;
+    transition: box-shadow ease .25s, border-color ease .25s;
+}

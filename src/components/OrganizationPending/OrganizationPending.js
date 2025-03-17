@@ -69,6 +69,7 @@ const calendarRef = useRef(null);
                     username: org.auth_user.username,
                     org_name: org.company_name,
                     msa_doc: org.contract_doc,
+                    mobile:org.mobile,
                     created_date: org.created_at,
                     email: org.auth_user.email,
                     delete: org.is_delete,
@@ -384,7 +385,9 @@ const calendarRef = useRef(null);
                     <tr>
                         <th className="organization-table-th">Username</th>
                         <th className="organization-table-th">Organization Name</th>
-                        <th className="organization-table-th">MSA Doc</th>
+                        {/* <th className="organization-table-th">MSA Doc</th> */}
+                        <th className="organization-table-th">Contact Number</th>
+                        <th className="organization-table-th">Mail ID</th>
                         <th className="organization-table-th">
                             Created Date
                             <button
@@ -407,7 +410,6 @@ const calendarRef = useRef(null);
                                         </div>
                                 )}
                         </th>
-                        <th className="organization-table-th">Mail ID</th>
                         <th className="organization-table-th">Actions</th>
                     </tr>
                 </thead>
@@ -424,7 +426,7 @@ const calendarRef = useRef(null);
   {org.org_name.length > 10 ? org.org_name.substring(0, 10) + "..." : org.org_name}
 </td>
                                 <td className="organization-table-td">
-                                {org.msa_doc ? (
+                                {/* {org.msa_doc ? (
                                     <button
                                         title={org.msa_doc}
                                         className="file-button"
@@ -434,11 +436,12 @@ const calendarRef = useRef(null);
                                     </button>
                                 ) : (
                                     "Null"
-                                )}
+                                )} */}
+                                    {org.mobile}
                               
-                                    </td>
-                                <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                </td>
                                 <td className="organization-table-td">{org.email}</td>
+                                <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td className="organization-table-td">
                                     <button className='organization-approve' onClick={() => handleApprove(org.id, 'Approved')}>
                                     <IoIosCheckmarkCircle />

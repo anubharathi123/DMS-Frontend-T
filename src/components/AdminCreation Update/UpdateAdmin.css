@@ -48,11 +48,28 @@
   height: 30px;
   padding: 10px;
   font-size: 14px;
-  border: 1px solid #ddd;
+  border: none;
   border-radius: 5px;
   box-sizing: border-box;
   width: 435px;
 }
+/* .react-tel-input .admincreation-input{
+opacity: 0 !important;
+display: none !important;
+border: none !important;
+
+}
+
+.admincreation-input1 {
+  flex-grow: 1 ;
+  height: 30px;
+  padding: 10px;
+  font-size: 14px;
+  display: none !important;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 435px;
+} */
 
 .admincreation-input:focus {
   outline: none;

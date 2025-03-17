@@ -4,8 +4,8 @@ import { RiArrowDropDownLine } from "react-icons/ri";  // Import the dropdown ic
 import { useNavigate } from 'react-router-dom';
 import './CreateUser.css';
 import apiServices from '../../ApiServices/ApiServices'; // Adjust the import path for apiServices
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import Loader from "react-js-loader";
 
 const CreateUser = () => {
@@ -185,8 +185,10 @@ const CreateUser = () => {
           <label className="company-label">
             Mobile <span className="mandatory">*</span>
           </label>
+          <div className='user-phone-input'>
           <PhoneInput
             type="tel"
+            country={'ae'}
             name="mobile"
             value={formData.mobile}
             onChange={(value) => setFormData((prevData) => ({ 
@@ -197,6 +199,7 @@ const CreateUser = () => {
             maxLength='15'
             required
           />
+          </div>
         </div>
 
         {/* Email */}
