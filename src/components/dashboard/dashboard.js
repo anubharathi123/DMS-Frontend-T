@@ -3,6 +3,7 @@ import './dashboard.css';
 import { FaSearch } from "react-icons/fa"; // Search icon
 import ClipLoader from "react-spinners/ClipLoader";
 import LoadingText from './LoadingText';
+import Loader from "react-js-loader";
 
 import { IoPeople } from "react-icons/io5";
 import { HiBuildingOffice2 } from "react-icons/hi2";
@@ -70,7 +71,81 @@ const CustomTooltip = ({ active, payload }) => {
   );
 
   const DashboardApp = () => {
+        const [chartDataforadminn, setChartDataforadmin] = useState([]);
+
+
     const role = localStorage.getItem('role');
+
+//MOCK DATA FOR ADMIN CLIENT
+
+const mockData = {
+  UPLOADER: { count: 10, label: "Uploaders" },
+  VIEWER: { count: 15, label: "Viewers" },
+  APPROVER: { count: 8, label: "Approvers" },
+};
+const mockDataTable = [
+  { id: 1, companyName: "Smart Tech", username: "tech_admin", month: "Jan", docCount: 12, fileSize: 500, role: "UPLOADER" },
+  { id: 2, companyName: "Smart Tech", username: "code_viewer", month: "Jan", docCount: 20, fileSize: 800, role: "VIEWER" },
+  { id: 3, companyName: "Smart Tech", username: "data_approver", month: "Feb", docCount: 18, fileSize: 700, role: "APPROVER" },
+  { id: 4, companyName: "Smart Tech", username: "cloud_uploader", month: "Feb", docCount: 25, fileSize: 950, role: "UPLOADER" },
+  { id: 5, companyName: "Smart Tech", username: "web_viewer", month: "Mar", docCount: 10, fileSize: 400, role: "VIEWER" },
+  { id: 6, companyName: "Smart Tech", username: "smart_approver", month: "Mar", docCount: 15, fileSize: 600, role: "APPROVER" },
+];
+
+  // 📌 Group Data by Month based on Role
+
+const totalUsers = Object.values(mockData).reduce((acc, role) => acc + role.count, 0);  
+    // 🔹 Default: Show "Users" (sum of all roles)
+    const [selectedRole, setSelectedRole] = useState("USERS");
+    const [userData, setUserData] = useState({ count: totalUsers, label: "Users" });
+
+
+
+    useEffect(() => {
+      const initialData = mockDataTable.map((item) => ({
+        name: item.username,
+        docCount: item.docCount,
+        fileSize: item.fileSize,
+      }));
+      setChartDataforadmin(initialData);
+    }, []);
+
+
+
+
+    const filteredMockData = selectedRole === "USERS"
+    ? mockDataTable  // Show all users when "Users" is selected
+    : mockDataTable.filter((item) => item.role === selectedRole);
+  
+    useEffect(() => {
+      const filteredData = mockDataTable.filter((data) => data.role === selectedRole);
+  
+      const groupedData = [
+        { month: "Jan", docCount: 0 },
+        { month: "Feb", docCount: 0 },
+        { month: "Mar", docCount: 0 },
+        { month: "Apr", docCount: 0 },
+        { month: "May", docCount: 0 },
+        { month: "Jun", docCount: 0 },
+        { month: "Jul", docCount: 0 },
+        { month: "Aug", docCount: 0 },
+        { month: "Sep", docCount: 0 },
+        { month: "Oct", docCount: 0 },
+        { month: "Nov", docCount: 0 },
+        { month: "Dec", docCount: 0 },
+      ];
+  
+      filteredData.forEach((item) => {
+        const monthIndex = groupedData.findIndex((data) => data.month === item.month);
+        if (monthIndex !== -1) groupedData[monthIndex].docCount += item.docCount;
+      });
+  
+      setChartData(groupedData);
+    }, [selectedRole]);
+
+ 
+
+
     const [selectedYear, setSelectedYear] = useState('2023');
     const [OrgCount,setOrgCount] = useState([]);
     const [count, setCount] = useState([]);
@@ -78,6 +153,7 @@ const CustomTooltip = ({ active, payload }) => {
     const [selectedCompany, setSelectedCompany] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const [loadingPercentage, setLoadingPercentage] = useState(0); // Track loading progress
+     
 
     const [searchTerm, setSearchTerm] = useState("");
      const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,13 +162,20 @@ const CustomTooltip = ({ active, payload }) => {
     const [month, setMonth] = useState([]);
     const [companyData, setCompanyData] = useState([]);
     const [uniqueYears, setUniqueYears] = useState([]); // Store unique years for dropdown
-    const [isLoading, setIsLoading] = useState(true);
-  
+    const [isLoading, setIsLoading] = useState(false);
+    const [searchTermAdmin, setSearchTermAdmin] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+
     const [rowLimit, setRowLimit] = useState('4');
     const username = localStorage.getItem('name') || "User";
     const [data, setData] = useState([]);
   
-  
+   const filteredDataAdmin = filteredMockData.filter(
+    (user) =>
+      user.username.toLowerCase().includes(searchTermAdmin.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchTermAdmin.toLowerCase())
+  );
 
 
 
@@ -239,11 +322,38 @@ const CustomTooltip = ({ active, payload }) => {
 
       if (isLoading) {
         return (
-          <div className="loading-overlay">
-          <LoadingText progress={loadingPercentage} />
+          <div className="loading-popup">
+          <div className="loading-popup-content">
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <p>Loading...</p>
+          </div>
         </div>
         );
       }
+
+
+
+
+
+
+  // Handle role selection change
+  const handleRoleChange = (e) => {
+    const selected = e.target.value;
+    setSelectedRole(selected);
+    setUserData(selected === "USERS" ? { count: totalUsers, label: "Users" } : mockData[selected]);
+  
+    // ✅ Update chart data on role change
+    const updatedData = selected === "USERS"
+      ? mockDataTable
+      : mockDataTable.filter((item) => item.role === selected);
+  
+    setChartDataforadmin(updatedData.map((item) => ({
+      name: item.username,
+      docCount: item.docCount,
+      fileSize: item.fileSize,
+    })));
+  };
+  
 
 
       const openModal = (company) => {
@@ -281,76 +391,76 @@ const CustomTooltip = ({ active, payload }) => {
 
       ChartJS.register(ArcElement, Legend, ChartDataLabels);
       
-      const donutData = ({ OrgCount }) => {
-        const totalDocs =
-          OrgCount.approvedDocuments +
-          OrgCount.pendingDocuments +
-          OrgCount.rejectedDocuments;
+      // const donutData = ({ OrgCount }) => {
+      //   const totalDocs =
+      //     OrgCount.approvedDocuments +
+      //     OrgCount.pendingDocuments +
+      //     OrgCount.rejectedDocuments;
       
-        const donutData = {
-          labels: [
-            `Approved (${((OrgCount.approvedDocuments / totalDocs) * 100).toFixed(1)}%)`,
-            `Pending (${((OrgCount.pendingDocuments / totalDocs) * 100).toFixed(1)}%)`,
-            `Rejected (${((OrgCount.rejectedDocuments / totalDocs) * 100).toFixed(1)}%)`,
-          ],
-          datasets: [
-            {
-              data: [
-                OrgCount.approvedDocuments,
-                OrgCount.pendingDocuments,
-                OrgCount.rejectedDocuments,
-              ],
-              backgroundColor: ["#077E8C", "#F7CB73", "#D9512C"],
-              borderWidth: 3,
-              cutout: "60%", // Adjust to control thickness
-            },
-          ],
-        };
+      //   const donutData = {
+      //     labels: [
+      //       `Approved (${((OrgCount.approvedDocuments / totalDocs) * 100).toFixed(1)}%)`,
+      //       `Pending (${((OrgCount.pendingDocuments / totalDocs) * 100).toFixed(1)}%)`,
+      //       `Rejected (${((OrgCount.rejectedDocuments / totalDocs) * 100).toFixed(1)}%)`,
+      //     ],
+      //     datasets: [
+      //       {
+      //         data: [
+      //           OrgCount.approvedDocuments,
+      //           OrgCount.pendingDocuments,
+      //           OrgCount.rejectedDocuments,
+      //         ],
+      //         backgroundColor: ["#077E8C", "#F7CB73", "#D9512C"],
+      //         borderWidth: 3,
+      //         cutout: "60%", // Adjust to control thickness
+      //       },
+      //     ],
+      //   };
       
-        const chartOptions = {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: true,
-              position: "right", // Keep legend on the right
-              align: "center", // Align legend vertically in the middle
+      //   const chartOptions = {
+      //     responsive: true,
+      //     plugins: {
+      //       legend: {
+      //         display: true,
+      //         position: "right", // Keep legend on the right
+      //         align: "center", // Align legend vertically in the middle
            
-              labels: {
-                usePointStyle: true, // Display legend as small circles
-                boxWidth: 8, // Reduce dot size
-                padding: 4, // Reduce spacing between legend items
-              },
-            },
-            datalabels: {
-              color: "#fff",
-              font: { weight: "bold", size: 14 },
-              formatter: (value, ctx) => {
-                let totalDocs = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
-                return `${percentage}%`;
-              },
-            },
-          },
-          layout: {
-            padding: {
-              // right: 250, // Adjust this value to bring legend closer
-              align: "center", // Align legend vertically in the middle
+      //         labels: {
+      //           usePointStyle: true, // Display legend as small circles
+      //           boxWidth: 8, // Reduce dot size
+      //           padding: 4, // Reduce spacing between legend items
+      //         },
+      //       },
+      //       datalabels: {
+      //         color: "#fff",
+      //         font: { weight: "bold", size: 14 },
+      //         formatter: (value, ctx) => {
+      //           let totalDocs = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+      //           let percentage = totalDocs ? ((value / totalDocs) * 100).toFixed(1) : 0;
+      //           return `${percentage}%`;
+      //         },
+      //       },
+      //     },
+      //     layout: {
+      //       padding: {
+      //         // right: 250, // Adjust this value to bring legend closer
+      //         align: "center", // Align legend vertically in the middle
               
               
       
              
-            },
-          },
-        };
+      //       },
+      //     },
+      //   };
         
         
       
-        return (
-          <div className="w-[300px] mx-auto">
-            <Doughnut data={donutData} options={chartOptions} />
-          </div>
-        );
-      };
+      //   return (
+      //     <div className="w-[300px] mx-auto">
+      //       <Doughnut data={donutData} options={chartOptions} />
+      //     </div>
+      //   );
+      // };
 
 
          // Check if the role should have the cards displayed
@@ -364,6 +474,7 @@ const CustomTooltip = ({ active, payload }) => {
     ? chartData.filter((item) => item.company === selectedCompany)
     : chartData.filter((item) => filteredCompanies.includes(item.company));
       
+ 
     return (
       <div className='dashboard-body boy bg'>
         <div className='dashboard-container' >
@@ -377,12 +488,12 @@ const CustomTooltip = ({ active, payload }) => {
       {(role === 'PRODUCT_OWNER' || role === 'PRODUCT_ADMIN') && (
         <>
               <div className="cards-container bg">
-                
+               
              
-              <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />} />
+        <Card title="Total Companies" value={OrgCount.totalCompanies} icon={<HiBuildingOffice2 />} />
         <Card title="Active Companies" value={OrgCount.activeCompanies} icon={<HiBuildingOffice2 style={{ color: "green" }} />} />
         <Card title="Inactive Companies" value={OrgCount.inactiveCompanies} icon={<HiBuildingOffice2 style={{ color: "#b22d2d" }} />} />
-  <Card title="Deleted Companies" value={OrgCount.deletedCompanies} icon={<FaBuildingCircleXmark style={{ color: "red" }} />} />
+        <Card title="Deleted Companies" value={OrgCount.deletedCompanies} icon={<FaBuildingCircleXmark style={{ color: "red" }} />} />
         <Card title="Pending Documents" value={OrgCount.pending_org_count} icon={<FaBuildingCircleExclamation style={{ color: "yellow" }} />} />
         <Card title="Users" value={OrgCount.user_count} icon={<IoPeople />} />
               </div>
@@ -560,6 +671,7 @@ const CustomTooltip = ({ active, payload }) => {
       
   </div>
   
+
   <div className="search-container" style={{ position: "relative", display: "inline-block",zIndex:"999",top:"-55px" }}>
         {!isFocused && !searchTerm ? (
           <FaSearch
@@ -606,9 +718,7 @@ const CustomTooltip = ({ active, payload }) => {
   
   
                   {isLoading ? (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <LoadingText loading={isLoading} />
-    </div>
+<p>Loading..</p>
   ) : (() => {
     // Apply filtering first
     const filteredData = companyData.filter(
@@ -659,7 +769,7 @@ const CustomTooltip = ({ active, payload }) => {
   
   
                   {isModalOpen && selectedCompany && (
-          <div className="modal-overlay"style={{zIndex:"1"}}>
+          <div className="modal-overlay"style={{zIndex:"999"}}>
             <div className="modal-content">
               <h2>Company Details</h2>
               <p><strong>Company Name:</strong> {selectedCompany.org_name}</p>
@@ -698,27 +808,167 @@ const CustomTooltip = ({ active, payload }) => {
   
             </>
           )}
+
+          {/* ADMINROLE */}
   
           {(isAdminOrDocumentRole) && (
             <>
-              <div className="cards-container1">
-                <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} role={role} bgColor={'#d2eafd'}  />
-                <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} role={role} bgColor={'#AFE1AF'}/>
-                <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} role={role} bgColor={'#fff3d0'}/>
-                <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} role={role} bgColor={'#ffe5d6'} />
-              </div>
-              {role === 'ADMIN' && (
+             
+             <div className="role-selector">
+        <label>Select Role: </label>
+        <select value={selectedRole} onChange={handleRoleChange}>
+          <option value="USERS">Users</option> {/* Default option */}
+          <option value="UPLOADER">Uploader</option>
+          <option value="VIEWER">Viewer</option>
+          <option value="APPROVER">Approver</option>
+        </select>
+
+      </div>
+             <div className="cards-container1">
+  <Card title="Total Documents" value={OrgCount.totalDocuments} icon={<IoMdCloudUpload />} bgColor={'#d2eafd'} />
+  <Card title="Approved Documents" value={OrgCount.approvedDocuments} icon={<IoIosCheckmarkCircle style={{ color: 'green' }} />} bgColor={'#AFE1AF'} />
+  <Card title="Pending Documents" value={OrgCount.pendingDocuments} icon={<MdPending style={{ color: '#dd651b' }} />} bgColor={'#fff3d0'} />
+  <Card title="Rejected Documents" value={OrgCount.rejectedDocuments} icon={<MdCancel style={{ color: '#b22d2d' }} />} bgColor={'#ffe5d6'} />
+
+  <Card title={userData.label} value={userData.count} icon={<IoPeople />} bgColor="#e0e0e0" />
+
+</div>
+
+              {/* {role === 'ADMIN' && (
                 <div className="chart">
                   {donutData({ OrgCount })}
   
                 </div>
-              )}
+              )} */}
             </>
           )}
+    {(isAdminOrDocumentRole) && (
+<div className="admin-dashboard-container">
+  {/* Left Side: Area Chart */}
+  <div className="chart-container">
+
+  <ResponsiveContainer width="100%" height={350}>
+          <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+            <XAxis dataKey="month" tick={{ fontSize: 12, fontWeight: "bold", fill: "#555" }} />
+            <YAxis tick={{ fontSize: 12, fontWeight: "bold", fill: "#555" }} />
+            
+            <Tooltip content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div style={{
+                    backgroundColor: "#fff",
+                    borderRadius: "10px",
+                    boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+                    fontSize: "14px",
+                    padding: "10px",
+                    lineHeight: "1.5",
+                  }}>
+                    <p><strong>📅 Month:</strong> {payload[0].payload.month}</p>
+                    <p><strong>📄 Documents Uploaded:</strong> {payload[0].payload.docCount}</p>
+                  </div>
+                );
+              }
+              return null;
+            }} />
+
+            <Legend verticalAlign="top" align="right" iconType="circle" />
+            <defs>
+              <linearGradient id="colorDocCount" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#007bff" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#007bff" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
+
+            <Area type="monotone" dataKey="docCount" stroke="#007bff" strokeWidth={3} fill="url(#colorDocCount)" fillOpacity={0.7} />
+          </AreaChart>
+        </ResponsiveContainer>
+
+   
+  </div>
+
+  {/* Right Side: Table */}
+  <div className="table-container">
+      {isAdminOrDocumentRole && (
+        <>
+          {/* 🔍 Search Input */}
+          <div className="search-container" style={{ marginBottom: "10px", textAlign: "right"  }}>
+            {!isSearchFocused && !searchTermAdmin ? (
+              <FaSearch
+                style={{ cursor: "pointer", fontSize: "18px", color: "#555" }}
+                onClick={() => setIsSearchFocused(true)}
+              />
+            ) : (
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTermAdmin}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => {
+                  if (!searchTermAdmin) setIsSearchFocused(false);
+                }}
+                onChange={(e) => setSearchTermAdmin(e.target.value)}
+                style={{
+                  border: "none",
+                  borderBottom: "2px solid #555",
+                  outline: "none",
+                  fontSize: "14px",
+                  width: isSearchFocused ? "180px" : "60px",
+                  transition: "width 0.3s ease-in-out",
+                }}
+              />
+            )}
+          </div>
+
+          {/* 📝 Table */}
+          <table className="company-data-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Doc Count</th>
+                <th>File Size (KB)</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredDataAdmin.length > 0 ? (
+                filteredDataAdmin.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.username}</td>
+                    <td>{user.docCount}</td>
+                    <td>{user.fileSize}</td>
+                    <td>{user.role}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center", color: "red", fontWeight: "bold" }}>
+                    No data found for {selectedRole}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </>
+      )}
+    </div>
+
+</div>
+ )}
+
+
+
+
+
+
+
+
+
         </div>
       </div>
     )}
-
+ const role = localStorage.getItem("role")
+    const isAdminOrDocumentRole = ['ADMIN', 'UPLOADER', 'APPROVER', 'REVIEWER', 'VIEWER'].includes(role);
 
     const Card = ({ title, value = 1, icon, role, bgColor }) => {
       const cardStyle = {
@@ -726,7 +976,12 @@ const CustomTooltip = ({ active, payload }) => {
         marginTop: ['UPLOADER', 'REVIEWER', 'VIEWER'].includes(role) ? "10%" : "",
       }
       return (
-        <div className="card " style={cardStyle}>
+        
+        
+<div className={`${isAdminOrDocumentRole === "ADMIN" ? "card1" : "card"}`} style={cardStyle}>
+        
+        
+          
           <div className="card-title">
             <div className="card-icon">{icon}</div>
             <div className="card-info">
@@ -736,4 +991,7 @@ const CustomTooltip = ({ active, payload }) => {
           </div>
         </div>
       )}
+
+   
+      
       export default DashboardApp;
