@@ -9,6 +9,8 @@ import './OrganizationDList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'; 
 
 
 const OrganizationList = () => {
@@ -164,27 +166,27 @@ const calendarRef = useRef(null);
         }
       };
 
-    // const handleDelete = async (id) => {
-    //     if (!window.confirm("Are you sure you want to delete this organization?")) {
-    //         return;
-    //     }
+    const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this organization?")) {
+            return;
+        }
     
-    //     try {
-    //         setIsLoading(true);
+        try {
+            setIsLoading(true);
     
-    //         // Call API to delete the organization
-    //         const response = await apiServices.deleteOrganization(id);
-    //         console.log(response,response.success,response.message)
-    //         if (response.error) { // Ensure API returns success
-    //             setData(prevData => prevData.filter(org => org.id !== id));
-    //         }
-    //     } catch (error) {
-    //         console.error("Error deleting organization:", error);
-    //         alert("An error occurred while deleting.");
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // };
+            // Call API to delete the organization
+            const response = await apiServices.permanentOrganizationdelete(id);
+            console.log(response,response.success,response.message)
+            if (response.error) { // Ensure API returns success
+                setData(prevData => prevData.filter(org => org.id !== id));
+            }
+        } catch (error) {
+            console.error("Error deleting organization:", error);
+            alert("An error occurred while deleting.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.slice(
@@ -274,7 +276,7 @@ const calendarRef = useRef(null);
                                 )}
                         </th>
                         {/* <th className="organization-table-th">Status</th> */}
-                        {/* <th className="organization-table-th">Actions</th> */}
+                        <th className="organization-table-th">Actions</th>
                     </tr>
                 </thead>
                 
@@ -304,20 +306,15 @@ const calendarRef = useRef(null);
                                 {/* <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}
 </td> */}
-                                {/* <td className="organization-table-td">
-                                    <button className='organization-edit' onClick={() => handleEdit(org.id)}>
-                                    <FontAwesomeIcon icon={faPencil} />
-                                    </button>
+                                <td className="organization-table-td">
                                     
                                     <button
                                         className="organization-delete"
-                                        onClick={() => handleDelete(org.id)}
-                                      
-                                    >
+                                        onClick={() => handleDelete(org.id)}>
                                         <FontAwesomeIcon icon={faTrash} />
-
                                     </button>
-                                </td> */}
+                                    <span style={{color:'black'}}>Permanent Delete</span>
+                                </td>
                             </tr>
                         ))
                     ) : (
