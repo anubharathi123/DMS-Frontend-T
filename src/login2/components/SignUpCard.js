@@ -8,13 +8,12 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
 import { styled } from '@mui/material/styles';
 import PhoneInput from 'react-phone-input-2';
-import './SignUpCard.css'
 import 'react-phone-input-2/lib/material.css';
 import authService from '../../ApiServices/ApiServices';
-import  isValidPhoneNumber from "libphonenumber-js";
+import { isValidPhoneNumber, parsePhoneNumberFromString,getExampleNumber } from "libphonenumber-js";
+import './SignUpCard.css'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -37,50 +36,12 @@ export default function SignUpCard({ onSwitch }) {
     mobile: '',
     email: '',
     password: '',
-    // contractAgreed: false,
   });
 
   const [errors, setErrors] = useState({});
-  const [mobile, setMobile] = useState("");
+  // const [PhoneNumber, SetPhoneNumber] = useState({})
+  // const [valid, setValid] = useState({})
   const navigate = useNavigate();
-  // const role = localStorage.getItem('role');
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-  
-    // Function to validate UAE phone numbers
-    const handlePhoneChange = (value) => {
-      // Remove country code (+971) from the value
-      const phoneWithoutCountryCode = value.replace("+971", "").trim();
-  
-      // UAE numbers should have exactly 9 digits after +971
-      if (/^\d{9}$/.test(phoneWithoutCountryCode)) {
-        setMobile(value); // Valid input
-      } else {
-        console.error("Invalid UAE phone number! Must be 9 digits after +971.");
-      }
-    };
-
-  
-  const handleCheckboxChange = (event) => {
-    setFormData((prevData) => ({ ...prevData, contractAgreed: event.target.checked }));
-  };
-
-  const validateForm = () => {
-    let tempErrors = {};
-    if (!formData.username) tempErrors.username = 'Username is required';
-    if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
-    if (!formData.personName) tempErrors.personName = 'Person Name is required';
-    if (!/^\+?[1-7]\d{1,6}$/.test(formData.mobile)) tempErrors.mobile = 'Enter a valid mobile number';
-    if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = 'Enter a valid email';
-    if (!formData.password) tempErrors.password = 'Password is required';
-    // if (!formData.contractAgreed) tempErrors.contractAgreed = 'You must agree to the contract';
-
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
 
   useEffect(() => {
     const savedData = localStorage.getItem('signupFormData');
@@ -89,27 +50,65 @@ export default function SignUpCard({ onSwitch }) {
     }
   }, []);
 
+  const handleChange = (event) => {
+    const {name, value}= event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    // SetPhoneNumber(input);
+    // setValid(validatePhoneNumber(input));
+  };
+
+  const handlePhoneChange = (value) => {
+    if (isValidPhoneNumber(value)) {
+      setFormData((prevData) => ({ ...prevData, mobile: value }));
+    } else {
+      console.error("Invalid phone number!");
+    }
+  };
+
+  // // Phone number validation (UAE: +971 followed by 9 digits)
+  // const handlePhoneChange = (value) => {
+  //   setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
+  
+  //   // Parse the number properly to check if it's valid for UAE
+  //   const phoneNumber = parsePhoneNumberFromString(value, 'AE');
+    
+  //   if (!phoneNumber || !phoneNumber.isValid()) {
+  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number' }));
+  //   } else {
+  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
+  //   }
+  // };
+
+  const validateForm = () => {
+    let tempErrors = {};
+
+    if (!formData.username) tempErrors.username = 'Username is required';
+    if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
+    if (!formData.personName) tempErrors.personName = 'Person Name is required';
+    const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE');
+    if (!formData.mobile || !phoneNumber || !phoneNumber.isValid()) {
+      tempErrors.mobile = 'Enter a valid phone number';
+    }
+    if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = 'Enter a valid email';
+    if (!formData.password) tempErrors.password = 'Password is required'; 
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateForm()) return;
-  
+
     try {
-      const response = await authService.createuserOrganization(formData);
+      await authService.createuserOrganization(formData);
       alert('Company registered successfully!');
-      
-      // Clear stored form data after successful signup
       localStorage.removeItem('signupFormData');
-  
-      navigate('/login'); // Redirect to login page after registration
+      navigate('/login'); 
     } catch (error) {
       console.error('Signup failed:', error);
       alert('Signup failed. Please try again later.');
     }
-  };
-
-  const handleContractClick = () => {
-    localStorage.setItem('signupFormData', JSON.stringify(formData));
-    navigate('/contractform');
   };
 
   return (
@@ -161,21 +160,17 @@ export default function SignUpCard({ onSwitch }) {
         <FormControl>
           <FormLabel>Mobile <span className="mandatory">*</span></FormLabel>
           <PhoneInput
-          country={'ae'}
-  value={formData.mobile} // Keeps the input field empty
-  onChange={handlePhoneChange}
-  inputStyle={{ width: '432px', paddingTop:'8px', paddingBottom:'8px',}}
-  enableSearch
-/>
-  {errors.mobile && <Typography color="error">{errors.mobile}</Typography>}
-          {/* <TextField
-            name="mobile"
+            country={'ae'}
             value={formData.mobile}
-            onChange={handleChange}
-            inputProps={{ maxLength: 10 }}
-            error={!!errors.mobile}
-            helperText={errors.mobile}
-          /> */}
+            placeholder={getExampleNumber}
+            onChange={handlePhoneChange}
+            inputStyle={{ width: '432px', paddingTop:'8px', paddingBottom:'8px' }}
+            inputProps={{
+              required:true
+            }}
+            enableSearch
+          />
+          {errors.mobile && <Typography color="error">{errors.mobile}</Typography>}
         </FormControl>
         <FormControl>
           <FormLabel>Password <span className="mandatory">*</span></FormLabel>
@@ -188,21 +183,6 @@ export default function SignUpCard({ onSwitch }) {
             helperText={errors.password}
           />
         </FormControl>
-        {/* <FormControl>
-          <Box display="flex" alignItems="center">
-            <Button type='button' onClick={handleContractClick}>
-            <Typography>Read and Sign the Contract</Typography>
-            </Button>
-          </Box>
-          {errors.contractAgreed && <Typography color="error">{errors.contractAgreed}</Typography>}
-        </FormControl> */}
-        {/* <FormControl>
-          <Box display="flex" alignItems="center">
-            <Checkbox checked={formData.contractAgreed} onChange={handleCheckboxChange} />
-            <Typography>I agree to the contract</Typography>
-          </Box>
-          {errors.contractAgreed && <Typography color="error">{errors.contractAgreed}</Typography>}
-        </FormControl> */}
         <Button type="submit" variant="contained" fullWidth>
           Sign Up
         </Button>

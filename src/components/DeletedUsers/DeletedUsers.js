@@ -109,6 +109,8 @@ const UserList = () => {
   const handleDropdownChange = (value) => {
     if (value === "User List") {
       navigate('/user-list');
+    } else if (value === "Add User") {
+      navigate('/createuser')
     }
   };
 
@@ -135,7 +137,8 @@ const UserList = () => {
       <h1 className="userlist-header">User Deleted Details</h1>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
         <option value="">Select an option</option>
-     <option value="User List">User List</option>
+        <option value="User List">User List</option>
+        <option value="Add User">Add User</option>
      </select>
       {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
       {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}

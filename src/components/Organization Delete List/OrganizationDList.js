@@ -60,6 +60,7 @@ const calendarRef = useRef(null);
                 }));
                 console.log(organization)
                 const filterdata = organization.filter(org => org.delete === true)
+                .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
                 setData(filterdata);
     
                 if (organization.length === 0) {
@@ -154,6 +155,12 @@ const calendarRef = useRef(null);
     const handleDropdownChange = (value) => {
         if (value === "Organization List") {
           navigate('/OrganizationList');
+        } else if(value === "Create Organization") {
+            navigate(`/CompanyCreation`);
+        } else if (value === "Registered List") {
+            navigate(`/OrganizationPending`);
+        } else if (value === "MSI Approval") {
+            navigate(`/MsiPending`);
         }
       };
 
@@ -190,7 +197,11 @@ const calendarRef = useRef(null);
             <h1 className="organization-header">Organization Deleted Details</h1>
             <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
         <option value="">Select an option</option>
-     <option value="Organization List">Organization List</option>
+        <option value="Organization List">Organization List</option>
+        <option value="Create Organization">Create Organization</option>
+        <option value="Registered List">Registered List</option>
+        <option value="MSI Approval">MSI Approval</option>
+
      </select>
             {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             {/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
