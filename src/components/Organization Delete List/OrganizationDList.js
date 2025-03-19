@@ -45,35 +45,37 @@ const calendarRef = useRef(null);
         setShowSearchInfo(!showSearchInfo);
       };
 
-      useEffect(() => {
-        const fetchOrganization = async () => {
-            try {
-                setIsLoading(true);
-                const response = await apiServices.getOrganizations();
-                console.log(response)
-                const organization = response.approved_organizations.map(org => ({
-                    id: org.id,
-                    username: org.auth_user.username,
-                    org_name: org.company_name,
-                    msa_doc: org.contract_doc,
-                    created_date: org.created_at,
-                    status: org.is_frozen,
-                    delete: org.is_delete,
-                }));
-                console.log(organization)
-                const filterdata = organization.filter(org => org.delete === true)
-                .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-                setData(filterdata);
-    
-                if (organization.length === 0) {
-                    setActionMessage("No Organizations are found in the list.");
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
+      const fetchOrganization = async () => {
+        try {
+            setIsLoading(true);
+            const response = await apiServices.getOrganizations();
+            console.log(response)
+            const organization = response.approved_organizations.map(org => ({
+                id: org.id,
+                username: org.auth_user.username,
+                org_name: org.company_name,
+                msa_doc: org.contract_doc,
+                created_date: org.created_at,
+                status: org.is_frozen,
+                delete: org.is_delete,
+            }));
+            console.log(organization)
+            const filterdata = organization.filter(org => org.delete === true)
+            .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+            setData(filterdata);
+
+            if (organization.length === 0) {
+                setActionMessage("No Organizations are found in the list.");
             }
-        };
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+      useEffect(() => {
+       
     
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
@@ -159,8 +161,8 @@ const calendarRef = useRef(null);
           navigate('/OrganizationList');
         } else if(value === "Create Organization") {
             navigate(`/CompanyCreation`);
-        } else if (value === "Registered List") {
-            navigate(`/OrganizationPending`);
+        // } else if (value === "Registered List") {
+        //     navigate(`/OrganizationPending`);
         } else if (value === "MSI Approval") {
             navigate(`/MsiPending`);
         }
@@ -168,18 +170,16 @@ const calendarRef = useRef(null);
 
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this organization?")) {
-            return;
         }
-    
         try {
             setIsLoading(true);
     
             // Call API to delete the organization
             const response = await apiServices.permanentOrganizationdelete(id);
             console.log(response,response.success,response.message)
-            if (response.error) { // Ensure API returns success
-                setData(prevData => prevData.filter(org => org.id !== id));
-            }
+           // Ensure API returns success
+                fetchOrganization()
+            
         } catch (error) {
             console.error("Error deleting organization:", error);
             alert("An error occurred while deleting.");
@@ -201,7 +201,7 @@ const calendarRef = useRef(null);
         <option value="">Select an option</option>
         <option value="Organization List">Organization List</option>
         <option value="Create Organization">Create Organization</option>
-        <option value="Registered List">Registered List</option>
+        {/* <option value="Registered List">Registered List</option> */}
         <option value="MSI Approval">MSI Approval</option>
 
      </select>

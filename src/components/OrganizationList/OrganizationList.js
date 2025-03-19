@@ -223,8 +223,8 @@ const OrganizationList = () => {
           navigate(`/CompanyCreation`);
         } else if (value === "Deleted List") {
           navigate(`/OrganizationDeleteList`);
-        } else if (value === "Registered List") {
-          navigate(`/OrganizationPending`);
+        // } else if (value === "Registered List") {
+        //   navigate(`/OrganizationPending`);
         }else if (value === "MSI Approval") {
           navigate(`/MsiPending`);
         }
@@ -254,7 +254,6 @@ const OrganizationList = () => {
         if (!window.confirm("Are you sure you want to delete this organization?")) {
             return;
         }
-    
         try {
             setIsLoading(true);
     
@@ -287,7 +286,7 @@ const OrganizationList = () => {
         <option value="">Select an option</option>
      <option value="Create Organization">Create Organization</option>
      <option value="Deleted List">Deleted List</option>
-     <option value="Registered List">Registered List</option>
+     {/* <option value="Registered List">Registered List</option> */}
      <option value="MSI Approval">MSI Approval</option>
    </select>
 

@@ -43,7 +43,7 @@ import SignatureComponent from "./components/Signature/SignatureComponent";
 import DeletedAdminList from "./components/DeletedAdminList/AdminList";
 import DeletedUsers from "./components/DeletedUsers/DeletedUsers";
 import ContractForm from './components/ContractForm/contractform';
-import OrganizationPending from "./components/OrganizationPending/OrganizationPending";
+// import OrganizationPending from "./components/OrganizationPending/OrganizationPending";
 // import DeletedOrganizationList from './components/DeletedOrganizationList';
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
@@ -141,7 +141,7 @@ function AppContent() {
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/resetpassword" element={<Forgot_Pwd1 />} />
         <Route path="/OrganizationList" element={<OrganizationList />} />
-        <Route path="/OrganizationPending" element={<OrganizationPending />} />
+        {/* <Route path="/OrganizationPending" element={<OrganizationPending />} /> */}
         <Route path="/MsiPending" element={<MsiPending />} />
         <Route path="/OrganizationDeleteList" element={<OrganizationDelList />} />
         <Route path="/DeletedAdminList" element={<DeletedAdminList />} />

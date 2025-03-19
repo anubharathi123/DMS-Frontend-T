@@ -235,12 +235,16 @@ const calendarRef = useRef(null);
     }
   };
 
-  const handleApprove = async (id, newStatus) => {
+  const handleApprove = async (status,id, newStatus) => {
     setActionMessage('');
+    if (status){
+      alert("MSA Document need to signed")
+    }
+  else{
     setIsLoading(true);
-  
     try {
       console.log('Approval:', id, newStatus);
+      
       await apiServices.approvemsiOrganization(id, { approval_status: newStatus });
   
       // Remove the approved/rejected organization from the current list
@@ -257,15 +261,15 @@ const calendarRef = useRef(null);
     } finally {
       setIsLoading(false);
     }
-  };
+  }};
   
   const handleDropdownChange = (value) => {
     if (value === "Organization List") {
       navigate('/OrganizationList');
     } else if (value === 'Deleted List') {
       navigate('/OrganizationDeleteList')
-    } else if ( value === 'Registered List') {
-      navigate ('/OrganizationPending') 
+    // } else if ( value === 'Registered List') {
+    //   navigate ('/OrganizationPending') 
     } else if (value === 'Create Organization') {
       navigate('/CompanyCreation')
     }
@@ -349,7 +353,7 @@ const calendarRef = useRef(null);
               <option value="">Select an option</option>
               <option value="Organization List">Organization List</option>
               <option value="Create Organization">Create Organization</option>
-              <option value="Registered List">Registered List</option>
+              {/* <option value="Registered List">Registered List</option> */}
               <option value="Deleted List">Deleted List</option>
             </select>
             {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
@@ -452,8 +456,8 @@ const calendarRef = useRef(null);
                                 <td className="organization-table-td">{org.email}</td>
                                 <td className="organization-table-td">
                                     <button className='organization-approve' 
-                                    onClick={() => handleApprove(org.id, 'Approved')}
-                                    disabled={org.msa_doc === null} // Disable if MSA is null or not signed // Disable if MSA is not signed
+                                    onClick={() => handleApprove(org.msa_doc === null,org.id, 'Approved')}
+                                    // disabled={org.msa_doc === null} // Disable if MSA is null or not signed // Disable if MSA is not signed
                                     >
                                     <IoIosCheckmarkCircle />
                                     </button>

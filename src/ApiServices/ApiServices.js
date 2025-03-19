@@ -223,7 +223,7 @@ const authService = {
     return handleResponse(apiClient.post('organization/', data));
   },
   getOrganizations: async () => handleResponse(apiClient.get('organization/')),
-  pendingOrganizations: async () => handleResponse(apiClient.get('organization/pending/')),
+  // pendingOrganizations: async () => handleResponse(apiClient.get('organization/pending/')),
   pendingMsiOrganizations: async () => handleResponse(apiClient.get('organization/pending/msi/')),
   approveOrganization: async (orgId) => { 
     if (!orgId) { 

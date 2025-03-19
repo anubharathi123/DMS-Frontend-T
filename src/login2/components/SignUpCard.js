@@ -57,27 +57,27 @@ export default function SignUpCard({ onSwitch }) {
     // setValid(validatePhoneNumber(input));
   };
 
-  const handlePhoneChange = (value) => {
-    if (isValidPhoneNumber(value)) {
-      setFormData((prevData) => ({ ...prevData, mobile: value }));
-    } else {
-      console.error("Invalid phone number!");
-    }
-  };
-
-  // // Phone number validation (UAE: +971 followed by 9 digits)
   // const handlePhoneChange = (value) => {
-  //   setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
-  
-  //   // Parse the number properly to check if it's valid for UAE
-  //   const phoneNumber = parsePhoneNumberFromString(value, 'AE');
-    
-  //   if (!phoneNumber || !phoneNumber.isValid()) {
-  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number' }));
+  //   if (isValidPhoneNumber(value)) {
+  //     setFormData((prevData) => ({ ...prevData, mobile: value }));
   //   } else {
-  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
+  //     console.error("Invalid phone number!");
   //   }
   // };
+
+  // // Phone number validation (UAE: +971 followed by 9 digits)
+  const handlePhoneChange = (value) => {
+    setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
+  
+    // Parse the number properly to check if it's valid for UAE
+    const phoneNumber = parsePhoneNumberFromString(value, 'AE');
+    
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number' }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
+    }
+  };
 
   const validateForm = () => {
     let tempErrors = {};
@@ -85,9 +85,9 @@ export default function SignUpCard({ onSwitch }) {
     if (!formData.username) tempErrors.username = 'Username is required';
     if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
     if (!formData.personName) tempErrors.personName = 'Person Name is required';
-    const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE');
+    const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE'); // Explicitly specify UAE country code
     if (!formData.mobile || !phoneNumber || !phoneNumber.isValid()) {
-      tempErrors.mobile = 'Enter a valid phone number';
+      tempErrors.mobile = 'Enter a valid UAE phone number';
     }
     if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = 'Enter a valid email';
     if (!formData.password) tempErrors.password = 'Password is required'; 
