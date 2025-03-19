@@ -76,6 +76,7 @@ const calendarRef = useRef(null);
                     approve:org.is_approve,
                 }));
                 const filterdata = organization.filter(org => !org.approve)
+                .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
 
                 setData(filterdata);
     
@@ -261,6 +262,12 @@ const calendarRef = useRef(null);
   const handleDropdownChange = (value) => {
     if (value === "Organization List") {
       navigate('/OrganizationList');
+    } else if(value === "Create Organization") {
+        navigate(`/CompanyCreation`);
+    } else if (value === "Deleted List") {
+        navigate(`/OrganizationDeleteList`);
+    } else if (value === "MSI Approval") {
+        navigate(`/MsiPending`);
     }
   };
 
@@ -339,9 +346,12 @@ const calendarRef = useRef(null);
         <div className="organization-main">
             <h1 className="organization-header">Organization Pending for Approval</h1>
             <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an option</option>
-     <option value="Organization List">Organization List</option>
-     </select>
+              <option value="">Select an option</option>
+              <option value="Organization List">Organization List</option>
+              <option value="Create Organization">Create Organization</option>
+              <option value="MSI Approval">MSI Approval</option>
+              <option value="Deleted List">Deleted List</option>
+            </select>
             {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             <div className='organization-container_controls'>
                 <div className='organization-search'>
@@ -360,14 +370,14 @@ const calendarRef = useRef(null);
                                           </div>
                                         )}
                 </div>
-                <div className="organization-filter">
+                {/* <div className="organization-filter">
                     <label className="organization_filter-label">Filter by Status:</label>
                     <select value={statusFilter} onChange={handleStatusFilter}className="organization-filter-select">
                         <option value="">All</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select> 
-                </div>
+                </div> */}
                 <div className='organization_row'>
                     <label className="organization_row_label">Rows per Page:</label>
                     <select value={rowsPerPage} onChange={handleRowsPerPage} className="organization_row_select">

@@ -111,6 +111,8 @@ const AdminList = () => {
   const handleDropdownChange = (value) => {
     if (value === "Admin List") {
       navigate('/AdminList');
+    } else if (value === 'Add Admin') {
+      navigate('/AdminCreation')
     }
   };
 
@@ -167,7 +169,8 @@ const AdminList = () => {
       <h1 className="adminlist_header">Admin Deleted Details</h1>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
         <option value="">Select an option</option>
-     <option value="Admin List">Admin List</option>
+        <option value="Admin List">Admin List</option>
+        <option value="Add Admin">Add Admin</option>
      </select>
       {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
       {actionMessage && <div className="adminlist_action_message">{actionMessage}</div>}
@@ -190,14 +193,14 @@ const AdminList = () => {
             </div>
           )}
         </div>
-        <div className="adminlist_filter">
+        {/* <div className="adminlist_filter">
           <label className="adminlist_filter_label">Filter by Role:</label>
           <select value={filter} onChange={handleFilter} className="adminlist_filter_select">
             <option value="">All</option>
             <option value="PRODUCT_ADMIN">PRODUCT_ADMIN</option>
-            {/* <option value="SuperAdmin">SuperAdmin</option> */}
+            {/* <option value="SuperAdmin">SuperAdmin</option> 
           </select>
-        </div>
+        </div> */}
 
         <div className="adminlist_rows">
           <label className="adminlist_rows_label">Rows per Page:</label>

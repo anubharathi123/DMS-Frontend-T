@@ -210,8 +210,6 @@ const CompanyCreation = () => {
               country={'ae'}                                      
               value={company.mobile}
               // pattern="[0-9]{10}"
-              placeholder="+971"
-              maxLength="15"
               enableSearch
               required
               onChange={(value) => handleChange({ target: { value } })} 

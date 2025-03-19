@@ -74,6 +74,7 @@ const OrganizationList = () => {
             }));
             const filterdata = organization.filter(org => !org.delete)
             .filter(org => org.approve === true).filter(org => org.msi === true)
+            .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
             setData(filterdata);
             console.log("Organization Data:", organization);
 

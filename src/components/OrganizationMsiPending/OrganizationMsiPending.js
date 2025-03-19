@@ -27,6 +27,8 @@ const OrganizationList = () => {
     // const [organization, setOrganization] = useState([])
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isMsaSigned, setIsMsaSigned] = useState(false);
+  const [msaDocument, setMsaDocument] = useState(null);
       const [isLoading, setIsLoading] = useState(false);
       
     const itemsPerPage = 5;
@@ -75,7 +77,7 @@ const calendarRef = useRef(null);
                     msi:org.is_msi,
                 }));
                 const filterdata = organization.filter(org => !org.msi)
-
+                .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
                 setData(filterdata);
     
                 if (organization.length === 0) {
@@ -260,6 +262,12 @@ const calendarRef = useRef(null);
   const handleDropdownChange = (value) => {
     if (value === "Organization List") {
       navigate('/OrganizationList');
+    } else if (value === 'Deleted List') {
+      navigate('/OrganizationDeleteList')
+    } else if ( value === 'Registered List') {
+      navigate ('/OrganizationPending') 
+    } else if (value === 'Create Organization') {
+      navigate('/CompanyCreation')
     }
   };
 
@@ -338,9 +346,12 @@ const calendarRef = useRef(null);
         <div className="organization-main">
             <h1 className="organization-header">Organization MSI for Approval</h1>
             <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an option</option>
-     <option value="Organization List">Organization List</option>
-     </select>
+              <option value="">Select an option</option>
+              <option value="Organization List">Organization List</option>
+              <option value="Create Organization">Create Organization</option>
+              <option value="Registered List">Registered List</option>
+              <option value="Deleted List">Deleted List</option>
+            </select>
             {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             <div className='organization-container_controls'>
                 <div className='organization-search'>
@@ -359,14 +370,14 @@ const calendarRef = useRef(null);
                                           </div>
                                         )}
                 </div>
-                <div className="organization-filter">
+                {/* <div className="organization-filter">
                     <label className="organization_filter-label">Filter by Status:</label>
                     <select value={statusFilter} onChange={handleStatusFilter}className="organization-filter-select">
                         <option value="">All</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select> 
-                </div>
+                </div> */}
                 <div className='organization_row'>
                     <label className="organization_row_label">Rows per Page:</label>
                     <select value={rowsPerPage} onChange={handleRowsPerPage} className="organization_row_select">
@@ -440,7 +451,10 @@ const calendarRef = useRef(null);
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td className="organization-table-td">{org.email}</td>
                                 <td className="organization-table-td">
-                                    <button className='organization-approve' onClick={() => handleApprove(org.id, 'Approved')}>
+                                    <button className='organization-approve' 
+                                    onClick={() => handleApprove(org.id, 'Approved')}
+                                    disabled={org.msa_doc === null} // Disable if MSA is null or not signed // Disable if MSA is not signed
+                                    >
                                     <IoIosCheckmarkCircle />
                                     </button>
                                     <button className='organization-reject' onClick={() => handleReject(org.id, 'Rejected')}>
@@ -452,7 +466,7 @@ const calendarRef = useRef(null);
                     ) : (
                         <tr>
                             <td colSpan="4" className="organization-table-td">
-                                No registered organizations found!!!
+                                No approved organizations found!!!
                             </td>
                         </tr>
                     )}
