@@ -148,10 +148,12 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-        await ApiService.logout(); // Call the logout API
-        localStorage.removeItem("access_status");
-        localStorage.removeItem("token");
+        await ApiService.logout();  
+        // localStorage.removeItem("access_status");
+        // localStorage.removeItem("token");
+        localStorage.clear()
         navigate("/");
+
     } catch (error) {
         console.warn("Error logging out:", error.message);
     }

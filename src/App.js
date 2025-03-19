@@ -89,6 +89,9 @@ const MsiRoute = ({ children }) => {
 };
 
 function App() {
+
+
+
   React.useEffect(() => {
     localStorage.setItem("mui-mode", 'light');
   }, []);
@@ -114,7 +117,15 @@ function AppContent() {
     navigate("/login"); // Redirect to login page after logout
   };
 
-  const shouldDisplayAsideBar = !["/NotFoundView","/","/Comfirm","/ResetPassword1","/Login1","/login","/sign-up","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname) && !/^\/contractform\/.*$/.test(location.pathname);
+  const shouldDisplayAsideBar = !["/NotFoundView","/contractform","/","/Comfirm","/ResetPassword1","/Login1","/login","/sign-up","/resetPassword","/Login", "/login/","/resetpassword", "/ResetPassword", "/ChangePassword", "/changepassword", "/ChangePassword1"].includes(location.pathname) && !/^\/contractform\/.*$/.test(location.pathname);
+
+
+  console.log(location.pathname)
+
+  if(location.pathname === "/Comfirm")
+    localStorage.clear()
+  
+
 
   return (
     <div className="app">
@@ -234,7 +245,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/contractform/:id"
+          path="/contractform"
           element={
             // <PrivateRoute>
               <ContractForm />
