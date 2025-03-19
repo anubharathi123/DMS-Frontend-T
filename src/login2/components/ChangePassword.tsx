@@ -14,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import authService from '../../ApiServices/ApiServices';
 import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 interface ChangePasswordProps {
   open: boolean;
@@ -27,6 +28,8 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
   const [isPasswordVisible2, setIsPasswordVisible2] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false); // ✅ Loading state
+
   const navigate = useNavigate();
   
 
@@ -41,14 +44,19 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
     event.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
+    setLoading(true); // ✅ Start loading animation
 
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match.');
+      setLoading(false); // ✅ Stop loading
+
       return;
     }
 
     if (password.length < 6) {
       setErrorMessage('Password must be at least 8 characters.');
+      setLoading(false); // ✅ Stop loading
+
       return;
     }
 
@@ -56,6 +64,8 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
       await authService.changePassword({ password });
       setSuccessMessage('Password changed successfully!');
       setTimeout(() => {
+        setLoading(false); // ✅ Stop loading
+
         handleClose();
         if (localStorage.getItem('first') == "true"){
           console.log('redirect to profile')
@@ -68,12 +78,14 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
         // navigate('/login');
       }, 2000);
     } catch (error: any) {
+      setLoading(false); // ✅ Stop loading
+
       setErrorMessage(error.message || 'Failed to change password. Please try again.');
     }
   };
 
   return (
-    <Dialog
+<Dialog
       open={open}
       onClose={handleClose}
       PaperProps={{
@@ -84,14 +96,13 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
     >
       <DialogTitle>Change Password</DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-        <DialogContentText>To change your password, please enter a new password and confirm it below.</DialogContentText>
-        {/* <DialogContentText>
-           {"Enter your account's email address, and we'll send you a link to reset your password."}
-          </DialogContentText> */}
-        <DialogContentText variant="body2" sx={{ mt: -1, color: 'text.secondary' }}>
-    Your new password must be at least 8 characters long. Make sure to choose a strong password that's hard to guess.
-  </DialogContentText>
+        <DialogContentText>
+          To change your password, please enter a new password and confirm it below.
+        </DialogContentText>
 
+        <DialogContentText variant="body2" sx={{ mt: -1, color: 'text.secondary' }}>
+          Your new password must be at least 8 characters long. Make sure to choose a strong password that's hard to guess.
+        </DialogContentText>
 
         {errorMessage && <span style={{ color: 'red' }}>{errorMessage}</span>}
         {successMessage && <span style={{ color: 'green' }}>{successMessage}</span>}
@@ -101,20 +112,17 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
           id="new-password"
           placeholder="New Password"
           type={isPasswordVisible1 ? 'text' : 'password'}
-
           fullWidth
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           endAdornment={
             <Button
-                  type="button"
-                  onClick={togglePasswordVisibility1}
-                  sx={{ minWidth: 'auto' }}
-                  // disabled={isOtpVisible}
-                  style={{background: 'transparent'}}
-                >
-                  {isPasswordVisible1 ? <IoEyeOff /> : <IoEye />}
-                </Button>
+              type="button"
+              onClick={togglePasswordVisibility1}
+              sx={{ minWidth: 'auto', background: 'transparent' }}
+            >
+              {isPasswordVisible1 ? <IoEyeOff /> : <IoEye />}
+            </Button>
           }
         />
 
@@ -123,26 +131,32 @@ export default function ChangePassword({ open, handleClose }: ChangePasswordProp
           id="confirm-password"
           placeholder="Confirm Password"
           type={isPasswordVisible2 ? 'text' : 'password'}
-
           fullWidth
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           endAdornment={
             <Button
-                  type="button"
-                  onClick={togglePasswordVisibility2}
-                  sx={{ minWidth: 'auto' }}
-                  // disabled={isOtpVisible}
-                  style={{background: 'transparent'}}
-                >
-                  {isPasswordVisible2 ? <IoEyeOff /> : <IoEye />}
-                </Button>
+              type="button"
+              onClick={togglePasswordVisibility2}
+              sx={{ minWidth: 'auto', background: 'transparent' }}
+            >
+              {isPasswordVisible2 ? <IoEyeOff /> : <IoEye />}
+            </Button>
           }
         />
       </DialogContent>
+      
+      {/* ✅ Submit Button with Loading Animation */}
       <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" type="submit">Submit</Button>
+        <Button onClick={handleClose} disabled={loading}>Cancel</Button>
+        <Button 
+          variant="contained" 
+          type="submit"
+          disabled={loading} // ✅ Disable button while loading
+          sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Submit'}
+        </Button>
       </DialogActions>
     </Dialog>
   );

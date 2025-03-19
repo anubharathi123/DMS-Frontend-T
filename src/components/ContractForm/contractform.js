@@ -17,7 +17,7 @@ const CompanyContractForm = () => {
   const [selectedFont, setSelectedFont] = useState('Arial');
   const [uploadedImage, setUploadedImage] = useState(null);
   const sigCanvas = useRef();
-  const { id } = useParams();
+  const [id, setId] = useState('');
   const [contractDocuments, setContractDocuments] = useState(null);
   const [companyName, setCompanyName] = useState('');
   const [contractTitle, setContractTitle] = useState('');
@@ -83,14 +83,17 @@ const CompanyContractForm = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const details_data = await authService.getUsersbyId1(id);
+        const details_data = await authService.details();
         console.log(details_data)
         
         if (details_data.type === "Organization") {
-          const name = details_data.details.auth_user.first_name;
+          // const name = details_data.details.auth_user.first_name;
           // localStorage.setItem("name", name);
-          const Company_name = details_data.details.company_name;
-          const empId  = details_data.details.id
+          const Company_name = details_data.details[1].company_name;
+          const Company_id = details_data.details[1].id;
+          console.log(Company_id);
+          // const empId  = details_data.details.id
+          setId(Company_id)
           // setId(empId)
           setCompanyName(Company_name);
           // localStorage.setItem("company_name", Company_name);
@@ -304,6 +307,7 @@ const CompanyContractForm = () => {
       formData.append('contractDocuments', contractFile);
     
       try {
+        console.log(id)
         const response = await authService.updateOrganizationmsi(id, formData);
         console.log("Update Response:", response);
         alert("Company Details have been updated successfully!");

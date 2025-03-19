@@ -331,11 +331,11 @@ export default function SignInCard() {
           fullWidth
           variant="contained"
           onClick={() => {
-            if (isOtpVisible) { // ✅ Only reload if verifying OTP
-              setTimeout(() => {
-                window.location.reload(); // 🔄 Reloads after 4 seconds
-              },300);
-            }
+            // if (isOtpVisible) { // ✅ Only reload if verifying OTP
+            //   setTimeout(() => {
+            //     window.location.reload(); // 🔄 Reloads after 4 seconds
+            //   },300);
+            // }
           }}
           // onClick={validateInputs}
         >
