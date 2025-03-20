@@ -222,6 +222,11 @@
     table-layout: fixed;
 }
 
+.organization-table-row:hover {
+    background-color: #f0f0f0;
+}
+
+
 .organization-table-td {
     width: 20%;
     word-wrap: break-word;

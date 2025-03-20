@@ -377,7 +377,7 @@ const handleClosePopup = () => {
 </td>
 
               <td className="documentapproval_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              <td className="documentapproval_td px-6 py-4">{item.documentType}</td>
+              <td className="documentapproval_td px-6 py-4">{item.documentType.charAt(0).toUpperCase() + item.documentType.slice(1).toLowerCase()}</td>
               <td className="documentapproval_td documentapproval_approvalbtn px-6 py-4">
                 <button className="documentapproval_action_button" onClick={() => handleApproval(item.file_id, 'Approved')}>
                   <IoIosCheckmarkCircle />

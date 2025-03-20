@@ -168,7 +168,7 @@ const AdminList = () => {
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Deleted Details</h1>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an option</option>
+        <option value="">Select an Option</option>
         <option value="Admin List">Admin List</option>
         <option value="Add Admin">Add Admin</option>
      </select>
@@ -253,9 +253,6 @@ const AdminList = () => {
             <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
           </tr>
         ))}
-        <tr>
-          <td className="documenttable_td px-6 py-4 ">No Deleted Admins Found!!!</td>
-        </tr>
         </tbody>
       </table>
       <div className="adminlist_pagination">

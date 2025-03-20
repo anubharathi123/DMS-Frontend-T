@@ -181,6 +181,10 @@
   table-layout: fixed;
 }
 
+.adminlist_row:hover {
+  background-color: #f0f0f0;
+}
+
 .adminlist_td {
   width: 20%;
   word-wrap: break-word;

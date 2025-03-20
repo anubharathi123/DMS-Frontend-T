@@ -112,6 +112,7 @@ const UpdateUser = () => {
     try {
       // Use updateUser instead of register for updating an existing user
       const response = await apiServices.updateAdmin(id, formData);
+      console.log("API Response:", response);
       setMessage('User updated successfully!');
       setTimeout(() => {
         navigate('/user-list');

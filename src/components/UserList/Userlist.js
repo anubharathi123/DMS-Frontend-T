@@ -220,7 +220,7 @@ const UserList = () => {
     <div className="userlist-container">
       <h1 className="userlist-header">User Details</h1>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-      <option value="">Select</option>
+      <option value="">Select an Option </option>
      <option value="New User">New User</option>
      <option value="Deleted List">Deleted List</option>
    </select>
@@ -302,7 +302,7 @@ const UserList = () => {
         </thead>
         <tbody className="userlist_tbody">
           {paginatedData.map((item, index) => (
-            <tr key={index} className="userlist_row">
+            <tr key={index} className="userlist_row hover:bg-gray-50">
               <td className="userlist_td">{item.username}</td>
               
               <td className="userlist_td">{item.email}</td>

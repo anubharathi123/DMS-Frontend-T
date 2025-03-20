@@ -85,7 +85,6 @@ const UpdateAdmin = () => {
       const response = await apiServices.updateAdmin(id,selectedadmin);
       console.log("API Response:", response);
       setMessage("Admin details have been updated successfully!");
-      
       setTimeout(() => {
         alert("Admin details have been updated successfully!"); // Show alert
         navigate("/AdminList");
@@ -164,7 +163,7 @@ const UpdateAdmin = () => {
             name="mobile"
             value={selectedadmin?.mobile || ""}
             onChange={handleChange}
-            className="admincreation-input1"
+            className="admincreation-input"
             required
           />
         </div>

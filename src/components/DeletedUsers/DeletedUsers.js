@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Search } from "lucide-react";
+import { Search, Users } from "lucide-react";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
@@ -104,7 +104,7 @@ const UserList = () => {
     setFilteredData(filterUsers);
   }, [filterDate, data]);
 
-  const paginatedData = filteredData1.filter(item => !item.delete).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+  const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   const handleDropdownChange = (value) => {
     if (value === "User List") {
@@ -136,7 +136,7 @@ const UserList = () => {
     <div className="userlist-container">
       <h1 className="userlist-header">User Deleted Details</h1>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an option</option>
+        <option value="">Select an Option </option>
         <option value="User List">User List</option>
         <option value="Add User">Add User</option>
      </select>
@@ -219,12 +219,13 @@ const UserList = () => {
               <td className="userlist_td">
                 {new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
               </td>
+              <td className="userlist_td">
+                {item.role}
+              </td>
             </tr>
   
           ))}
-          <tr>
-              <td className="userlist_td">No Deleted Users Found!!!</td>
-            </tr>
+          
         </tbody>
       </table>
 

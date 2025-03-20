@@ -134,22 +134,43 @@ const AdminList = () => {
     }
 };
 
-  const filteredData1 = filteredData.filter((item) => {
-    if (filter === '') {
-      return item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase());
-    } else {
-      return item.username === filter && (
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.role.toLowerCase().includes(searchTerm.toLowerCase()) 
-      );
-    }
-  });
+  // const filteredData1 = filteredData.filter((item) => {
+  //   if (filter === '') {
+  //     return item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item.role.toLowerCase().includes(searchTerm.toLowerCase());
+  //   } else {
+  //     return item.username === filter && (
+  //       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item.role.toLowerCase().includes(searchTerm.toLowerCase()) 
+  //     );
+  //   }
+    
+  // });
+
+  const filteredData1 = data.filter(item => {
+    const matchesSearch = searchTerm
+        ? item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        : true;
+
+    const matchesStatus = statusFilter
+        ? (statusFilter === "Active" ? item.status === false : item.status === true)
+        : true;
+
+    const matchesDate = filterDate
+        ? new Date(item.createdAt).toDateString() === new Date(filterDate).toDateString()
+        : true;
+
+    return matchesSearch && matchesStatus && matchesDate;
+});
 
 
    useEffect(() => {
@@ -237,6 +258,11 @@ const AdminList = () => {
     setFilter(e.target.value);
   };
 
+  const handleStatusFilter = (e) => {
+    setStatusFilter(e.target.value);
+    setCurrentPage(1);
+};
+
   const handleCalendarToggle = () => {
     setIsCalendarOpen(prev => !prev);
   };
@@ -255,7 +281,7 @@ const AdminList = () => {
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Details</h1>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-      <option value="">Select</option>
+      <option value="">Select an Option </option>
      <option value="New Admin">Add Admin</option>
      <option value="Deleted List">Deleted List</option>
    </select>
@@ -284,10 +310,11 @@ const AdminList = () => {
           )}
         </div>
         <div className="adminlist_filter">
-          <label className="adminlist_filter_label">Filter by Role:</label>
-          <select value={filter} onChange={handleFilter} className="adminlist_filter_select">
+          <label className="adminlist_filter_label">Filter by Status:</label>
+          <select value={statusFilter} onChange={handleStatusFilter} className="adminlist_filter_select">
             <option value="">All</option>
-            <option value="PRODUCT_ADMIN">PRODUCT_ADMIN</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
             {/* <option value="SuperAdmin">SuperAdmin</option> */}
           </select>
         </div>
