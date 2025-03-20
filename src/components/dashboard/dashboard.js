@@ -72,9 +72,12 @@ const Dashboard = ({ title }) => (
 );
 
 const DashboardApp = () => {
+
+
+
+
   const [chartDataforadminn, setChartDataforadmin] = useState([]);
 
-  const role = localStorage.getItem("role");
 
   //MOCK DATA FOR ADMIN CLIENT
 
@@ -220,12 +223,14 @@ const DashboardApp = () => {
   const [selectedReportYear, setSelectedReportYear] = useState(""); // Renamed state
   const [uniqueReportYears, setUniqueReportYears] = useState([]); // Renamed state for unique years
   const [hoveredTooltip, setHoveredTooltip] = useState(false);
+  const [dashboardData, setDashboardData] = useState([]);
 
   const [isTooltipSticky, setIsTooltipSticky] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [modalOpenChart, setmodalOpenChart] = useState(false);
   const [rowLimit, setRowLimit] = useState("4");
   const [chartcomapny, setchartcomapny] = useState("");
+  const [DashboardStats, setDashboardStats] = useState({});
   const username = localStorage.getItem("name") || "User";
   const [data, setData] = useState([]);
 
@@ -287,6 +292,80 @@ const DashboardApp = () => {
     return null;
   };
 
+  const role = localStorage.getItem("role");
+
+  const isAdminOrDocumentRole = [
+    "ADMIN",
+    "UPLOADER",
+    "APPROVER",
+    "REVIEWER",
+    "VIEWER",
+  ].includes(role);
+  const companyNames = [...new Set(companyData.map((item) => item.org_name))];
+  const filteredCompanies = companyNames.filter((name) =>
+    name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (isAdminOrDocumentRole) {
+      const fetchDashboardData = async () => {
+        try {
+          const response = await apiServices.MonthYearCompany();
+          console.log("Raw Data:", response);
+  
+          const monthMap = {
+            January: "Jan", February: "Feb", March: "Mar", April: "Apr",
+            May: "May", June: "Jun", July: "Jul", August: "Aug",
+            September: "Sep", October: "Oct", November: "Nov", December: "Dec"
+          };
+  
+          const allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+          const existingData = response.flatMap(org =>
+            org.years.flatMap(yearData => yearData.monthly_document_counts)
+          );
+  
+          const convertFileSizeToMB = (sizeString) => {
+            if (!sizeString) return 0;
+            const [value, unit] = sizeString.split(" ");
+            const size = parseFloat(value);
+            
+            if (unit === "GB") return size * 1024;
+            if (unit === "KB") return size / 1024;
+            return size;
+          };
+  
+          const transformedData = allMonths.map(shortMonth => {
+            const found = existingData.find(m => monthMap[m.month] === shortMonth);
+            return {
+              month: shortMonth,
+              docCount: found ? found.document_count : 0,
+              fileSizeMB: found ? convertFileSizeToMB(found.file_size) : 0
+            };
+          });
+  
+          console.log("Transformed Data with File Sizes:", transformedData);
+          setDashboardData(transformedData);
+        } catch (error) {
+          console.error("Error fetching dashboard data:", error);
+        }
+      };
+  
+      fetchDashboardData();
+    }
+  }, [isAdminOrDocumentRole]);
+  
+  
+  
+  
+
+
+console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+
+ 
+ 
+  
+
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -306,15 +385,32 @@ const DashboardApp = () => {
           companyCountResponse,
           yearMonthCompanyResponse,
           lineDataResponse,
-          lineDataResponse1,
+   
+          
         ] = await Promise.all([
           apiServices.organizationCount(),
           apiServices.companyCount(),
           apiServices.MonthYearCompany(),
           apiServices.getlinedata(),
-          apiServices.getlinedata(),
         ]);
 
+ 
+        
+
+
+//  console.log(DashboardStats)
+//         if (dashboardResponse) {
+//           setDashboardStats({
+//             employeeCount: dashboardResponse.employee_count || 0,
+//             totalDocuments: dashboardResponse.document_count || 0,
+//             approvedDocuments: dashboardResponse.approved_count || 0,
+//             pendingDocuments: dashboardResponse.pending_count || 0,
+//             rejectedDocuments: dashboardResponse.rejected_count || 0,
+//           });
+//         }
+
+        console.log("2343234543",yearMonthCompanyResponse)
+        // console.log("2343234543",companyCountResponse)
         // 🔹 Organization Count
         if (orgCountResponse) {
           const dashboard = orgCountResponse.map((db) => ({
@@ -326,6 +422,11 @@ const DashboardApp = () => {
           }));
           setCompanyData(dashboard);
         }
+
+
+ 
+        
+
 
         // 🔹 Company Count
         if (companyCountResponse) {
@@ -437,11 +538,10 @@ const DashboardApp = () => {
             });
           });
 
-          console.log("Formatted Data:", formattedData);
-          setChartData(formattedData);
+           setChartData(formattedData);
         }
 
-        console.log("COmapnieeeeeeeeeeee", yearMonthCompanyResponse); //year based datas for chart froowner
+        // console.log("COmapnieeeeeeeeeeee", yearMonthCompanyResponse); //year based datas for chart froowner
 
         // 🔹 Line Chart Data Processing
         if (lineDataResponse) {
@@ -511,6 +611,14 @@ const DashboardApp = () => {
     fetchAllData();
   }, []);
 
+
+  async function notify( ) {
+    
+    const details_data = await apiServices.details();
+
+   }
+  notify()
+
   if (isLoading) {
     return (
       <div className="loading-popup">
@@ -551,6 +659,8 @@ const DashboardApp = () => {
       }))
     );
   };
+
+
 
   const openModal = (company) => {
     console.log("model opening");
@@ -658,17 +768,7 @@ const DashboardApp = () => {
   // };
 
   // Check if the role should have the cards displayed
-  const isAdminOrDocumentRole = [
-    "ADMIN",
-    "UPLOADER",
-    "APPROVER",
-    "REVIEWER",
-    "VIEWER",
-  ].includes(role);
-  const companyNames = [...new Set(companyData.map((item) => item.org_name))];
-  const filteredCompanies = companyNames.filter((name) =>
-    name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
 
   const chartDataArray = Object.entries(chartData).flatMap(([year, months]) =>
     Object.entries(months).flatMap(([month, data]) =>
@@ -838,10 +938,18 @@ const DashboardApp = () => {
     <div className="dashboard-body boy bg">
       <div className="dashboard-container">
         {/* <Dashboard title="Visionboard" />*/}
-        <h2 className="dashboard-h2">
+      
+      {isAdminOrDocumentRole ? 
+        <h2 className="dashboard-h2" style={{marginTop:"70px",position:"relative"}}>
+          Welcome,{" "}
+          {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()}{" "}
+        </h2> :  <h2 className="dashboard-h2">
           Welcome,{" "}
           {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()}{" "}
         </h2>
+      }
+      
+
 
         {(role === "PRODUCT_OWNER" || role === "PRODUCT_ADMIN") && (
           <>
@@ -1023,7 +1131,7 @@ const DashboardApp = () => {
                 <div className="chart">
                   {groupedData.length > 0 ? (
                     <div>
-                      <ResponsiveContainer width="100%" height={300}>
+                      <ResponsiveContainer width="100%" height={250} style={{marginTop:"-40px"}}>
                         {isDataEmpty ? (
                           <div
                             style={{
@@ -1383,7 +1491,7 @@ console.log("✅ Clicked Data:", clickedData); // Log the data when clicked
                       );
 
                       return filteredData.length > 0 ? (
-                        <table className="dashboard_table">
+                        <table className="dashboard_table" >
                           <thead className="dashboard_thead">
                             <tr>
                               <th className="dashboard-table-th">
@@ -1481,134 +1589,118 @@ console.log("✅ Clicked Data:", clickedData); // Log the data when clicked
 
         {/* ADMINROLE */}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {isAdminOrDocumentRole && (
-          <>
-            <div className="role-selector">
-              <label>Select Role: </label>
-              <select value={selectedRole} onChange={handleRoleChange}>
-                <option value="USERS">Users</option> {/* Default option */}
-                <option value="UPLOADER">Uploader</option>
-                <option value="VIEWER">Viewer</option>
-                <option value="APPROVER">Approver</option>
-              </select>
-            </div>
-            <div className="cards-container1">
-              <Card
-                title="Total Documents"
-                value={OrgCount.totalDocuments}
-                icon={<IoMdCloudUpload />}
-                bgColor={"#d2eafd"}
-              />
-              <Card
-                title="Approved Documents"
-                value={OrgCount.approvedDocuments}
-                icon={<IoIosCheckmarkCircle style={{ color: "green" }} />}
-                bgColor={"#AFE1AF"}
-              />
-              <Card
-                title="Pending Documents"
-                value={OrgCount.pendingDocuments}
-                icon={<MdPending style={{ color: "#dd651b" }} />}
-                bgColor={"#fff3d0"}
-              />
-              <Card
-                title="Rejected Documents"
-                value={OrgCount.rejectedDocuments}
-                icon={<MdCancel style={{ color: "#b22d2d" }} />}
-                bgColor={"#ffe5d6"}
-              />
+  <>
+    <div className="role-selector">
+      <label>Select Role: </label>
+      <select value={selectedRole} onChange={handleRoleChange}>
+        <option value="USERS">Users</option>
+        <option value="UPLOADER">Uploader</option>
+        <option value="VIEWER">Viewer</option>
+        <option value="APPROVER">Approver</option>
+      </select>
+    </div>
+    <div className="cards-container1">
+      <Card title="Total Documents" value={DashboardStats.document_count} icon={<IoMdCloudUpload />} bgColor={"#d2eafd"} />
+      <Card title="Approved Documents" value={DashboardStats.approved_count} icon={<IoIosCheckmarkCircle style={{ color: "green" }} />} bgColor={"#AFE1AF"} />
+      <Card title="Pending Documents" value={DashboardStats.pending_count} icon={<MdPending style={{ color: "#dd651b" }} />} bgColor={"#fff3d0"} />
+      <Card title="Rejected Documents" value={DashboardStats.rejected_count} icon={<MdCancel style={{ color: "#b22d2d" }} />} bgColor={"#ffe5d6"} />
+      <Card title="Employee Count" value={DashboardStats.employee_count} icon={<IoPeople />} bgColor="#e0e0e0" />
+    </div>
+  </>
+)}
 
-              <Card
-                title={userData.label}
-                value={userData.count}
-                icon={<IoPeople />}
-                bgColor="#e0e0e0"
-              />
-            </div>
-
-            {/* {role === 'ADMIN' && (
-<div className="chart">
-{donutData({ OrgCount })}
-
-</div>
-)} */}
-          </>
-        )}
         {isAdminOrDocumentRole && (
           <div className="admin-dashboard-container">
             {/* Left Side: Area Chart */}
             <div className="chart-container">
-              <ResponsiveContainer width="100%" height={350}>
-                <AreaChart
-                  data={chartData}
-                  margin={{ top: 20, right: 30, left: 0, bottom: 10 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
-                  <XAxis
-                    dataKey="month"
-                    tick={{ fontSize: 12, fontWeight: "bold", fill: "#555" }}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 12, fontWeight: "bold", fill: "#555" }}
-                  />
+            <ResponsiveContainer width="100%" height={320}>
+            <AreaChart
+              data={dashboardData}
+              margin={{ top: 10, right: 30, left: 0, bottom: 10 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+              <XAxis
+                dataKey="month"
+                tick={{ fontSize: 12, fontWeight: "bold", fill: "#555" }}
+              />
+<YAxis 
+  dataKey="fileSizeMB" 
+  domain={[
+    (dataMin) => Math.floor(Math.min(dataMin, 0)), 
+    (dataMax) => Math.ceil(dataMax + (dataMax * 0.1))
+  ]}
+  tick={{ 
+    fontSize: 10, 
+    fontWeight: "bold", 
+    fill: "#555",
+    dx: -4 // Moves the labels slightly left to prevent overflow
+  }} 
+  tickFormatter={(val) => `${val.toFixed(2)} MB`} 
+  width={50} // Increase Y-axis width to provide space for labels
+/>
 
-                  <Tooltip
-                    content={({ active, payload }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div
-                            style={{
-                              backgroundColor: "#fff",
-                              borderRadius: "10px",
-                              boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-                              fontSize: "14px",
-                              padding: "10px",
-                              lineHeight: "1.5",
-                            }}
-                          >
-                            <p>
-                              <strong>📅 Month:</strong>{" "}
-                              {payload[0].payload.month}
-                            </p>
-                            <p>
-                              <strong>📄 Documents Uploaded:</strong>{" "}
-                              {payload[0].payload.docCount}
-                            </p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
 
-                  <Legend verticalAlign="top" align="right" iconType="circle" />
-                  <defs>
-                    <linearGradient
-                      id="colorDocCount"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="5%" stopColor="#007bff" stopOpacity={0.3} />
-                      <stop
-                        offset="95%"
-                        stopColor="#007bff"
-                        stopOpacity={0.1}
-                      />
-                    </linearGradient>
-                  </defs>
+              <Tooltip
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div
+                        style={{
+                          backgroundColor: "#fff",
+                          borderRadius: "10px",
+                          boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+                          fontSize: "14px",
+                          padding: "10px",
+                          lineHeight: "1.5",
+                        }}
+                      >
+                        <p><strong>📅 Month:</strong> {payload[0].payload.month}</p>
+                        <p><strong>📄 Documents Uploaded:</strong> {payload[0].payload.docCount}</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Legend verticalAlign="top" align="right" iconType="circle" />
+              <defs>
+  <linearGradient id="colorDocCount" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="5%" stopColor="#007bff" stopOpacity={0.1} /> 
+    <stop offset="5%" stopColor="#007bff" stopOpacity={0.1} />
+  </linearGradient>
+</defs>
 
-                  <Area
-                    type="monotone"
-                    dataKey="docCount"
-                    stroke="#007bff"
-                    strokeWidth={3}
-                    fill="url(#colorDocCount)"
-                    fillOpacity={0.7}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <Area
+  type="monotone"
+  dataKey="fileSizeMB" // Make sure this is set to display file sizes correctly
+  stroke="#007bff" // Ensures the line is blue
+  strokeWidth={4} // Increase thickness for better visibility
+  dot={{ fill: "#007bff", r: 1 }} // Adds blue dots for data points
+  fill="url(#colorDocCount)"
+  fillOpacity={0.3} // Reduce fill opacity for a clearer line
+/>
+
+            </AreaChart>
+          </ResponsiveContainer>
             </div>
 
             {/* Right Side: Table */}

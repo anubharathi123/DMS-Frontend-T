@@ -15,6 +15,7 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import ChangePassword from '../components/ChangePassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import CircularProgress from '@mui/material/CircularProgress'; // ✅ Import spinner
 
 // Additional imports
 import { useNavigate } from 'react-router-dom';
@@ -46,6 +47,7 @@ export default function SignInCard() {
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);  
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false); // ✅ Track loading state
 
   // Additional state variables
   const [otp, setOtp] = React.useState('');
@@ -177,6 +179,7 @@ export default function SignInCard() {
       else{
       setIsLoginSuccessful(true);
       localStorage.setItem('access_status', 'true');
+      setLoading(true)
       navigate('/profile');
       }
 
@@ -327,20 +330,15 @@ export default function SignInCard() {
         
 
         <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          onClick={() => {
-            // if (isOtpVisible) { // ✅ Only reload if verifying OTP
-            //   setTimeout(() => {
-            //     window.location.reload(); // 🔄 Reloads after 4 seconds
-            //   },300);
-            // }
-          }}
-          // onClick={validateInputs}
-        >
-          {isOtpVisible ? 'Verify OTP' : 'Sign in'}
-        </Button>
+  type="submit"
+  fullWidth
+  variant="contained"
+  
+  disabled={loading} // ✅ Disable button while loading
+  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}
+>
+  {loading ? <CircularProgress size={24} sx={{ color: '#fff' }} /> : (isOtpVisible ? 'Verify OTP' : 'Sign in')}
+</Button>
 
         {/* Display messages */}
         {messages.length > 0 && (

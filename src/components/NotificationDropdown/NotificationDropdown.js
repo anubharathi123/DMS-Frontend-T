@@ -2,13 +2,44 @@ import React, { useState, useEffect } from 'react';
 import apiServices from '../../ApiServices/ApiServices'; // Ensure correct import path
 import './NotificationDropdown.css';
 
-const NotificationPage = ({ newNotification }) => {
+const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(10); // Show 10 notifications initially
   const [orgId, setOrgId] = useState("");
+
+
+  
+  
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const details_data = await apiServices.details();
+        let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
+        if (!org_id) throw new Error("Organization ID not found");
+
+        setOrgId(org_id);
+
+        // Fetch notifications using the obtained org_id
+        const response = await apiServices.OrgNotification(org_id);
+        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        setNotifications(sortedNotifications);
+        onNotificationsUpdate(sortedNotifications); // Pass to parent
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+        setError(err.message || "Failed to load notifications");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!orgId) {
+      fetchNotifications();
+    }
+  }, [orgId, onNotificationsUpdate]); // Re-run when orgId updates
 
   useEffect(() => {
     const fetchOrgAndNotifications = async () => {

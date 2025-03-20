@@ -60,7 +60,7 @@ const OrganizationList = () => {
         try {
             setIsLoading(true);
             const response = await apiServices.getOrganizations();
-            console.log("Organization Data:", response);
+            // console.log("Organization Data:", response);
             const organization = response.approved_organizations.map(org => ({
                 id: org.id,
                 username: org.auth_user.username,
@@ -76,7 +76,7 @@ const OrganizationList = () => {
             .filter(org => org.approve === true).filter(org => org.msi === true)
             .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
             setData(filterdata);
-            console.log("Organization Data:", organization);
+            // console.log("Organization Data:", organization);
 
             if (organization.length === 0) {
                 setActionMessage("No Organizations are found in the list.");
@@ -223,8 +223,6 @@ const OrganizationList = () => {
           navigate(`/CompanyCreation`);
         } else if (value === "Deleted List") {
           navigate(`/OrganizationDeleteList`);
-        } else if (value === "Registered List") {
-          navigate(`/OrganizationPending`);
         }else if (value === "MSI Approval") {
           navigate(`/MsiPending`);
         }
@@ -287,8 +285,7 @@ const OrganizationList = () => {
         <option value="">Select an option</option>
      <option value="Create Organization">Create Organization</option>
      <option value="Deleted List">Deleted List</option>
-     <option value="Registered List">Registered List</option>
-     <option value="MSI Approval">MSI Approval</option>
+      <option value="MSI Approval">MSI Approval</option>
    </select>
 
 //   <div>

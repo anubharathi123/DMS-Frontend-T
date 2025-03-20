@@ -28,6 +28,38 @@ const Header = () => {
   const name = localStorage.getItem("name") || "User";
   const email = localStorage.getItem("email") || "email";
 
+
+
+  const handleNotificationsUpdate = (newNotifications) => {
+    console.log("Notifications received from child (NotificationPage):", newNotifications);
+    setNotifications(newNotifications);
+  };
+
+  // Fetch notifications on page reload
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const details_data = await ApiService.details();
+        let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
+        if (!org_id) throw new Error("Organization ID not found");
+  
+        const response = await ApiService.OrgNotification(org_id);
+        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  
+        console.log("Fetched Notifications on Page Load:", sortedNotifications);
+        setNotifications(sortedNotifications);
+        setNotificationCount(sortedNotifications.length); // ✅ Update count based on length
+      } catch (err) {
+        console.error("Error fetching notifications on reload:", err);
+      }
+    };
+  
+    fetchNotifications(); // Call function on reload
+  }, []); // Runs only once when the component mounts
+  
+
+
+
   // useEffect(() => {
   //   const fetchNotifications = async () => {
   //     try {
@@ -242,8 +274,8 @@ const handleNotificationClick = () => {
         
         {activeDropdown === "notification" && (
         <div className="notification-dropdown" ref={notificationDropdownRef}>
-          <NotificationPage />
-        </div>
+      <NotificationPage onNotificationsUpdate={handleNotificationsUpdate} />
+      </div>
       )}
         <img src={Notification} alt="Notifications" className="notification-icon" />
       </button>
