@@ -230,8 +230,8 @@ export default function SignInCard() {
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
-          <TextField
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <TextField
             error={emailError}
             helperText={emailErrorMessage}
             id="email"
@@ -244,7 +244,23 @@ export default function SignInCard() {
             variant="outlined"
             color={emailError ? 'error' : 'primary'}
             disabled={isOtpVisible}
-          />
+              onChange={(e) => {
+                const emailValue = e.target.value;
+                if (emailValue.length > 255) {
+                  setEmailError(true);
+                  setEmailErrorMessage('Email is Too Long');
+                } else if (/\.\./.test(emailValue) || /^-/.test(emailValue) || /\.$/.test(emailValue)) {
+                  setEmailError(true);
+                  setEmailErrorMessage('Invalid Email Format');
+                } else if (!/^\S+@\S+\.\S+$/.test(emailValue) && !/^[a-zA-Z0-9]@mail\.com$/.test(emailValue)) {
+                  setEmailError(true);
+                  setEmailErrorMessage('Please enter a valid email address.');
+                } else {
+                  setEmailError(false);
+                  setEmailErrorMessage('');
+                }
+              }}
+            />
         </FormControl>
         <FormControl>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

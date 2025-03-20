@@ -198,7 +198,7 @@ const calendarRef = useRef(null);
         <div className="organization-main">
             <h1 className="organization-header">Organization Deleted Details</h1>
             <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an option</option>
+        <option value="">Select an Option </option>
         <option value="Organization List">Organization List</option>
         <option value="Create Organization">Create Organization</option>
         {/* <option value="Registered List">Registered List</option> */}

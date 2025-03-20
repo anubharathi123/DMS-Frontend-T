@@ -162,7 +162,7 @@
   
   .userlist_tbody {
     display: block;
-    max-height: 300px;
+    max-height: 240px;
     overflow-y: auto;
   }
   

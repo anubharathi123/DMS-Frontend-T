@@ -161,7 +161,7 @@ const FileUploadPage = () => {
       navigate('/documentlist');
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to submit files.');
+      // alert('Failed to submit files.');
     } finally {
       setIsLoading(false);
     }
@@ -183,6 +183,11 @@ const FileUploadPage = () => {
               className="declaration-input"
               value={declarationNumber}
               onChange={handleDeclarationNumberChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleGoClick();
+                }
+              }}
               maxLength={13}
               placeholder="Enter Declaration Number"
             />

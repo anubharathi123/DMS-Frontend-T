@@ -317,57 +317,90 @@ function ProfileCard() {
             )}
 
             {/* Remove Profile Icon */}
-            {profileImage && profileImage !== avatar && (
-              <img
-                src={removeIcon}
-                alt="Remove"
-                className="remove-profile-icon"
-                onClick={handleRemoveProfileImage}
-              />
-            )}
-          </div>
+                      {profileImage && profileImage !== avatar && (
+                      <img
+                      src={removeIcon}
+                      alt="Remove"
+                      className="remove-profile-icon"
+                      onClick={handleRemoveProfileImage}
+                      />
+                      )}
+                      </div>
 
-          <h2 className="profile-name">{capitalizeFirst(name)}</h2>
-          <p className="profile-role">Role: {role}</p>
-          <p className="profile-location">Email: {mail}</p>
-          <p className="profile-role">Phone: {mobile}</p>
+                      <h2 className="profile-name">{capitalizeFirst(name)}</h2>
+                      <p className="profile-role">Role: {role}</p>
+                      <p className="profile-location">Email: {mail}</p>
+                      <p className="profile-role">Phone: {mobile}</p>
 
-          {(!profileImage || profileImage === avatar) && (
-          <button className="upload-btn" onClick={() => fileInputRef.current.click()}>
-            <img className="upload-photo" src={editIcon}></img>
-          </button>
-          )}
-      
-          <div className="divider-container">
-            <div className="profile-divider"></div>
-          </div>
+                      {(!profileImage || profileImage === avatar) && (
+                      <button className="upload-btn" onClick={() => fileInputRef.current.click()}>
+                      <img className="upload-photo" src={editIcon}></img>
+                      </button>
+                      )}
+                    
+                      <div className="divider-container">
+                      <div className="profile-divider"></div>
+                      </div>
 
-          <button className="edit-btn" onClick={() => setShowEditCard(true)}>Edit</button>
+                      <button className="edit-btn" onClick={() => setShowEditCard(true)}>Edit</button>
 
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </div>
+                      <input
+                      type="file"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      accept="image/*"
+                      onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        if (file.size > 5 * 1024 * 1024) { // Limit file size to 5MB
+                        alert("File size exceeds the 5MB limit. Please upload a smaller image.");
+                        e.target.value = ""; // Reset the input value
+                        return;
+                        }
+                        if (file.type.startsWith("image/")) {
+                        handleImageChange(e);
+                        } else {
+                        alert("Please upload a valid image file.");
+                        e.target.value = ""; // Reset the input value
+                        }
+                      }
+                      }}
+                      />
+                    
+                  
+                  
+                </div>
 
-        {/* Right Profile Edit Form */}
+                {/* Right Profile Edit Form */}
         {showEditCard && (
           <div className="profile-edit-card">
             <h2 className="profile-title">Profile</h2>
-           {/* <p className="profile-subtitle">The information can be edited</p>*/}
+          {/* <p className="profile-subtitle">The information can be edited</p>*/}
 
-            <div className="profile-form">
-              <div className="input-group">
-                <label>Name:</label>
-                <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} />
-              </div>
+                <div className="profile-form">
+                  <div className="input-group">
+                  <label>Name:</label>
+                  <input 
+                    type="text" 
+                    value={editName} 
+                    onChange={(e) => {
+                      const value = e.target.value.trimStart(); // Prevent leading spaces
+                      if (/^[a-zA-Z\s]*$/.test(value)) {
+                        setEditName(value);
+                      }
+                    }} 
+                    onBlur={() => {
+                      if (!editName.trim()) {
+                        alert("Empty Name Input Field cannot be saved") // Set a default name or keep the previous value
+                      }
+                    }}
+                  />
 
-              <div className="input-group">
-                <label>Role:</label>
-                {/* onChange={(e) => setEditRole(e.target.value)} */}
+                  </div>
+
+                  <div className="input-group">
+                  <label>Role:</label>
+                  {/* onChange={(e) => setEditRole(e.target.value)} */}
                 <input type="text" value={editRole}  disabled/>
               </div>
 
@@ -379,7 +412,10 @@ function ProfileCard() {
 
               <div className="input-group">
                 <label>Phone number:</label>
-                <input type="text" value={editMobile} onChange={(e) => setEditMobile(e.target.value)} />
+                <input type="tel" value={editMobile} maxLength="10" onChange={(e) => {
+                  const numericValue = e.target.value.replace(/\D/g, '');
+                  setEditMobile(numericValue);
+                }} />
               </div>
             </div>
 

@@ -283,7 +283,7 @@ const OrganizationList = () => {
            
 {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an option</option>
+        <option value="">Select an Option </option>
      <option value="Create Organization">Create Organization</option>
      <option value="Deleted List">Deleted List</option>
      {/* <option value="Registered List">Registered List</option> */}
