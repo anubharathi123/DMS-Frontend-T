@@ -228,7 +228,7 @@ const DashboardApp = () => {
   const [isTooltipSticky, setIsTooltipSticky] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [modalOpenChart, setmodalOpenChart] = useState(false);
-  const [rowLimit, setRowLimit] = useState("4");
+  const [rowLimit, setRowLimit] = useState("5");
   const [chartcomapny, setchartcomapny] = useState("");
   const [DashboardStats, setDashboardStats] = useState({});
   const username = localStorage.getItem("name") || "User";
@@ -877,6 +877,7 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
       );
 
       if (clickedData) {
+        console.log(clickedData)
         openModal(clickedData); // Open modal with clicked data
       }
     }
@@ -1063,6 +1064,13 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                             ? chartcomapny.document_count
                             : modalOpenChart.total_documents}
                         </p>
+                        <p>
+  <strong>🏚 Company:</strong>{" "}
+  {chartcomapny
+    ? chartcomapny.company // ✅ Corrected: Access the company name directly
+    : modalOpenChart.companies[0]?.company} {/* ✅ Ensure array access is correct */}
+</p>
+
                         <p>
                           <strong>📁 Total File Size:</strong>{" "}
                           {chartcomapny
