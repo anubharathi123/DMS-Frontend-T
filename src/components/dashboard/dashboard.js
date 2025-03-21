@@ -210,7 +210,9 @@ const DashboardApp = () => {
   const [stickyTooltip, setStickyTooltip] = useState(null);
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [openModalData, setOpenModalData] = useState(null); // Manages modal state
+  const [organizationId, setOrganizationId] = useState("");
+const [tableforadmin,settableforadmin] = useState("")
   const [searchTerm, setSearchTerm] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [yearMonth, setYearMonth] = useState([]);
@@ -233,7 +235,7 @@ const DashboardApp = () => {
   const [DashboardStats, setDashboardStats] = useState({});
   const username = localStorage.getItem("name") || "User";
   const [data, setData] = useState([]);
-
+  console.log("!!!!!!!!!!!!!!!!!!!!!!",organizationId)
   const filteredDataAdmin = filteredMockData.filter(
     (user) =>
       user.username.toLowerCase().includes(searchTermAdmin.toLowerCase()) ||
@@ -292,6 +294,7 @@ const DashboardApp = () => {
     return null;
   };
 
+  console.log("Aswin",tableforadmin.users)
   const role = localStorage.getItem("role");
 
   const isAdminOrDocumentRole = [
@@ -350,22 +353,114 @@ const DashboardApp = () => {
           console.error("Error fetching dashboard data:", error);
         }
       };
-  
+  const details =async()=>{
+    const details_data = await apiServices.details();
+    console.log(details_data)
+  }
+  details();
       fetchDashboardData();
     }
   }, [isAdminOrDocumentRole]);
-  
-  
-  
-  
+
+  const fetchIndividualAdmin = async (organizationId) => {
+    try {
+
+      console.log(organizationId)
+      const response = await apiServices.tableIndividual(organizationId); // GET request
+      settableforadmin(response)
+      console.log("Individual Admin Response:", response);
 
 
-console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 
+    } catch (error) {
+      console.error("Error fetching individual admin data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (organizationId) { // Ensure it's only called when the ID is available
+      fetchIndividualAdmin(organizationId);
+    }
+  }, [organizationId]); // Only runs when `organizationId` changes
+  
+   
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await apiServices.details();
+        console.log(response)
+        const id = response?.details?.[1]?.id;
+        if (id) {
+          setOrganizationId(id);
+         } else {
+          console.warn("No organization ID found.");
+        }
+      } catch (err) {
+        console.error("Error fetching details:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchDetails();
+
+
+  }, []);
+  
+  
+  
  
  
-  
+ 
+ 
+useEffect(() => {
+  const fetchDashboardData = async () => {
+    try {
+      const response = await apiServices.DashboardView();
+      console.log("Dashboard data:", response);
+      setDashboardStats(response)
+     } catch (err) {
+      console.error("Error fetching dashboard data:", err);
+     } finally {
+      setIsLoading(false);
+    }
+  };
 
+  fetchDashboardData();
+}, []);
+
+
+
+
+
+
+useEffect(() => {
+  const fetchDetails = async () => {
+    try {
+      const response = await apiServices.details();
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@",response)
+
+      if (response) {
+        setOrganizationId(response.details[1]?.id);
+        console.log("Fetched Organization ID:", response);
+      } else {
+        console.warn("No ID found at index 1.");
+      }
+    } catch (err) {
+      console.error("Error fetching details:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchDetails();
+});
+
+
+
+
+
+
+ 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -385,6 +480,9 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
           companyCountResponse,
           yearMonthCompanyResponse,
           lineDataResponse,
+           
+  details
+
    
           
         ] = await Promise.all([
@@ -392,24 +490,25 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
           apiServices.companyCount(),
           apiServices.MonthYearCompany(),
           apiServices.getlinedata(),
-        ]);
+          apiServices.details()
+         ]);
 
  
         
-
-
+ 
 //  console.log(DashboardStats)
-//         if (dashboardResponse) {
+//         if (dashResponse) {
 //           setDashboardStats({
-//             employeeCount: dashboardResponse.employee_count || 0,
-//             totalDocuments: dashboardResponse.document_count || 0,
-//             approvedDocuments: dashboardResponse.approved_count || 0,
-//             pendingDocuments: dashboardResponse.pending_count || 0,
-//             rejectedDocuments: dashboardResponse.rejected_count || 0,
+//             employeeCount: orgCountResponse.employee_count || 0,
+//             totalDocuments: orgCountResponse.document_count || 0,
+//             approvedDocuments: orgCountResponse.approved_count || 0,
+//             pendingDocuments: orgCountResponse.pending_count || 0,
+//             rejectedDocuments: orgCountResponse.rejected_count || 0,
 //           });
 //         }
 
-        console.log("2343234543",yearMonthCompanyResponse)
+        console.log("2343234543",DashboardStats)
+        
         // console.log("2343234543",companyCountResponse)
         // 🔹 Organization Count
         if (orgCountResponse) {
@@ -425,6 +524,9 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 
 
  
+        if(details){
+          console.log(details)
+        }
         
 
 
@@ -612,12 +714,11 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
   }, []);
 
 
-  async function notify( ) {
-    
-    const details_data = await apiServices.details();
+  
 
-   }
-  notify()
+ 
+ 
+  
 
   if (isLoading) {
     return (
@@ -660,6 +761,16 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
     );
   };
 
+   // Function to open the modal with selected row data
+   const handleOpenModalData = (company) => {
+    console.log("Clicked Data:", company); // Debugging
+    setOpenModalData(company);
+  };
+
+  // Function to close the modal
+  const closeModalData = () => {
+    setOpenModalData(null);
+  };
 
 
   const openModal = (company) => {
@@ -935,6 +1046,23 @@ console.log(dashboardData,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
   //   <CompanyDetailsModal company={modalData} onClose={() => setIsModalOpen(false)} />
   // )}
 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
   return (
     <div className="dashboard-body boy bg">
       <div className="dashboard-container">
@@ -1202,73 +1330,57 @@ console.log("✅ Clicked Data:", clickedData); // Log the data when clicked
                               tick={{ fontSize: 12, fontWeight: "bold" }}
                             />
 
-                            <Tooltip
-                              content={({ active, payload }) => {
-                                if (
-                                  (active || stickyTooltip) &&
-                                  payload &&
-                                  payload.length
-                                ) {
-                                  const monthData = payload[0].payload;
+<Tooltip
+  content={({ active, payload }) => {
+    if (active && payload && payload.length) { // ✅ Only active controls tooltip visibility
+      const monthData = payload[0].payload;
 
-                                  return (
-                                    <div
-                                      style={{
-                                        position: "absolute",
-                                        backgroundColor: "#fff",
-                                        borderRadius: "8px",
-                                        padding: "10px",
-                                        boxShadow:
-                                          "0px 4px 10px rgba(0,0,0,0.2)",
-                                        fontSize: "12px",
-                                        zIndex: 9999,
-                                      }}
-                                      onMouseEnter={() =>
-                                        setHoveredTooltip(true)
-                                      } // 🛑 Prevent tooltip from disappearing
-                                      onMouseLeave={() =>
-                                        setHoveredTooltip(false)
-                                      } // 🛑 Allow closing when mouse leaves
-                                    >
-                                      <p>
-                                        <strong>📅 Month:</strong>{" "}
-                                        {monthData.month}
-                                      </p>
-                                      <strong>Company Breakdown:</strong>
-                                      {monthData.companies.map(
-                                        (company, index) => (
-                                          <div
-                                            key={index}
-                                            style={{
-                                              paddingLeft: "10px",
-                                              borderBottom: "1px solid #ddd",
-                                            }}
-                                          >
-                                            <p
-                                              style={{
-                                                color: "blue",
-                                                cursor: "pointer",
-                                                textDecoration: "underline",
-                                              }}
-                                              onClick={() => {
-                                                setStickyTooltip(null); // Close tooltip after clicking
-                                                setModalData(company);
-                                                setIsModalOpen(true);
-                                              }}
-                                            >
-                                              📌{" "}
-                                              <strong>{company.company}</strong>
-                                            </p>
-                                          </div>
-                                        )
-                                      )}
-                                    </div>
-                                  );
-                                }
-                                return null;
-                              }}
-                              cursor={{ stroke: "blue", strokeWidth: 2 }}
-                            />
+      return (
+        <div
+          style={{
+             backgroundColor: "#fff",
+            borderRadius: "8px",
+            padding: "10px",
+            boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+            fontSize: "12px",
+            zIndex: 9999,
+          }}
+        >
+          <p>
+            <strong>📅 Month:</strong> {monthData.month}
+          </p>
+          <strong>Company Breakdown:</strong>
+          {monthData.companies.map((company, index) => (
+            <div
+              key={index}
+              style={{
+                paddingLeft: "10px",
+                borderBottom: "1px solid #ddd",
+              }}
+            >
+              <p
+                style={{
+                  color: "blue",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={() => {
+                  setModalData(company);
+                  setIsModalOpen(true);
+                }}
+              >
+                📌 <strong>{company.company}</strong>
+              </p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  }}
+  cursor={{ stroke: "blue", strokeWidth: 2 }}
+/>
+
 
                             <defs>
                               <linearGradient
@@ -1520,10 +1632,11 @@ console.log("✅ Clicked Data:", clickedData); // Log the data when clicked
                                 rowLimit === "" ? filteredData.length : rowLimit
                               )
                               .map((company, index) => (
-                                <tr
+                                
+                                 <tr
                                   key={index}
                                   className="dashboard-table-row hover:bg-gray-50 cursor-pointer"
-                                  onClick={() => openModal(company)}
+                                  onClick={() => handleOpenModalData(company)}
                                 >
                                   <td className="dashboard-table-td">
                                     {company.org_name}
@@ -1541,7 +1654,7 @@ console.log("✅ Clicked Data:", clickedData); // Log the data when clicked
                                     {company.emp}
                                   </td>
                                 </tr>
-                              ))}
+                              )) }
                           </tbody>
                         </table>
                       ) : (
@@ -1558,37 +1671,52 @@ console.log("✅ Clicked Data:", clickedData); // Log the data when clicked
                     })()
                   )}
 
-                  {isModalOpen && selectedCompany && (
-                    <div className="modal-overlay" style={{ zIndex: "999" }}>
-                      <div className="modal-content">
-                        <h2>Company Details</h2>
-                        <p>
-                          <strong>Company Name:</strong>{" "}
-                          {selectedCompany.org_name}
-                        </p>
-                        <p>
-                          <strong>Username:</strong> {selectedCompany.username}
-                        </p>
-                        <p>
-                          <strong>Document Count:</strong>{" "}
-                          {selectedCompany.doc_count}
-                        </p>
-                        <p>
-                          <strong>File Size:</strong> {selectedCompany.doc_size}{" "}
-                          KB
-                        </p>
-                        <p>
-                          <strong>Users:</strong> {selectedCompany.emp}
-                        </p>
-                        <button
-                          className="modal-close-btn"
-                          onClick={closeModal}
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </div>
-                  )}
+{openModalData && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#fff",
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+            minWidth: "320px",
+            zIndex: 1000,
+          }}
+        >
+          <h3>📅 Organization: {openModalData.org_name}</h3>
+          <p>
+            <strong>👤 Username:</strong> {openModalData.username}
+          </p>
+          <p>
+            <strong>📑 Total Documents:</strong> {openModalData.doc_count}
+          </p>
+          <p>
+            <strong>📁 Total File Size:</strong> {openModalData.doc_size}
+          </p>
+          <p>
+            <strong>👥 Employees:</strong> {openModalData.emp}
+          </p>
+
+          {/* Close Button */}
+          <button
+            onClick={closeModalData}
+            style={{
+              marginTop: "10px",
+              cursor: "pointer",
+              padding: "5px 10px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+            }}
+          >
+            Close
+          </button>
+        </div>
+      )}
                 </div>
               </div>
             </div>
@@ -1753,40 +1881,38 @@ console.log("✅ Clicked Data:", clickedData); // Log the data when clicked
 
                   {/* 📝 Table */}
                   <table className="company-data-table">
-                    <thead>
-                      <tr>
-                        <th>Username</th>
-                        <th>Doc Count</th>
-                        <th>File Size (KB)</th>
-                        <th>Role</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredDataAdmin.length > 0 ? (
-                        filteredDataAdmin.map((user) => (
-                          <tr key={user.id}>
-                            <td>{user.username}</td>
-                            <td>{user.docCount}</td>
-                            <td>{user.fileSize}</td>
-                            <td>{user.role}</td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="4"
-                            style={{
-                              textAlign: "center",
-                              color: "red",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            No data found for {selectedRole}
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Doc Count</th>
+      <th>File Size (KB)</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+  {console.log(tableforadmin?.users, "bala")} {/* Debugging log */}
+
+  {tableforadmin?.users && tableforadmin.users.length > 0 ? (
+    tableforadmin.users.map((user, index) => (
+      <tr key={index}>
+        <td>{user.username}</td>
+        <td>{user.uploaded_files_count + user.approved_files_count}</td>
+        <td>{((user.uploaded_files_size_mb + user.approved_files_size_mb) * 1024).toFixed(2)}</td>
+        <td>{user.role}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="4" style={{ textAlign: "center", color: "red", fontWeight: "bold" }}>
+        No data found
+      </td>
+    </tr>
+  )}
+</tbody>
+
+</table>
+
+
                 </>
               )}
             </div>

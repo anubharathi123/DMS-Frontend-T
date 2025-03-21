@@ -46,6 +46,26 @@ export default function AppAppBar() {
     setOpen(newOpen);
   };
 
+  const scroll = (id: string) => {
+    console.log(`Trying to scroll to: ${id}`); // Debugging Log
+
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        console.log(`Scrolling to: ${id}`);
+
+        // Offset scrolling by 100px margin from the top
+        const yOffset = -100;
+        const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+
+        window.scrollTo({ top: y, behavior: "smooth" });
+      } else {
+        console.warn(`No element found with id: ${id}`);
+      }
+    }, 100); // Delay to ensure DOM is rendered before scrolling
+  };
+
+
   return (
     <AppBar
       position="fixed"
@@ -112,11 +132,13 @@ export default function AppAppBar() {
 
           {/* Navigation Links */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2, alignItems: "center" }}>
-            <Button variant="text" color="info">Home</Button>
-            <Button variant="text" color="info">Services</Button>
-            <Button variant="text" color="info">About Us</Button>
-            <Button variant="text" color="info">Careers</Button>
-            <Button variant="text" color="info">Contact Us</Button>
+          <Button variant="text" color="info" onClick={() => scroll("hero")}>Home</Button>
+            <Button variant="text" color="info" onClick={() => scroll("features")}>Features</Button>
+            <Button variant="text" color="info" onClick={() => scroll("testimonials")}>Testimonials</Button>
+            <Button variant="text" color="info" onClick={() => scroll("leaders")}>Our Leaders</Button>
+            <Button variant="text" color="info" onClick={() => scroll("faq")}>FAQ's</Button>
+            <Button variant="text" color="info" onClick={() => scroll("footer")}>Contact Us</Button>
+            
             <Button 
    variant="outlined" 
   size="small" 
@@ -146,11 +168,12 @@ export default function AppAppBar() {
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
-                <MenuItem>Home</MenuItem>
-                <MenuItem>Services</MenuItem>
-                <MenuItem>About Us</MenuItem>
-                <MenuItem>Careers</MenuItem>
-                <MenuItem>Contact Us</MenuItem>
+                <MenuItem onClick={() => { scroll("hero"); setOpen(false); }}>Home</MenuItem>
+                <MenuItem onClick={() => { scroll("features"); setOpen(false); }}>Features</MenuItem>
+                <MenuItem onClick={() => { scroll("testimonials"); setOpen(false); }}>Testimonials</MenuItem>
+                <MenuItem onClick={() => { scroll("leaders"); setOpen(false); }}>Our Leaders</MenuItem>
+                <MenuItem onClick={() => { scroll("faq"); setOpen(false); }}>FAQ's</MenuItem>
+                <MenuItem onClick={() => { scroll("footer"); setOpen(false); }}>Contact Us</MenuItem>
                 <Divider sx={{ my: 2 }} />
                 <MenuItem>
                   <Button color="primary" variant="contained" fullWidth>

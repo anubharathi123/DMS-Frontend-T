@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
+import InputAdornment from '@mui/material/InputAdornment';
+ 
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
@@ -38,6 +40,7 @@ export default function SignUpCard({ onSwitch }) {
     password: '',
   });
 
+  console.log(formData)
   const [errors, setErrors] = useState({});
   // const [PhoneNumber, SetPhoneNumber] = useState({})
   // const [valid, setValid] = useState({})
@@ -49,6 +52,42 @@ export default function SignUpCard({ onSwitch }) {
       setFormData(JSON.parse(savedData));
     }
   }, []);
+
+
+
+
+  const handlePhoneChange = (value, data) => {
+    setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
+  
+    const phoneNumber = parsePhoneNumberFromString(value || "", data?.countryCode?.toUpperCase());
+  
+    let error = '';
+  
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      error = 'Enter a valid phone number';
+    } else {
+      const nationalNumber = phoneNumber.nationalNumber;
+      const nationalNumberLength = nationalNumber.length;
+  
+      // ✅ UAE Validation: Must be 9 digits and start with 5
+      if (data?.countryCode === 'ae') {
+        if (nationalNumberLength !== 9 || !/^5\d{8}$/.test(nationalNumber)) {
+          error = 'UAE number must be 9 digits and start with 5';
+        }
+      }
+      
+      // ✅ India Validation: Must be 10 digits
+      else if (data?.countryCode === 'in' && nationalNumberLength !== 10) {
+        error = 'Indian number must be exactly 10 digits';
+      }
+    }
+  
+    setErrors((prevErrors) => ({ ...prevErrors, mobile: error }));
+  };
+  
+  
+
+
 
   const handleChange = (event) => {
     const {name, value}= event.target;
@@ -66,35 +105,98 @@ export default function SignUpCard({ onSwitch }) {
   // };
 
   // // Phone number validation (UAE: +971 followed by 9 digits)
-  const handlePhoneChange = (value) => {
-    setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
+  // const handlePhoneChange = (value) => {
+  //   setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
   
-    // Parse the number properly to check if it's valid for UAE
-    const phoneNumber = parsePhoneNumberFromString(value, 'AE');
+  //   // Parse the number properly to check if it's valid for UAE
+  //   const phoneNumber = parsePhoneNumberFromString(value, 'AE');
     
-    if (!phoneNumber || !phoneNumber.isValid()) {
-      setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number' }));
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
-    }
-  };
+  //   if (!phoneNumber || !phoneNumber.isValid()) {
+  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number' }));
+  //   } else {
+  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
+  //   }
+  // };
 
+  
+  
   const validateForm = () => {
     let tempErrors = {};
+    const trimmedEmail = formData.email.trim();
+    const blacklistedDomains = ['unknown.xyz', 'gmail.com', 'spam.com'];
 
+    const isAllUpperCase = trimmedEmail === trimmedEmail.toUpperCase();
     if (!formData.username) tempErrors.username = 'Username is required';
     if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
     if (!formData.personName) tempErrors.personName = 'Person Name is required';
-    const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE'); // Explicitly specify UAE country code
+  
+    const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE');
     if (!formData.mobile || !phoneNumber || !phoneNumber.isValid()) {
       tempErrors.mobile = 'Enter a valid UAE phone number';
     }
-    if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = 'Enter a valid email';
-    if (!formData.password) tempErrors.password = 'Password is required'; 
+     const domain = trimmedEmail.split('@')[1]?.toLowerCase();
+     const isSubdomain = domain?.split('.').length > 2;
+    
+    const emailRegex = /^(?![.-])([a-zA-Z0-9]+(?:[._%+-][a-zA-Z0-9]+)*)@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[^\s]{8,20}$/;
 
+    const password = formData.password;
+    const isPasswordSameAsEmail = password === formData.email;
+    
+    if (!password) {
+      tempErrors.password = 'Password is required';
+    } else if (password.length > 20) {
+      tempErrors.password = 'Password too long';
+    } else if (!passwordRegex.test(password)) {
+      tempErrors.password = 'Password must include uppercase, lowercase, number & special char, no spaces';
+    } else if (isPasswordSameAsEmail) {
+      tempErrors.password = 'Password should not be same as email';
+    } else if (/[^\x00-\x7F]/.test(password)) {
+      tempErrors.password = 'Emoji or non-standard characters not allowed';
+    }
+    
+
+    if (!trimmedEmail) {
+      tempErrors.email = 'Email required';
+    } else if (trimmedEmail.length > 255) {
+      tempErrors.email = 'Email too long';
+    } else if (isAllUpperCase) {
+      tempErrors.email = 'Email cannot be fully uppercase';
+    } else if (!emailRegex.test(trimmedEmail)) {
+      tempErrors.email = 'Enter a valid email';
+    } else if (blacklistedDomains.includes(domain)) {
+      tempErrors.email = 'Unsupported domain';
+    } else if (isSubdomain) {
+      tempErrors.email = 'Subdomains are not supported';
+    }
+    
+  
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
+    
+
+
+
+
+
+
+  // const validateForm = () => {
+  //   let tempErrors = {};
+
+  //   if (!formData.username) tempErrors.username = 'Username is required';
+  //   if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
+  //   if (!formData.personName) tempErrors.personName = 'Person Name is required';
+  //   const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE'); // Explicitly specify UAE country code
+  //   if (!formData.mobile || !phoneNumber || !phoneNumber.isValid()) {
+  //     tempErrors.mobile = 'Enter a valid UAE phone number';
+  //   }
+  //   if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = 'Enter a valid email';
+  //   if (!formData.password) tempErrors.password = 'Password is required'; 
+
+  //   setErrors(tempErrors);
+  //   return Object.keys(tempErrors).length === 0;
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -102,6 +204,7 @@ export default function SignUpCard({ onSwitch }) {
 
     try {
       await authService.createuserOrganization(formData);
+      console.log(formData)
       alert('Company registered successfully!');
       localStorage.removeItem('signupFormData');
       navigate('/login'); 
@@ -117,16 +220,34 @@ export default function SignUpCard({ onSwitch }) {
         Sign Up
       </Typography>
       <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <FormControl>
-          <FormLabel>Username <span className="mandatory">*</span></FormLabel>
-          <TextField
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            error={!!errors.username}
-            helperText={errors.username}
-          />
-        </FormControl>
+      <FormControl>
+  <FormLabel>Username <span className="mandatory">*</span></FormLabel>
+  <TextField
+    name="username"
+    value={formData.username.replace(/^AE-/, '')} // Only keep the numeric part in field
+    placeholder="98765432"
+    onChange={(e) => {
+      let input = e.target.value;
+
+      // Remove non-digits
+      input = input.replace(/\D/g, '');
+
+      // Prepend AE-
+      const finalValue = `AE-${input}`;
+      handleChange({ target: { name: 'username', value: finalValue } });
+    }}
+    InputProps={{
+      startAdornment: <InputAdornment position="start">AE-</InputAdornment>,
+    }}
+    error={!!errors.username}
+    helperText={errors.username}
+  />
+</FormControl>
+
+
+
+
+
         <FormControl>
           <FormLabel>Organization Name <span className="mandatory">*</span></FormLabel>
           <TextField
@@ -147,16 +268,24 @@ export default function SignUpCard({ onSwitch }) {
             helperText={errors.personName}
           />
         </FormControl>
-        <FormControl>
-          <FormLabel>Email <span className="mandatory">*</span></FormLabel>
-          <TextField
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={!!errors.email}
-            helperText={errors.email}
-          />
-        </FormControl>
+
+
+<FormControl>
+  <FormLabel>Email <span className="mandatory">*</span></FormLabel>
+  <TextField
+    name="email"
+    value={formData.email}
+    onChange={(e) => {
+      const trimmedValue = e.target.value.trim();
+      handleChange({ target: { name: 'email', value: trimmedValue } });
+    }}
+    error={!!errors.email}
+    helperText={errors.email}
+  />
+</FormControl>
+
+
+
         <FormControl>
           <FormLabel>Mobile <span className="mandatory">*</span></FormLabel>
           <PhoneInput

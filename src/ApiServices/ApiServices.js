@@ -161,7 +161,14 @@ const authService = {
   MonthYearCompany: async () => {
     return handleResponse(apiClient.get('organization/state/'))
   },
-
+  tableIndividual: async (org_id) => {
+    return handleResponse(apiClient.get(`dashboarduser/${org_id}/`));
+  },
+  
+  enquire: async (data) => {
+    return handleResponse(apiClient.post('enquiries/', data));
+  },
+  
 
 
 

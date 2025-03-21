@@ -31,31 +31,40 @@ const Header = () => {
 
 
   const handleNotificationsUpdate = (newNotifications) => {
-    console.log("Notifications received from child (NotificationPage):", newNotifications);
+    console.log("New Notifications Received:", newNotifications);
+
+    // Update notifications and count only if new notifications are received
     setNotifications(newNotifications);
+
+    // Count only unread notifications
+    const unreadCount = newNotifications.filter((n) => !n.read).length;
+    setNotificationCount(unreadCount);
   };
 
-  // Fetch notifications on page reload
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const details_data = await ApiService.details();
         let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
         if (!org_id) throw new Error("Organization ID not found");
-  
+
         const response = await ApiService.OrgNotification(org_id);
         const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  
-        console.log("Fetched Notifications on Page Load:", sortedNotifications);
+
+        console.log("Fetched Notifications:", sortedNotifications);
+
+        // Update state only if new notifications are different
         setNotifications(sortedNotifications);
-        setNotificationCount(sortedNotifications.length); // ✅ Update count based on length
+        setNotificationCount(sortedNotifications.filter((n) => !n.read).length);
       } catch (err) {
-        console.error("Error fetching notifications on reload:", err);
+        console.error("Error fetching notifications:", err);
       }
     };
-  
-    fetchNotifications(); // Call function on reload
-  }, []); // Runs only once when the component mounts
+
+    fetchNotifications(); // Initial fetch
+    const interval = setInterval(fetchNotifications, 10000); // Fetch every 10 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
   
 
 
