@@ -30,8 +30,12 @@ const CompanyCreation = () => {
 
   // Handles input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target || {};
     setCompany({ ...company, [name]: value });
+  };
+
+  const handlePhoneChange = (value) => {
+    setCompany({ ...company, mobile: value });
   };
 
   // Handles file selection (only one file at a time)
@@ -113,8 +117,9 @@ const CompanyCreation = () => {
     setIsLoading(true);
   
     try {
-      await authService.createOrganization(formData); // Call the API service
+      const response = await authService.createOrganization(formData); // Call the API service
       alert('Company registered successfully!');
+      console.log("Create Response", response)
       navigate('/MsiPending');
     } catch (error) {
       setError(error.message || 'Something went wrong.');
@@ -208,11 +213,11 @@ const CompanyCreation = () => {
             <PhoneInput
               className='phone'
               country={'ae'}                                      
-              value={company.mobile}
+              onChange={handlePhoneChange} 
               // pattern="[0-9]{10}"
               enableSearch
               required
-              onChange={(value) => handleChange({ target: { value } })} 
+              // onChange={(value) => handleChange({ target: { value } })} 
               countryCodeEditable={false} // Prevents users from changing the country code manually
               />
               </div>

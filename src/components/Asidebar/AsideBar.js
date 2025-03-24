@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { 
-  User, LayoutDashboard, Building2, UserPlus, ListOrdered,FileCheck2, FileText, Settings,Upload,ChartNoAxesCombined
+  User, LayoutDashboard, Building2, UserPlus, ListOrdered,FileCheck2, FileText, Settings,Upload,ChartNoAxesCombined, FileQuestion
 } from "lucide-react"; // Importing icons
 import "./AsideBar.css";
 import Logo from "../../assets/images/company_logo.png";
@@ -121,6 +121,17 @@ const AsideBar = () => {
                 </NavLink>
               </li>
             )}
+
+            {role === "PRODUCT_OWNER" && (
+              <li>
+                <NavLink to="/enquirylist" className={({ isActive }) => (isActive ? "active" : "")}>
+                  <FileQuestion className="aside-icon" size={20} />
+                  <p className="asidebar_p_tag">Enquiry</p>
+                </NavLink>
+              </li>
+            )}
+
+
 
             {/*{role === "PRODUCT_OWNER" && (
               <li>

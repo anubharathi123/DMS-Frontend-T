@@ -48,6 +48,7 @@ import ContractForm from './components/ContractForm/contractform';
 // import AdminCreation Update from "./components/AdminCreation Update";
 // import OrganizationList from "./components/OrganizationList/OrganizationList";
 import MsiPending from "./components/OrganizationMsiPending/OrganizationMsiPending"
+import EnquiryList from "./components/EnquiryList/EnquiryList"
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
@@ -276,6 +277,17 @@ function AppContent() {
            </PrivateRoute>
           }
         />
+
+        <Route
+          path="/enquirylist"
+          element={
+            <PrivateRoute>
+              <EnquiryList />
+             </PrivateRoute>
+          }
+        />
+
+        
 
         <Route
           path="/organizationlist"

@@ -169,6 +169,9 @@ const authService = {
     return handleResponse(apiClient.post('enquiries/', data));
   },
   
+  getEnquirydata:async (data) => {
+    return handleResponse(apiClient.get('enquiries/', data))
+  },
 
 
 
