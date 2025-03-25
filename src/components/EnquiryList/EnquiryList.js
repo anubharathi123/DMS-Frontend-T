@@ -328,7 +328,8 @@ const EnquiryList = () => {
                 </div>
                 
             </div>
-            
+
+          
             <table className="enquiry-table">
                 <thead className='enquiry-thead'>
                     <tr>
@@ -412,6 +413,7 @@ const EnquiryList = () => {
                 </tbody>
                 
             </table>
+            
             {selectedFile && (
     <div className="popup-overlay">
         <div className="popup-content">
@@ -436,7 +438,7 @@ const EnquiryList = () => {
                 </div>
                  {/* Reset Filter Button */}
              {(searchTerm || statusFilter || filterDate) && (
-             <button className="reset-filter-btn" onClick={handleResetFilter} 
+             <button className="enquiry_reset-filter-btn" onClick={handleResetFilter} 
                         disabled={!searchTerm && !statusFilter && !filterDate}>
                             Reset Filter 
                             <img className='refresh-icon' src={refreshIcon}/>

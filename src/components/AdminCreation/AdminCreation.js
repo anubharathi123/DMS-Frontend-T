@@ -19,6 +19,7 @@ const AdminCreation = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null); // For error handling
 
   const handleChange = (e) => {
     if (typeof e === "string") {
@@ -70,6 +71,11 @@ const AdminCreation = () => {
   return (
     <div className="admincreation-container">
       <h2 className="admincreation-title">Admin Creation</h2>
+      {error && (
+          <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+            {error}
+          </div>
+        )}
       {message && (
         <div className={`admincreation-message px-4 py-2 rounded mb-4 ${
           message.includes("Error") ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
@@ -80,21 +86,31 @@ const AdminCreation = () => {
       )}
       <form onSubmit={handleSubmit}>
         {/* Username */}
-        <div className="admincreation-form-group">
-          <label className="admincreation-label">
-            Username <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className="admincreation-input"
-            required
-          />
-        </div>
+          <div className="admincreation-form-group">
+            <label className="admincreation-label">
+              Username <span className="mandatory">*</span>
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/[^a-zA-Z0-9]/.test(value)) {
+            setError("Special characters are not allowed in the username.");
+            setTimeout(() => {
+              setError("");
+            }, 3000);
+                } else {
+            handleChange(e);
+                }
+              }}
+              className="admincreation-input"
+              required
+            />
+          </div>
 
-        {/* Company Name */}
+          {/* Company Name */}
         <div className="admincreation-form-group">
           <label className="admincreation-label">
             Company Name <span className="mandatory">*</span>
@@ -109,43 +125,62 @@ const AdminCreation = () => {
         </div>
 
         {/* Person Name */}
-        <div className="admincreation-form-group">
-          <label className="admincreation-label">
-            Person Name <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="admincreation-input"
-            required
-          />
-        </div>
-
-        {/* Mobile */}
-        <div className="admincreation-form-group">
-          <label className="admincreation-label">
-            Mobile <span className="mandatory">*</span>
-          </label>
-          <div className="custom-phone-input">
-          <PhoneInput
-            type="tel"
-            name="mobile"
-            country={'ae'}
-            value={formData.mobile}
-            onChange={(value) => setFormData((prevData) => ({ 
-              ...prevData, 
-              mobile: value || "" // Ensure it updates under "mobile"
-            }))}
-            maxLength="16"
-            className="admincreation-input"
-            required
-          />
+          <div className="admincreation-form-group">
+            <label className="admincreation-label">
+              Person Name <span className="mandatory">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/\d/.test(value)) {
+            setError("Numbers are not allowed in the person name.");
+            setTimeout(() => {
+              setError("");
+            }, 3000);
+                } else {
+            handleChange(e);
+                }
+              }}
+              className="admincreation-input"
+              required
+            />
           </div>
-        </div>
 
-        {/* Email */}
+          {/* Mobile */}
+            <div className="admincreation-form-group">
+              <label className="admincreation-label">
+                Mobile <span className="mandatory">*</span>
+              </label>
+              <div className="custom-phone-input">
+              <PhoneInput
+                type="tel"
+                name="mobile"
+                country={'ae'}
+                value={formData.mobile}
+                onChange={(value) => {
+                  if (value.length > 15) {
+              setError("Invalid Phone Number");
+              setTimeout(() => {
+                setError("");
+              }, 3000);
+                  } else {
+              setFormData((prevData) => ({ 
+                ...prevData, 
+                mobile: value || "" // Ensure it updates under "mobile"
+              }));
+                  }
+                }}
+                maxLength="16"
+                className="admincreation-input"
+                required
+              />
+              </div>
+            </div>
+
+            {/* Email */}
         <div className="admincreation-form-group">
           <label className="admincreation-label">
             Mail ID <span className="mandatory">*</span>
@@ -154,7 +189,18 @@ const AdminCreation = () => {
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={(e) => {
+            const value = e.target.value;
+            if(/^[\p{L}\p{N}@._-]*$/u.test(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || value === '') {
+              handleChange(e);
+              setError(null);
+            } else {
+              setError("Invalid characters in Email ID.");
+              setTimeout(() => setError(null), 3000);
+            }
+            }}
+            
+            handleChange
             className="admincreation-input"
             required
           />

@@ -249,19 +249,22 @@ export default function SignInCard() {
             color={emailError ? 'error' : 'primary'}
             disabled={isOtpVisible}
               onChange={(e) => {
-            const emailValue = e.target.value.toLowerCase(); // Convert email to lowercase for case-insensitivity
+            const emailValue = e.target.value.trim().toLowerCase(); // Trim and convert email to lowercase for case-insensitivity
             const blacklistedDomains = ['spam.com', 'example.com']; // Add blacklisted domains here
             const emailDomain = emailValue.split('@')[1];
             const localPart = emailValue.split('@')[0];
 
             try {
-            const asciiEmail = punycode.toASCII(emailDomain || '');
-            if (asciiEmail.length > 255) {
+            const asciiEmail = punycode.toASCII(emailDomain || ''); // Convert domain to ASCII for IDN support
+            if (emailValue.length > 320) { // Ensure total email length is valid
+              setEmailError(true);
+              setEmailErrorMessage('Email is too long');
+            } else if (asciiEmail.length > 255) { // Ensure domain length is valid
               setEmailError(true);
               setEmailErrorMessage('Email domain is too long');
             } else if (localPart.length > 64) { // Check for maximum username length
               setEmailError(true);
-              setEmailErrorMessage('Username part of the email is too long');
+              setEmailErrorMessage('Invalid Email Format');
             } else if (/\.\./.test(emailValue) || /^-/.test(emailValue) || /\.$/.test(emailValue)) {
               setEmailError(true);
               setEmailErrorMessage('Invalid Email Format');
@@ -271,10 +274,10 @@ export default function SignInCard() {
             } else if (blacklistedDomains.includes(emailDomain)) {
               setEmailError(true);
               setEmailErrorMessage('Access Denied');
-            } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailValue)) {
+            } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(emailValue)) { // Updated regex to allow valid TLDs up to 63 characters
               setEmailError(true);
               setEmailErrorMessage('Invalid Email Format');
-            } else if (/[^a-zA-Z0-9@._%+-]/.test(emailValue)) { // Check for excessive special characters
+            } else if (/[^a-zA-Z0-9@._%+-]/.test(emailValue) || /^[^a-zA-Z0-9]+$/.test(localPart)) { // Check for excessive special characters or only special characters in local part
               setEmailError(true);
               setEmailErrorMessage('Invalid Email Format');
             } else if (/\.\./.test(localPart)) { // Check for repeated special characters in local part
@@ -283,9 +286,9 @@ export default function SignInCard() {
             } else if (emailDomain && emailDomain.split('.').some(part => part.length === 1)) {
               setEmailError(true);
               setEmailErrorMessage('Invalid Email Format');
-            } else if (asciiEmail.length <= 255) { // Ensure domain length is valid
-              setEmailError(false);
-              setEmailErrorMessage('');
+            } else if (/[\u0000-\u001F\u007F-\u009F]/.test(emailValue)) { // Check for invisible characters
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
             } else {
               setEmailError(false);
               setEmailErrorMessage('');
@@ -294,7 +297,7 @@ export default function SignInCard() {
             setEmailError(true);
             setEmailErrorMessage('Invalid Email Format');
             }
-          }}
+            }}
             />
             
         </FormControl>

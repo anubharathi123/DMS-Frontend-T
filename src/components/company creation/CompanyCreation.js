@@ -7,6 +7,8 @@ import authService from '../../ApiServices/ApiServices';
 import apiServices from '../../ApiServices/ApiServices';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { IoMdInformationCircleOutline } from "react-icons/io";
+
 
 
 const CompanyCreation = () => {
@@ -25,6 +27,7 @@ const CompanyCreation = () => {
   // const [companyName, setCompanyName] = useState('');
   // const [newNotification, setNewNotification] = useState(null);
   const navigate = useNavigate();
+  // const [ showinfo , setshowinfo] = useState(false);
   const [isLoading, setIsLoading] = useState(false);  
   
 
@@ -129,6 +132,9 @@ const CompanyCreation = () => {
     }
   };
   
+  // const handleInfo = () => {
+  //   setshowinfo(!showinfo);
+  // }
 
   // Handles cancel action
   const handleCancel = () => {
@@ -149,15 +155,17 @@ const CompanyCreation = () => {
   //   document.getElementById("file-input").click();
   // };
 
+  const isFormValid = Object.values(company).every((value) => value.trim() !== '');
+
   return (
     <div className="company-creation-container">
       <div className="company-creation-inner-container">
         <h2 className="company-creation-title1">Company Hub</h2>
         {error && (
-        <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
-          {error}
-        </div>
-      )}
+          <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+            {error}
+          </div>
+        )}
         <form className="company-creation-form" onSubmit={handleSubmit}>
           {/* Username */}
           <div className="company-creation-form-group">
@@ -168,10 +176,28 @@ const CompanyCreation = () => {
               type="text"
               name="username"
               value={company.username}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length > 100) {
+                  setError("Username is too lengthy");
+                  setTimeout(() => setError(null), 3000);
+                } else if (/^[a-zA-Z0-9-_]*$/.test(value) || value === '') {
+                  handleChange(e);
+                  setError(null);
+                } else {
+                  setError("Only alphanumeric characters, hyphen (-), and underscore (_) are allowed.");
+                  setTimeout(() => setError(null), 3000);
+                }
+              }}
               className="company-creation-input"
               required
             />
+            {/* <button className='input-info' onClick={handleInfo}><IoMdInformationCircleOutline /></button>
+            {showinfo && (
+                        <div className='input-info-popup'>
+                          Only alphanumeric characters, hyphen (-), and underscore (_) are allowed.
+                          </div>
+                      )} */}
           </div>
 
           {/* Company Name */}
@@ -183,104 +209,128 @@ const CompanyCreation = () => {
               type="text"
               name="companyName"
               value={company.companyName}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length > 500) {
+                  setError("Company Name is too long");
+                  setTimeout(() => setError(null), 3000);
+                } else if (/^[a-zA-Z0-9\s]*$/.test(value) || value === '') {
+                  // Allow only letters, numbers, and spaces
+                  handleChange(e);
+                  setError(null);
+                } else {
+                  setError("Special Characters are not allowed.");
+                  setTimeout(() => setError(null), 5000);
+                }
+              }}
               className="company-creation-input"
               required
             />
+            {/* <button className='input-info' onClick={handleInfo}><IoMdInformationCircleOutline /></button>
+            {showinfo && (
+                        <div className='input-info-popup'>
+                          Special Characters are not allowed.
+                          </div>
+                      )} */}
           </div>
 
           {/* Person Name */}
-          <div className="company-creation-form-group">
-            <label className="company-creation-label">
-              Person Name <span className="company-creation-mandatory">*</span>
-            </label>
-            <input
-              type="text"
-              name="personName"
-              value={company.personName}
-              onChange={handleChange}
-              className="company-creation-input"
-              required
-            />
-          </div>
+                      <div className="company-creation-form-group">
+                      <label className="company-creation-label">
+                        Person Name <span className="company-creation-mandatory">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="personName"
+                        value={company.personName}
+                        onChange={(e) => {
+                        const value = e.target.value;
+                        if (value.length > 100) {
+                          setError("Person Name is too long");
+                          setTimeout(() => setError(null), 3000);
+                        } else if (/^[\p{L}\s]*$/u.test(value) || value === '') {
+                          // Allow letters (including non-English characters) and spaces
+                          handleChange(e);
+                          setError(null);
+                        } else {
+                          setError("Only alphabetic characters and spaces are allowed.");
+                          setTimeout(() => setError(null), 3000);
+                        }
+                        }}
+                        className="company-creation-input"
+                        required
+                      />
+                      {/* <button className='input-info' onClick={handleInfo}><IoMdInformationCircleOutline /></button> */}
+                      {/* {showinfo && (
+                        <div className='input-info-popup'>
+                          Only alphabetic characters and spaces are allowed.
+                          </div>
+                      )} */}
+                      </div>
 
-          {/* Mobile */}
+                      {/* Mobile */}
           <div className="company-creation-form-group">
             <label className="company-creation-label">
               Mobile <span className="company-creation-mandatory">*</span>
             </label>
-            <div className='company-phone-input'>
-            <PhoneInput
-              className='phone'
-              country={'ae'}                                      
-              onChange={handlePhoneChange} 
-              // pattern="[0-9]{10}"
-              enableSearch
-              required
-              // onChange={(value) => handleChange({ target: { value } })} 
-              countryCodeEditable={false} // Prevents users from changing the country code manually
+            <div className="company-phone-input">
+              <PhoneInput
+                className="phone"
+                country={'ae'}
+                onChange={(value) => {
+                  if (value.length > 15) {
+                    setError("Invalid Phone Number");
+                    setTimeout(() => setError(null), 3000);
+                  } else if (/^\d+$/.test(value) || value === '') {
+                    handlePhoneChange(value);
+                    setError(null);
+                  } else {
+                    setError("Only numbers are allowed to enter.");
+                    setTimeout(() => setError(null), 3000);
+                  }
+                }}
+                enableSearch
+                required
+                countryCodeEditable={false}
               />
-              </div>
+            </div>
+            {/* <button className='input-info'><IoMdInformationCircleOutline /></button> */}
           </div>
 
           {/* Email */}
-          <div className="company-creation-form-group">
-            <label className="company-creation-label">
-              Mail ID <span className="company-creation-mandatory">*</span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={company.email}
-              onChange={handleChange}
-              className="company-creation-input"
-              required
-            />
-          </div>
+                <div className="company-creation-form-group">
+                <label className="company-creation-label">
+                  Mail ID <span className="company-creation-mandatory">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={company.email}
+                  onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length > 320) {
+                    setError("Invalid Email ID");
+                    setTimeout(() => setError(null), 3000);
+                  } else if ( /^[\p{L}\p{N}@._-]*$/u.test(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || value === '') {
+                    // Allow letters, numbers, @, ., _, and - (including non-English characters)
+                    handleChange(e);
+                    setError(null);
+                  } else {
+                    setError("Invalid characters in Email ID.");
+                    setTimeout(() => setError(null), 3000);
+                  }
+                  }}
+                  className="company-creation-input"
+                  required
+                />
+                {/* <button className='input-info'><IoMdInformationCircleOutline /></button> */}
+                </div>
 
-         
-          {/* <div className="company-creation-form-group">
-            <label className="company-creation-label">
-              Master Services Agreement(MSA) <span className="company-creation-mandatory">*</span>
-            </label>
-            <div className={`company-creation-upload-area ${dragging ? 'dragging' : ''}`}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onClick={handleUploadClick} // Trigger file dialog on single click
-> */}
-            {/* <input type="file" id="file-input" onChange={handleFileChange} className="company-creation-file-input"
-              hidden /> */}
-            {/* <div className="company-creation-upload-text">
-              <FaCloudUploadAlt />
-              {fileInputClicked ? ( */}
-              {/* <div className="company-creation-file-name">
-              {contractDocuments.name}
-              {/* Cross button to remove the file */}
-              {/* <span className="company-creation-remove-icon" onClick={handleRemoveFile}>
-              &#10005;
-              </span>  */}
-            {/* </div> */}
-          {/* ) : (
-        <p> Drag and drop or browse
-        <a href="#!"> */}
-          {/* here
-        </a>
-      </p> */}
-    {/* )}
-  </div>
-</div>
-          </div> */}
-
-          {/* Error Message */}
-          {/* {error && <div className="company-creation-error">{error}</div>} */}
-
-          {/* Submit and Cancel */}
+                {/* Submit and Cancel */}
           <div className="company-creation-buttons">
-            <button type="submit" className="company-creation-submit">
+            <button type="submit" className="company-creation-submit" disabled={!isFormValid}>
               Create
             </button>
-           
             <button type="button" onClick={handleCancel} className="company-creation-cancel">
               Cancel
             </button>
@@ -290,7 +340,7 @@ const CompanyCreation = () => {
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">
-            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'}size={100} />
+            <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={100} />
             <p>Loading...</p>
           </div>
         </div>

@@ -162,18 +162,18 @@ function ProfileCard() {
     };
   }, []);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageToCrop(reader.result);
-        setCropperVisible(true);
-      };
-      reader.readAsDataURL(file);
-      e.target.value = "";
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImageToCrop(reader.result);
+  //       setCropperVisible(true);
+  //     };
+  //     reader.readAsDataURL(file);
+  //     e.target.value = "";
+  //   }
+  // };
 
   const handleSaveCrop = async () => {
     const cropper = cropperRef.current?.cropper;
@@ -286,6 +286,80 @@ function ProfileCard() {
     }
   };
   
+  const compressImage = (file, maxWidth, maxHeight, quality) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.src = e.target.result;
+      };
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            resolve(blob);
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+
+      img.onerror = (error) => reject(error);
+      reader.onerror = (error) => reject(error);
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size exceeds the 5MB limit. Please upload a smaller image.");
+        e.target.value = "";
+        return;
+      }
+
+      if (file.type.startsWith("image/")) {
+        try {
+          const compressedImage = await compressImage(file, 800, 800, 0.8); // Compress to 800x800 with 80% quality
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setImageToCrop(reader.result);
+            setCropperVisible(true);
+          };
+          reader.readAsDataURL(compressedImage);
+        } catch (error) {
+          console.error("Error compressing image:", error);
+          alert("Failed to process the image. Please try again.");
+        }
+      } else {
+        alert("Please upload a valid image file.");
+        e.target.value = "";
+      }
+    }
+  };
 
 
   const handleRemoveProfileImage = async () => {
@@ -372,67 +446,81 @@ function ProfileCard() {
                 </div>
 
                 {/* Right Profile Edit Form */}
-        {showEditCard && (
-          <div className="profile-edit-card">
-            <h2 className="profile-title">Profile</h2>
-          {/* <p className="profile-subtitle">The information can be edited</p>*/}
+                {showEditCard && (
+                  <div className="profile-edit-card">
+                    <h2 className="profile-title">Profile</h2>
 
-                <div className="profile-form">
-                  <div className="input-group">
-                  <label>Name:</label>
-                  <input 
-                    type="text" 
-                    value={editName} 
-                    onChange={(e) => {
-                      const value = e.target.value.trimStart(); // Prevent leading spaces
-                      if (/^[a-zA-Z\s]*$/.test(value)) {
-                        setEditName(value);
-                      }
-                    }} 
-                    onBlur={() => {
-                      if (!editName.trim()) {
-                        alert("Empty Name Input Field cannot be saved") // Set a default name or keep the previous value
-                      }
-                    }}
-                  />
+                    <div className="profile-form">
+                      <div className="input-group">
+                        <label>Name:</label>
+                        <input 
+                          type="text" 
+                          value={editName} 
+                          onChange={(e) => {
+                            const value = e.target.value.trimStart(); // Prevent leading spaces
+                            if (/^[a-zA-Z\s]*$/.test(value)) {
+                              setEditName(value);
+                            }
+                          }} 
+                          onBlur={() => {
+                            if (!editName.trim()) {
+                              alert("Empty Name Input Field cannot be saved");
+                            }
+                          }}
+                        />
+                      </div>
 
-                  </div>
+                      <div className="input-group">
+                        <label>Role:</label>
+                        <input type="text" value={editRole} disabled />
+                      </div>
 
-                  <div className="input-group">
-                  <label>Role:</label>
-                  {/* onChange={(e) => setEditRole(e.target.value)} */}
-                <input type="text" value={editRole}  disabled/>
-              </div>
+                      <div className="input-group">
+                        <label>Email address: </label>
+                        <input type="email" value={editMail} disabled />
+                      </div>
 
-              <div className="input-group">
-                <label>Email address: </label>
-                {/* onChange={(e) => setEditMail(e.target.value)} */}
-                <input type="email" value={editMail}  disabled />
-              </div>
+                      <div className="input-group">
+                        <label>Phone number:</label>
+                        <input 
+                          type="tel" 
+                          value={editMobile} 
+                          maxLength="10" 
+                          onChange={(e) => {
+                            const sanitizedValue = e.target.value.replace(/[^\d]/g, ''); // Sanitize input to allow only digits
+                            setEditMobile(sanitizedValue);
+                            }} 
+                          />
+                          </div>
+                        </div>
 
-              <div className="input-group">
-                <label>Phone number:</label>
-                <input type="tel" value={editMobile} maxLength="10" onChange={(e) => {
-                  const numericValue = e.target.value.replace(/\D/g, '');
-                  setEditMobile(numericValue);
-                }} />
-              </div>
-            </div>
-
-            <button className="save-btn" onClick={handleSaveDetails}>Save details</button>
-          </div>
-        )}
-      </div>
-
-     {/* 🖼️ Compact Cropper Modal */}
-<div className={`cropper-modal ${cropperVisible ? "show" : ""}`}>
-  <div className="cropper-modal-content">
-    <h2 className="cropper-header">Crop Your Photo</h2>
-    <div className="cropper-container">
-      <Cropper
-        ref={cropperRef}
-        src={imageToCrop}
-        style={{ height: "220px", width: "100%" }} /* 👈 Reduced size */
+                        <button 
+                          className="save-btn" 
+                          onClick={() => {
+                          if (!editName.trim() || !editMobile.trim()) {
+                            alert("Please fill out all required fields before saving.");
+                            return;
+                          }
+                          handleSaveDetails();
+                          }}
+                          disabled={
+                          editName === name &&
+                          editMobile === mobile
+                          }
+                        >
+                          Save details
+                        </button>
+                        </div>
+                      )}
+                      </div>
+              <div className={`cropper-modal ${cropperVisible ? "show" : ""}`}>
+                <div className="cropper-modal-content">
+                <h2 className="cropper-header">Crop Your Photo</h2>
+                <div className="cropper-container">
+                  <Cropper
+                  ref={cropperRef}
+                  src={imageToCrop}
+                  style={{ height: "220px", width: "100%" }} /* 👈 Reduced size */
         aspectRatio={1}
         guides={false} /* Removes unnecessary grid lines */
       />

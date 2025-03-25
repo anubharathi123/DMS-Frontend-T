@@ -199,6 +199,19 @@
     transition: background 0.3s ease-in-out;
 }
 
+.save-btn:disabled {
+	width: 20%;
+	font-weight: 200;
+	border: none;
+	padding: 10px;
+	cursor: not-allowed;
+	margin-top: 20px;
+	background: linear-gradient(135deg, #6C63FF, #544DCf);
+    color: white;
+    border-radius: 6px;
+    transition: background 0.3s ease-in-out;
+}
+
 /* Divider */
 .divider-container {
 	margin: 10px;

@@ -123,26 +123,56 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
             {isOtpSent
               ? 'Enter the OTP sent to your email to verify your identity.'
               : "Enter your account's email address, and we'll send you a link to reset your password."}
-          </DialogContentText>
-
-          {errorMessage && <span style={{ color: 'red' }}>{errorMessage}</span>}
-          {successMessage && <span style={{ color: 'green' }}>{successMessage}</span>}
-
-          <OutlinedInput
-            required
-            placeholder={isOtpSent ? 'Enter OTP' : 'Email or Username'}
-            type="text"
-            fullWidth
-            value={isOtpSent ? otp : username}
-            onChange={(e) => (isOtpSent ? setOtp(e.target.value) : setUsername(e.target.value))}
-          />
+              </DialogContentText>
+                <OutlinedInput
+                required
+                placeholder={isOtpSent ? 'Enter OTP' : 'Email or Username'}
+                type="text"
+                fullWidth
+                value={isOtpSent ? otp : username}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setErrorMessage(''); // Clear error message on input change
+                  if (!isOtpSent) {
+                  setUsername(value);
+                  // Validate username
+                  if (value.trim() === '') {
+                    setErrorMessage('Username cannot be empty.');
+                  } else if (/^\d+$/.test(value)) {
+                    // Allow only numeric usernames
+                    setErrorMessage(''); // Clear error if numeric username is valid
+                  } else if (value === 'guest' || value === 'temporary') {
+                    setErrorMessage('Guest or temporary accounts are not allowed.');
+                  } else if (value !== value.toLowerCase() && value !== value.toUpperCase()) {
+                    setErrorMessage('Username not found'); // Display error for incorrect capitalization
+                  } else if (value === 'deactivatedUser' || value === 'oldUser') { // Example check for old/deactivated usernames
+                    setErrorMessage('Account not found or deactivated');
+                  } else {
+                    setErrorMessage('Only numeric usernames are allowed.'); // Error for non-numeric usernames
+                  }
+                  } else {
+                  setOtp(value);
+                  }
+                }}
+                />
           {isOtpSent && isResendEnabled && (
             <Button onClick={sendOtp} variant="outlined">Resend OTP</Button>
           )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" type="submit">{isOtpSent ? 'Verify OTP' : 'Continue'}</Button>
+            <Button
+            variant="contained"
+            type="submit"
+            onClick={(e) => {
+              if (!isOtpSent && !username.trim()) {
+              e.preventDefault();
+              setErrorMessage('Username is Required');
+              }
+            }}
+            >
+            {isOtpSent ? 'Verify OTP' : 'Continue'}
+            </Button>
         </DialogActions>
       </Dialog>
 
