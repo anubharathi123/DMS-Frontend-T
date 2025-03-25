@@ -141,11 +141,7 @@
 .dashboard-table-container::-webkit-scrollbar {
   width: 8px;
 }
-.dashboard-table-container::-webkit-scrollbar {
-  width: 0px;
-  display: none; /* Fully hides the scrollbar */
-}
-
+ 
 .dashboard-table-container::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 4px;
@@ -269,6 +265,7 @@
   margin-top: -50px;
   margin-bottom: 20px;
   background: white;
+  margin-left: -100px !important;
 }
 
 .cards-container1 {
@@ -495,7 +492,11 @@ canvas {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  margin-top: -31px;
+  position: relative;
 }
+
+ 
 
 .dropdown-label {
   font-size: 14px;
@@ -508,9 +509,7 @@ canvas {
 .company-dropdown {
   padding: 8px 12px;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
+    background-color: white;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -612,9 +611,7 @@ canvas {
 /* Dropdown Year Selector */
 .dashboard-year-selector {
   padding: 3px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  font-size: 15px;
+    font-size: 15px;
   margin-right: 50px !important;
 }
 
@@ -626,12 +623,8 @@ canvas {
   display: inline-block;
   margin-right: -10px;
   padding: 4px 3px;
-   border: 0.1px solid rgb(230, 229, 229);
-border-radius: 4px;  background-color: transparent;
- padding: 8px;
-border: 1px solid #ccc;
-border-radius: 5px;
-font-size: 14px;
+   padding: 8px;
+  font-size: 14px;
 cursor: pointer;
  }
 
@@ -654,8 +647,7 @@ cursor: pointer;
   background: #f8f9fa;
   padding: 4px;
   margin-left: -14px !important;
-  border-radius: 8px;
-   width: fit-content;
+    width: fit-content;
   margin-top: -4px;
   margin-bottom: 5px;
 }
@@ -773,10 +765,7 @@ cursor: pointer;
   min-width: 150px;
   max-width: 180px;
 }
-
-::-webkit-scrollbar {
-  display: none;
-}
+ 
 
 /* Hide scrollbar for Firefox */
 /* html {
@@ -846,7 +835,7 @@ cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+ margin-bottom: -30px;
 }
 
 label {
@@ -1130,8 +1119,7 @@ select {
 .table-container {
   flex: 1;
   max-width: 50%;
-  background: #fff;
-  padding: 20px;
+   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -1166,3 +1154,139 @@ select {
   color: red;
   margin-top: 20px;
 }
+.cards-container {
+  
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-left: -600px;
+  flex-wrap: wrap;
+}
+
+/* Optional: Make the card fixed on larger screens */
+@media (min-width: 1024px) {
+  .analytics-card {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+.chart-header {
+  background: #4b1818;
+  border-radius: 20px;
+  padding: 20px 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.chart-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0b1c58;
+  margin: 0;
+}
+
+.chart-header select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-left: 10px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.chart-header select:focus {
+  border-color: #0b1c58;
+}
+.company-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+.company-row:hover {
+  background-color: #f9f9f9;
+}
+
+.company-left {
+  font-weight: 600;
+}
+
+.company-username {
+  font-size: 11px;
+  color: #777;
+  margin-top: 2px;
+}
+
+.company-icons {
+  text-align: right;
+  color: #555;
+  font-size: 11px;
+}
+/* Scrollbar container */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: #c4c4c4;
+  border-radius: 10px;
+}
+
+/* Scrollbar thumb hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+.company-card {
+  transition: all 0.3s ease;
+   border-radius: 8px;
+}
+
+.company-card:hover {
+  background-color: #f9f9f9;
+ }
+ .ellipsis-text {
+  max-width: 150px; /* adjust based on your layout */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}
+.dashboard-year-select{
+  border: none !important;
+}
+
+.company-dropdown{
+  border: none !important;
+}
+
+.abishek{
+  margin-left: -30px !important;
+}
+
+
+.aswin{
+  margin-top: 80px;
+  position: relative;
+ }
+
+ .dinu{
+ position: relative;
+ top: -100px;
+ }
