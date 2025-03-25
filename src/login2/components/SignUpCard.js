@@ -56,34 +56,34 @@ export default function SignUpCard({ onSwitch }) {
 
 
 
-  const handlePhoneChange = (value, data) => {
-    setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
+  // const handlePhoneChange = (value, data) => {
+  //   setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
   
-    const phoneNumber = parsePhoneNumberFromString(value || "", data?.countryCode?.toUpperCase());
+  //   const countryCode = data?.countryCode ? data.countryCode.toUpperCase() : '';
+  //   const phoneNumber = parsePhoneNumberFromString(value || "", countryCode);
   
-    let error = '';
+  //   let error = '';
   
-    if (!phoneNumber || !phoneNumber.isValid()) {
-      error = 'Enter a valid phone number';
-    } else {
-      const nationalNumber = phoneNumber.nationalNumber;
-      const nationalNumberLength = nationalNumber.length;
+  //   if (!phoneNumber || !phoneNumber.isValid()) {
+  //     error = 'Enter a valid phone number';
+  //   } else {
+  //     const fullNumberLength = phoneNumber.number.length; // Includes country code and national number
   
-      // ✅ UAE Validation: Must be 9 digits and start with 5
-      if (data?.countryCode === 'ae') {
-        if (nationalNumberLength !== 9 || !/^5\d{8}$/.test(nationalNumber)) {
-          error = 'UAE number must be 9 digits and start with 5';
-        }
-      }
+  //     // ✅ UAE Validation: Must be 9 digits including country code and start with 5
+  //     if (countryCode === 'AE') {
+  //       if (fullNumberLength !== 9 || !/^5\d{7}$/.test(phoneNumber.nationalNumber)) {
+  //         error = 'UAE number must be 9 digits including country code and start with 5';
+  //       }
+  //     }
       
-      // ✅ India Validation: Must be 10 digits
-      else if (data?.countryCode === 'in' && nationalNumberLength !== 10) {
-        error = 'Indian number must be exactly 10 digits';
-      }
-    }
+  //     // ✅ India Validation: Must be 10 digits including country code
+  //     else if (countryCode === 'IN' && fullNumberLength !== 10) {
+  //       error = 'Indian number must be exactly 10 digits including country code';
+  //     }
+  //   }
   
-    setErrors((prevErrors) => ({ ...prevErrors, mobile: error }));
-  };
+  //   setErrors((prevErrors) => ({ ...prevErrors, mobile: error }));
+  // };
   
   
 
@@ -104,19 +104,19 @@ export default function SignUpCard({ onSwitch }) {
   //   }
   // };
 
-  // // Phone number validation (UAE: +971 followed by 9 digits)
-  // const handlePhoneChange = (value) => {
-  //   setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
-  
-  //   // Parse the number properly to check if it's valid for UAE
-  //   const phoneNumber = parsePhoneNumberFromString(value, 'AE');
-    
-  //   if (!phoneNumber || !phoneNumber.isValid()) {
-  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number' }));
-  //   } else {
-  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
-  //   }
-  // };
+  // Phone number validation (UAE: +971 followed by 9 digits)
+  const handlePhoneChange = (value) => {
+    setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
+
+    // Parse the number properly to check if it's valid for UAE
+    const phoneNumber = parsePhoneNumberFromString(value, 'AE');
+
+    if (!phoneNumber || !phoneNumber.isValid() || phoneNumber.nationalNumber.length !== 9) {
+      setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number with 9 digits' }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
+    }
+  };
 
   
   

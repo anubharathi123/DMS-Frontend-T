@@ -21,6 +21,7 @@ import CircularProgress from '@mui/material/CircularProgress'; // ✅ Import spi
 import { useNavigate } from 'react-router-dom';
 import authService from '../../ApiServices/ApiServices'; // Adjust the path as necessary
 import { IoEye, IoEyeOff } from 'react-icons/io5';
+const punycode = require('punycode/'); // Import punycode for IDN support
 
 const Card = styled(MuiCard)<{ component?: React.ElementType }>(({ theme }) => ({
   display: 'flex',
@@ -248,22 +249,57 @@ export default function SignInCard() {
             color={emailError ? 'error' : 'primary'}
             disabled={isOtpVisible}
               onChange={(e) => {
-                const emailValue = e.target.value;
-                if (emailValue.length > 255) {
-                  setEmailError(true);
-                  setEmailErrorMessage('Email is Too Long');
-                } else if (/\.\./.test(emailValue) || /^-/.test(emailValue) || /\.$/.test(emailValue)) {
-                  setEmailError(true);
-                  setEmailErrorMessage('Invalid Email Format');
-                } else if (!/^\S+@\S+\.\S+$/.test(emailValue) && !/^[a-zA-Z0-9]@mail\.com$/.test(emailValue)) {
-                  setEmailError(true);
-                  setEmailErrorMessage('Please enter a valid email address.');
-                } else {
-                  setEmailError(false);
-                  setEmailErrorMessage('');
-                }
-              }}
+            const emailValue = e.target.value.trim().toLowerCase(); // Trim and convert email to lowercase for case-insensitivity
+            const blacklistedDomains = ['spam.com', 'example.com']; // Add blacklisted domains here
+            const emailDomain = emailValue.split('@')[1];
+            const localPart = emailValue.split('@')[0];
+
+            try {
+            const asciiEmail = punycode.toASCII(emailDomain || ''); // Convert domain to ASCII for IDN support
+            if (emailValue.length > 320) { // Ensure total email length is valid
+              setEmailError(true);
+              setEmailErrorMessage('Email is too long');
+            } else if (asciiEmail.length > 255) { // Ensure domain length is valid
+              setEmailError(true);
+              setEmailErrorMessage('Email domain is too long');
+            } else if (localPart.length > 64) { // Check for maximum username length
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else if (/\.\./.test(emailValue) || /^-/.test(emailValue) || /\.$/.test(emailValue)) {
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else if (!emailValue.includes('@') || emailValue.endsWith('@') || !localPart) {
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else if (blacklistedDomains.includes(emailDomain)) {
+              setEmailError(true);
+              setEmailErrorMessage('Access Denied');
+            } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(emailValue)) { // Updated regex to allow valid TLDs up to 63 characters
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else if (/[^a-zA-Z0-9@._%+-]/.test(emailValue) || /^[^a-zA-Z0-9]+$/.test(localPart)) { // Check for excessive special characters or only special characters in local part
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else if (/\.\./.test(localPart)) { // Check for repeated special characters in local part
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else if (emailDomain && emailDomain.split('.').some(part => part.length === 1)) {
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else if (/[\u0000-\u001F\u007F-\u009F]/.test(emailValue)) { // Check for invisible characters
+              setEmailError(true);
+              setEmailErrorMessage('Invalid Email Format');
+            } else {
+              setEmailError(false);
+              setEmailErrorMessage('');
+            }
+            } catch (error) {
+            setEmailError(true);
+            setEmailErrorMessage('Invalid Email Format');
+            }
+            }}
             />
+            
         </FormControl>
         <FormControl>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

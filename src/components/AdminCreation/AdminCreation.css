@@ -78,6 +78,19 @@
   margin-left: 20px;
 }
 
+.admincreation-btn-submit:disabled {
+  background-color: var(--teal);
+  color: white;
+  padding: 10px 20px;
+  font-size: 13px;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
 .admincreation-btn-submit:hover,
 .admincreation-btn-cancel:hover {
   background-color: var(--deep-blue);

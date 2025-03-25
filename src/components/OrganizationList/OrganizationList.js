@@ -67,6 +67,7 @@ const OrganizationList = () => {
                 org_name: org.company_name,
                 msa_doc: org.contract_doc,
                 msi:org.is_msi,
+                // mobile:org.mobile,
                 created_date: org.created_at,
                 status: org.is_frozen,
                 delete: org.is_delete,
@@ -391,6 +392,7 @@ const OrganizationList = () => {
                               
                                     </td>
                                 <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                {/* <td className='organization-table-td'>{org.mobile}</td> */}
                                 <td className="organization-table-td">
   {org.status ? "Inactive" : "Active"}
 </td>

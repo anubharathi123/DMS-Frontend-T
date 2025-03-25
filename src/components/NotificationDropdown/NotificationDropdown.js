@@ -9,6 +9,7 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(10); // Show 10 notifications initially
   const [orgId, setOrgId] = useState("");
+  const [clickedIndex, setClickedIndex] = useState(null);
 
 
   
@@ -89,6 +90,13 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
     return null;
   }
 
+  const handleNotificationClick = (event,type) => {
+    event.stopPropagation(); // Prevents dropdown from closing
+    if(type === "item"){
+      setClickedIndex((prev) => !prev);
+    }
+  };
+
   return (
     <div className="notification-page">
       <button type="button" className="notification-close" onClick={closeNotification}>
@@ -102,15 +110,18 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
       ) : notifications.length > 0 ? (
         <>
           <ul className="notification-list">
-            {notifications.slice(0, visibleCount).map((notification, index) => (
-              <li key={notification.id || index} className="notification-item">
-                <span className="message">
-                  <strong>{notification.action}</strong>
-                </span>
-                <div className="notification-time">{notification.description}</div>
-              </li>
-            ))}
-          </ul>
+      {notifications.slice(0, visibleCount).map((notification, index) => (
+        <li
+          key={notification.id || index}
+          className={`notification-item ${clickedIndex ? "active" : ""}`}
+          onClick={(event) => handleNotificationClick(event, "item")}>
+          <span className="message">
+            <strong>{notification.action}</strong>
+          </span>
+          <div className="notification-time">{notification.description}</div>
+        </li>
+      ))}
+    </ul>
           {notifications.length > visibleCount && (
             <button className="show-more" onClick={handleShowMore}>
               Show More
