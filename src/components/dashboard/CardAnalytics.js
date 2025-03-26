@@ -5,7 +5,16 @@ import {
   FaBuildingCircleExclamation,
 } from "react-icons/fa6";
 
-const CardAnalytics = ({ OrgCount, DashboardStats, isAdminOrDocumentRole }) => {
+const CardAnalytics = ({ OrgCount, DashboardStats}) => {
+  const role = localStorage.getItem("role");
+  const isAdminOrDocumentRole = [
+    "ADMIN",
+    "UPLOADER",
+    "APPROVER",
+    "REVIEWER",
+    "VIEWER",
+  ].includes(role);
+
   return (
     <div
       className="analytics-card"
@@ -44,7 +53,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats, isAdminOrDocumentRole }) => {
           height: "100px",
         }}
       >
-        {isAdminOrDocumentRole ? (
+        {role === "ADMIN" ? (
           <>
             <Item label="Total Documents" value={DashboardStats?.document_count || 0} icon={<HiBuildingOffice2 />} />
             <Item label="Approved" value={DashboardStats?.approved_count || 0} icon={<HiBuildingOffice2 style={{ color: "#aaffaa" }} />} />
@@ -59,6 +68,16 @@ const CardAnalytics = ({ OrgCount, DashboardStats, isAdminOrDocumentRole }) => {
             <Item label="Deleted" value={OrgCount?.deletedCompanies || 0} icon={<FaBuildingCircleXmark />} />
           </>
         )}
+
+        {/* {(role === "UPLOADER") && (
+          <>
+          <Item label="Total Documents" value={DashboardStats?.document_count || 0} icon={<HiBuildingOffice2 />} />
+          <Item label="Approved" value={DashboardStats?.approved_count || 0} icon={<HiBuildingOffice2 style={{ color: "#aaffaa" }} />} />
+          <Item label="Pending" value={DashboardStats?.pending_count || 0} icon={<FaBuildingCircleExclamation style={{ color: "#ffcc00" }} />} />
+          <Item label="Rejected" value={DashboardStats?.employee_count || 0} icon={<HiBuildingOffice2 />} />
+        </>
+        )} */}
+
       </div>
     </div>
   );

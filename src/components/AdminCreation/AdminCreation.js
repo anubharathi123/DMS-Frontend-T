@@ -66,7 +66,11 @@ const AdminCreation = () => {
       mobile: "",
       email: "",
     });
+    navigate('/AdminList')
   };
+
+  const isFormValid = Object.values(formData).every((value) => value.trim() !== '');
+
 
   return (
     <div className="admincreation-container">
@@ -161,7 +165,7 @@ const AdminCreation = () => {
                 country={'ae'}
                 value={formData.mobile}
                 onChange={(value) => {
-                  if (value.length > 15) {
+                  if (value.length > 10) {
               setError("Invalid Phone Number");
               setTimeout(() => {
                 setError("");
@@ -181,34 +185,39 @@ const AdminCreation = () => {
             </div>
 
             {/* Email */}
-        <div className="admincreation-form-group">
-          <label className="admincreation-label">
-            Mail ID <span className="mandatory">*</span>
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={(e) => {
-            const value = e.target.value;
-            if(/^[\p{L}\p{N}@._-]*$/u.test(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || value === '') {
-              handleChange(e);
-              setError(null);
-            } else {
-              setError("Invalid characters in Email ID.");
-              setTimeout(() => setError(null), 3000);
-            }
-            }}
-            
-            handleChange
-            className="admincreation-input"
-            required
-          />
-        </div>
+              <div className="admincreation-form-group">
+                <label className="admincreation-label">
+                  Mail ID <span className="mandatory">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const validDomains = ["example.com", "test.com"]; // Add valid domains here
+                    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ || /^[\p{L}\p{N}@._-]*$/;
+                    const domain = value.split("@")[1];
 
-        {/* Button Group */}
+                    if (/^[\p{L}\p{N}@._-]*$/u.test(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || value === '') {
+                handleChange(e);
+                setError(null);
+                    } else if (value === "") {
+                handleChange(e);
+                setError(null);
+                    } else if (validDomains.includes(domain)) {
+                setError("Invalid email domain. Allowed domains: " + validDomains.join(", "));
+                setTimeout(() => setError(null), 3000);
+                    }
+                  }}
+                  className="admincreation-input"
+                  required
+                />
+              </div>
+
+              {/* Button Group */}
         <div className="admincreation-button-group">
-          <button type="submit" className="admincreation-btn-submit">
+          <button type="submit" className="admincreation-btn-submit" disabled={!isFormValid}>
             Create
           </button>
           <button type="button" className="admincreation-btn-cancel"  onClick={handleCancel}>

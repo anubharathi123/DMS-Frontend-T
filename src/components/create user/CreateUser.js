@@ -20,7 +20,7 @@ const CreateUser = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);  
-
+const [error, setError] = useState(null); // For error handling
   const [roleOptions] = useState(["Uploader", "Reviewer", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -128,6 +128,11 @@ const CreateUser = () => {
       
       {/* {message && <div className="createuser_message">{message}</div>} */}
       <h2 className="company-register-title">Access Management</h2>
+      {error && (
+          <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+            {error}
+          </div>
+        )}
       {message && (
         <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
           {message}
@@ -166,43 +171,68 @@ const CreateUser = () => {
         </div>
 
         {/* Person Name */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Person Name <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
+          <div className="company-form-group">
+            <label className="company-label">
+              Person Name <span className="mandatory">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={(e) => {
+                const value = e.target.value;
+                const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/g;
+                if (specialCharRegex.test(value)) {
+            setError("Special Characters are not allowed.");
+            setTimeout(() => {
+              setError("");
+            }, 3000);
+                } else {
+            setError(""); // Clear error if valid
+            handleChange(e);
+                }
+              }}
+              className="company-input"
+              required
+            />
+          </div>
 
-        {/* Mobile */}
+          {/* Mobile */}
         <div className="company-form-group">
           <label className="company-label">
             Mobile <span className="mandatory">*</span>
           </label>
           <div className='user-phone-input'>
-          <PhoneInput
-            type="tel"
-            country={'ae'}
-            name="mobile"
-            value={formData.mobile}
-            onChange={(value) => setFormData((prevData) => ({ 
-              ...prevData, 
-              mobile: value || "" // Ensure it updates under "mobile"
-            }))}
-            className="company-input"
-            maxLength='15'
-            required
-          />
+            <PhoneInput
+              type="tel"
+              country={'ae'}
+              name="mobile"
+              value={formData.mobile}
+              onChange={(value) => {
+                if (value.length < 10) {
+                  setError("Mobile Number is too short.");
+                  setTimeout(() => {
+                    setError("");
+                  }, 3000);
+                } else if (value.length > 10) {
+                  setError("Mobile Number is too long.");
+                  setTimeout(() => {
+                    setError("");
+                  }, 3000);
+                } else {
+                  setError(""); // Clear error if valid
+                  setFormData((prevData) => ({ 
+                    ...prevData, 
+                    mobile: value || "" // Ensure it updates under "mobile"
+                  }));
+                }
+              }}
+              className="company-input"
+              maxLength='15'
+              required
+            />
           </div>
         </div>
-
-        {/* Email */}
         <div className="company-form-group">
           <label className="company-label">
             Mail ID <span className="mandatory">*</span>

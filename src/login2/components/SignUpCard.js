@@ -312,6 +312,7 @@ export default function SignUpCard({ onSwitch }) {
             helperText={errors.password}
           />
         </FormControl>
+        
         <Button type="submit" variant="contained" fullWidth>
           Sign Up
         </Button>

@@ -399,7 +399,8 @@ const handleClosePopup = () => {
           </tr>
         </thead>
         <tbody className="documenttable_tbody">
-          {paginatedData.map((item, index) => (
+          { paginatedData.length > 0 ? (
+            paginatedData.map((item, index) => (
             <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
               
               <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
@@ -445,12 +446,19 @@ const handleClosePopup = () => {
       <div className="tooltip-content">{item.rejectionReason}</div>
     </div>
   ) : (
-    <span>NULL</span>
+    <span>-</span>
   )}
                      
               </td>
             </tr>
-          ))}
+            ))
+          ):(
+            <tr>
+              <td colSpan="4" className="organization-table-td">
+                  No documents found...
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
       <div className="documenttable_pagination flex justify-between mt-4">

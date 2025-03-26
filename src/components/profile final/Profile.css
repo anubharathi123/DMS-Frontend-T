@@ -212,6 +212,20 @@
     transition: background 0.3s ease-in-out;
 }
 
+.cancelbtn {
+	width: 20%;
+	font-weight: 200;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+	margin-top: 20px;
+	margin-left: 10px;
+	background: linear-gradient(135deg, #6C63FF, #544DCf);
+    color: white;
+    border-radius: 6px;
+    transition: background 0.3s ease-in-out;
+}
+
 /* Divider */
 .divider-container {
 	margin: 10px;

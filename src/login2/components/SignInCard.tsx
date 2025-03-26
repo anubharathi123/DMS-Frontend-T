@@ -352,7 +352,7 @@ export default function SignInCard() {
               id="otp"
               name="otp"
               value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              onChange={(e) => setOtp(e.target.value.replace(/\s/g, ''))} // Prevent spaces
               required
               fullWidth
               variant="outlined"

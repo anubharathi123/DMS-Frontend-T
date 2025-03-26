@@ -83,6 +83,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
 
   const sendOtp = async () => {
     try {
+      
       await authService.sendOTP();
       setSuccessMessage('OTP has been sent to your email.');
     } catch (error: any) {
@@ -131,30 +132,32 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
                 fullWidth
                 value={isOtpSent ? otp : username}
                 onChange={(e) => {
-                  const value = e.target.value;
-                  setErrorMessage(''); // Clear error message on input change
-                  if (!isOtpSent) {
+                const value = e.target.value.trim();
+                setErrorMessage(''); // Clear error message on input change
+                if (!isOtpSent) {
                   setUsername(value);
-                  // Validate username
-                  if (value.trim() === '') {
-                    setErrorMessage('Username cannot be empty.');
-                  } else if (/^\d+$/.test(value)) {
-                    // Allow only numeric usernames
-                    setErrorMessage(''); // Clear error if numeric username is valid
-                  } else if (value === 'guest' || value === 'temporary') {
-                    setErrorMessage('Guest or temporary accounts are not allowed.');
-                  } else if (value !== value.toLowerCase() && value !== value.toUpperCase()) {
-                    setErrorMessage('Username not found'); // Display error for incorrect capitalization
-                  } else if (value === 'deactivatedUser' || value === 'oldUser') { // Example check for old/deactivated usernames
-                    setErrorMessage('Account not found or deactivated');
+                  // Enhanced validation logic
+                  if (!value) {
+                  setErrorMessage('Username or Email is required.');
+                  } else if (!/^\d+$/.test(value) && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+                  if (/^@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+                    setErrorMessage('Invalid Email format');
+                  } else if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*\.[a-zA-Z]*$/.test(value)) {
+                    setErrorMessage('Invalid Email format');
                   } else {
-                    setErrorMessage('Only numeric usernames are allowed.'); // Error for non-numeric usernames
+                    setErrorMessage('Enter a valid email or numeric username.');
                   }
-                  } else {
-                  setOtp(value);
                   }
+                } else {
+                  setOtp(value.replace(/\s/g, ''));
+                }
                 }}
                 />
+              {errorMessage && (
+                <DialogContentText sx={{ color: 'red', mt: 1 }}>
+                  {errorMessage}
+                </DialogContentText>
+              )}
           {isOtpSent && isResendEnabled && (
             <Button onClick={sendOtp} variant="outlined">Resend OTP</Button>
           )}
@@ -165,9 +168,21 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
             variant="contained"
             type="submit"
             onClick={(e) => {
-              if (!isOtpSent && !username.trim()) {
-              e.preventDefault();
-              setErrorMessage('Username is Required');
+              if (!isOtpSent) {
+              const trimmedUsername = username.trim();
+              if (!trimmedUsername) {
+                e.preventDefault();
+                setErrorMessage('Username or Email is required.');
+              } else if (/[^a-zA-Z0-9@.]/.test(trimmedUsername)) {
+                e.preventDefault();
+                setErrorMessage('Special characters other than @ and . are not allowed.');
+              } else if (
+                !/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/.test(trimmedUsername.toLowerCase()) &&
+                !/^\d+$/.test(trimmedUsername)
+              ) {
+                e.preventDefault();
+                setErrorMessage('Enter a valid email or numeric username.');
+              }
               }
             }}
             >

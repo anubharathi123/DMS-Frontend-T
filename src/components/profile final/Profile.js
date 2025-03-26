@@ -446,81 +446,92 @@ function ProfileCard() {
                 </div>
 
                 {/* Right Profile Edit Form */}
-                {showEditCard && (
-                  <div className="profile-edit-card">
-                    <h2 className="profile-title">Profile</h2>
+                        {showEditCard && (
+                          <div className="profile-edit-card">
+                          <h2 className="profile-title">Profile</h2>
 
-                    <div className="profile-form">
-                      <div className="input-group">
-                        <label>Name:</label>
-                        <input 
-                          type="text" 
-                          value={editName} 
-                          onChange={(e) => {
-                            const value = e.target.value.trimStart(); // Prevent leading spaces
-                            if (/^[a-zA-Z\s]*$/.test(value)) {
-                              setEditName(value);
-                            }
-                          }} 
-                          onBlur={() => {
-                            if (!editName.trim()) {
-                              alert("Empty Name Input Field cannot be saved");
-                            }
-                          }}
-                        />
-                      </div>
+                          <div className="profile-form">
+                            <div className="input-group">
+                            <label>Name:</label>
+                            <input 
+                              type="text" 
+                              value={editName} 
+                              onChange={(e) => {
+                              const value = e.target.value.trimStart(); // Prevent leading spaces
+                              if (/^[a-zA-Z\s]*$/.test(value)) {
+                                setEditName(value);
+                              } else {
+                                alert("Special characters are not allowed");
+                              }
+                              }} 
+                              onBlur={() => {
+                                if (!editName.trim()) {
+                                alert("Empty Name Input Field cannot be saved");
+                                }
+                              }}
+                              />
+                              </div>
 
-                      <div className="input-group">
-                        <label>Role:</label>
-                        <input type="text" value={editRole} disabled />
-                      </div>
+                              <div className="input-group">
+                              <label>Role:</label>
+                              <input type="text" value={editRole} disabled />
+                              </div>
 
-                      <div className="input-group">
-                        <label>Email address: </label>
-                        <input type="email" value={editMail} disabled />
-                      </div>
+                              <div className="input-group">
+                              <label>Email address: </label>
+                              <input type="email" value={editMail} disabled />
+                              </div>
 
-                      <div className="input-group">
-                        <label>Phone number:</label>
-                        <input 
-                          type="tel" 
-                          value={editMobile} 
-                          maxLength="10" 
-                          onChange={(e) => {
-                            const sanitizedValue = e.target.value.replace(/[^\d]/g, ''); // Sanitize input to allow only digits
-                            setEditMobile(sanitizedValue);
-                            }} 
-                          />
+                              <div className="input-group">
+                              <label>Phone number:</label>
+                              <input 
+                                type="tel" 
+                                value={editMobile} 
+                                maxLength="10" 
+                                onChange={(e) => {
+                              const sanitizedValue = e.target.value.replace(/[^\d]/g, ''); // Sanitize input to allow only digits
+                              if (e.target.value.match(/[^\d]/)) {
+                                alert("Alphabets are not allowed");
+                              }
+                              setEditMobile(sanitizedValue);
+                              }} 
+                            />
+                            </div>
                           </div>
-                        </div>
 
-                        <button 
-                          className="save-btn" 
-                          onClick={() => {
+                          <button 
+                            className="save-btn" 
+                            onClick={() => {
                           if (!editName.trim() || !editMobile.trim()) {
                             alert("Please fill out all required fields before saving.");
                             return;
                           }
-                          handleSaveDetails();
-                          }}
-                          disabled={
-                          editName === name &&
-                          editMobile === mobile
-                          }
-                        >
-                          Save details
-                        </button>
-                        </div>
-                      )}
-                      </div>
-              <div className={`cropper-modal ${cropperVisible ? "show" : ""}`}>
-                <div className="cropper-modal-content">
-                <h2 className="cropper-header">Crop Your Photo</h2>
-                <div className="cropper-container">
-                  <Cropper
-                  ref={cropperRef}
-                  src={imageToCrop}
-                  style={{ height: "220px", width: "100%" }} /* 👈 Reduced size */
+                            handleSaveDetails();
+                            }}
+                            disabled={
+                            editName === name &&
+                            editMobile === mobile
+                            }
+                          >
+                            Save details
+                          </button>
+                          <button 
+                            className="cancelbtn" 
+                            onClick={() => setShowEditCard(false)}
+                          >
+                            Cancel
+                          </button> 
+                          </div>
+                          )}
+                          </div>
+                      <div className={`cropper-modal ${cropperVisible ? "show" : ""}`}>
+                      <div className="cropper-modal-content">
+                      <h2 className="cropper-header">Crop Your Photo</h2>
+                      <div className="cropper-container">
+                        <Cropper
+                        ref={cropperRef}
+                        src={imageToCrop}
+                        style={{ height: "220px", width: "100%" }} /* 👈 Reduced size */
         aspectRatio={1}
         guides={false} /* Removes unnecessary grid lines */
       />
