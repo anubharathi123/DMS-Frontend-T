@@ -193,3 +193,18 @@
 .submit-button:hover {
   background-color: var(--dark-blue);
 }
+
+.cancel-button {
+  align-self: end;
+    position: relative;
+    bottom: 57px;
+    right: 25%;
+    padding: 12px 30px;
+    font-size: 16px;
+    color: var(--white);
+    background-color: var(--teal);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}

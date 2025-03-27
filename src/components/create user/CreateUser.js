@@ -140,50 +140,18 @@ const [error, setError] = useState(null); // For error handling
       )}
       <form onSubmit={handleSubmit}>
         {/* Username */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Username <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
-
-        {/* Company Name */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Company Name <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="companyname"
-            value={formData.companyname}
-            onChange={handleChange}
-            className="company-input"
-            required
-            readOnly 
-          />
-        </div>
-
-        {/* Person Name */}
           <div className="company-form-group">
             <label className="company-label">
-              Person Name <span className="mandatory">*</span>
+              Username <span className="mandatory">*</span>
             </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="username"
+              value={formData.username}
               onChange={(e) => {
                 const value = e.target.value;
-                const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/g;
-                if (specialCharRegex.test(value)) {
-            setError("Special Characters are not allowed.");
+                if (value.length > 100) {
+            setError("Username is Too Long.");
             setTimeout(() => {
               setError("");
             }, 3000);
@@ -197,7 +165,66 @@ const [error, setError] = useState(null); // For error handling
             />
           </div>
 
-          {/* Mobile */}
+          {/* Company Name */}
+            <div className="company-form-group">
+              <label className="company-label">
+                Company Name <span className="mandatory">*</span>
+              </label>
+              <input
+                type="text"
+                name="companyname"
+                value={formData.companyname}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length > 50) {
+              setError("Company Name is Too Long.");
+              setTimeout(() => {
+                setError("");
+              }, 3000);
+                  } else {
+              setError(""); // Clear error if valid
+              handleChange(e);
+                  }
+                }}
+                className="company-input"
+                required
+                readOnly 
+              />
+            </div>
+
+            {/* Person Name */}
+                  <div className="company-form-group">
+                  <label className="company-label">
+                    Person Name <span className="mandatory">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={(e) => {
+                    const value = e.target.value;
+                    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/g;
+                    if (value.length > 100) {
+                      setError("Person Name is Too Long.");
+                      setTimeout(() => {
+                      setError("");
+                      }, 3000);
+                    } else if (specialCharRegex.test(value)) {
+                      setError("Special Characters are not allowed.");
+                      setTimeout(() => {
+                      setError("");
+                      }, 3000);
+                    } else {
+                      setError(""); // Clear error if valid
+                      handleChange(e);
+                    }
+                    }}
+                    className="company-input"
+                    required
+                  />
+                  </div>
+
+                  {/* Mobile */}
         <div className="company-form-group">
           <label className="company-label">
             Mobile <span className="mandatory">*</span>
@@ -207,6 +234,9 @@ const [error, setError] = useState(null); // For error handling
               type="tel"
               country={'ae'}
               name="mobile"
+              className="company-input"
+              maxLength='15'
+              required
               value={formData.mobile}
               onChange={(value) => {
                 if (value.length < 10) {
@@ -225,29 +255,42 @@ const [error, setError] = useState(null); // For error handling
                     ...prevData, 
                     mobile: value || "" // Ensure it updates under "mobile"
                   }));
-                }
-              }}
-              className="company-input"
-              maxLength='15'
-              required
-            />
-          </div>
-        </div>
-        <div className="company-form-group">
-          <label className="company-label">
-            Mail ID <span className="mandatory">*</span>
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
+                  }}}
+                            />
+                          </div>
+                          </div>
+                          <div className="company-form-group">
+                          <label className="company-label">
+                          Mail ID <span className="mandatory">*</span>
+                          </label>
+                          <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for valid email format
+                            if (value.length > 50) {
+                            setError("Email ID is too long.");
+                            setTimeout(() => {
+                              setError("");
+                            }, 3000);
+                            } else if (!emailRegex.test(value)) {
+                            setError("Invalid Email Format.");
+                            setTimeout(() => {
+                              setError("");
+                            }, 3000);
+                            } else {
+                            setError(""); // Clear error if valid
+                            handleChange(e);
+                            }
+                          }}
+                          className="company-input"
+                          required
+                          />
+                          </div>
 
-        {/* Access Creation Date */}
+                          {/* Access Creation Date */}
         {/* <div className="company-form-group">
           <label className="company-label">
             Access Creation Date <span className="mandatory">*</span>

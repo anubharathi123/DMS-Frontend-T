@@ -372,7 +372,7 @@ const DashboardApp = () => {
         // 🟩 2. Company Count Stats
         if (companyCountResponse) {
           setOrgCount({
-            totalCompanies: companyCountResponse.organization_count || 0,
+            totalCompanies: companyCountResponse.total_organizations || 0,
             activeCompanies: companyCountResponse.active_org_count || 0,
             inactiveCompanies: companyCountResponse.deleted_org_count || 0,
             clientAdmins: companyCountResponse.user_count || 0,

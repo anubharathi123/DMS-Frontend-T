@@ -173,9 +173,13 @@ const authService = {
     return handleResponse(apiClient.get('enquiries/', data))
   },
 
+  notificationMarkasRead:async (id) => {
+    return handleResponse(apiClient.put(`notification_delivery/${id}/true/`))
+  },
 
-
-
+  notificationMarkasUnRead:async (id) => {
+    return handleResponse(apiClient.get(`notification_delivery/${id}/false/`))
+  },
 
   organizationCountDas: async () => {
     return handleResponse(apiClient.get('organizations/count/'))
@@ -225,8 +229,11 @@ const authService = {
   AdminList: async (data) => {
     return handleResponse(apiClient.post('AdminList/',data))
   },
-  OrgNotification: async (url) => {
-    return handleResponse(apiClient.get(`organizations/${url}/`))
+  // OrgNotification: async (url) => {
+  //   return handleResponse(apiClient.get(`organizations/${url}/`))
+  // },
+  OrgNotification: async () => {
+    return handleResponse(apiClient.get(`notification_delivery/`))
   },
   // Organization APIs
   createOrganization: async (data) => {

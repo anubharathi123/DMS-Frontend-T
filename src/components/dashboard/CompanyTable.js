@@ -24,11 +24,14 @@ const CompanyTable = ({
   setIsSearchFocused,
   tableforadmin,
 }) => {
+  
   const filteredData = companyData.filter(
     (company) =>
       company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       company.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  
 
   return (
     <div
@@ -38,6 +41,11 @@ const CompanyTable = ({
         padding: "2px",
         borderRadius: "10px",
         marginTop: isAdminOrDocumentRole ? "10px" : "-30px",
+      }}
+      onClick={(e) => {
+        if (isSearchFocused && !e.target.closest(".search-container")) {
+          setIsSearchFocused(false);
+        }
       }}
     >
       {isAdminOrDocumentRole ? (
@@ -61,8 +69,10 @@ const CompanyTable = ({
                 placeholder="Search..."
                 value={searchTermAdmin}
                 onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => {
-                  if (!searchTermAdmin) setIsSearchFocused(false);
+                onBlur={(e) => {
+                  if (!searchTermAdmin && !e.relatedTarget) {
+                    setIsSearchFocused(false);
+                  }
                 }}
                 onChange={(e) => setSearchTermAdmin(e.target.value)}
                 style={{
@@ -78,69 +88,68 @@ const CompanyTable = ({
           </div>
 
           <div>
-          {tableforadmin?.users &&
-tableforadmin.users.filter((user) =>
-  user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
-).length > 0 ? (
-  tableforadmin.users
-    .filter((user) =>
-      user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
-    )
-    .map((user, index) => (
-
-                <div
-                  key={index}
-                  className="company-card"
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "12px 16px",
-                    marginBottom: "10px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <div>
-                    <div style={{ fontWeight: "bold", display: "flex", alignItems: "center" }}>
-                      <FaBuilding style={{ marginRight: "6px", fontSize: "13px", color: "#333" }} />
-                      <span className="ellipsis-text">{user.username}</span>
-                    </div>
-
-                    <div style={{ fontSize: "10px", color: "#777", marginTop: "2px" }}>
-                      <FaUser style={{ marginRight: "5px", display: "inline" }} />
-                      {user.role}
-                    </div>
-                  </div>
-
+            {tableforadmin?.users &&
+            tableforadmin.users.filter((user) =>
+              user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
+            ).length > 0 ? (
+              tableforadmin.users
+                .filter((user) =>
+                  user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
+                )
+                .map((user, index) => (
                   <div
+                    key={index}
+                    className="company-card"
                     style={{
                       display: "flex",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      gap: "20px",
-                      fontSize: "11px",
-                      color: "#555",
+                      padding: "12px 16px",
+                      marginBottom: "10px",
+                      cursor: "pointer",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <FaFileAlt style={{ marginRight: "5px" }} />
-                      {user.uploaded_files_count + user.approved_files_count} Docs
+                    <div>
+                      <div style={{ fontWeight: "bold", display: "flex", alignItems: "center" }}>
+                        <FaBuilding style={{ marginRight: "6px", fontSize: "13px", color: "#333" }} />
+                        <span className="ellipsis-text">{user.username}</span>
+                      </div>
+
+                      <div style={{ fontSize: "10px", color: "#777", marginTop: "2px" }}>
+                        <FaUser style={{ marginRight: "5px", display: "inline" }} />
+                        {user.role}
+                      </div>
                     </div>
 
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <FaFolderOpen style={{ marginRight: "5px" }} />
-                      {(
-                        (user.uploaded_files_size_mb + user.approved_files_size_mb) *
-                        1024
-                      ).toFixed(2)} KB
-                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "20px",
+                        fontSize: "11px",
+                        color: "#555",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <FaFileAlt style={{ marginRight: "5px" }} />
+                        {user.uploaded_files_count + user.approved_files_count} Docs
+                      </div>
 
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <FaUsers style={{ marginRight: "5px" }} />
-                      1 User
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <FaFolderOpen style={{ marginRight: "5px" }} />
+                        {(
+                          (user.uploaded_files_size_mb + user.approved_files_size_mb) *
+                          1024
+                        ).toFixed(2)} KB
+                      </div>
+
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <FaUsers style={{ marginRight: "5px" }} />
+                        1 User
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             ) : (
               <p style={{ color: "red", textAlign: "center" }}>No data found</p>
             )}

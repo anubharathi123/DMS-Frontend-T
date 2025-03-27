@@ -24,6 +24,8 @@ const UpdateUser = () => {
   const [roleOptions] = useState(["Compiler", "Approver", "Viewer"]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+const [error, setError] = useState(null); // For error handling
+
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -204,6 +206,11 @@ const UpdateUser = () => {
   return (
     <div className="company-register-container">
       <h2 className="company-register-title">Update User Access</h2>
+      {error && (
+          <div className="documentapproval_message bg-red-100 text-red-800 px-4 py-2 rounded mb-4" role="alert">
+            {error}
+          </div>
+        )}
       {message && (
         <div className={`documentapproval_message ${message.includes('Error') ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} px-4 py-2 rounded mb-4`} role="alert">
           {message}
@@ -239,51 +246,82 @@ const UpdateUser = () => {
         </div>
 
         {/* Person Name */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Person Name <span className="mandatory">*</span>
-          </label>
-          <input
-            type="text"
-            name="first_name"
-            value={selectedUser.first_name || ''}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
+          <div className="company-form-group">
+            <label className="company-label">
+              Person Name <span className="mandatory">*</span>
+            </label>
+            <input
+              type="text"
+              name="first_name"
+              value={selectedUser.first_name || ''}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/[^a-zA-Z\s]/.test(value)) {
+            setError("Invalid Characters cannot be used");
+            setTimeout(() => {
+              setError('');
+            }, 3000);
+                } else {
+            handleChange(e);
+                }
+              }}
+              className="company-input"
+              required
+            />
+          </div>
 
-        {/* Mobile */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Mobile <span className="mandatory">*</span>
-          </label>
-          <input
-            type="tel"
-            name="mobile"
-            value={selectedUser.mobile || ''}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
+          {/* Mobile */}
+            <div className="company-form-group">
+              <label className="company-label">
+                Mobile <span className="mandatory">*</span>
+              </label>
+              <input
+                type="tel"
+                name="mobile"
+                value={selectedUser.mobile || ''}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value)) {
+              handleChange(e);
+                  } else {
+              setError("Only numeric inputs are allowed");
+              setTimeout(() => {
+                setError('');
+              }, 3000);
+                  }
+                }}
+                className="company-input"
+                required
+              />
+            </div>
 
-        {/* Email */}
-        <div className="company-form-group">
-          <label className="company-label">
-            Mail ID <span className="mandatory">*</span>
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={selectedUser.email || ''}
-            onChange={handleChange}
-            className="company-input"
-            required
-          />
-        </div>
+            {/* Email */}
+              <div className="company-form-group">
+                <label className="company-label">
+                  Mail ID <span className="mandatory">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={selectedUser.email || ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                setError("Invalid Email Format");
+                setTimeout(() => {
+                  setError('');
+                }, 3000);
+                    } else {
+                handleChange(e);
+                    }
+                  }}
+                  className="company-input"
+                  required
+                />
+              </div>
 
-        {/* Access Creation Date */}
+              {/* Access Creation Date */}
         <div className="company-form-group">
           <label className="company-label">
             Access Creation Date <span className="mandatory">*</span>

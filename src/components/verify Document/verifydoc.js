@@ -348,6 +348,11 @@ const handleClosePopup = () => {
                       setIsCalendarOpen(false);
                     }}
                     inline
+                    // onKeyDown={(e) => {
+                    //   if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+                    // e.preventDefault();
+                    //   }
+                    // }}
                   />
                 </div>
               )}
@@ -358,7 +363,8 @@ const handleClosePopup = () => {
         </thead>
 
         <tbody className="documentlist-table overflow-y-auto max-h-80">
-          {paginatedData.map((item, index) => (
+          { paginatedData.length > 0 ? (
+          paginatedData.map((item, index) => (
             <tr key={index} className="documentapproval_row bg-white border-b hover:bg-gray-50">
               <td className="documentapproval_td px-6 py-4">{item.declarationNumber}</td>
               <td className="documentapproval_td documentapproval_td_name px-6 py-4">
@@ -387,7 +393,14 @@ const handleClosePopup = () => {
                 </button>
               </td>
             </tr>
-          ))}
+          ))
+        ) : (
+          <tr>
+                <td colSpan="4" className="organization-table-td">
+                  No Documents found.....
+                </td>
+              </tr>
+          )}
         </tbody>
       </table>
 

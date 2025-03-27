@@ -233,22 +233,21 @@ return (
   <div className="backuplist_container">
     {/* Header */}
     <div className="backuplist_header">Backup List</div>
-    
 
     {/* Backup Button */}
     <button className="backup_createbtn" onClick={openPopup}>
       Create Backup
     </button>
-    <div className="documenttable_search flex items-left" style={{justifyContent:'left'}}>
-              <Search className="documenttable_search_icon" />
-              <input
-                type="search"
-                value={searchQuery}
-                onChange={handleSearch}
-                placeholder="Search"
-                className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
-              />
-            </div>
+    <div className="documenttable_search flex items-left" style={{ justifyContent: 'left' }}>
+      <Search className="documenttable_search_icon" />
+      <input
+        type="search"
+        value={searchQuery}
+        onChange={handleSearch}
+        placeholder="Search"
+        className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
+      />
+    </div>
     {/* Loader */}
     {loading && <div className="backuplist_loader">Loading backups...</div>}
 
@@ -299,7 +298,14 @@ return (
 
     {/* Popup for Backup Selection */}
     {showPopup && (
-      <div className="backuplist_popup_overlay">
+      <div
+        className="backuplist_popup_overlay"
+        onClick={(e) => {
+          if (e.target.className === "backuplist_popup_overlay") {
+            closePopup();
+          }
+        }}
+      >
         <div className="backuplist_popup">
           <h2>Select Backup Type</h2>
 

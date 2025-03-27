@@ -167,6 +167,10 @@ const FileUploadPage = () => {
     }
   };
 
+  const handleCancelUpload = () => {
+    navigate('/DocumentList')
+  }
+
   return (
     <div className="file-upload-page-outer">
       <div className="file-upload-page">
@@ -258,9 +262,14 @@ const FileUploadPage = () => {
         </div>
       </div>
     ))}
+    <div style=" display: flex; justify-content: center; gap: 14px;">
     <button type="submit" className="submit-button">
       Submit
     </button>
+    <button type="button" className="cancel-button" onClick={handleCancelUpload}>
+      Cancel
+    </button>
+    </div>
   </div>
 )}
         </form>

@@ -225,109 +225,122 @@ const UserList = () => {
      <option value="Deleted List">Deleted List</option>
    </select>
       {/* <div>
-      <button className='user_createbtn' onClick={handleCreateUser} > + New User</button> 
-      <button className='user_createbtn' onClick={handleDelete} > Deleted User List</button> 
-      </div> */}
-      {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
+        <button className='user_createbtn' onClick={handleCreateUser} > + New User</button> 
+        <button className='user_createbtn' onClick={handleDelete} > Deleted User List</button> 
+        </div> */}
+        {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 
-      <div className="userlist-controls">
-        <div className="userlist-search">
-          <Search className="userlist_search_icon" />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearch}
-            placeholder="Search"
-            className="userlist_search_input"
-          />
-          <button className="userlist_searchinfo" onClick={handleSearchInfo}>
-            <IoMdInformationCircleOutline />
-          </button>
-          {showSearchInfo && (
-            <div ref={searchInfoRef} className="userlist-searchinfo-popup">
-              Date filter format should be: yyyy-mm-dd
-            </div>
-          )}
-        </div>
-        
-        <div className="userlist-filter">
-          <label className="userlist_filter_label">Filter by Role:</label>
+        <div className="userlist-controls">
+          <div className="userlist-search">
+            <Search className="userlist_search_icon" />
+            <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search"
+          className="userlist_search_input"
+            />
+            <button className="userlist_searchinfo" onClick={handleSearchInfo}>
+          <IoMdInformationCircleOutline />
+            </button>
+            {showSearchInfo && (
+          <div ref={searchInfoRef} className="userlist-searchinfo-popup">
+            Date filter format should be: yyyy-mm-dd
+          </div>
+            )}
+          </div>
           
-          <select value={filter} onChange={handleFilter} className="userlist_filter_select">
-          <option value="">All</option>,
-          {data.map((item, index) => (
-          <option value={item.role}>{item.role}</option>
-          ))}
-          </select>
-                
-        </div>
-  
-        <div className="userlist_rows">
-          <label className="userlist_rows_label">Rows per Page:</label>
-          <select value={rowsPerPage} onChange={handleRowsPerPage} className="userlist_rows_select">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
-        </div>
-      </div>
-
-      <table className="userlist_table">
-        <thead className="userlist_thead">
-          <tr>
-            <th className="userlist_th">Name</th>
-            <th className="userlist_th">Email</th>
-            <th className="userlist_th">
-              Created Date
-              <button className="user-list-calendarbtn" onClick={handleCalendarToggle}>
-                📅
-              </button>
-              {isCalendarOpen && (
-                <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
-                  <DatePicker
-                    selected={filterDate}
-                    onChange={(date) => {
-                      setFilterDate(date);
-                      setIsCalendarOpen(false);
-                    }}
-                    inline
-                  />
-                </div>
-              )}
-            </th>
-            <th className="userlist_th">Role</th>
-            <th className="userlist_th">Status</th>
-            <th className="userlist_th">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="userlist_tbody">
-          {paginatedData.map((item, index) => (
-            <tr key={index} className="userlist_row hover:bg-gray-50">
-              <td className="userlist_td">{item.username}</td>
+          <div className="userlist-filter">
+            <label className="userlist_filter_label">Filter by Role:</label>
+            
+            <select value={filter} onChange={handleFilter} className="userlist_filter_select">
+            <option value="">All</option>,
+            {data.map((item, index) => (
+            <option value={item.role}>{item.role}</option>
+            ))}
+            </select>
               
-              <td className="userlist_td">{item.email}</td>
-              <td className="userlist_td">
-                {new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-              </td>
-              <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
-              <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
-              <td className="userlist_td">
-                 <button className='adminlist-editbtn' title="Edit" onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
-                 <button className='adminlist-freezebtn' disabled={isLoading} title="Freeze" onClick={() => handleFreeze(item.id, item.orgId, item.status)}>
-                  {item.status ? <FontAwesomeIcon icon={faToggleOff}/> : <FontAwesomeIcon icon={faToggleOn}/>}
-                  </button>
-                  <button className='adminlist-deletebtn' title="Delete" onClick={() => handleDeleteUser(item.id)}><FontAwesomeIcon icon={faTrash}/></button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="userlist_pagination">
-        <div className="userlist_pageinfo">
-            <p className="userlist_pageinfo_text">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
+          </div>
+        
+          <div className="userlist_rows">
+            <label className="userlist_rows_label">Rows per Page:</label>
+            <select value={rowsPerPage} onChange={handleRowsPerPage} className="userlist_rows_select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+            </select>
+          </div>
         </div>
-         {/* Reset Filter Button */}
+
+        <table className="userlist_table">
+          <thead className="userlist_thead">
+            <tr>
+          <th className="userlist_th">Name</th>
+          <th className="userlist_th">Email</th>
+          <th className="userlist_th">
+            Created Date
+            <button className="user-list-calendarbtn" onClick={handleCalendarToggle}>
+              📅
+            </button>
+            {isCalendarOpen && (
+              <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
+            <DatePicker
+              selected={filterDate}
+              onChange={(date) => {
+                setFilterDate(date);
+                setIsCalendarOpen(false);
+              }}
+              inline
+              onKeyDown={(e) => {
+                if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+              e.preventDefault();
+                }
+              }}
+            />
+              </div>
+            )}
+          </th>
+          <th className="userlist_th">Role</th>
+          <th className="userlist_th">Status</th>
+          <th className="userlist_th">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="userlist_tbody">
+            { paginatedData.length > 0 ? (
+              paginatedData.map((item, index) => (
+          <tr key={index} className="userlist_row hover:bg-gray-50">
+            <td className="userlist_td">{item.username}</td>
+            
+            <td className="userlist_td">{item.email}</td>
+            <td className="userlist_td">
+              {new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            </td>
+            <td className="userlist_td">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
+            <td className="userlist_td">{item.status ? "Inactive" : "Active"}</td>
+            <td className="userlist_td">
+               <button className='adminlist-editbtn' title="Edit" onClick={() => handleEditAdmin(item.id)}> <FontAwesomeIcon icon={faPencil} /></button>
+               <button className='adminlist-freezebtn' disabled={isLoading} title="Freeze" onClick={() => handleFreeze(item.id, item.orgId, item.status)}>
+            {item.status ? <FontAwesomeIcon icon={faToggleOff}/> : <FontAwesomeIcon icon={faToggleOn}/>}
+            </button>
+            <button className='adminlist-deletebtn' title="Delete" onClick={() => handleDeleteUser(item.id)}><FontAwesomeIcon icon={faTrash}/></button>
+            </td>
+          </tr>
+              ))
+            ):(
+              <tr>
+                <td colSpan="4" className="organization-table-td">
+                  No users found for the selected date.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+
+        <div className="userlist_pagination">
+          <div className="userlist_pageinfo">
+          <p className="userlist_pageinfo_text">Page {currentPage} of {Math.ceil(filteredData1.length / rowsPerPage)}</p>
+          </div>
+           {/* Reset Filter Button */}
          {(searchTerm || filter || filterDate) && (
              <button className="reset-filter-btn" onClick={handleResetFilter} 
                         disabled={!searchTerm && !filter && !filterDate}>

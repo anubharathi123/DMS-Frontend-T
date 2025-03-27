@@ -90,10 +90,26 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
     return null;
   }
 
-  const handleNotificationClick = (event,type) => {
+
+
+  const handleNotificationClick = async (event, type, id) => {
     event.stopPropagation(); // Prevents dropdown from closing
-    if(type === "item"){
-      setClickedIndex((prev) => !prev);
+    try {
+      if (type === "item") {
+        setClickedIndex(id); // Set the clicked notification's ID
+        
+        const response = await apiServices.notificationMarkasRead(id);
+        console.log("Mark as Read:", response);
+
+        // Update the notification's status locally
+        setNotifications((prevNotifications) =>
+          prevNotifications.map((notification) =>
+            notification.id === id ? { ...notification, read: true } : notification
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
     }
   };
 
@@ -113,8 +129,8 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
       {notifications.slice(0, visibleCount).map((notification, index) => (
         <li
           key={notification.id || index}
-          className={`notification-item ${clickedIndex ? "active" : ""}`}
-          onClick={(event) => handleNotificationClick(event, "item")}>
+          className={`notification-item ${clickedIndex === notification.id ? "active" : ""}`}
+          onClick={(event) => handleNotificationClick(event, "item", notification.id)}>
           <span className="message">
             <strong>{notification.action}</strong>
           </span>

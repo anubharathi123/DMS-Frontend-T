@@ -15,6 +15,15 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
     "VIEWER",
   ].includes(role);
 
+  const UploaderStats = ({ stats }) => (
+    <>
+      <Item label="Total Documents" value={stats?.document_count || 0} icon={<HiBuildingOffice2 />} />
+      <Item label="Approved" value={stats?.approved_count || 0} icon={<HiBuildingOffice2 style={{ color: "#aaffaa" }} />} />
+      <Item label="Pending" value={stats?.pending_count || 0} icon={<FaBuildingCircleExclamation style={{ color: "#ffcc00" }} />} />
+      <Item label="Rejected" value={stats?.rejected_count || 0} icon={<HiBuildingOffice2 />} />
+    </>
+  );
+
   return (
     <div
       className="analytics-card"
@@ -62,22 +71,21 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
           </>
         ) : (
           <>
-            <Item label="Total" value={OrgCount?.totalCompanies || 0} icon={<HiBuildingOffice2 />} />
+            <Item label="Total" value={OrgCount?.total_organizations || 0} icon={<HiBuildingOffice2 />} />
             <Item label="Active" value={OrgCount?.activeCompanies || 0} icon={<HiBuildingOffice2 style={{ color: "#aaffaa" }} />} />
             <Item label="Inactive" value={OrgCount?.inactiveCompanies || 0} icon={<HiBuildingOffice2 style={{ color: "#ffaaaa" }} />} />
             <Item label="Deleted" value={OrgCount?.deletedCompanies || 0} icon={<FaBuildingCircleXmark />} />
           </>
         )}
-
+{/* {role === "UPLOADER" && <UploaderStats stats={DashboardStats} />} */}
         {/* {(role === "UPLOADER") && (
           <>
           <Item label="Total Documents" value={DashboardStats?.document_count || 0} icon={<HiBuildingOffice2 />} />
           <Item label="Approved" value={DashboardStats?.approved_count || 0} icon={<HiBuildingOffice2 style={{ color: "#aaffaa" }} />} />
           <Item label="Pending" value={DashboardStats?.pending_count || 0} icon={<FaBuildingCircleExclamation style={{ color: "#ffcc00" }} />} />
-          <Item label="Rejected" value={DashboardStats?.employee_count || 0} icon={<HiBuildingOffice2 />} />
+          <Item label="Rejected" value={DashboardStats?.rejected_count || 0} icon={<HiBuildingOffice2 />} />
         </>
         )} */}
-
       </div>
     </div>
   );
