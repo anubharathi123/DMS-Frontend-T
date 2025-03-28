@@ -25,7 +25,12 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
 
         // Fetch notifications using the obtained org_id
         const response = await apiServices.OrgNotification(org_id);
-        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        console.log(response);
+        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        .map(not => ({
+            not_message:not.message,
+            not_title:not.title,
+        }));
 
         setNotifications(sortedNotifications);
         onNotificationsUpdate(sortedNotifications); // Pass to parent
@@ -56,7 +61,14 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
         
         // Fetch notifications using the obtained org_id
         const response = await apiServices.OrgNotification(org_id);
-        setNotifications(response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+        console.log(response);
+        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        .map(not => ({
+            not_message:not.notification.message,
+            not_title:not.notification.title,
+        }));
+        
+        setNotifications(response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)),sortedNotifications);
       } catch (err) {
         console.error('Error fetching notifications:', err);
         setError(err.message || 'Failed to load notifications');
@@ -132,9 +144,9 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
           className={`notification-item ${clickedIndex === notification.id ? "active" : ""}`}
           onClick={(event) => handleNotificationClick(event, "item", notification.id)}>
           <span className="message">
-            <strong>{notification.action}</strong>
+            <strong>{notification.not_message}</strong>
           </span>
-          <div className="notification-time">{notification.description}</div>
+          <div className="notification-time">{notification.not_title}</div>
         </li>
       ))}
     </ul>

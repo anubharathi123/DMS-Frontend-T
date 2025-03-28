@@ -72,6 +72,7 @@ const DashboardApp = () => {
   const [selectedYear, setSelectedYear] = useState("2023");
   const [OrgCount, setOrgCount] = useState([]);
   const [count, setCount] = useState([]);
+
   const [chartData, setChartData] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -97,6 +98,8 @@ const DashboardApp = () => {
   const [dashboardData, setDashboardData] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [client, setclient] = useState(0);
+  const [enquiryCount, setEnquiryCount] = useState([])
+  const [MsiCount, setMsiCount] = useState([])
 
   const [isTooltipSticky, setIsTooltipSticky] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -348,6 +351,7 @@ const DashboardApp = () => {
           lineDataResponse,
           detailsResponse,
           dashboardResponse,
+          userCountResponse,
         ] = await Promise.all([
           apiServices.organizationCount(),
           apiServices.companyCount(),
@@ -355,6 +359,7 @@ const DashboardApp = () => {
           apiServices.getlinedata(),
           apiServices.details(),
           apiServices.DashboardView(),
+          apiServices.msi_Enquiry(),
         ]);
 
         // 🟩 1. Set Org Count
@@ -374,7 +379,7 @@ const DashboardApp = () => {
           setOrgCount({
             totalCompanies: companyCountResponse.total_organizations || 0,
             activeCompanies: companyCountResponse.active_org_count || 0,
-            inactiveCompanies: companyCountResponse.deleted_org_count || 0,
+            inactiveCompanies: companyCountResponse.inactive_org_count || 0,
             clientAdmins: companyCountResponse.user_count || 0,
             totalDocuments: companyCountResponse.document_count || 0,
             approvedDocuments: companyCountResponse.approved_count || 0,
@@ -472,6 +477,16 @@ const DashboardApp = () => {
         if (detailsResponse) {
           const id = detailsResponse?.details?.[1]?.id;
           if (id) setOrganizationId(id);
+        }
+
+        if(userCountResponse) {
+          setCount({
+            enquiryCount:userCountResponse.enquiry_count || 0,
+            msiCount:userCountResponse.msi_pending_count || 0,
+          })
+          setEnquiryCount(userCountResponse);
+          setMsiCount(userCountResponse);
+          console.log("Msi Enquiry:", userCountResponse)
         }
 
         // ⏱️ Delay to ensure minimum 10s loading
@@ -719,9 +734,7 @@ console.log(client,"dinu")
           <>
             <div className="cards-container bg">
               <CardAnalytics OrgCount={OrgCount} />
-              <UserPieChart
-  userCount={OrgCount?.user_count || 0 }
-/>
+              <UserPieChart userCount={OrgCount?.user_count || 0 } enquiryCount={enquiryCount?.enquiry_count || 0} msiCount={MsiCount?.msi_pending_count || 0 }/>
               <ProgressBarChart totalSize={totalFileSizeMB} />
             </div>
 
@@ -823,7 +836,7 @@ console.log(client,"dinu")
    DashboardStats={DashboardStats}
   isAdminOrDocumentRole={isAdminOrDocumentRole}
 />
-<UserPieChart userCount={totalUsers} isAdminOrDocumentRole={isAdminOrDocumentRole} />
+<UserPieChart userCount={totalUsers} enquiryCount={totalUsers} msiCount={totalUsers} isAdminOrDocumentRole={isAdminOrDocumentRole} />
 <ProgressBarChart client={client} isAdminOrDocumentRole={isAdminOrDocumentRole}  />
  
  

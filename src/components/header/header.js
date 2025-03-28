@@ -49,7 +49,11 @@ const Header = () => {
         if (!org_id) throw new Error("Organization ID not found");
 
         const response = await ApiService.OrgNotification(org_id);
-        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        .map(not => ({
+          not_message:not.notification.message,
+          not_title:not.notification.title,
+      }));
 
         console.log("Fetched Notifications:", sortedNotifications);
 

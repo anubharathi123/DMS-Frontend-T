@@ -123,7 +123,7 @@ export default function SignUpCard({ onSwitch }) {
   const validateForm = () => {
     let tempErrors = {};
     const trimmedEmail = formData.email.trim();
-    const blacklistedDomains = ['unknown.xyz', 'gmail.com', 'spam.com'];
+    const blacklistedDomains = ['unknown.xyz', 'example.com', 'spam.com'];
 
     const isAllUpperCase = trimmedEmail === trimmedEmail.toUpperCase();
     if (!formData.username) tempErrors.username = 'Username is required';
