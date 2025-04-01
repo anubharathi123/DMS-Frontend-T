@@ -72,6 +72,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
             {/* <Item label="Employees" value={DashboardStats?.employee_count || 0} icon={<HiBuildingOffice2 />} /> */}
             <Item label="Last Backup" value={DashboardStats?.backup_date || 0} icon={<HiBuildingOffice2 />} />
             <Item label="Rejected" value={DashboardStats?.rejected_count || 0} icon={<GrDocumentExcel />} />
+            <Item label="Employees" value={DashboardStats?.employee_count || 0} icon={<HiBuildingOffice2 />} />
           </>
         ) : (
           <>

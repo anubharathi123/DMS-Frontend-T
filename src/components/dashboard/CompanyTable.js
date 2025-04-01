@@ -199,8 +199,7 @@ const CompanyTable = ({
                     >
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <FaFileAlt style={{ marginRight: "5px" }} />
-                        {user.role === "VIEWER" ? `${user.user_freeze_status ? "Active" : "Inactive"}`  : `${user.uploaded_files_count + user.approved_files_count} Docs` } 
-                        
+                        {user.uploaded_files_count + user.approved_files_count} Docs
                       </div>
 
                       <div style={{ display: "flex", alignItems: "center" }}>
