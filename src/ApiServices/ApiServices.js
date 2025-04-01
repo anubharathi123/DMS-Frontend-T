@@ -202,9 +202,7 @@ const authService = {
     return handleResponse(apiClient.post(`organization/${orgId}/restore/`));
   },
   
-  msi_Enquiry: async () => {
-    return handleResponse(apiClient.get(`total_mis_enquriy/`))
-  },
+
 
 
 

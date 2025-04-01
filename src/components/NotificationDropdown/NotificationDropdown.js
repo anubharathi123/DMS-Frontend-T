@@ -25,12 +25,7 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
 
         // Fetch notifications using the obtained org_id
         const response = await apiServices.OrgNotification(org_id);
-        console.log(response);
-        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-        .map(not => ({
-            not_message:not.message,
-            not_title:not.title,
-        }));
+        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
         setNotifications(sortedNotifications);
         onNotificationsUpdate(sortedNotifications); // Pass to parent
@@ -68,7 +63,7 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
             not_title:not.notification.title,
         }));
         
-        setNotifications(sortedNotifications);
+        setNotifications(response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)),sortedNotifications);
       } catch (err) {
         console.error('Error fetching notifications:', err);
         setError(err.message || 'Failed to load notifications');
@@ -138,26 +133,19 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
         <p className="error-message">{error}</p>
       ) : notifications.length > 0 ? (
         <>
-         <ul className="notification-list">
-  {notifications.map((notification, index) => (
-    <li
-      key={notification.id || index}
-      className={`notification-item ${notification.read ? "read" : ""}`}
-      onClick={(event) => handleNotificationClick(event, "item", notification.id)}
-      style={{
-        backgroundColor: notification.read ? "#d3d3d3" : "white", // Change color when read
-        cursor: "pointer",
-        padding: "10px",
-        borderRadius: "5px",
-      }}
-    >
-      <span className="message">
-        <strong>{notification.not_message}</strong>
-      </span>
-      <div className="notification-time">{notification.not_title}</div>
-    </li>
-  ))}
-</ul>
+          <ul className="notification-list">
+      {notifications.slice(0, visibleCount).map((notification, index) => (
+        <li
+          key={notification.id || index}
+          className={`notification-item ${clickedIndex === notification.id ? "active" : ""}`}
+          onClick={(event) => handleNotificationClick(event, "item", notification.id)}>
+          <span className="message">
+            <strong>{notification.not_message}</strong>
+          </span>
+          <div className="notification-time">{notification.not_title}</div>
+        </li>
+      ))}
+    </ul>
           {notifications.length > visibleCount && (
             <button className="show-more" onClick={handleShowMore}>
               Show More

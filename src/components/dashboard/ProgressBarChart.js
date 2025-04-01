@@ -23,6 +23,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
       }}
     >
       {/* Title */}
+      <h3></h3>
       <h3
         style={{
           marginBottom: "8px",
@@ -36,7 +37,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
       </h3>
 
       {/* Usage info */}
-      {/* <p
+      <p
         style={{
           fontWeight: "bold",
           fontSize: "13.5px",
@@ -46,7 +47,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
         }}
       >
         {isAdminOrDocumentRole ? `Used: ${fullLabel}` : `Total: ${fullLabel}`}
-      </p> */}
+      </p>
 
       {/* Progress Section */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

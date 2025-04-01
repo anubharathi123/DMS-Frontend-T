@@ -1,0 +1,37 @@
+import React from "react";
+
+const BackupDate = ({}) => {
+
+return (
+    <div className="backup-card"
+        style={{
+            background:"#fff",
+            padding:"14px 16px",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            width: isAdminOrDocumentRole ? "10px" : "100%",
+            minWidth: isAdminOrDocumentRole ? "390px" : "390px",
+            marginLeft: isAdminOrDocumentRole ? "600px" : "-50px",
+            margin: isAdminOrDocumentRole ? "none" : "auto",
+           marginTop: isAdminOrDocumentRole ? "-310px" : "4px",
+           position: isAdminOrDocumentRole ? "absolute" : "relative",
+        }}
+    >
+    <h3 className="backup-h3"
+    style={{
+          marginBottom: "8px",
+          fontSize: "15px",
+          fontWeight: "700",
+          color: "#007bff",
+          textAlign: "center",
+        }}>
+            Backup Date
+        </h3>
+
+        <p>Last Backup Date:</p>
+
+    </div>
+)
+}
+
+export default BackupDate;
