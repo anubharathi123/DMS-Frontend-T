@@ -1,19 +1,20 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-const UserPieChart = ({ userCount, isAdminOrDocumentRole }) => {
+const UserPieChart = ({ userCount, enquiryCount, msiCount, isAdminOrDocumentRole }) => {
   const data = isAdminOrDocumentRole
     ? [
-        { name: "Users", value: userCount },
-        { name: "Enquiry", value: enquiryCount }, // New cell
-        { name: "Msi", value: msiCount }, // New cell
+        { name: "Uploader", value: userCount },
+        { name: "Reviewer", value: enquiryCount }, // New cell
+        { name: "Viewer", value: msiCount }, // New cell
       ]
     : [
         { name: "Users", value: userCount },
-        { name: "Others", value: 100 },
+        { name: "Enquiry", value: enquiryCount }, // New cell
+        { name: "Msi", value: msiCount }, // New cell
       ];
 
-  const COLORS = ["#007bff", "#ffc107", "#f59342"]; // Added new colors
+      const COLORS = ["#007bff", "#ffc107", "#32a891"]; // Added new colors
 
   const renderCustomizedLabel = ({
     cx,
@@ -24,18 +25,19 @@ const UserPieChart = ({ userCount, isAdminOrDocumentRole }) => {
     index,
   }) => {
     const RADIAN = Math.PI / 180;
-    const radius = outerRadius + 10; // slightly smaller for compact look
+    const radius = outerRadius + 13; // slightly smaller for compact look
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
     const z = cz + radius * Math.sin(-midAngle * RADIAN);
-
-    const textColors = ["#007bff", "#ffc107", "#32a891"]; // Colors for each count
+ 
+     const textColors = ["#007bff", "#ffc107", "#32a891"]; // Colors for each count
 
     return (
       <text
         x={isAdminOrDocumentRole ? x + 9 : x}
         y={isAdminOrDocumentRole ? y + 12 : y}
-        fill="#000"
+        z={isAdminOrDocumentRole ? z + 11 : z}
+         fill={textColors[index % textColors.length]} // Apply color based on index
         textAnchor="middle"
         dominantBaseline="central"
         fontSize="11"
@@ -73,9 +75,10 @@ const UserPieChart = ({ userCount, isAdminOrDocumentRole }) => {
       </h3>
 
       <ResponsiveContainer
-  width="100%"
-  height={isAdminOrDocumentRole ? 90 : 100}
->        <PieChart>
+        width="100%"
+        height={isAdminOrDocumentRole ? 90 : 100}
+      >
+        <PieChart>
           <Pie
             data={data}
             cx="50%"
@@ -97,6 +100,7 @@ const UserPieChart = ({ userCount, isAdminOrDocumentRole }) => {
       <div
         style={{
           display: "flex",
+          flexWrap:"wrap",
           justifyContent: "center",
           marginTop: "6px",
           gap: "10px",
@@ -122,7 +126,7 @@ const UserPieChart = ({ userCount, isAdminOrDocumentRole }) => {
             />
             <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
               {entry.name}
-              {entry.name === "Users" ? (
+              {entry.name === "Users" || entry.name === "Enquiry" ? (
                 <span style={{ color: "green", fontWeight: "bold" }}>↑</span>
               ) : (
                 <span style={{ color: "red", fontWeight: "bold" }}>↓</span>

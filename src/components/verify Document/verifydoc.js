@@ -77,7 +77,7 @@ const DocumentApproval = () => {
           file_id: doc.id,
           declarationNumber: doc.declaration_number,
           file: doc.current_version?.file_path,
-          fileName: doc.current_version?.file_path ? doc.current_version.file_path : "",  // Extract file name
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path.split('/').pop() : '',  // Extract file name
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',

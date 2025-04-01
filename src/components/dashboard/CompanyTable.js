@@ -6,13 +6,17 @@ import {
   FaFolderOpen,
   FaBuilding,
   FaArrowUp,
-  FaArrowDown,
+   FaArrowDown,
 } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import "./dashboard.css";
 
 const CompanyTable = ({
+  companyData,
+  setCompanyData,
   isLoading,
+  rowLimit,
+  setRowLimit,
   searchTerm,
   handleOpenModalData,
   openModalData,
@@ -24,33 +28,29 @@ const CompanyTable = ({
   tableforadmin,
 }) => {
 
-  const [companyData, setCompanyData] = useState([]);
-  const [rowLimit, setRowLimit] = useState("5")
-
-
   const role = localStorage.getItem("role");
-  const isAdminOrDocumentRole = [
-    "ADMIN",
-    "UPLOADER",
-    "APPROVER",
-    "REVIEWER",
-    "VIEWER",
-  ].includes(role);
-
+   const isAdminOrDocumentRole = [
+     "ADMIN",
+     "UPLOADER",
+     "APPROVER",
+     "REVIEWER",
+     "VIEWER",
+   ].includes(role);
+ 
   
   const filteredData = companyData.filter(
     (company) =>
       company.org_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.uploaded_files_size_mb?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-  );
+       company.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       company.uploaded_files_size_mb?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+   );
 
   React.useEffect(() => {
     if (tableforadmin?.users) {
       setRowLimit(tableforadmin.users.length);
     }
-  }, [tableforadmin?.users]);     
-
+  }, [tableforadmin?.users]);
+  
   const sortUsersByFileSize = (ascending) => {
     if (tableforadmin?.users) {
       const sortedUsers = [...tableforadmin.users].sort((a, b) => {
@@ -91,7 +91,7 @@ const CompanyTable = ({
         }
       }}
     >
-      {role === "ADMIN" || role === "UPLOADER" ? (
+       {role === "ADMIN" || role === "UPLOADER" ? (
         <>
           <div
             className="search-container"
@@ -129,40 +129,39 @@ const CompanyTable = ({
               />
             )}
           </div>
-
           <div
-                            className="dashboard-btngrp"
-                            style={{
-                              marginBottom: "-10px",
-                              marginTop: "25px",
-                              position: "relative",
-                            }}
-                          >
-                            
-                            <><button className="dashboard-top" onClick={() => sortUsersByFileSize(true)}>
-                                <FaArrowUp />
-                              </button><button className="dashboard-bottom" onClick={() => sortUsersByFileSize(false)}>
-                                  <FaArrowDown />
-                                </button><input
-                                  type="number"
-                                  min="1"
-                                  max="5"
-                                  value={rowLimit}
-                                  className="dashboard_num-input"
-                                  onChange={handleRowLimitChange} /></>
-                                
-                          </div>
-
+                             className="dashboard-btngrp"
+                             style={{
+                               marginBottom: "-10px",
+                               marginTop: "25px",
+                               position: "relative",
+                             }}
+                           >
+                             
+                             <><button className="dashboard-top" onClick={() => sortUsersByFileSize(true)}>
+                                 <FaArrowUp />
+                               </button><button className="dashboard-bottom" onClick={() => sortUsersByFileSize(false)}>
+                                   <FaArrowDown />
+                                 </button><input
+                                   type="number"
+                                   min="1"
+                                   max="5"
+                                   value={rowLimit}
+                                   className="dashboard_num-input"
+                                   onChange={handleRowLimitChange} /></>
+                                 
+                           </div>
+ 
           <div>
             {tableforadmin?.users &&
             tableforadmin.users.filter((user) =>
               user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
             ).length > 0 ? (
               tableforadmin.users
+              .slice(0, rowLimit) // Ensure the displayed rows match the filtered users
                 .filter((user) =>
                   user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
                 )
-                .slice(0, rowLimit) // Ensure the displayed rows match the filtered users
                 .map((user, index) => (
                   <div
                     key={index}
@@ -199,8 +198,7 @@ const CompanyTable = ({
                     >
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <FaFileAlt style={{ marginRight: "5px" }} />
-                        {user.role === "VIEWER" ? `${user.user_freeze_status ? "Active" : "Inactive"}`  : `${user.uploaded_files_count + user.approved_files_count} Docs` } 
-                        
+                        {user.uploaded_files_count + user.approved_files_count} Docs
                       </div>
 
                       <div style={{ display: "flex", alignItems: "center" }}>

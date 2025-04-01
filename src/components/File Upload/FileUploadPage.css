@@ -211,6 +211,6 @@
 
 .upload-buttons {
   display: flex;
-  justify-content: center;
-  gap: 14px;
+   justify-content: center;
+   gap: 14px;
 }

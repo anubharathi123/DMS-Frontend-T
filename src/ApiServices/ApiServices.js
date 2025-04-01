@@ -167,7 +167,6 @@ const authService = {
   
   enquire: async (data) => {
     return handleResponse(apiClient.post('enquiries/', data));
-    
   },
   
   getEnquirydata:async (data) => {
@@ -202,7 +201,9 @@ const authService = {
     return handleResponse(apiClient.post(`organization/${orgId}/restore/`));
   },
   
-
+  msi_Enquiry: async () => {
+    return handleResponse(apiClient.get(`total_mis_enquriy/`))
+  },
 
 
 

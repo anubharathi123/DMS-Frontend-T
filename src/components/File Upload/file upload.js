@@ -262,7 +262,6 @@ const FileUploadPage = () => {
         </div>
       </div>
     ))}
-    {/* <div style=" display: flex; justify-content: center; gap: 14px;"> */}
     <div className='upload-buttons'>
     <button type="submit" className="submit-button">
       Submit

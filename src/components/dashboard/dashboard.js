@@ -46,7 +46,6 @@ import UserPieChart from "./UserPieChart";
 import ProgressBarChart from "./ProgressBarChart";
 import FileSizeTrendsChart from "./FileSizeTrendsChart";
 import CompanyTable from "./CompanyTable";
-// import BackupDate from "./BackupDate";
   
  
 
@@ -73,6 +72,7 @@ const DashboardApp = () => {
   const [selectedYear, setSelectedYear] = useState("2023");
   const [OrgCount, setOrgCount] = useState([]);
   const [count, setCount] = useState([]);
+
   const [chartData, setChartData] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -98,6 +98,8 @@ const DashboardApp = () => {
   const [dashboardData, setDashboardData] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [client, setclient] = useState(0);
+  const [enquiryCount, setEnquiryCount] = useState([])
+  const [MsiCount, setMsiCount] = useState([])
 
   const [isTooltipSticky, setIsTooltipSticky] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -262,7 +264,7 @@ const DashboardApp = () => {
       const totalUsersCount = response?.users?.length || 0;
       setTotalUsers(totalUsersCount);
   
-      console.log("data for indigual user data",response);
+      console.log(response);
   
       // ✅ Uploaded file size total (from uploaded_files_size_mb)
       const uploadedSizes = response?.users?.map(user => user.uploaded_files_size_mb || 0);
@@ -279,17 +281,6 @@ const DashboardApp = () => {
       const totalSizeMB = allFileSizes.reduce((acc, size) => acc + size, 0);
       console.log(totalSizeMB,"abi")
       setclient(totalSizeMB);
-      const totalSizeMB1 = response?.users?.reduce((acc, user) => {
-        if (user.role === "UPLOADER") {
-          const uploadedSize = user.uploaded_files_size_mb || 0;
-          const approvedSize = user.approved_files_size_mb || 0;
-          const rejectedSize = user.rejected_files_size_mb || 0;
-          return acc + uploadedSize + approvedSize + rejectedSize;
-        }
-        return acc;
-      }, 0);
-      setclient(totalSizeMB1);
-      
   
     } catch (error) {
       console.error("Error fetching individual admin data:", error);
@@ -360,6 +351,7 @@ const DashboardApp = () => {
           lineDataResponse,
           detailsResponse,
           dashboardResponse,
+          userCountResponse,
         ] = await Promise.all([
           apiServices.organizationCount(),
           apiServices.companyCount(),
@@ -367,6 +359,7 @@ const DashboardApp = () => {
           apiServices.getlinedata(),
           apiServices.details(),
           apiServices.DashboardView(),
+          apiServices.msi_Enquiry(),
         ]);
 
         // 🟩 1. Set Org Count
@@ -386,7 +379,7 @@ const DashboardApp = () => {
           setOrgCount({
             totalCompanies: companyCountResponse.total_organizations || 0,
             activeCompanies: companyCountResponse.active_org_count || 0,
-            inactiveCompanies: companyCountResponse.deleted_org_count || 0,
+            inactiveCompanies: companyCountResponse.inactive_org_count || 0,
             clientAdmins: companyCountResponse.user_count || 0,
             totalDocuments: companyCountResponse.document_count || 0,
             approvedDocuments: companyCountResponse.approved_count || 0,
@@ -396,7 +389,7 @@ const DashboardApp = () => {
             deleted_org_count: companyCountResponse.deleted_org_count || 0,
           });
         }
-        console.log("Dashboard Count:", dashboardResponse);
+
         // 🟩 3. Dashboard Stats for Admin
         if (dashboardResponse) setDashboardStats(dashboardResponse);
 
@@ -484,6 +477,16 @@ const DashboardApp = () => {
         if (detailsResponse) {
           const id = detailsResponse?.details?.[1]?.id;
           if (id) setOrganizationId(id);
+        }
+
+        if(userCountResponse) {
+          setCount({
+            enquiryCount:userCountResponse.enquiry_count || 0,
+            msiCount:userCountResponse.msi_pending_count || 0,
+          })
+          setEnquiryCount(userCountResponse);
+          setMsiCount(userCountResponse);
+          console.log("Msi Enquiry:", userCountResponse)
         }
 
         // ⏱️ Delay to ensure minimum 10s loading
@@ -731,18 +734,14 @@ console.log(client,"dinu")
           <>
             <div className="cards-container bg">
               <CardAnalytics OrgCount={OrgCount} />
-              <UserPieChart
-  userCount={OrgCount?.user_count || 0 }
-/>
+              <UserPieChart userCount={OrgCount?.user_count || 0 } enquiryCount={enquiryCount?.enquiry_count || 0} msiCount={MsiCount?.msi_pending_count || 0 }/>
               <ProgressBarChart totalSize={totalFileSizeMB} />
-              {/* <BackupDate/> */}
             </div>
 
             <div className="charts-container bg">
               {data.map}
-              {(role === "ADMIN") && (
+
               <div className="chart">
-               
                 <div
                   className="dashboard-btngrp"
                   style={{
@@ -751,19 +750,20 @@ console.log(client,"dinu")
                     position: "relative",
                   }}
                 >
-                  
-                  <><button className="dashboard-top" onClick={sortAscending}>
-                      <FaArrowUp />
-                    </button><button className="dashboard-bottom" onClick={sortDescending}>
-                        <FaArrowDown />
-                      </button><input
-                        type="number"
-                        value={rowLimit}
-                        className="dashboard_num-input"
-                        onChange={handleRowLimitChange} /></>
-                      
+                  <button className="dashboard-top" onClick={sortAscending}>
+                    <FaArrowUp />
+                  </button>
+                  <button className="dashboard-bottom" onClick={sortDescending}>
+                    <FaArrowDown />
+                  </button>
+                  <input
+                    type="number"
+                    value={rowLimit}
+                    className="dashboard_num-input"
+                    onChange={handleRowLimitChange}
+                  />
                 </div>
-                  
+
                 <div
                   className="search-container"
                   style={{
@@ -807,7 +807,6 @@ console.log(client,"dinu")
                   closeModalData={closeModalData}
                 />
               </div>
-              )}
               <FileSizeTrendsChart
                 selectedReportYear={selectedReportYear}
                 setSelectedReportYear={setSelectedReportYear}
@@ -837,7 +836,7 @@ console.log(client,"dinu")
    DashboardStats={DashboardStats}
   isAdminOrDocumentRole={isAdminOrDocumentRole}
 />
-<UserPieChart userCount={totalUsers} isAdminOrDocumentRole={isAdminOrDocumentRole} />
+<UserPieChart userCount={totalUsers} enquiryCount={totalUsers} msiCount={totalUsers} isAdminOrDocumentRole={isAdminOrDocumentRole} />
 <ProgressBarChart client={client} isAdminOrDocumentRole={isAdminOrDocumentRole}  />
  
  
