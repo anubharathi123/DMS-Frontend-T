@@ -46,6 +46,7 @@ import UserPieChart from "./UserPieChart";
 import ProgressBarChart from "./ProgressBarChart";
 import FileSizeTrendsChart from "./FileSizeTrendsChart";
 import CompanyTable from "./CompanyTable";
+// import BackupDate from "./BackupDate";
   
  
 
@@ -280,7 +281,17 @@ const DashboardApp = () => {
       console.log(allFileSizes,"sheik")
       const totalSizeMB = allFileSizes.reduce((acc, size) => acc + size, 0);
       console.log(totalSizeMB,"abi")
-      setclient(totalSizeMB);
+      const totalSizeMB1 = response?.users?.reduce((acc, user) => {
+        if (user.role === "UPLOADER") {
+          const uploadedSize = user.uploaded_files_size_mb || 0;
+          const approvedSize = user.approved_files_size_mb || 0;
+          const rejectedSize = user.rejected_files_size_mb || 0;
+          return acc + uploadedSize + approvedSize + rejectedSize;
+        }
+        return acc;
+      }, 0);
+      setclient(totalSizeMB1);
+      
   
     } catch (error) {
       console.error("Error fetching individual admin data:", error);
@@ -736,12 +747,14 @@ console.log(client,"dinu")
               <CardAnalytics OrgCount={OrgCount} />
               <UserPieChart userCount={OrgCount?.user_count || 0 } enquiryCount={enquiryCount?.enquiry_count || 0} msiCount={MsiCount?.msi_pending_count || 0 }/>
               <ProgressBarChart totalSize={totalFileSizeMB} />
+              {/* <BackupDate/> */}
             </div>
 
             <div className="charts-container bg">
               {data.map}
-
+              {(role === "ADMIN") && (
               <div className="chart">
+               
                 <div
                   className="dashboard-btngrp"
                   style={{
@@ -750,20 +763,19 @@ console.log(client,"dinu")
                     position: "relative",
                   }}
                 >
-                  <button className="dashboard-top" onClick={sortAscending}>
-                    <FaArrowUp />
-                  </button>
-                  <button className="dashboard-bottom" onClick={sortDescending}>
-                    <FaArrowDown />
-                  </button>
-                  <input
-                    type="number"
-                    value={rowLimit}
-                    className="dashboard_num-input"
-                    onChange={handleRowLimitChange}
-                  />
+                  
+                  <><button className="dashboard-top" onClick={sortAscending}>
+                      <FaArrowUp />
+                    </button><button className="dashboard-bottom" onClick={sortDescending}>
+                        <FaArrowDown />
+                      </button><input
+                        type="number"
+                        value={rowLimit}
+                        className="dashboard_num-input"
+                        onChange={handleRowLimitChange} /></>
+                      
                 </div>
-
+                  
                 <div
                   className="search-container"
                   style={{
@@ -807,6 +819,7 @@ console.log(client,"dinu")
                   closeModalData={closeModalData}
                 />
               </div>
+              )}
               <FileSizeTrendsChart
                 selectedReportYear={selectedReportYear}
                 setSelectedReportYear={setSelectedReportYear}

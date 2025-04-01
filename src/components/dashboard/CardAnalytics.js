@@ -51,7 +51,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
     position:"relative"
   }}
 >
-  {isAdminOrDocumentRole ? "User Analytics" : "Company Analytics"}
+  {isAdminOrDocumentRole ? "Document Analytics" : "Company Analytics"}
 </h2>
 
 
@@ -69,7 +69,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
             <Item label="Total Documents" value={DashboardStats?.document_count || 0} icon={<GrDocument />} />
             <Item label="Approved" value={DashboardStats?.approved_count || 0} icon={<GrDocumentVerified style={{ color: "#aaffaa" }} />} />
             <Item label="Pending" value={DashboardStats?.pending_count || 0} icon={<GrDocumentTime style={{ color: "#ffcc00" }} />} />
-            <Item label="Employees" value={DashboardStats?.employee_count || 0} icon={<HiBuildingOffice2 />} />
+            <Item label="Rejected" value={DashboardStats?.rejected_count || 0} icon={<GrDocumentExcel />} />
           </>
         ) : (
           <>

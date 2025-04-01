@@ -18,7 +18,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
         minWidth: isAdminOrDocumentRole ? "390px" : "390px",
         marginLeft: isAdminOrDocumentRole ? "600px" : "-50px",
          margin: isAdminOrDocumentRole ? "none" : "auto",
-        marginTop: isAdminOrDocumentRole ? "-310px" : "4px",
+        marginTop: isAdminOrDocumentRole ? "-270px" : "4px",
         position: isAdminOrDocumentRole ? "absolute" : "relative",
       }}
     >

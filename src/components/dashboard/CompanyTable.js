@@ -1,35 +1,78 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   FaUser,
   FaUsers,
   FaFileAlt,
   FaFolderOpen,
   FaBuilding,
+  FaArrowUp,
+  FaArrowDown,
 } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import "./dashboard.css";
 
 const CompanyTable = ({
-  companyData,
   isLoading,
-  rowLimit,
   searchTerm,
   handleOpenModalData,
   openModalData,
   closeModalData,
-  isAdminOrDocumentRole,
   searchTermAdmin,
   setSearchTermAdmin,
   isSearchFocused,
   setIsSearchFocused,
   tableforadmin,
 }) => {
+
+  const [companyData, setCompanyData] = useState([]);
+  const [rowLimit, setRowLimit] = useState("5")
+
+
+  const role = localStorage.getItem("role");
+  const isAdminOrDocumentRole = [
+    "ADMIN",
+    "UPLOADER",
+    "APPROVER",
+    "REVIEWER",
+    "VIEWER",
+  ].includes(role);
+
   
   const filteredData = companyData.filter(
     (company) =>
-      company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.username.toLowerCase().includes(searchTerm.toLowerCase())
+      company.org_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      company.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      company.uploaded_files_size_mb?.toString().toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  React.useEffect(() => {
+    if (tableforadmin?.users) {
+      setRowLimit(tableforadmin.users.length);
+    }
+  }, [tableforadmin?.users]);     
+
+  const sortUsersByFileSize = (ascending) => {
+    if (tableforadmin?.users) {
+      const sortedUsers = [...tableforadmin.users].sort((a, b) => {
+        const sizeA = (a.uploaded_files_size_mb || 0) + (a.approved_files_size_mb || 0);
+        const sizeB = (b.uploaded_files_size_mb || 0) + (b.approved_files_size_mb || 0);
+        return ascending ? sizeA - sizeB : sizeB - sizeA;
+      });
+  
+      setCompanyData(sortedUsers);
+    }
+  };
+
+  const handleRowLimitChange = (e) => {
+    const value = e.target.value.trim();
+    const parsedValue = parseInt(value, 10);
+    setRowLimit(!isNaN(parsedValue) && parsedValue > 0 ? parsedValue : companyData.length);
+  };
+  React.useEffect(() => {
+    if (tableforadmin?.users) {
+      setRowLimit(tableforadmin.users.length);
+    }
+  }, [tableforadmin?.users]);
 
   
 
@@ -48,7 +91,7 @@ const CompanyTable = ({
         }
       }}
     >
-      {isAdminOrDocumentRole ? (
+      {role === "ADMIN" || role === "UPLOADER" ? (
         <>
           <div
             className="search-container"
@@ -87,6 +130,29 @@ const CompanyTable = ({
             )}
           </div>
 
+          <div
+                            className="dashboard-btngrp"
+                            style={{
+                              marginBottom: "-10px",
+                              marginTop: "25px",
+                              position: "relative",
+                            }}
+                          >
+                            
+                            <><button className="dashboard-top" onClick={() => sortUsersByFileSize(true)}>
+                                <FaArrowUp />
+                              </button><button className="dashboard-bottom" onClick={() => sortUsersByFileSize(false)}>
+                                  <FaArrowDown />
+                                </button><input
+                                  type="number"
+                                  min="1"
+                                  max="5"
+                                  value={rowLimit}
+                                  className="dashboard_num-input"
+                                  onChange={handleRowLimitChange} /></>
+                                
+                          </div>
+
           <div>
             {tableforadmin?.users &&
             tableforadmin.users.filter((user) =>
@@ -96,6 +162,7 @@ const CompanyTable = ({
                 .filter((user) =>
                   user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
                 )
+                .slice(0, rowLimit) // Ensure the displayed rows match the filtered users
                 .map((user, index) => (
                   <div
                     key={index}
