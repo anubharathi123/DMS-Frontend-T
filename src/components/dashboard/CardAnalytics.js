@@ -70,6 +70,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
             <Item label="Approved" value={DashboardStats?.approved_count || 0} icon={<GrDocumentVerified style={{ color: "#aaffaa" }} />} />
             <Item label="Pending" value={DashboardStats?.pending_count || 0} icon={<GrDocumentTime style={{ color: "#ffcc00" }} />} />
             <Item label="Employees" value={DashboardStats?.employee_count || 0} icon={<HiBuildingOffice2 />} />
+            <Item label="Last Backup" value={DashboardStats?.backup_date || 0} icon={<HiBuildingOffice2 />} />
           </>
         ) : (
           <>

@@ -264,7 +264,7 @@ const DashboardApp = () => {
       const totalUsersCount = response?.users?.length || 0;
       setTotalUsers(totalUsersCount);
   
-      console.log(response);
+      console.log("data for indigual user data",response);
   
       // ✅ Uploaded file size total (from uploaded_files_size_mb)
       const uploadedSizes = response?.users?.map(user => user.uploaded_files_size_mb || 0);
@@ -280,7 +280,16 @@ const DashboardApp = () => {
       console.log(allFileSizes,"sheik")
       const totalSizeMB = allFileSizes.reduce((acc, size) => acc + size, 0);
       console.log(totalSizeMB,"abi")
-      setclient(totalSizeMB);
+      const totalSizeMB1 = response?.users?.reduce((acc, user) => {
+        if (user.role === "UPLOADER") {
+          const uploadedSize = user.uploaded_files_size_mb || 0;
+          const approvedSize = user.approved_files_size_mb || 0;
+          const rejectedSize = user.rejected_files_size_mb || 0;
+          return acc + uploadedSize + approvedSize + rejectedSize;
+        }
+        return acc;
+      }, 0);
+      setclient(totalSizeMB1);
   
     } catch (error) {
       console.error("Error fetching individual admin data:", error);
@@ -389,7 +398,7 @@ const DashboardApp = () => {
             deleted_org_count: companyCountResponse.deleted_org_count || 0,
           });
         }
-
+        console.log("Dashboard Count:", dashboardResponse);
         // 🟩 3. Dashboard Stats for Admin
         if (dashboardResponse) setDashboardStats(dashboardResponse);
 

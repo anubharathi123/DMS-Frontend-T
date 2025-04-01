@@ -23,6 +23,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
       }}
     >
       {/* Title */}
+      <h3></h3>
       <h3
         style={{
           marginBottom: "8px",
