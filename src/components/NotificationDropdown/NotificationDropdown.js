@@ -68,7 +68,7 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
             not_title:not.notification.title,
         }));
         
-        setNotifications(response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)),sortedNotifications);
+        setNotifications(sortedNotifications);
       } catch (err) {
         console.error('Error fetching notifications:', err);
         setError(err.message || 'Failed to load notifications');
@@ -105,15 +105,15 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
 
 
   const handleNotificationClick = async (event, type, id) => {
-    event.stopPropagation(); // Prevents dropdown from closing
+    event.stopPropagation();
     try {
       if (type === "item") {
-        setClickedIndex(id); // Set the clicked notification's ID
-        
+        setClickedIndex(id);
+  
         const response = await apiServices.notificationMarkasRead(id);
         console.log("Mark as Read:", response);
-
-        // Update the notification's status locally
+  
+        // Update the notification's 'read' status locally
         setNotifications((prevNotifications) =>
           prevNotifications.map((notification) =>
             notification.id === id ? { ...notification, read: true } : notification
@@ -124,6 +124,7 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
       console.error("Error marking notification as read:", error);
     }
   };
+  
 
   return (
     <div className="notification-page">
@@ -137,19 +138,26 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
         <p className="error-message">{error}</p>
       ) : notifications.length > 0 ? (
         <>
-          <ul className="notification-list">
-      {notifications.slice(0, visibleCount).map((notification, index) => (
-        <li
-          key={notification.id || index}
-          className={`notification-item ${clickedIndex === notification.id ? "active" : ""}`}
-          onClick={(event) => handleNotificationClick(event, "item", notification.id)}>
-          <span className="message">
-            <strong>{notification.not_message}</strong>
-          </span>
-          <div className="notification-time">{notification.not_title}</div>
-        </li>
-      ))}
-    </ul>
+         <ul className="notification-list">
+  {notifications.map((notification, index) => (
+    <li
+      key={notification.id || index}
+      className={`notification-item ${notification.read ? "read" : ""}`}
+      onClick={(event) => handleNotificationClick(event, "item", notification.id)}
+      style={{
+        backgroundColor: notification.read ? "#d3d3d3" : "white", // Change color when read
+        cursor: "pointer",
+        padding: "10px",
+        borderRadius: "5px",
+      }}
+    >
+      <span className="message">
+        <strong>{notification.not_message}</strong>
+      </span>
+      <div className="notification-time">{notification.not_title}</div>
+    </li>
+  ))}
+</ul>
           {notifications.length > visibleCount && (
             <button className="show-more" onClick={handleShowMore}>
               Show More
