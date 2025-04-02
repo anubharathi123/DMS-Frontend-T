@@ -269,18 +269,20 @@ const [error, setError] = useState(null); // For error handling
                           value={formData.email}
                           onChange={(e) => {
                             const value = e.target.value;
-                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for valid email format
+                          //  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for valid email format
                             if (value.length > 50) {
                             setError("Email ID is too long.");
                             setTimeout(() => {
                               setError("");
                             }, 3000);
-                            } else if (!emailRegex.test(value)) {
-                            setError("Invalid Email Format.");
-                            setTimeout(() => {
-                              setError("");
-                            }, 3000);
-                            } else {
+                            } 
+                            // else if (/^[\p{L}\p{N}@._-]*$/u.test(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || value === '') {
+                            // setError("Invalid Email Format.");
+                            // setTimeout(() => {
+                            //   setError("");
+                            // }, 3000);
+                            // } 
+                            else {
                             setError(""); // Clear error if valid
                             handleChange(e);
                             }

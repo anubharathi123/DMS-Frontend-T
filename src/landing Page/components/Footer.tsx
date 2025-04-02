@@ -111,7 +111,7 @@ export default function Footer() {
         contact_time: '',
         comments: '',
       });
-      console.log(response)
+      console.log("Enquiry Data:",response)
       setErrors({});
     } catch (error) {
       console.error('Error submitting enquiry:', error);

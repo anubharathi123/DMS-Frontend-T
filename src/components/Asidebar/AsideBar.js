@@ -4,7 +4,8 @@ import {
   User, LayoutDashboard, Building2, UserPlus, ListOrdered,FileCheck2, FileText, Settings,Upload,ChartNoAxesCombined, FileQuestion
 } from "lucide-react"; // Importing icons
 import "./AsideBar.css";
-import Logo from "../../assets/images/company_logo.png";
+// import Logo from "../../assets/images/company_logo.png";
+import Logo from "../../assets/images/Logo.png";
 import authService from "../../ApiServices/ApiServices";
 
 const AsideBar = () => {

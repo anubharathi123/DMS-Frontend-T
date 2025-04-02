@@ -15,8 +15,8 @@ const CompanyTable = ({
   companyData,
   setCompanyData,
   isLoading,
-  rowLimit,
-  setRowLimit,
+  // rowLimit,
+  // setRowLimit,
   searchTerm,
   handleOpenModalData,
   openModalData,
@@ -36,12 +36,16 @@ const CompanyTable = ({
      "REVIEWER",
      "VIEWER",
    ].includes(role);
- 
+   const [rowLimit, setRowLimit] = useState(10); // ✅ Correct way
+  //  const [companyData, setCompanyData] = useState(true);
+
+
   
   const filteredData = companyData.filter(
     (company) =>
       company.org_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
        company.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       company.role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
        company.uploaded_files_size_mb?.toString().toLowerCase().includes(searchTerm.toLowerCase())
    );
 
@@ -51,16 +55,30 @@ const CompanyTable = ({
     }
   }, [tableforadmin?.users]);
   
-  const sortUsersByFileSize = (ascending) => {
-    if (tableforadmin?.users) {
-      const sortedUsers = [...tableforadmin.users].sort((a, b) => {
-        const sizeA = (a.uploaded_files_size_mb || 0) + (a.approved_files_size_mb || 0);
-        const sizeB = (b.uploaded_files_size_mb || 0) + (b.approved_files_size_mb || 0);
-        return ascending ? sizeA - sizeB : sizeB - sizeA;
-      });
+  // const sortUsersByFileSize = (ascending) => {
+  //   if (tableforadmin?.users) {
+  //     const sortedUsers = [...tableforadmin.users].sort((a, b) => {
+  //       const sizeA = a.approved_files_size_mb || 0; // Sort based only on approved file size
+  //       const sizeB = b.approved_files_size_mb || 0;
+  //       return ascending ? sizeA - sizeB : sizeB - sizeA;
+  //     });
   
-      setCompanyData(sortedUsers);
-    }
+  //     setCompanyData(sortedUsers);
+  //   }
+  // };
+
+  const sortAscending = () => {
+    const sortedData = [...companyData].sort(
+      (a, b) => parseFloat(a.uploaded_files_size_mb) - parseFloat(b.uploaded_files_size_mb)
+    );
+    setCompanyData(sortedData);
+  };
+
+  const sortDescending = () => {
+    const sortedData = [...companyData].sort(
+      (a, b) => parseFloat(b.uploaded_files_size_mb) - parseFloat(a.uploaded_files_size_mb)
+    );
+    setCompanyData(sortedData);
   };
 
   const handleRowLimitChange = (e) => {
@@ -138,9 +156,9 @@ const CompanyTable = ({
                              }}
                            >
                              
-                             <><button className="dashboard-top" onClick={() => sortUsersByFileSize(true)}>
+                             <><button className="dashboard-top" onClick={sortAscending}>
                                  <FaArrowUp />
-                               </button><button className="dashboard-bottom" onClick={() => sortUsersByFileSize(false)}>
+                               </button><button className="dashboard-bottom" onClick={sortDescending}>
                                    <FaArrowDown />
                                  </button><input
                                    type="number"
@@ -155,12 +173,14 @@ const CompanyTable = ({
           <div>
             {tableforadmin?.users &&
             tableforadmin.users.filter((user) =>
-              user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
+              user.username.toLowerCase().includes(searchTermAdmin.toLowerCase()) ||
+            user.role.toLowerCase().includes(searchTermAdmin.toLowerCase())
             ).length > 0 ? (
               tableforadmin.users
               .slice(0, rowLimit) // Ensure the displayed rows match the filtered users
                 .filter((user) =>
-                  user.username.toLowerCase().includes(searchTermAdmin.toLowerCase())
+                  user.username.toLowerCase().includes(searchTermAdmin.toLowerCase()) ||
+                user.role.toLowerCase().includes(searchTermAdmin.toLowerCase())
                 )
                 .map((user, index) => (
                   <div
@@ -199,6 +219,7 @@ const CompanyTable = ({
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <FaFileAlt style={{ marginRight: "5px" }} />
                         {user.uploaded_files_count + user.approved_files_count} Docs
+                        {/* {user.role === "VIEWER" ? `${user.user_freeze_status ? "Active" : "Inactive"}`  : `${user.uploaded_files_count + user.approved_files_count} Docs` }  */}
                       </div>
 
                       <div style={{ display: "flex", alignItems: "center" }}>

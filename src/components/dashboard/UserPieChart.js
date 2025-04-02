@@ -1,17 +1,17 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-const UserPieChart = ({ userCount, enquiryCount, msiCount, isAdminOrDocumentRole }) => {
+const UserPieChart = ({ userCount, enquiryCount, msiCount, uploadCount,reviewerCount, viewerCount, isAdminOrDocumentRole }) => {
   const data = isAdminOrDocumentRole
     ? [
-        { name: "Uploader", value: userCount },
-        { name: "Reviewer", value: enquiryCount }, // New cell
-        { name: "Viewer", value: msiCount }, // New cell
+        { name: "Uploader", value: uploadCount },
+        { name: "Reviewer", value: reviewerCount }, // New cell
+        { name: "Viewer", value: viewerCount }, // New cell
       ]
     : [
         { name: "Users", value: userCount },
         { name: "Enquiry", value: enquiryCount }, // New cell
-        { name: "Msi", value: msiCount }, // New cell
+        { name: "MSI", value: msiCount }, // New cell
       ];
 
       const COLORS = ["#007bff", "#ffc107", "#32a891"]; // Added new colors
@@ -30,20 +30,20 @@ const UserPieChart = ({ userCount, enquiryCount, msiCount, isAdminOrDocumentRole
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
     const z = cz + radius * Math.sin(-midAngle * RADIAN);
  
-     const textColors = ["#007bff", "#ffc107", "#32a891"]; // Colors for each count
+    //  const textColors = ["#007bff", "#ffc107", "#32a891"]; // Colors for each count
 
     return (
       <text
         x={isAdminOrDocumentRole ? x + 9 : x}
         y={isAdminOrDocumentRole ? y + 12 : y}
         z={isAdminOrDocumentRole ? z + 11 : z}
-         fill={textColors[index % textColors.length]} // Apply color based on index
+        //  fill={textColors[index % textColors.length]} // Apply color based on index
         textAnchor="middle"
         dominantBaseline="central"
         fontSize="11"
         fontWeight="bold"
       >
-        {data[index].value}
+        {/* {data[index].value} */}
       </text>
     );
   };
@@ -100,7 +100,7 @@ const UserPieChart = ({ userCount, enquiryCount, msiCount, isAdminOrDocumentRole
       <div
         style={{
           display: "flex",
-          flexWrap:"wrap",
+          flexWrap: "wrap",
           justifyContent: "center",
           marginTop: "6px",
           gap: "10px",
@@ -124,13 +124,19 @@ const UserPieChart = ({ userCount, enquiryCount, msiCount, isAdminOrDocumentRole
                 marginRight: "5px",
               }}
             />
-            <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                color: COLORS[index], // Apply color based on the index
+                fontWeight: "bold",
+              }}
+            >
               {entry.name}
-              {entry.name === "Users" || entry.name === "Enquiry" ? (
-                <span style={{ color: "green", fontWeight: "bold" }}>↑</span>
-              ) : (
-                <span style={{ color: "red", fontWeight: "bold" }}>↓</span>
-              )}
+              <span style={{ color: COLORS[index] }}>
+                :{data[index].value}
+              </span>
             </span>
           </div>
         ))}

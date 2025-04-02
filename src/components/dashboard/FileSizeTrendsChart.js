@@ -17,9 +17,18 @@ const FileSizeTrendsChart = ({
   setIsModalOpen,
   isModalOpen,
   closeModal,
-  isAdminOrDocumentRole, // ✅ Add this
+  // isAdminOrDocumentRole, // ✅ Add this
   dashboardData          // ✅ And this
 }) => {
+
+  const role = localStorage.getItem("role");
+  const isAdminOrDocumentRole = [
+    "ADMIN",
+    "UPLOADER",
+    "APPROVER",
+    "REVIEWER",
+    "VIEWER",
+  ].includes(role);
 
   useEffect(() => {
     if (!selectedCompany && companyData.length > 0) {
@@ -63,6 +72,37 @@ const FileSizeTrendsChart = ({
           </div>
         </div>
 
+        {role === "ADMIN" || role === "UPLOADER" ? (
+          <div className="slicer">
+          <div className="dropdown-container">
+            <select
+              className="dashboard-year-select"
+              value={selectedReportYear}
+              onChange={(e) => setSelectedReportYear(e.target.value)}>
+              {uniqueReportYears.map((year, index) => (
+                <option key={index} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="dropdown-container">
+          <select
+  className="company-dropdown"
+  value={selectedCompany}
+  onChange={(e) => setSelectedCompany(e.target.value)}>
+  {companyData.map((company, index) => (
+    <option key={index} value={company.org_name}>
+      {company.org_name}
+    </option>
+  ))}
+</select>
+
+          </div>
+        </div>
+        ) : null}
+
         {modalOpenChart && (
           <div
             style={{
@@ -76,8 +116,7 @@ const FileSizeTrendsChart = ({
               boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
               minWidth: "320px",
               zIndex: 1000,
-            }}
-          >
+            }}>
             <h3 style={{ marginBottom: "10px" }}>
               📅 <strong>Month:</strong> {modalOpenChart.month}
             </h3>

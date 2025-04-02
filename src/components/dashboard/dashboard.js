@@ -97,6 +97,9 @@ const DashboardApp = () => {
   const [hoveredTooltip, setHoveredTooltip] = useState(false);
   const [dashboardData, setDashboardData] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [UploaderCount, setUploaderCount] = useState(0);
+  const [ReviewerCount, setReviewerCount] = useState(0);
+  const [viewerCount, setviewerCount] = useState(0);
   const [client, setclient] = useState(0);
   const [enquiryCount, setEnquiryCount] = useState([])
   const [MsiCount, setMsiCount] = useState([])
@@ -104,7 +107,7 @@ const DashboardApp = () => {
   const [isTooltipSticky, setIsTooltipSticky] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [modalOpenChart, setmodalOpenChart] = useState(false);
-  const [rowLimit, setRowLimit] = useState("5");
+  const [rowLimit, setRowLimit] = useState(5);
   const [chartcomapny, setchartcomapny] = useState("");
   const [DashboardStats, setDashboardStats] = useState({});
   const username = localStorage.getItem("name") || "User";
@@ -262,9 +265,28 @@ const DashboardApp = () => {
   
       // ✅ Total user count for Pie Chart
       const totalUsersCount = response?.users?.length || 0;
+      const UploaderCount = response.users.filter((u) => u.role === "UPLOADER").length || 0;
+      const ReviewerCount = response.users.filter((u) => u.role === "REVIEWER").length || 0;
+      const ViewerCount = response.users.filter((u) => u.role === "VIEWER").length || 0;
+      // const ApproverCount = response.users.filter((u) => u.role === "APPROVER").length || 0;
+
+      // console.log("Uploader Count:", UploaderCount);
+      // console.log("Reviewer Count:", ReviewerCount);
+      // console.log("Viewer Count:", ViewerCount);
+      // console.log("Approver Count:", ApproverCount);
+
       setTotalUsers(totalUsersCount);
+      setUploaderCount(UploaderCount);
+      setReviewerCount(ReviewerCount);
+      setviewerCount(ViewerCount);
+
+      // console.log("Uploader Response:",UploaderCount);
+      // const ReviewerCount = 
+      // const ViewerCount = 
+      // setTotalUsers(totalUsersCount);
+      // setUploaderCount(UploaderCount);
   
-      console.log(response);
+      console.log("User Response",response.users);
   
       // ✅ Uploaded file size total (from uploaded_files_size_mb)
       const uploadedSizes = response?.users?.map(user => user.uploaded_files_size_mb || 0);
@@ -280,7 +302,16 @@ const DashboardApp = () => {
       console.log(allFileSizes,"sheik")
       const totalSizeMB = allFileSizes.reduce((acc, size) => acc + size, 0);
       console.log(totalSizeMB,"abi")
-      setclient(totalSizeMB);
+      const totalSizeMB1 = response?.users?.reduce((acc, user) => {
+        if (user.role === "UPLOADER") {
+          const uploadedSize = user.uploaded_files_size_mb || 0;
+          const approvedSize = user.approved_files_size_mb || 0;
+          const rejectedSize = user.rejected_files_size_mb || 0;
+          return acc + uploadedSize + approvedSize + rejectedSize;
+        }
+        return acc;
+      }, 0);
+      setclient(totalSizeMB1);
   
     } catch (error) {
       console.error("Error fetching individual admin data:", error);
@@ -552,7 +583,6 @@ const DashboardApp = () => {
     const value = e.target.value.trim();
     if (value === "") {
       setRowLimit(companyData.length); // Show all rows if input is empty
-      setRowLimit(""); // Show all rows if input is empty
     } else {
       const parsedValue = parseInt(value, 10);
       if (!isNaN(parsedValue) && parsedValue > 0) {
@@ -836,12 +866,11 @@ console.log(client,"dinu")
    DashboardStats={DashboardStats}
   isAdminOrDocumentRole={isAdminOrDocumentRole}
 />
-<UserPieChart userCount={totalUsers} enquiryCount={totalUsers} msiCount={totalUsers} isAdminOrDocumentRole={isAdminOrDocumentRole} />
+<UserPieChart userCount={totalUsers} uploadCount = {UploaderCount} reviewerCount = {ReviewerCount} 
+viewerCount = {viewerCount} enquiryCount={totalUsers} msiCount={totalUsers} isAdminOrDocumentRole={isAdminOrDocumentRole} />
 <ProgressBarChart client={client} isAdminOrDocumentRole={isAdminOrDocumentRole}  />
  
- 
- 
-          </>
+           </>
   
 )}
 
@@ -878,14 +907,15 @@ console.log(client,"dinu")
 
 
 
-<MonthlyDocumentChart
-groupedData={groupedData}
-setModalData={setModalData}
-setIsModalOpen={setIsModalOpen}
-setmodalOpenChart={setmodalOpenChart}
-isAdminOrDocumentRole={isAdminOrDocumentRole}
-dashboardData={dashboardData}
-/>
+                <><MonthlyDocumentChart
+                  groupedData={groupedData}
+                  setModalData={setModalData}
+                  setIsModalOpen={setIsModalOpen}
+                  setmodalOpenChart={setmodalOpenChart}
+                  isAdminOrDocumentRole={isAdminOrDocumentRole}
+                  dashboardData={dashboardData} />
+                  </>
+
 
               )}
             </div>

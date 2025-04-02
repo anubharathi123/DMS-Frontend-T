@@ -84,7 +84,7 @@
   font-size: 18px;
   /* right: 35%; */
   margin-right: auto;
-  bottom: 20px;
+  bottom: 10px;
   color: var(--dark-blue);
 }
 
@@ -1268,13 +1268,13 @@ select {
   display: inline-block;
   vertical-align: middle;
 }
-.dashboard-year-select{
+/* .dashboard-year-select{
   border: none !important;
-}
+} */
 
-.company-dropdown{
+/* .company-dropdown{
   border: none !important;
-}
+} */
 
 .abishek{
   margin-left: -30px !important;
