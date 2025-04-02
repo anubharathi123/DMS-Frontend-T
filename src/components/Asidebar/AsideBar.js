@@ -4,7 +4,7 @@ import {
   User, LayoutDashboard, Building2, UserPlus, ListOrdered,FileCheck2, FileText, Settings,Upload,ChartNoAxesCombined, FileQuestion
 } from "lucide-react"; // Importing icons
 import "./AsideBar.css";
-import Logo from "../../assets/images/company_logo.png";
+import Logo from "../../assets/images/Logo3.png";
 import authService from "../../ApiServices/ApiServices";
 
 const AsideBar = () => {
@@ -64,9 +64,9 @@ const AsideBar = () => {
             src={Logo}
             alt="Company Logo"
             style={{
-              width: "100px",
-              marginTop: "-30px",
-              marginBottom: "30px",
+              width: "130px",
+              marginTop: "-15px",
+              marginBottom: "15px",
               height: "auto",
             }}
           />

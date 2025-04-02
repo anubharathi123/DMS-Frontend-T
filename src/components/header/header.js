@@ -30,15 +30,17 @@ const Header = () => {
 
 
 
-  const handleNotificationsUpdate = (newNotifications) => {
+  const handleNotificationsUpdate = async (newNotifications) => {
     console.log("New Notifications Received:", newNotifications);
+    
 
     // Update notifications and count only if new notifications are received
     setNotifications(newNotifications);
 
-    // Count only unread notifications
-    const unreadCount = newNotifications.filter((n) => !n.read).length;
-    setNotificationCount(unreadCount);
+    
+    const response1 = await ApiService.OrgNotification();
+    const unreadedCount = response1.filter((n) => !n.is_read).length;
+    setNotificationCount(unreadedCount);
   };
 
   useEffect(() => {
@@ -56,10 +58,11 @@ const Header = () => {
       }));
 
         console.log("Fetched Notifications:", sortedNotifications);
-
+        const response1 = await ApiService.OrgNotification();
+        const unreadedCount = response1.filter((n) => !n.is_read).length;
         // Update state only if new notifications are different
         setNotifications(sortedNotifications);
-        setNotificationCount(sortedNotifications.filter((n) => !n.read).length);
+        setNotificationCount(unreadedCount);
       } catch (err) {
         console.error("Error fetching notifications:", err);
       }
@@ -221,14 +224,17 @@ const handleNavigate404 = () => {
   navigate("/NotFoundView")
 }
 
-const handleNotificationClick = () => {
+const handleNotificationClick = async () => {
   setActiveDropdown(activeDropdown === "notification" ? null : "notification");
 
   if (notificationCount > 0) {
     // Mark all notifications as read
     const updatedNotifications = notifications.map((n) => ({ ...n, read: true }));
+    
+    const response1 = await ApiService.OrgNotification();
+    const unreadedCount = response1.filter((n) => !n.is_read).length;
     setNotifications(updatedNotifications);
-    setNotificationCount(0);
+    setNotificationCount(unreadedCount);
 
     // Optionally sync with backend
     ApiService.markNotificationAsRead()
