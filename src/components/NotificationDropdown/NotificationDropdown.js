@@ -24,12 +24,13 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
         setOrgId(org_id);
 
         // Fetch notifications using the obtained org_id
-        const response = await apiServices.OrgNotification(org_id);
+        const response = await apiServices.OrgNotification();
         console.log(response);
         const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-        .map(not => ({
+        .map((not, index) => ({
             not_message:not.message,
             not_title:not.title,
+            id:response[index].id 
         }));
 
         setNotifications(sortedNotifications);
@@ -47,36 +48,39 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
     }
   }, [orgId, onNotificationsUpdate]); // Re-run when orgId updates
 
-  useEffect(() => {
-    const fetchOrgAndNotifications = async () => {
-      try {
-        const details_data = await apiServices.details();
-        let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
-        
-        if (!org_id) {
-          throw new Error('Organization ID not found');
-        }
-
-        setOrgId(org_id);
-        
-        // Fetch notifications using the obtained org_id
-        const response = await apiServices.OrgNotification(org_id);
-        console.log(response);
-        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-        .map(not => ({
-            not_message:not.notification.message,
-            not_title:not.notification.title,
-        }));
-        
-        setNotifications(sortedNotifications);
-      } catch (err) {
-        console.error('Error fetching notifications:', err);
-        setError(err.message || 'Failed to load notifications');
-      } finally {
-        setLoading(false);
+  const fetchOrgAndNotifications = async () => {
+    try {
+      const details_data = await apiServices.details();
+      let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
+      
+      if (!org_id) {
+        throw new Error('Organization ID not found');
       }
-    };
 
+      setOrgId(org_id);
+      
+      // Fetch notifications using the obtained org_id
+      const response = await apiServices.OrgNotification();
+      console.log(response);
+      const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      .map((not, index) => ({
+          not_message:not.notification.message,
+          not_title:not.notification.title,
+          id:not.id,
+          is_read:not.is_read,
+      }));
+      
+      setNotifications(sortedNotifications);
+    } catch (err) {
+      console.error('Error fetching notifications:', err);
+      setError(err.message || 'Failed to load notifications');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    
     if (!orgId) { // Prevent multiple API calls
       fetchOrgAndNotifications();
     }
@@ -108,17 +112,19 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
     event.stopPropagation();
     try {
       if (type === "item") {
-        setClickedIndex(id); // Set the clicked notification's ID
+        // setClickedIndex(id); // Set the clicked notification's ID
+        console.log("id : " ,id)
         
         const response = await apiServices.notificationMarkasRead(id);
         console.log("Mark as Read:", response);
 
         // Update the notification's status locally
-        setNotifications((prevNotifications) =>
-          prevNotifications.map((notification) =>
-            notification.id === id ? { ...notification, read: true } : notification
-          )
-        );
+        // setNotifications((prevNotifications) =>
+        //   prevNotifications.map((notification) =>
+        //     notification.id === id ? { ...notification, read: true } : notification
+        //   )
+        // );
+        fetchOrgAndNotifications(); // Re-fetch notifications to update the state
       }
     } catch (error) {
       console.error("Error marking notification as read:", error);
@@ -141,10 +147,10 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
    {notifications.map((notification, index) => (
      <li
        key={notification.id || index}
-       className={`notification-item ${notification.read ? "read" : ""}`}
-       onClick={(event) => handleNotificationClick(event, "item", notification.id)}
+       className={`notification-item ${notification.is_read ? "read" : ""}`}
+       onClick={(event) => handleNotificationClick(event,"item", notification.id)}
        style={{
-         backgroundColor: notification.read ? "#d3d3d3" : "white", // Change color when read
+         backgroundColor: notification.is_read ? "white" : "#d3d3d3", // Change color when read
          cursor: "pointer",
          padding: "10px",
          borderRadius: "5px",

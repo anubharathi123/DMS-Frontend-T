@@ -174,6 +174,7 @@ const authService = {
   },
 
   notificationMarkasRead:async (id) => {
+    console.log('id:', id)
     return handleResponse(apiClient.put(`notification_delivery/${id}/true/`))
   },
 
