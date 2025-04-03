@@ -178,8 +178,9 @@ const DashboardApp = () => {
   ].includes(role);
   const companyNames = [...new Set(companyData.map((item) => item.org_name))];
   const filteredCompanies = companyNames.filter((name) =>
-    name.toLowerCase().includes(searchTerm.toLowerCase())
+    name?.toLowerCase().includes((searchTerm || "").toLowerCase())
   );
+  
 
   useEffect(() => {
     if (isAdminOrDocumentRole) {
@@ -718,8 +719,8 @@ console.log(client,"dinu")
 
   const filteredData = companyData.filter(
     (company) =>
-      company.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.username.toLowerCase().includes(searchTerm.toLowerCase())
+      company.org_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      company.username?.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const totalFileSizeMB =
     companyData.reduce((acc, cur) => acc + (parseFloat(cur.doc_size) || 0), 0) /
@@ -786,12 +787,7 @@ console.log(client,"dinu")
                   <button className="dashboard-bottom" onClick={sortDescending}>
                     <FaArrowDown />
                   </button>
-                  <input
-                    type="number"
-                    value={rowLimit}
-                    className="dashboard_num-input"
-                    onChange={handleRowLimitChange}
-                  />
+                
                 </div>
 
                 <div
@@ -828,14 +824,24 @@ console.log(client,"dinu")
 
                 {/* //table for owner/ */}       
                 <CompanyTable
-                  companyData={companyData}
-                  isLoading={isLoading}
-                  rowLimit={rowLimit}
-                  searchTerm={searchTerm}
-                  handleOpenModalData={handleOpenModalData}
-                  openModalData={openModalData}
-                  closeModalData={closeModalData}
-                />
+  companyData={companyData}
+  setCompanyData={setCompanyData} // ✅ You must add this line!
+  isLoading={isLoading}
+  rowLimit={rowLimit}
+   setRowLimit={setRowLimit}
+  searchTerm={searchTerm}
+  handleOpenModalData={handleOpenModalData}
+  openModalData={openModalData}
+  closeModalData={closeModalData}
+  searchTermAdmin={searchTermAdmin}
+  setSearchTermAdmin={setSearchTermAdmin}
+  isSearchFocused={isSearchFocused}
+  setIsSearchFocused={setIsSearchFocused}
+  tableforadmin={tableforadmin}
+/>
+
+
+
               </div>
               <FileSizeTrendsChart
                 selectedReportYear={selectedReportYear}
@@ -884,6 +890,8 @@ viewerCount = {viewerCount} enquiryCount={totalUsers} msiCount={totalUsers} isAd
         companyData={companyData}
         isLoading={isLoading}
         rowLimit={rowLimit}
+        setCompanyData={setCompanyData} // ✅ You must add this line!
+
         searchTerm={searchTerm}
         handleOpenModalData={handleOpenModalData}
         openModalData={openModalData}
@@ -894,7 +902,8 @@ viewerCount = {viewerCount} enquiryCount={totalUsers} msiCount={totalUsers} isAd
         isSearchFocused={isSearchFocused}
         setIsSearchFocused={setIsSearchFocused}
         tableforadmin={tableforadmin}
-      />
+          setRowLimit={setRowLimit}
+       />
 
 
 
