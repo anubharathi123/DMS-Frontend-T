@@ -19,8 +19,11 @@ const MonthlyDocumentChart = ({  groupedData,
   setIsModalOpen,
   setmodalOpenChart,
   isAdminOrDocumentRole,
+  // selectedReportYear,
+  // setSelectedReportYear,
+  // uniqueReportYears,
   dashboardData  }) => {
-
+    // const [selectedReportYear, setSelectedReportYear] = useState('');
     const [hovered, setHovered] = useState(false);
 
 
@@ -55,7 +58,7 @@ const MonthlyDocumentChart = ({  groupedData,
           className="dinu"
           style={{
             borderRadius: "20px",
-            marginTop: "-20px",
+            marginTop: "-10px",
             background: "#ffffff",
             padding: "20px",
             marginRight:"10px",
@@ -65,6 +68,21 @@ const MonthlyDocumentChart = ({  groupedData,
             boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
            }}
         >
+          <span className="dashboard_text1">Trend Analysis</span>
+          {/* <div className="dropdown-container">
+            <select
+              className="dashboard-year-select"
+              value={selectedReportYear}
+              onChange={(e) => setSelectedReportYear(e.target.value)}
+            >
+              {uniqueReportYears.map((year, index) => (
+                <option key={index} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div> */}
+
 <ResponsiveContainer width="100%" style={{ marginTop: "20px" }} height={300}>
   <ComposedChart
     data={dashboardData}
@@ -128,7 +146,7 @@ const MonthlyDocumentChart = ({  groupedData,
           className="chart"
           style={{
             borderRadius: "20px",
-            marginTop: "-60px",
+            marginTop: "-90px",
             background: "#ffffff",
             padding: "20px",
             width: "100%",

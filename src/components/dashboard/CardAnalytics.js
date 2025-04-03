@@ -51,7 +51,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
     position:"relative"
   }}
 >
-  {isAdminOrDocumentRole ? "Document Analytics" : "Company Analytics"}
+  {isAdminOrDocumentRole ? "Document Count" : "Company Count"}
 </h2>
 
 
