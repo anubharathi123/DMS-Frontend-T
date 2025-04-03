@@ -217,7 +217,7 @@ const normalSortDescending = () => {
     max="100"
     value={rowLimit}
     className="dashboard_num-input"
-    style={{left:"440px",bottom:"286px",position:"absolute",zIndex:999}}
+    style={{left:"475px",bottom:"286px",position:"absolute",zIndex:999}}
     onChange={handleRowLimitChange}
   />
   
