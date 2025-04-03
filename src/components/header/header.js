@@ -261,9 +261,7 @@ const handleNotificationClick = async () => {
                 : []
             );
           }}
-          className="search-input"
-          placeholder="Search..."
-        />
+          className="search-input" placeholder="Search..." />
         <img src={SearchIcon} alt="search_icon" className="search_icon" />
         {suggestions.length > 0 && (
           <ul className="search-suggestions">
@@ -284,22 +282,28 @@ const handleNotificationClick = async () => {
       </div>
 
       {/* Notification Button */}
-      <button
-        type="button"
-        className="notificationbtn"
-        onClick={handleNotificationClick}
-        ref={notificationButtonRef}>
-          <span className="notification-badge">{notificationCount}</span>
-        
-        {activeDropdown === "notification" && (
-        <div className="notification-dropdown" ref={notificationDropdownRef}>
-      <NotificationPage onNotificationsUpdate={handleNotificationsUpdate} />
-      </div>
-      )}
-        <img src={Notification} alt="Notifications" className="notification-icon" />
-      </button>
+        <button
+          type="button"
+          className="notificationbtn"
+          onClick={handleNotificationClick}
+          ref={notificationButtonRef}>
+          
+          {notificationCount > 0 && (
+            <span className="notification-badge">{notificationCount}</span>
+          )}
+          {/* {notificationCount > 0 && setTimeout(() => setNotificationCount(0), 1000)} */}
+          
+          {activeDropdown === "notification" && (
+          <div className="notification-dropdown" ref={notificationDropdownRef}>
+            <NotificationPage onNotificationsUpdate={handleNotificationsUpdate} />
+          </div>
+          )}
+          <img src={Notification} alt="Notifications" className="notification-icon" />
+        </button>
 
-      {/* Profile Icon */}
+       
+
+        {/* Profile Icon */}
       <button
         type="button"
         className="profilebtn"
