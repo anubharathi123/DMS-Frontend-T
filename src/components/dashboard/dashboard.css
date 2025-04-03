@@ -620,6 +620,7 @@ canvas {
  position: relative;
  bottom: 35px;
  left:90px;
+ z-index: 99;
  /* margin-right: 23px; */
 }
 
