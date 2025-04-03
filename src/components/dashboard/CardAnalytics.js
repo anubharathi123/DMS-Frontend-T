@@ -15,6 +15,8 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
     "REVIEWER",
     "VIEWER",
   ].includes(role);
+  const isUploader = role === "UPLOADER";
+
 
   // const UploaderStats = ({ stats }) => (
   //   <>
@@ -27,20 +29,27 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
 
   return (
     <div
-      className="analytics-card"
-      style={{
-        background: "linear-gradient(135deg, #f857a6 0%, #ff5858 100%)",
-        color: "white",
-        padding: "20px",
-        borderRadius: "20px",
-        boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-        width: "100%",
-        maxWidth: "400px",
-        ...(isAdminOrDocumentRole
-        ? { marginLeft: "0px", transform: "translateX(0px)",position:"relative" ,marginTop:"-15px", width:"300px" }  // Move left if admin
-        : { position: "relative", right:"40px" }) // Center if not admin
+    className="analytics-card"
+    style={{
+      background: "linear-gradient(135deg, #f857a6 0%, #ff5858 100%)",
+      color: "white",
+      padding: "20px",
+      borderRadius: "20px",
+      boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+      width: "100%",
+      maxWidth: isUploader ? "600px" : "400px", // ✅ Expand if uploader
+      ...(isAdminOrDocumentRole
+        ? {
+            marginLeft: "0px",
+            transform: "translateX(0px)",
+            position: "relative",
+            marginTop: "-15px",
+            width: isUploader ? "500px" : "300px", // ✅ Expand for uploader
+          }
+        : { position: "relative", right: "40px" }),
     }}
   >
+  
   
   <h2
   style={{
@@ -51,7 +60,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
     position:"relative"
   }}
 >
-  {isAdminOrDocumentRole ? "Document Count" : "Company Count"}
+  {isAdminOrDocumentRole ? "Document Analytics" : "Company Analytics"}
 </h2>
 
 

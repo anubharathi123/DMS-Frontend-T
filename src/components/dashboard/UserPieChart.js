@@ -1,7 +1,9 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-const UserPieChart = ({ userCount, enquiryCount, msiCount, uploadCount,reviewerCount, viewerCount, isAdminOrDocumentRole }) => {
+const UserPieChart = ({ userCount, enquiryCount, msiCount, uploadCount, reviewerCount, viewerCount, isAdminOrDocumentRole }) => {
+  const role = localStorage.getItem("role");
+  if (role === "UPLOADER") return null;
   const data = isAdminOrDocumentRole
     ? [
         { name: "Uploader", value: uploadCount },

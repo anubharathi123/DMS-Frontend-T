@@ -168,7 +168,7 @@ const DashboardApp = () => {
 
   console.log("Aswin", tableforadmin.users);
   const role = localStorage.getItem("role");
-
+  const isUploader = role === "UPLOADER";
   const isAdminOrDocumentRole = [
     "ADMIN",
     "UPLOADER",
@@ -866,18 +866,29 @@ console.log(client,"dinu")
 
         {/* ADMINROLE */}
 
-        {isAdminOrDocumentRole && (
-          <>
-<CardAnalytics
-   DashboardStats={DashboardStats}
+        {(isAdminOrDocumentRole || isUploader) && (
+  <>
+    <CardAnalytics
+      DashboardStats={DashboardStats}
+      isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader} // ✅ Support uploader
+    />
+    <UserPieChart
+      userCount={totalUsers}
+      uploadCount={UploaderCount}
+      reviewerCount={ReviewerCount}
+      viewerCount={viewerCount}
+      enquiryCount={totalUsers}
+      msiCount={totalUsers}
+      isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
+    />
+<ProgressBarChart
+  client={client}
+  totalSize={totalFileSizeMB}
+  isUploader={isUploader}
   isAdminOrDocumentRole={isAdminOrDocumentRole}
 />
-<UserPieChart userCount={totalUsers} uploadCount = {UploaderCount} reviewerCount = {ReviewerCount} 
-viewerCount = {viewerCount} enquiryCount={totalUsers} msiCount={totalUsers} isAdminOrDocumentRole={isAdminOrDocumentRole} />
-<ProgressBarChart client={client} isAdminOrDocumentRole={isAdminOrDocumentRole}  />
- 
-           </>
-  
+
+  </>
 )}
 
 

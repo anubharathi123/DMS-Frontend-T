@@ -29,6 +29,8 @@ const FileSizeTrendsChart = ({
     "REVIEWER",
     "VIEWER",
   ].includes(role);
+  const isUploader = role === "UPLOADER";
+
 
   useEffect(() => {
     if (!selectedCompany && companyData.length > 0) {

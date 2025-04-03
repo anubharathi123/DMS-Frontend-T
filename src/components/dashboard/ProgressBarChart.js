@@ -1,11 +1,13 @@
 import React from "react";
 
-const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
-  const max = 504; // Reference in MB
-  const used = isAdminOrDocumentRole ? client : totalSize;
+const ProgressBarChart = ({ totalSize, client, isUploader, isAdminOrDocumentRole }) => {
+  const role = localStorage.getItem("role");
+  const max = isUploader ? 10 : 504; // Max for uploader is 10MB
+  const used = isUploader ? 10 : isAdminOrDocumentRole ? client : totalSize;
+
   const percentage = Math.min((used / max) * 100, 100);
   const roundedUsed = `${used.toFixed(2)}`;
-  const fullLabel = `${used.toFixed(2)} MB / 1 GB`;
+  const fullLabel = `${roundedUsed} MB / ${max === 10 ? "10 MB" : "1 GB"}`;
 
   return (
     <div
@@ -16,13 +18,12 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         width: isAdminOrDocumentRole ? "10px" : "100%",
         minWidth: isAdminOrDocumentRole ? "390px" : "390px",
-        marginLeft: isAdminOrDocumentRole ? "600px" : "-50px",
-         margin: isAdminOrDocumentRole ? "none" : "auto",
-        marginTop: isAdminOrDocumentRole ? "-310px" : "4px",
+        marginLeft: isUploader ? "500px" : isAdminOrDocumentRole ? "600px" : "-50px",
+        margin: isAdminOrDocumentRole ? "none" : "auto",
+        marginTop: isUploader ? "-350px" : isAdminOrDocumentRole ? "-310px" : "4px",
         position: isAdminOrDocumentRole ? "absolute" : "relative",
       }}
     >
-      {/* Title */}
       <h3
         style={{
           marginBottom: "8px",
@@ -35,22 +36,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
         Storage Usage
       </h3>
 
-      {/* Usage info */}
-      {/* <p
-        style={{
-          fontWeight: "bold",
-          fontSize: "13.5px",
-          marginBottom: "10px",
-          color: "#000",
-          textAlign: "left",
-        }}
-      >
-        {isAdminOrDocumentRole ? `Used: ${fullLabel}` : `Total: ${fullLabel}`}
-      </p> */}
-
-      {/* Progress Section */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        {/* Blue usage box */}
         <div
           style={{
             minWidth: "44px",
@@ -58,7 +44,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
             borderRadius: "10px",
             backgroundColor: "#007bff",
             color: "#fff",
-            padding:"2px",
+            padding: "2px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -67,10 +53,9 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
           }}
         >
-          {roundedUsed}MB
+          {fullLabel}
         </div>
 
-        {/* Bar */}
         <div
           style={{
             flex: 1,
@@ -82,7 +67,7 @@ const ProgressBarChart = ({ totalSize, client, isAdminOrDocumentRole }) => {
         >
           <div
             style={{
-              width: `${percentage}rem`,
+              width: `${percentage}%`,
               height: "100%",
               background: "linear-gradient(to right, #007bff, #00d4ff)",
               borderRadius: "20px",
