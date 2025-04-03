@@ -89,13 +89,25 @@
 }
 
 .dashboard_text {
-  font-size: 13px;
-  position: relative;
-  font-weight: bold;
-  bottom: 15px;
-  color: #000b58;
-  margin-right: 353px;
-  margin-top: 10px;
+  font-size: 16px;
+    position: relative;
+    font-weight: bold;
+    bottom: 45px;
+    left: 2%;
+    color: rgb(0, 123, 255);
+  /* margin-right: 353px; */
+  /* margin-top: 10px; */
+ }
+
+ .dashboard_text1 {
+  font-size: 16px;
+    position: relative;
+    font-weight: bold;
+    bottom: 5px;
+    left: 35%;
+    color: rgb(0, 123, 255);
+  /* margin-right: 353px; */
+  /* margin-top: 10px; */
  }
 
 .dashboard_num-input {
@@ -386,6 +398,7 @@
   margin-top: 0px;
   justify-content: space-evenly;
   position: relative;
+  /* background: black; */
 }
 .abi {
  position: relative;
@@ -457,7 +470,7 @@ left:74%;
 }
 
 .chart {
-  /* background: white; */
+  /* background: blueviolet; */
   /* padding: 20px; */
   border-radius: 12px;
   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
@@ -484,6 +497,7 @@ canvas {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; /* Ensures it looks good on smaller screens */
+  /* padding: 0px; */
   margin-bottom: 0px;
 }
 
@@ -507,7 +521,7 @@ canvas {
 
 .dashboard-year-select,
 .company-dropdown {
-  padding: 8px 12px;
+  padding: 4px 8px;
   font-size: 14px;
     background-color: white;
   cursor: pointer;
@@ -604,27 +618,28 @@ canvas {
 
 .slicer {
  position: relative;
- bottom: 40px;
+ bottom: 35px;
+ left:90px;
  /* margin-right: 23px; */
 }
 
 /* Dropdown Year Selector */
-.dashboard-year-selector {
+/* .dashboard-year-selector {
   padding: 3px;
     font-size: 15px;
   margin-right: 50px !important;
-}
+} */
 
 .dashboard-year-select {
-  font-size: 14px !important;
+  /* font-size: 11px !important; */
   font-weight: bold;
   color: #333;
  position: relative;
   display: inline-block;
   margin-right: -10px;
-  padding: 4px 3px;
-   padding: 8px;
-  font-size: 14px;
+  /* padding: 4px 3px; */
+   padding: 6px;
+  font-size: 12px;
 cursor: pointer;
  }
 
@@ -861,10 +876,10 @@ select {
 }
 
 .company-dropdown {
-  padding: 8px;
+  padding: 6px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   width: 130px;
 }
@@ -1287,6 +1302,7 @@ select {
  }
 
  .dinu{
- position: relative;
- top: -100px;
+  position: relative;
+  bottom: 135px;
+  right: 25px;
  }

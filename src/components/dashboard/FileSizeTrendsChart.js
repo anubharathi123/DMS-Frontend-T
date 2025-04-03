@@ -38,8 +38,9 @@ const FileSizeTrendsChart = ({
   
   return (
     <div className="chart">
-      <p className="dashboard_text">
-       </p>
+      <h3 className="dashboard_text">
+        Trend Analysis
+       </h3>
       <center>
         <div className="slicer">
           <div className="dropdown-container">
@@ -72,37 +73,7 @@ const FileSizeTrendsChart = ({
           </div>
         </div>
 
-        {role === "ADMIN" || role === "UPLOADER" ? (
-          <div className="slicer">
-          <div className="dropdown-container">
-            <select
-              className="dashboard-year-select"
-              value={selectedReportYear}
-              onChange={(e) => setSelectedReportYear(e.target.value)}>
-              {uniqueReportYears.map((year, index) => (
-                <option key={index} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="dropdown-container">
-          <select
-  className="company-dropdown"
-  value={selectedCompany}
-  onChange={(e) => setSelectedCompany(e.target.value)}>
-  {companyData.map((company, index) => (
-    <option key={index} value={company.org_name}>
-      {company.org_name}
-    </option>
-  ))}
-</select>
-
-          </div>
-        </div>
-        ) : null}
-
+        
         {modalOpenChart && (
           <div
             style={{

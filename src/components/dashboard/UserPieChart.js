@@ -71,7 +71,7 @@ const UserPieChart = ({ userCount, enquiryCount, msiCount, uploadCount,reviewerC
           color: "#007bff",
         }}
       >
-        {isAdminOrDocumentRole ? "Individual Users" : "Users Overview"}
+        {isAdminOrDocumentRole ? "User Roles" : "Users Insights"}
       </h3>
 
       <ResponsiveContainer
