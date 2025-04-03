@@ -137,7 +137,7 @@ const UserPieChart = ({ userCount, enquiryCount, msiCount, uploadCount, reviewer
             >
               {entry.name}
               <span style={{ color: COLORS[index] }}>
-                :{data[index].value}
+                {data[index].value}
               </span>
             </span>
           </div>
