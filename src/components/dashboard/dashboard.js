@@ -384,6 +384,7 @@ const DashboardApp = () => {
           detailsResponse,
           dashboardResponse,
           userCountResponse,
+          organizationIdResponse,
         ] = await Promise.all([
           apiServices.organizationCount(),
           apiServices.companyCount(),
@@ -392,6 +393,7 @@ const DashboardApp = () => {
           apiServices.details(),
           apiServices.DashboardView(),
           apiServices.msi_Enquiry(),
+          // apiServices.organizationIdDetails(),
         ]);
 
         // 🟩 1. Set Org Count
@@ -458,6 +460,7 @@ const DashboardApp = () => {
           }, {});
           setMonth(months);
           setCount(months.map((m) => mapped[m] || 0));
+          // console.log("Mapped Data:", mapped);
         }
 
         // 🟩 5. Year-Month-Company Chart
@@ -500,9 +503,10 @@ const DashboardApp = () => {
               });
             });
           });
-
+          // console.log("Formatted Data:", formatted);
           setUniqueReportYears([...years]);
           setChartData(formatted);
+          console.log("Chart Data:", formatted);
         }
 
         // 🟩 6. Details (to get Organization ID)
@@ -511,6 +515,7 @@ const DashboardApp = () => {
           if (id) setOrganizationId(id);
         }
 
+        // 🟩 7. MSI And Enquiry Count
         if(userCountResponse) {
           setCount({
             enquiryCount:userCountResponse.enquiry_count || 0,
@@ -519,6 +524,14 @@ const DashboardApp = () => {
           setEnquiryCount(userCountResponse);
           setMsiCount(userCountResponse);
           console.log("Msi Enquiry:", userCountResponse)
+        }
+
+        // 🟩 8. Organization ID Details
+        if (organizationIdResponse) {
+          const response = organizationIdResponse.map((db) => ({
+            
+          }));
+          console.log("Organization ID Response:", response);
         }
 
         // ⏱️ Delay to ensure minimum 10s loading
@@ -556,6 +569,7 @@ const DashboardApp = () => {
       </div>
     );
   }
+  console.log("Selected Year:", selectedYear)
 
   // Handle role selection change
 
@@ -749,7 +763,11 @@ console.log(client,"dinu")
         {isAdminOrDocumentRole ? (
           <h2
             className="dashboard-h2"
-            style={{ marginTop: "130px", position: "relative" }}
+            style={{ 
+              marginTop: isUploader ? "0px" : isAdminOrDocumentRole ? "130px" : "0px" ,  
+              position: "relative", 
+              bottom: isUploader ? "60px" : "",
+            }}
           >
             Welcome,{" "}
             {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()}{" "}
@@ -928,6 +946,10 @@ console.log(client,"dinu")
 
 
                 <><MonthlyDocumentChart
+                
+                selectedReportYear={selectedReportYear}
+                setSelectedReportYear={setSelectedReportYear}
+                uniqueReportYears={uniqueReportYears}
                   groupedData={groupedData}
                   setModalData={setModalData}
                   setIsModalOpen={setIsModalOpen}

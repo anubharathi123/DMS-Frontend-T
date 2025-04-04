@@ -7,9 +7,9 @@ import {
   FaBuilding,
   FaArrowUp,
   FaArrowDown,
-  FaSearch,
 } from "react-icons/fa";
 import "./dashboard.css";
+// import { MdArrowDropUp, MdArrowDropDown  } from "react-icons/md";
 
 const CompanyTable = ({
   companyData,
@@ -90,6 +90,9 @@ const normalSortDescending = () => {
   setCompanyData(sorted);
 };
 
+if (role === "UPLOADER") {
+
+}
 
 
   const filteredData = companyData.filter((company) =>
@@ -154,8 +157,8 @@ const normalSortDescending = () => {
   )}
 
   <input
-    type="number"
-    min="1"
+    type="text"
+    min="0"
     max="100"
     value={rowLimit}
     className="dashboard_num-input"
@@ -210,48 +213,75 @@ const normalSortDescending = () => {
       <p>Loading...</p>
     ) : filteredData.length > 0 ? (
       <>
-       
-  <input
-    type="number"
-    min="1"
-    max="100"
-    value={rowLimit}
-    className="dashboard_num-input"
-    style={{left:"475px",bottom:"255px",position:"absolute",zIndex:999}}
-    onChange={handleRowLimitChange}
-  />
-  
-        {filteredData.slice(0, rowLimit).map((company, index) => (
-          <div
-            key={index}
-            onClick={() => handleOpenModalData(company)}
-            className="company-card"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "12px 16px",
-              marginBottom: "10px",
-              cursor: "pointer",
-            }}
-          >
-            <div>
-              <div style={{ fontWeight: "bold", display: "flex", alignItems: "center" }}>
-                <FaBuilding style={{ marginRight: "6px", fontSize: "13px", color: "#333" }} />
-                <span className="ellipsis-text">{company.org_name}</span>
-              </div>
-              <div style={{ fontSize: "10px", color: "#777", marginTop: "2px" }}>
-                <FaUser style={{ marginRight: "5px" }} />
-                {company.username}
-              </div>
-            </div>
-  
-            <div style={{ display: "flex", alignItems: "center", gap: "20px", fontSize: "11px", color: "#555" }}>
-              <div><FaFileAlt style={{ marginRight: "5px" }} />{company.doc_count} Docs</div>
-              <div><FaFolderOpen style={{ marginRight: "5px" }} />{company.doc_size}</div>
-              <div><FaUsers style={{ marginRight: "5px" }} />{company.emp} Users</div>
-            </div>
+      <input
+        type="text"
+        min="0"
+        max="100"
+        value={rowLimit}
+        className="dashboard_num-input"
+        style={{ left: "475px", bottom: "265px", position: "absolute", zIndex: 999 }}
+        onChange={(e) => {
+        const value = e.target.value.trim();
+        const parsed = parseInt(value, 10);
+        setRowLimit(!isNaN(parsed) && parsed >= 0 ? parsed : 1);
+        }}
+        onKeyDown={(e) => {
+        if (e.key === "Backspace" || e.key === "Delete") {
+          setRowLimit("");
+        }
+        }}
+      />
+
+      {filteredData
+        .slice(0, rowLimit === 0 ? filteredData.length : rowLimit)
+        .map((company, index) => (
+        <div
+          key={index}
+          onClick={() => handleOpenModalData(company)}
+          className="company-card"
+          style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "12px 16px",
+          marginBottom: "10px",
+          cursor: "pointer",
+          }}
+        >
+          <div>
+          <div style={{ fontWeight: "bold", display: "flex", alignItems: "center" }}>
+            <FaBuilding style={{ marginRight: "6px", fontSize: "13px", color: "#333" }} />
+            <span className="ellipsis-text">{company.org_name}</span>
           </div>
+          <div style={{ fontSize: "10px", color: "#777", marginTop: "2px" }}>
+            <FaUser style={{ marginRight: "5px" }} />
+            {company.username}
+          </div>
+          </div>
+
+          <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "20px",
+            fontSize: "11px",
+            color: "#555",
+          }}
+          >
+          <div>
+            <FaFileAlt style={{ marginRight: "5px" }} />
+            {company.doc_count} Docs
+          </div>
+          <div>
+            <FaFolderOpen style={{ marginRight: "5px" }} />
+            {company.doc_size}
+          </div>
+          <div>
+            <FaUsers style={{ marginRight: "5px" }} />
+            {company.emp} Users
+          </div>
+          </div>
+        </div>
         ))}
       </>
     ) : (

@@ -158,6 +158,11 @@ const authService = {
   organizationCount: async () => {
     return handleResponse(apiClient.get('organizations/dashboard/'))
   },
+
+  organizationIdDetails: async (id) => {
+    return handleResponse(apiClient.get(`organization_details/${id}/details`))   
+  },
+
   MonthYearCompany: async () => {
     return handleResponse(apiClient.get('organization/state/'))
   },

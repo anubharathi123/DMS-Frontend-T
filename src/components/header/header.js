@@ -238,19 +238,26 @@ const handleNotificationClick = async () => {
   setActiveDropdown(activeDropdown === "notification" ? null : "notification");
 
   if (notificationCount > 0) {
-    // Mark all notifications as read
-    const updatedNotifications = notifications.map((n) => ({ ...n, read: true }));
-    
-    const response1 = await ApiService.OrgNotification();
-    const unreadedCount = response1.filter((n) => !n.is_read).length;
+    // Immediately reduce the notification count for a smooth UI update
+    setNotificationCount(0);
+
+    // Mark all notifications as read locally
+    const updatedNotifications = notifications.map((n) => ({ ...n, is_read: true }));
     setNotifications(updatedNotifications);
-    setNotificationCount(unreadedCount);
 
     // Optionally sync with backend
     ApiService.markNotificationAsRead()
       .then(() => console.log("Notifications marked as read"))
       .catch((error) => console.error("Failed to mark notifications as read:", error));
+    // Fetch the latest unread count from the backend asynchronously
+    ApiService.OrgNotification()
+      .then((response) => {
+        const unreadedCount = response.filter((n) => !n.is_read).length;
+        setNotificationCount(unreadedCount);
+      })
+      .catch((error) => console.error("Failed to fetch notifications:", error));
   }
+  
 };
 
 
