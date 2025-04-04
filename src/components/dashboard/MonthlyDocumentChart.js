@@ -62,13 +62,15 @@ const MonthlyDocumentChart = ({  groupedData,
             background: "#ffffff",
             padding: "20px",
             marginRight:"10px",
+            position: "relative",
+            right: "5%",
             width: "100%",
              maxWidth: "400px",
             height: "300px",
             boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
            }}
         >
-          <span className="dashboard_text1">Trend Analysis</span>
+          <span className="dashboard_text1"><center>Trend Analysis</center></span>
           {/* <div className="dropdown-container">
             <select
               className="dashboard-year-select"

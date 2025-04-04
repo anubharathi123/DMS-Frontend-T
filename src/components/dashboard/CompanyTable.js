@@ -122,7 +122,7 @@ const normalSortDescending = () => {
               onChange={(e) => setSearchTermAdmin(e.target.value)}
               style={{
                 border: "none",
-                borderBottom: "2px solid #555",
+                // borderBottom: "2px solid #555",
                 outline: "none",
                 fontSize: "14px",
                 width: "180px",
@@ -217,7 +217,7 @@ const normalSortDescending = () => {
     max="100"
     value={rowLimit}
     className="dashboard_num-input"
-    style={{left:"475px",bottom:"286px",position:"absolute",zIndex:999}}
+    style={{left:"475px",bottom:"255px",position:"absolute",zIndex:999}}
     onChange={handleRowLimitChange}
   />
   

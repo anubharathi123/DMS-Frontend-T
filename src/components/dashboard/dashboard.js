@@ -755,7 +755,7 @@ console.log(client,"dinu")
             {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()}{" "}
           </h2>
         ) : (
-          <h2 className="dashboard-h2">
+          <h2 className="dashboard-h2-1">
             Welcome,{" "}
             {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()}{" "}
           </h2>

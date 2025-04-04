@@ -63,6 +63,7 @@ const UserPieChart = ({ userCount, enquiryCount, msiCount, uploadCount, reviewer
         margin: isAdminOrDocumentRole ? "-185px 130px 20px 40px" : "auto",
         textAlign: "center",
         position: "relative",
+        top: isAdminOrDocumentRole ? "7px" : "0px",
       }}
     >
       <h3

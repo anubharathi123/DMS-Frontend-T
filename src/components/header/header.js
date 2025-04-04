@@ -32,16 +32,26 @@ const Header = () => {
 
   const handleNotificationsUpdate = async (newNotifications) => {
     console.log("New Notifications Received:", newNotifications);
-    
 
-    // Update notifications and count only if new notifications are received
-    setNotifications(newNotifications);
+    // Immediately mark all notifications as read locally
+    const updatedNotifications = newNotifications.map((notification) => ({
+        ...notification,
+        is_read: true,
+    }));
 
-    
+    setNotifications(updatedNotifications);
+
+    // Set notification count to 0 immediately for a smooth UI update
+    setNotificationCount(0);
+
+    // Fetch latest notifications from API (if needed)
     const response1 = await ApiService.OrgNotification();
     const unreadedCount = response1.filter((n) => !n.is_read).length;
+
+    // If there are still unread notifications, update the count
     setNotificationCount(unreadedCount);
-  };
+};
+
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -255,72 +265,70 @@ const handleNotificationClick = async () => {
             setQuery(value);
             setSuggestions(
               value
-                ? allSuggestions.filter((item) =>
-                    item.toLowerCase().includes(value.toLowerCase())
-                  )
-                : []
+              ? allSuggestions.filter((item) =>
+                item.toLowerCase().includes(value.toLowerCase())
+                )
+              : []
             );
-          }}
-          className="search-input" placeholder="Search..." />
-        <img src={SearchIcon} alt="search_icon" className="search_icon" />
-        {suggestions.length > 0 && (
-          <ul className="search-suggestions">
+            }}
+            className="search-input" placeholder="Search..." />
+          <img src={SearchIcon} alt="search_icon" className="search_icon" />
+          {suggestions.length > 0 && (
+            <ul className="search-suggestions">
             {suggestions.map((suggestion, index) => (
               <li
-                key={index}
-                className="suggestion-item"
-                onClick={() => setQuery(suggestion)}
+              key={index}
+              className="suggestion-item"
+              onClick={() => setQuery(suggestion)}
               >
-                {suggestion}
+              {suggestion}
               </li>
             ))}
-          </ul>
-        )}
-        {query && suggestions.length === 0 && (
-          <p className="no-suggestions">No suggestions found</p>
-        )}
-      </div>
-
-      {/* Notification Button */}
-        <button
-          type="button"
-          className="notificationbtn"
-          onClick={handleNotificationClick}
-          ref={notificationButtonRef}>
-          
-          {notificationCount > 0 && (
-            <span className="notification-badge">{notificationCount}</span>
+            </ul>
           )}
-          {/* {notificationCount > 0 && setTimeout(() => setNotificationCount(0), 1000)} */}
-          
-          {activeDropdown === "notification" && (
-          <div className="notification-dropdown" ref={notificationDropdownRef}>
-            <NotificationPage onNotificationsUpdate={handleNotificationsUpdate} />
+          {query && suggestions.length === 0 && (
+            <p className="no-suggestions">No suggestions found</p>
+          )}
           </div>
-          )}
-          <img src={Notification} alt="Notifications" className="notification-icon" />
-        </button>
 
-       
+          {/* Notification Button */}
+                <button
+                type="button"
+                className="notificationbtn"
+                onClick={async () => {
+                  setNotificationCount(0); // Immediately reduce the notification count
+                  await handleNotificationClick();
+                }}
+                ref={notificationButtonRef}>
+                
+                {notificationCount > 0 && (
+                <span className="notification-badge">{notificationCount}</span>
+                )}
+                
+                {activeDropdown === "notification" && (
+                <div className="notification-dropdown" ref={notificationDropdownRef}>
+                <NotificationPage onNotificationsUpdate={handleNotificationsUpdate} />
+                </div>
+                )}
+                <img src={Notification} alt="Notifications" className="notification-icon" />
+                </button>
+              <button
+              type="button"
+              className="profilebtn"
+              style={{ background: iconColor }}
+              onClick={() =>
+                setActiveDropdown(activeDropdown === "profile" ? null : "profile")
+              }
+              ref={profileButtonRef}
+              >
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" className="profile-icon1" />
+              ) : (
+                <div className="profile-icon">{getInitials(name)}</div>
+              )}
+              </button>
 
-        {/* Profile Icon */}
-      <button
-        type="button"
-        className="profilebtn"
-        style={{ background: iconColor }}
-        onClick={() =>
-          setActiveDropdown(activeDropdown === "profile" ? null : "profile")
-        }
-        ref={profileButtonRef}
-      >
-        {profileImage ? (
-          <img src={profileImage} alt="Profile" className="profile-icon1" />
-        ) : (
-          <div className="profile-icon">{getInitials(name)}</div>
-        )}
-      </button>
-
-      {/* Notification Dropdown */}
+              {/* Notification Dropdown */}
       
 
       {/* Profile Dropdown */}
