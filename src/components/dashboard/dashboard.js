@@ -913,7 +913,11 @@ console.log(client,"dinu")
         {isAdminOrDocumentRole && (
           <div className="admin-dashboard-container">
             {/* Left Side: Area Chart */}
-            <div className="chart-container">
+            <div className="chart-container"
+              style={{
+                position:isUploader ? "relative" : "",
+                top: isUploader ? "80px" : "",
+              }}>
 
             <CompanyTable
         companyData={companyData}

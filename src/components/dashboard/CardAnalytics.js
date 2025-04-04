@@ -37,7 +37,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
       borderRadius: "20px",
       boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
       width: "100%",
-      maxWidth: isUploader ? "600px" : "400px", // ✅ Expand if uploader
+      maxWidth: isUploader ? "290px" : "400px", // ✅ Expand if uploader
       ...(isAdminOrDocumentRole
         ? {
             marginLeft: "0px",
