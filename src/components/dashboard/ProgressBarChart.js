@@ -5,9 +5,8 @@ const ProgressBarChart = ({ totalSize, client, isUploader, isAdminOrDocumentRole
   const max = isUploader ? 10 : 504; // Max for uploader is 10MB
   const used = isUploader ? 10 : isAdminOrDocumentRole ? client : totalSize;
 
-  const percentage = Math.min((used / max) * 100, 100);
   const roundedUsed = `${used.toFixed(2)}`;
-  const fullLabel = `${roundedUsed} MB / ${max === 10 ? "10 MB" : "1 GB"}`;
+  const fullLabel = `${roundedUsed} MB`;
 
   return (
     <div
@@ -67,7 +66,7 @@ const ProgressBarChart = ({ totalSize, client, isUploader, isAdminOrDocumentRole
         >
           <div
             style={{
-              width: `${percentage}%`,
+              // width: `${percentage}%`,
               height: "100%",
               background: "linear-gradient(to right, #007bff, #00d4ff)",
               borderRadius: "20px",

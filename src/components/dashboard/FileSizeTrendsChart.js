@@ -36,6 +36,7 @@ const FileSizeTrendsChart = ({
     if (!selectedCompany && companyData.length > 0) {
       setSelectedCompany("DLF");
     }
+    console.log("Year", selectedReportYear);
   }, [companyData]);
   
   return (
@@ -63,8 +64,7 @@ const FileSizeTrendsChart = ({
           <select
   className="company-dropdown"
   value={selectedCompany}
-  onChange={(e) => setSelectedCompany(e.target.value)}
->
+  onChange={(e) => setSelectedCompany(e.target.value)}>
   {companyData.map((company, index) => (
     <option key={index} value={company.org_name}>
       {company.org_name}
@@ -171,6 +171,9 @@ const FileSizeTrendsChart = ({
   setmodalOpenChart={setmodalOpenChart}
   isAdminOrDocumentRole={isAdminOrDocumentRole}
   dashboardData={dashboardData}
+  selectedReportYear={selectedReportYear}
+  setSelectedReportYear={setSelectedReportYear}
+  uniqueReportYears={uniqueReportYears}
 />
 
       </div>

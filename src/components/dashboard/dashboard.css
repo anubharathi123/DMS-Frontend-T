@@ -112,7 +112,7 @@
     position: relative;
     font-weight: bold;
     bottom: 5px;
-    left: 35%;
+    /* left: 1%; */
     color: rgb(0, 123, 255);
   /* margin-right: 353px; */
   /* margin-top: 10px; */
@@ -646,7 +646,8 @@ canvas {
   color: #333;
  position: relative;
   display: inline-block;
-  margin-right: -10px;
+  /* margin-right: -10px; */
+  margin-left: 50%;
   /* padding: 4px 3px; */
    padding: 6px;
   font-size: 12px;
