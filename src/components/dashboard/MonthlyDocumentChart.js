@@ -14,18 +14,18 @@ import {
 } from "recharts";
 import "./dashboard.css";
 
-const MonthlyDocumentChart = ({
-  groupedData,
+const MonthlyDocumentChart = ({  groupedData,
   setModalData,
   setIsModalOpen,
   setmodalOpenChart,
   isAdminOrDocumentRole,
-  selectedReportYear,
-  setSelectedReportYear,
-  uniqueReportYears,
-  dashboardData,
-}) => {
-  const [hovered, setHovered] = useState(false);
+  // selectedReportYear,
+  // setSelectedReportYear,
+  // uniqueReportYears,
+  dashboardData  }) => {
+    // const [selectedReportYear, setSelectedReportYear] = useState('');
+    const [hovered, setHovered] = useState(false);
+
 
   const defaultData = [
     { month: "Jan", document_count: 0 },
@@ -42,146 +42,206 @@ const MonthlyDocumentChart = ({
     { month: "Dec", document_count: 0 },
   ];
 
+
+
   const mergedData = defaultData.map((monthObj) => {
-    const found = groupedData
-      ? groupedData.find((d) => d.month === monthObj.month)
-      : null;
+    const found = groupedData.find((d) => d.month === monthObj.month);
     return found
       ? { ...monthObj, ...found }
       : { ...monthObj, total_documents: 0, companies: [] };
   });
-
-  // Get the user's role from localStorage or props
-  const role = localStorage.getItem("role"); // Example: "ADMIN", "UPLOADER", "REVIEWER", "VIEWER"
-
-  // Only render the chart for admins
-  if (role !== "ADMIN") {
-    return null; // Don't render anything for non-admins
-  }
-
+  
   return (
     <>
-      <div
-        className="dinu"
-        style={{
-          borderRadius: "20px",
-          marginTop: "-10px",
-          background: "#ffffff",
-          padding: "20px",
-          marginRight: "10px",
-          position: "relative",
-          right: "5%",
-          width: "100%",
-          maxWidth: "400px",
-          height: "300px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-        }}
-      >
-        <span className="dashboard_text1">
-          <center>Trend Analysis</center>
-        </span>
-        <div className="dropdown-container">
-          {selectedReportYear && (
-            <span className="dashboard_text2">
-              <strong>Selected Year:</strong> {selectedReportYear}
-            </span>
-          )}
-          <select
-            className="dashboard-year-select"
-            value={selectedReportYear}
-            onChange={(e) => setSelectedReportYear(e.target.value)}
-          >
-            {uniqueReportYears.map((year, index) => (
-              <option key={index} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <ResponsiveContainer
-          width="100%"
-          style={{ marginTop: "20px" }}
-          height={300}
+      {isAdminOrDocumentRole ? (
+        <div
+          className="dinu"
+          style={{
+            borderRadius: "20px",
+            marginTop: "-10px",
+            background: "#ffffff",
+            padding: "20px",
+            marginRight:"10px",
+            position: "relative",
+            right: "5%",
+            width: "100%",
+             maxWidth: "400px",
+            height: "300px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+           }}
         >
-          <ComposedChart
-            data={dashboardData}
-            margin={{ top: 20, right: 20, bottom: 20, left: 0 }}
-            onClick={(event) => {
-              const clickedMonth = event?.activeLabel;
-              if (clickedMonth) {
-                const clickedData = dashboardData.find(
-                  (d) => d.month === clickedMonth
-                );
-                if (clickedData) setmodalOpenChart(clickedData);
-              }
-            }}
-          >
-            <XAxis
-              dataKey="month"
-              tick={{ fontSize: 12, fontWeight: "bold", fill: "#555" }}
-            />
-            <YAxis
-              dataKey="fileSizeMB"
-              domain={[
-                (dataMin) => Math.floor(Math.min(dataMin, 0)),
-                (dataMax) => Math.ceil(dataMax + dataMax * 0.1),
-              ]}
-              tick={{
-                fontSize: 10,
-                fontWeight: "bold",
-                fill: "#555",
-                dx: -4,
-              }}
-              tickFormatter={(val) => `${val.toFixed(2)} MB`}
-              width={50}
-            />
-            <Tooltip
-              content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  const monthData = payload[0].payload;
-                  return (
-                    <div
-                      style={{
-                        background: "#fff",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-                        fontSize: "12px",
-                      }}
-                    >
-                      <p>
-                        <strong>📅 Month:</strong> {monthData.month}
-                      </p>
-                      <p>
-                        <strong>📄 Documents Uploaded:</strong>{" "}
-                        {monthData.docCount}
-                      </p>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-              cursor={{ stroke: "orange", strokeWidth: 2 }}
-            />
+          <span className="dashboard_text1"><center>Trend Analysis</center></span>
+          {/* <div className="dropdown-container">
+            <select
+              className="dashboard-year-select"
+              value={selectedReportYear}
+              onChange={(e) => setSelectedReportYear(e.target.value)}
+            >
+              {uniqueReportYears.map((year, index) => (
+                <option key={index} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div> */}
 
-            <Bar
-              dataKey="fileSizeMB"
-              barSize={20}
-              fill="#2c2e83"
-              radius={[4, 4, 0, 0]}
-            />
-            <Line
-              type="monotone"
-              dataKey="fileSizeMB"
-              stroke="#ff7300"
-              strokeWidth={1}
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </div>
+<ResponsiveContainer width="100%" style={{ marginTop: "20px" }} height={300}>
+  <ComposedChart
+    data={dashboardData}
+    margin={{ top: 20, right: 20, bottom: 20, left: 0 }}
+    onClick={(event) => {
+      const clickedMonth = event?.activeLabel;
+      if (clickedMonth) {
+        const clickedData = dashboardData.find((d) => d.month === clickedMonth);
+        if (clickedData) setmodalOpenChart(clickedData);
+      }
+    }}
+  >
+    <XAxis dataKey="month" tick={{ fontSize: 12, fontWeight: "bold", fill: "#555" }} />
+    <YAxis
+      dataKey="fileSizeMB"
+      domain={[
+        (dataMin) => Math.floor(Math.min(dataMin, 0)),
+        (dataMax) => Math.ceil(dataMax + dataMax * 0.1),
+      ]}
+      tick={{ fontSize: 10, fontWeight: "bold", fill: "#555", dx: -4 }}
+      tickFormatter={(val) => `${val.toFixed(2)} MB`}
+      width={50}
+    />
+    <Tooltip
+      content={({ active, payload }) => {
+        if (active && payload && payload.length) {
+          const monthData = payload[0].payload;
+          return (
+            <div
+              style={{
+                background: "#fff",
+                padding: "10px",
+                borderRadius: "8px",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                fontSize: "12px",
+              }}
+            >
+              <p><strong>📅 Month:</strong> {monthData.month}</p>
+              <p><strong>📄 Documents Uploaded:</strong> {monthData.docCount}</p>
+            </div>
+          );
+        }
+        return null;
+      }}
+      cursor={{ stroke: "orange", strokeWidth: 2 }}
+    />
+    
+    {/* ✅ Only show the bar (remove line + legend) */}
+
+     <Bar dataKey="fileSizeMB" barSize={20} fill="#2c2e83" radius={[4, 4, 0, 0]} />
+     <Line type="monotone" dataKey="fileSizeMB" stroke="#ff7300" strokeWidth={1} />
+  </ComposedChart>
+  
+</ResponsiveContainer>
+
+
+        </div>
+      ) : (
+        // 👇 your original chart (non-admin view)
+        <div
+          className="chart"
+          style={{
+            borderRadius: "20px",
+            marginTop: "-90px",
+            background: "#ffffff",
+            padding: "20px",
+            width: "100%",
+            maxWidth: "400px",
+            height: "300px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+            marginLeft: "70px"
+          }}
+        >
+          {groupedData.length > 0 ?  (
+            <ResponsiveContainer width="100%" style={{ marginTop: "20px" }} height={300}>
+              <ComposedChart
+          data={mergedData}
+                margin={{ top: 20, right: 20, bottom: 20, left: 0 }}
+                onClick={(event) => {
+                  const clickedMonth = event?.activeLabel;
+                  if (clickedMonth) {
+                    const clickedData = groupedData.find((d) => d.month === clickedMonth);
+                    if (clickedData) setmodalOpenChart(clickedData);
+                  }
+                }}
+              >
+                
+                <XAxis dataKey="month" tick={{ fontSize: 12, fontWeight: "bold" }} />
+                <YAxis tick={{ fontSize: 12, fontWeight: "bold" }} />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const monthData = payload[0].payload;
+                      return (
+                        <div style={{
+                          background: "#fff",
+                          padding: "10px",
+                          borderRadius: "8px",
+                          boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                          fontSize: "12px"
+                        }}>
+                          <p><strong>📅 Month:</strong> {monthData.month}</p>
+                          <strong>Company Breakdown:</strong>
+                          {monthData.companies.map((c, i) => (
+                            <div key={i} style={{ paddingLeft: "10px", borderBottom: "1px solid #ddd" }}>
+                              <p
+                                style={{ color: "blue", cursor: "pointer", textDecoration: "underline" }}
+                                onClick={() => {
+                                  setModalData(c);
+                                  setIsModalOpen(true);
+                                }}
+                              >
+                                📌 <strong>{c.company}</strong>
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                  cursor={{ stroke: "orange", strokeWidth: 2 }}
+                />
+  <Bar
+    dataKey="total_documents"
+    barSize={20}
+    fill="#2c2e83"
+    radius={[4, 4, 0, 0]}
+    activeBar={{ fill: "orange" }} // ✅ Hover color!
+  />                <Line type="monotone" dataKey="total_documents" stroke="#ff7300" strokeWidth={1} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          ) : (
+            <ResponsiveContainer width="110%" style={{marginLeft:"-30px"}} height={300}>
+              <AreaChart data={defaultData}>
+                 <XAxis dataKey="month" tick={{ fontSize: 12, fontWeight: "bold", fill: "#333" }} />
+                <YAxis tick={{ fontSize: 12, fontWeight: "bold", fill: "#333" }} />
+                <Tooltip />
+                <Area
+  type="monotone"
+  dataKey="document_count"
+  stroke="gray"
+  fill={hovered ? "orange" : "lightgray"}
+  fillOpacity={0.2}
+  onMouseEnter={() => setHovered(true)}
+  onMouseLeave={() => setHovered(false)}
+/>
+
+
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      )}
     </>
   );
+  
 };
 
 export default MonthlyDocumentChart;
