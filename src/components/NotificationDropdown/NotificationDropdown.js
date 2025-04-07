@@ -146,21 +146,40 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
            <ul className="notification-list">
    {notifications.map((notification, index) => (
      <li
-       key={notification.id || index}
-       className={`notification-item ${notification.is_read ? "read" : ""}`}
-       onClick={(event) => handleNotificationClick(event,"item", notification.id)}
-       style={{
-         backgroundColor: notification.is_read ? "white" : "#d3d3d3", // Change color when read
-         cursor: "pointer",
-         padding: "10px",
-         borderRadius: "5px",
-       }}
-     >
-       <span className="message">
-         <strong>{notification.not_message}</strong>
-       </span>
-       <div className="notification-time">{notification.not_title}</div>
-     </li>
+     key={notification.id || index}
+     className={`notification-item ${notification.is_read ? "read" : ""}`}
+     onClick={(event) => handleNotificationClick(event, "item", notification.id)}
+     style={{
+       backgroundColor: notification.is_read ? "white" : "#d3d3d3", // Change color when read
+       cursor: "pointer",
+       padding: "10px",
+       borderRadius: "5px",
+       position: "relative", // Make sure parent element is relative to position child elements
+     }}
+   >
+     {/* Unread indicator */}
+     {!notification.is_read && (
+       <div
+         className="unread-indicator"
+         style={{
+           position: "absolute",
+           top: "50%",
+           left: "95%",
+          //  transform: "translate(-50%, -50%)",
+           width: "10px",
+           height: "10px",
+           borderRadius: "50%",
+           backgroundColor: "#FFC1C3",
+         }}
+       ></div>
+     )}
+     
+     <span className="message">
+       <strong>{notification.not_message}</strong>
+     </span>
+     <div className="notification-time">{notification.not_title}</div>
+   </li>
+   
    ))}
  </ul>
           {notifications.length > visibleCount && (

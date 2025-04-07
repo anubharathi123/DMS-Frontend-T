@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const AdminList = () => {
   const [data, setData] = useState([]);
@@ -31,6 +33,10 @@ const AdminList = () => {
   const navigate = useNavigate();
   
   const searchInfoRef = useRef(null); // Reference for search info popup
+
+
+
+  
   
   const handleSearchInfo = () => {
     setShowSearchInfo(!showSearchInfo);
@@ -133,6 +139,30 @@ const AdminList = () => {
         setIsLoading(false);
     }
 };
+
+  
+
+ 
+
+  useEffect(() => {
+    // Function to handle clicks outside the calendar
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setIsCalendarOpen(false);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+
+
 
   // const filteredData1 = filteredData.filter((item) => {
   //   if (filter === '') {
@@ -263,8 +293,15 @@ const AdminList = () => {
     setCurrentPage(1);
 };
 
+//   const handleCalendarToggle = () => {
+//   setIsCalendarOpen(!isCalendarOpen);
+//     setIsCalendarOpen(prev => !prev);
+
+// };
+
   const handleCalendarToggle = () => {
     setIsCalendarOpen(prev => !prev);
+    // handleClickOutside("mousedown", handleClickOutside)
   };
 
   const handleRowsPerPage = (e) => {
