@@ -25,6 +25,7 @@ const MonthlyDocumentChart = ({  groupedData,
   dashboardData  }) => {
     // const [selectedReportYear, setSelectedReportYear] = useState('');
     const [hovered, setHovered] = useState(false);
+  const isUploader = localStorage.getItem("role") === "UPLOADER";
 
 
   const defaultData = [
@@ -62,6 +63,7 @@ const MonthlyDocumentChart = ({  groupedData,
             background: "#ffffff",
             padding: "20px",
             marginRight:"10px",
+            display:isUploader?"none":"",
             position: "relative",
             right: "5%",
             width: "100%",
@@ -148,14 +150,14 @@ const MonthlyDocumentChart = ({  groupedData,
           className="chart"
           style={{
             borderRadius: "20px",
-            marginTop: "-90px",
+            marginTop: "-120px",
             background: "#ffffff",
             padding: "20px",
             width: "100%",
             maxWidth: "400px",
             height: "300px",
             boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-            marginLeft: "70px"
+            marginLeft: "70px",
           }}
         >
           {groupedData.length > 0 ?  (

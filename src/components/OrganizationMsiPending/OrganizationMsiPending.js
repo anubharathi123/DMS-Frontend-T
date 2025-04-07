@@ -177,6 +177,7 @@ const calendarRef = useRef(null);
         const matchesSearch = searchTerm
             ? org.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
               org.org_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              org.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
               new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                   .toLowerCase()
                   .includes(searchTerm.toLowerCase())
@@ -186,11 +187,11 @@ const calendarRef = useRef(null);
             ? (statusFilter === "Active" ? org.status === false : org.status === true)
             : true;
     
-        // const matchesDate = filterDate
-        //     ? new Date(org.created_date).toDateString() === new Date(filterDate).toDateString()
-        //     : true;
+        const matchesDate = filterDate
+            ? new Date(org.created_date).toDateString() === new Date(filterDate).toDateString()
+            : true;
     
-        return matchesSearch && matchesStatus ;
+        return matchesSearch && matchesStatus && matchesDate;
     });
     
    
@@ -411,7 +412,7 @@ const calendarRef = useRef(null);
                                 {isCalendarOpen && (
                                 <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
                                 <DatePicker
-                                        selected={filterDate}
+                                        selected={filterDate ? new Date(filterDate) : null}
                                         onChange={(date) => {
                                             setFilterDate(date);
                                             setIsCalendarOpen(false);

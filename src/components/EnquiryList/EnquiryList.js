@@ -12,11 +12,14 @@ import refreshIcon from '../../assets/images/refresh-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 const EnquiryList = () => {
     const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('');
+    const [MobileFilter, setMobileFilter] = useState('');
+    const [Emailfilter, setEmailfilter] = useState('');
+    const [teamSizeFilter, setTeamSizeFilter] = useState('');
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [filterDate, setFilterDate] = useState(null);
     const [actionMessage, setActionMessage] = useState('');
@@ -160,12 +163,11 @@ const EnquiryList = () => {
       }, [showSearchInfo]);
 
     const handleSearch = (e) => {
-        console.log("Search Term:", e.target.value);
         setSearchTerm(e.target.value);
-      };
+    };
 
     const handleStatusFilter = (e) => {
-        setStatusFilter(e.target.value);
+        setMobileFilter(e.target.value);
         setCurrentPage(1);
     };
 
@@ -175,27 +177,42 @@ const EnquiryList = () => {
       
       
 
-    const filteredData = data.filter(enq => {
+      const filteredData = data.filter(enq => {
+    
         const matchesSearch = searchTerm
-            ? enq.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              enq.enq_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              new Date(enq.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
+            ? (enq.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+              (enq.company_name?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+              (enq.email?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+              (enq.mobile?.toString().includes(searchTerm) || false) || // Ensure mobile is converted to string for comparison
+              (enq.designation?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+              (enq.team_size?.toString().toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+              (enq.comments?.toLowerCase().includes(searchTerm.toLowerCase()) || false)
             : true;
     
-        const matchesStatus = statusFilter
-            ? (statusFilter === "Active" ? enq.status === false : enq.status === true)
+        const matchesMobile = MobileFilter
+            ? (MobileFilter === "971589475985" ? enq.mobile === true : enq.mobile === false)
             : true;
     
-        const matchesDate = filterDate
-            ? new Date(enq.created_date).toDateString() === new Date(filterDate).toDateString()
+        const matchesEmail = Emailfilter
+            ? (Emailfilter === "aravind12345@gmail.com" ? enq.email === true : enq.email === false)
+            : true;
+
+        const matchesTeamSize = teamSizeFilter
+            ? (teamSizeFilter === enq.team_size ? enq.team_size === true : enq.team_size === false)
             : true;
     
-        return matchesSearch && matchesStatus && matchesDate;
+        return matchesSearch && matchesMobile && matchesEmail && matchesTeamSize;
     });
     
-  
+    
+  const handleSort = (order) => {
+    const sortedData = [...filteredData].sort((a, b) => {
+      const sizeA = parseInt(a.team_size) || 0; // Default to 0 if NaN
+      const sizeB = parseInt(b.team_size) || 0; // Default to 0 if NaN
+      return order === 'asc' ? sizeA - sizeB : sizeB - sizeA;
+    });
+    setData(sortedData);
+  };
     
     const handleCalendarToggle = () => setIsCalendarOpen((prev) => !prev);
     const handleNextPage = () => {
@@ -212,9 +229,11 @@ const EnquiryList = () => {
 
     const handleResetFilter = () => {
         setSearchTerm('');
-        setStatusFilter('');
+        setMobileFilter('');
         setFilterDate(null);
-        setIsCalendarOpen(false);
+        setEmailfilter('');
+        setTeamSizeFilter('');
+        // setIsCalendarOpen(false);
         setCurrentPage(1);
     };
 
@@ -276,21 +295,21 @@ const EnquiryList = () => {
     return (
         <div className="enquiry-main">
             <h1 className="enquiry-header">Enquiry Details</h1>
-           
-{(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
-     <select className="enquiry-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an Option </option>
-     <option value="Create enquiry">Create enquiry</option>
-     <option value="Deleted List">Deleted List</option>
-   </select>
+        
+{/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && ( */}
+      {/* <select className="enquiry-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+//         <option value="">Select an Option </option>
+//      <option value="Create enquiry">Create enquiry</option>
+//      <option value="Deleted List">Deleted List</option>
+//    </select>
 
 //   <div>
 //     <button className='enq_createbtn1' onClick={handleCreateenquiry} > + Create enquiry</button>
 
 //     <button className='enq_createbtn1' onClick={handledeleteenquiry} > Deleted List</button>
 //     <button className='enq_createbtn1' onClick={handlePendingenquiry}> Pending List</button> 
-//   </div>
-)}
+//   </div> */}
+{/* // )} */}
 
             <div className='enquiry-container_controls'>
                 <div className='enquiry-search'>
@@ -309,16 +328,16 @@ const EnquiryList = () => {
                                           </div>
                                         )}
                 </div>
-                <div className="enquiry-filter">
+                {/* <div className="enquiry-filter">
                     <label className="enquiry_filter-label">Filter by Status:</label>
                     <select value={statusFilter} onChange={handleStatusFilter}className="enquiry-filter-select">
                         <option value="">All</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select> 
-                </div>
+                </div> */}
                 <div className='enquiry_row'>
-                    <label className="enquiry_row_label">Rows per Page:</label>
+                    <label className="enquiry_row_label">Rows Per Page:</label>
                     <select value={rowsPerPage} onChange={handleRowsPerPage} className="enquiry_row_select">
                          <option value="5">5</option>
                         <option value="10">10</option>
@@ -336,46 +355,55 @@ const EnquiryList = () => {
                         <th className="enquiry-table-th">Name</th>
                         <th className="enquiry-table-th">Email</th>
                         <th className="enquiry-table-th">Mobile</th>
-                        <th className="enquiry-table-th">
+                        {/* <th className="enquiry-table-th">
                             Country
+                            </th>  */}
                             {/* <button
-                                onClick={handleCalendarToggle}
-                                className="enquiry-calendarbtn"
-                            >
-                                📅
-                            </button>
-                                {isCalendarOpen && (
-                                <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
-                                <DatePicker
-                                        selected={filterDate}
-                                        onChange={(date) => {
-                                            setFilterDate(date);
-                                            setIsCalendarOpen(false);
-                                        }}
-                                        inline
-                                        dateFormat="yyyy-MM-dd" 
-                                        />
-                                        </div>
-                                )} */}
-                        </th> 
-                        <th className="enquiry-table-th">Company Name</th>
-                        <th className="enquiry-table-th">Designation</th>
-                        <th className="enquiry-table-th">Team Size</th>
-                        <th className="enquiry-table-th">Comments</th>
+                                                            onClick={handleCalendarToggle}
+                                                            className="enquiry-calendarbtn"
+                                                        >
+                                                            📅
+                                                        </button>
+                                                            {isCalendarOpen && (
+                                                            <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
+                                                            <DatePicker
+                                                                    selected={filterDate}
+                                                                    onChange={(date) => {
+                                                                        setFilterDate(date);
+                                                                        setIsCalendarOpen(false);
+                                                                    }}
+                                                                    inline
+                                                                    dateFormat="yyyy-MM-dd" 
+                                                                    />
+                                                                    </div>
+                                                            )} */}
+                                                    
+                                                    <th className="enquiry-table-th">Company Name</th>
+                                                    <th className="enquiry-table-th">Designation</th>
+                                                    <th className="enquiry-table-th">Team Size
+                                                        <button className='enquiry-asc' onClick={() => handleSort('asc')}>
+                                                            <FontAwesomeIcon icon={faArrowUp} />
+                                                        </button>
+                                                        <button className='enquiry-desc' onClick={() => handleSort('desc')}>
+                                                            <FontAwesomeIcon icon={faArrowDown} />
+                                                        </button>
+                                                    </th>
+                                                    <th className="enquiry-table-th">Comments</th>
+                                                    <th className="enquiry-table-th">Status</th>
 
-                    </tr>
-                </thead>
-                
-                <tbody className='enquiry-tbody' style={{ maxHeight: rowsPerPage > 5 ? '200px' : 'auto' }}>
-                    {paginatedData.length > 0 ? (
-                        paginatedData.map((enq, index) => (
-                            
-                           
-                            <tr key={index} className="enquiry-table-row">
-                                <td className="enquiry-table-td">{enq.name}</td>
-                                <td className="enquiry-table-td">{enq.email}</td>
-                                <td className="enquiry-table-td">{enq.mobile}</td>
-                                <td className="enquiry-table-td">{enq.country}</td>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody className='enquiry-tbody' style={{ maxHeight: rowsPerPage > 5 ? '200px' : 'auto' }}>
+                                                {paginatedData.length > 0 ? (
+                                                    paginatedData.map((enq, index) => (
+                                                        
+                                                       
+                                                        <tr key={index} className="enquiry-table-row">
+                                                            <td className="enquiry-table-td">{enq.name}</td>
+                                                            <td className="enquiry-table-td">{enq.email}</td>
+                                                            <td className="enquiry-table-td">{enq.mobile}</td>
+                                                            {/* <td className="enquiry-table-td">{enq.country}</td> */}
                                 <td className='enquiry-table-td'>{enq.company_name}</td>
                                 <td className="enquiry-table-td">{enq.designation}</td>
                                 <td className="enquiry-table-td">
@@ -401,6 +429,10 @@ const EnquiryList = () => {
                                 <td className="enquiry-table-td"
                                     title={enq.comments}
                                 >{enq.comments.split('/').pop().substring(0, 20) + '...'}</td>
+                                <td className='enquiry-table-td'>
+                                    <button className='enquiry-check'><FontAwesomeIcon icon={faCheck} style={{color: "#04f620",}} /></button>
+                                    {/* <button className='enquiry-cancel'><FontAwesomeIcon icon={faX} style={{color: "#f50505",}} /></button> */}
+                                </td>
                             </tr>
                         ))
                     ) : (
@@ -437,9 +469,9 @@ const EnquiryList = () => {
                 Page {currentPage} of {totalPages || 1}
                 </div>
                  {/* Reset Filter Button */}
-             {(searchTerm || statusFilter || filterDate) && (
+             {(searchTerm) && (
              <button className="enquiry_reset-filter-btn" onClick={handleResetFilter} 
-                        disabled={!searchTerm && !statusFilter && !filterDate}>
+                        disabled={!searchTerm && !MobileFilter && !Emailfilter && !teamSizeFilter}>
                             Reset Filter 
                             <img className='refresh-icon' src={refreshIcon}/>
                             </button>

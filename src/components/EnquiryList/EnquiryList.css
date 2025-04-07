@@ -54,6 +54,7 @@
 }
 
 .enquiry-container_controls {
+    margin-top: 50px;
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -274,6 +275,28 @@
 
 .enquiry_pageinfo {
     font-size: 12px;
+}
+
+.enquiry-check {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.enquiry-asc {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.enquiry-desc {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
 }
 
 .prev-button:disabled {
