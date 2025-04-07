@@ -240,6 +240,9 @@ const AdminList = () => {
                 </div>
               )}
             </th>
+            <th className="adminlist_th">Role</th>
+            <th className="adminlist_th">Status</th>
+
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
@@ -251,6 +254,12 @@ const AdminList = () => {
             <td className="documenttable_td px-6 py-4 ">{item.name}</td>
             <td className="documenttable_td px-6 py-4 ">{item.email.split('/').pop().substring(0, 20) + '...'}</td>
             <td className="documenttable_td px-6 py-4 ">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+            <td className="documenttable_td px-6 py-4 ">{item.role.charAt(0).toUpperCase() + item.role.slice(1).toLowerCase()}</td>
+            <td className="documenttable_td px-6 py-4 ">
+              
+  {item.status ? "Inactive" : "Active"}
+</td>
+
           </tr>
         ))}
         </tbody>
