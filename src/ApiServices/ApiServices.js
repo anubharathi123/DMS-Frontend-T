@@ -313,6 +313,7 @@ const authService = {
     return handleResponse(apiClient.get(`backup/download/${id}/`))
   },
 
+  
 
   getlinedata:async () => {
     return handleResponse(apiClient.get('organizations/creation_stats/'))
@@ -368,6 +369,12 @@ const authService = {
     return handleResponse(apiClient.post(`organizations/${orgId}/employees/`, data));
   },
 
+  organizationDocuments: async (orgId) => {
+    if (!orgId) {
+      throw new Error('Organization ID is required to fetch documents.');
+    }
+    return handleResponse(apiClient.post(`organization_details/${orgId}/details`))
+  },
   
   getEmployees: async (orgId) => {
     if (!orgId) {

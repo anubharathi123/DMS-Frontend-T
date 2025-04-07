@@ -246,7 +246,8 @@ const AdminList = () => {
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
-        {paginatedData.map((item, index) => (
+        { paginatedData > 0 ? (
+        paginatedData.map((item, index) => (
           <tr
             key={index}
             className="adminlist_row">
@@ -261,7 +262,13 @@ const AdminList = () => {
 </td>
 
           </tr>
-        ))}
+        ))
+      ):(
+        <tr>
+          <td colSpan="6" className="adminlist_no_data">No deleted admin is available</td>
+        </tr>
+      )}
+
         </tbody>
       </table>
       <div className="adminlist_pagination">

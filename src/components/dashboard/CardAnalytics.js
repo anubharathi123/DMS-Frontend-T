@@ -48,7 +48,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
             left: "4%",
             width: isUploader ? "500px" : "300px", // ✅ Expand for uploader
           }
-        : { position: "relative", right: "40px" }),
+        : { position: "relative", right: "10px" }),
     }}
   >
   

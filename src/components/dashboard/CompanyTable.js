@@ -9,6 +9,8 @@ import {
   FaArrowDown,
 } from "react-icons/fa";
 import "./dashboard.css";
+import apiServices from "../../ApiServices/ApiServices";
+
 // import { MdArrowDropUp, MdArrowDropDown  } from "react-icons/md";
 
 const CompanyTable = ({
@@ -24,8 +26,11 @@ const CompanyTable = ({
   isSearchFocused,
   setIsSearchFocused,
   tableforadmin,
+  organizationId
+
 }) => {
   const role = localStorage.getItem("role");
+  console.log(organizationId)
 
   const dummyData = [
     {
@@ -122,6 +127,8 @@ const CompanyTable = ({
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
+
+
 
   useEffect(() => {
     if (tableforadmin?.users?.length && companyData.length === 0) {
@@ -470,6 +477,7 @@ const CompanyTable = ({
           <h3>📅 Organization: {openModalData.org_name}</h3>
           <p><strong>👤 Username:</strong> {openModalData.username}</p>
           <p><strong>📑 Total Documents:</strong> {openModalData.doc_count}</p>
+          <p><strong>📑 Total Declarations:</strong>{}</p>
           <p><strong>📁 Total File Size:</strong> {openModalData.doc_size}</p>
           <p><strong>👥 Employees:</strong> {openModalData.emp}</p>
           <button

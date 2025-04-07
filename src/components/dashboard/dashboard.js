@@ -72,7 +72,7 @@ const DashboardApp = () => {
   const [selectedYear, setSelectedYear] = useState("2023");
   const [OrgCount, setOrgCount] = useState([]);
   const [count, setCount] = useState([]);
-
+  const [organizationIdResponse, setOrganizationIdResponse] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -333,10 +333,12 @@ const DashboardApp = () => {
     const fetchDetails = async () => {
       try {
         const response = await apiServices.details();
-        console.log(response);
+        console.log(response.details[3]["organization"]["id"], "ord_details");
+        const new_id = response.details[3]["organization"]["id"];
         const id = response?.details?.[1]?.id;
         if (id) {
-          setOrganizationId(id);
+          setOrganizationId(new_id);
+          console.log(id, "hiiii")
         } else {
           console.warn("No organization ID found.");
         }
@@ -393,8 +395,9 @@ const DashboardApp = () => {
           apiServices.details(),
           apiServices.DashboardView(),
           apiServices.msi_Enquiry(),
-          // apiServices.organizationIdDetails(),
+          // apiServices.organizationIdDetails(organizationId),
         ]);
+        setOrganizationIdResponse(organizationIdResponse)
 
         // 🟩 1. Set Org Count
         if (orgCountResponse) {
@@ -856,6 +859,7 @@ console.log(client,"dinu")
   isSearchFocused={isSearchFocused}
   setIsSearchFocused={setIsSearchFocused}
   tableforadmin={tableforadmin}
+  organizationId={organizationId}
 />
 
 
