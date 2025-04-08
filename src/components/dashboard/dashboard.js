@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "./dashboard.css";
  import ClipLoader from "react-spinners/ClipLoader";
 import LoadingText from "./LoadingText";
@@ -46,6 +46,7 @@ import UserPieChart from "./UserPieChart";
 import ProgressBarChart from "./ProgressBarChart";
 import FileSizeTrendsChart from "./FileSizeTrendsChart";
 import CompanyTable from "./CompanyTable";
+import { useParams } from "react-router-dom";
   
  
 
@@ -68,7 +69,7 @@ const Dashboard = ({ title }) => (
 const DashboardApp = () => {
   const [chartDataforadminn, setChartDataforadmin] = useState([]);
   const [adminProgress, setAdminProgress] = useState(0); // total uploaded size (MB)
-
+  const { id } = useParams();
   const [selectedYear, setSelectedYear] = useState("2023");
   const [OrgCount, setOrgCount] = useState([]);
   const [count, setCount] = useState([]);
@@ -81,7 +82,7 @@ const DashboardApp = () => {
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openModalData, setOpenModalData] = useState(null); // Manages modal state
-  const [organizationId, setOrganizationId] = useState("");
+  const [organizationId, setOrganizationId] = useState(id);
   const [tableforadmin, settableforadmin] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isActive, setIsActive] = useState(false);
@@ -113,6 +114,24 @@ const DashboardApp = () => {
   const username = localStorage.getItem("name") || "User";
   const [data, setData] = useState([]);
   // console.log("!!!!!!!!!!!!!!!!!!!!!!", DashboardStats);
+  // const Details = () => {
+  //   // import apiServices from "../../ApiServices/ApiServices";
+  //   const response = apiServices.details();
+  //   console.log(response, "details");
+  //   console.log(response.details?.organization.id,"ord_details");
+  //   const new_id = response.details?.organization.id; 
+  //   const id = response?.details?.[1]?.id;
+  //   if (id) {
+  //     setOrganizationId(new_id);
+  //     console.log(id, "hiiii");
+  //   } else {
+  //     console.warn("No organization ID found.");
+  //   }
+  // };
+// useEffect(() => {
+  
+//   Details();
+// }, []);
 
   const CustomTooltip = ({
     active,
@@ -333,15 +352,22 @@ const DashboardApp = () => {
     const fetchDetails = async () => {
       try {
         const response = await apiServices.details();
-        console.log(response.details[3]["organization"]["id"], "ord_details");
-        const new_id = response.details[3]["organization"]["id"];
-        const id = response?.details?.[1]?.id;
+        console.log(response,response?.details?.[7]?.id, "ord_details");
+        // const new_id = response.details[3].id;
+        const id = response?.details?.[7]?.id;
         if (id) {
-          setOrganizationId(new_id);
+          setOrganizationId(id);
           console.log(id, "hiiii")
         } else {
+          console.log(response.details[1].id, "ord_details");
+          const id = response?.details?.[1]?.id;
+          if (id) {setOrganizationId(id);
+          console.log(id, "hiiii")
+        } else {
+
           console.warn("No organization ID found.");
         }
+      }
       } catch (err) {
         console.error("Error fetching details:", err);
       }
@@ -364,7 +390,14 @@ const DashboardApp = () => {
   }, []);
 
   useEffect(() => {
+    // const details = async () => {
+    //   const details_data = await apiServices.details();
+    //   console.log(details_data,details_data.details[1].id, "details_id");
+    //   setOrganizationId(details_data.details[1].id);
+    // };
+    // details();
     const fetchAllDashboardData = async (id) => {
+      
       const startTime = performance.now();
       setIsLoading(true);
       setLoadingPercentage(0);
@@ -395,7 +428,7 @@ const DashboardApp = () => {
           apiServices.details(),
           apiServices.DashboardView(),
           apiServices.msi_Enquiry(),
-          // apiServices.organizationIdDetails(),
+          apiServices.organizationIdDetails(organizationId),
         ]);
         // setOrganizationIdResponse(organizationIdResponse)
 
@@ -411,7 +444,7 @@ const DashboardApp = () => {
           setCompanyData(dashboard);
           console.log("Dashboard Count:", dashboard);
         }
-
+        console.log("company Count Response:", companyCountResponse);
         // 🟩 2. Company Count Stats
         if (companyCountResponse) {
           setOrgCount({
@@ -427,7 +460,7 @@ const DashboardApp = () => {
             deleted_org_count: companyCountResponse.deleted_org_count || 0,
           });
         }
-
+        console.log("dashboard Response:", dashboardResponse);
         // 🟩 3. Dashboard Stats for Admin
         if (dashboardResponse) setDashboardStats(dashboardResponse);
 

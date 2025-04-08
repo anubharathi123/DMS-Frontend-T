@@ -159,15 +159,18 @@ const authService = {
     return handleResponse(apiClient.get('organizations/dashboard/'))
   },
 
-  organizationIdDetails: async (id) => {
-    return handleResponse(apiClient.get(`owner/${id}/details`))   
+  organizationIdDetails: async (orgid) => {
+    if (!orgid) {
+      throw new Error('Organization ID is required.');
+    }
+    return handleResponse(apiClient.get(`owner/${orgid}/details`))   
   },
 
   MonthYearCompany: async () => {
-    return handleResponse(apiClient.get('organization/state/'))
+    return handleResponse(apiClient.get('organization/state/')) 
   },
-  tableIndividual: async (org_id) => {
-    return handleResponse(apiClient.get(`dashboarduser/${org_id}/`));
+  tableIndividual: async (id) => {
+    return handleResponse(apiClient.get(`dashboarduser/${id}/`));
   },
   
   enquire: async (data) => {

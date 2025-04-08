@@ -7,6 +7,8 @@ import {
 import { GrDocument, GrDocumentTime, GrDocumentVerified, GrDocumentExcel } from "react-icons/gr";
 
 const CardAnalytics = ({ OrgCount, DashboardStats}) => {
+  console.log("OrgCount", OrgCount);
+  console.log("DashboardStats", DashboardStats);
   const role = localStorage.getItem("role");
   const isAdminOrDocumentRole = [
     "ADMIN",
