@@ -67,7 +67,7 @@ const ProgressBarChart = ({ totalSize, client, isUploader, isAdminOrDocumentRole
         >
           <div
             style={{
-              width: `${percentage}%`,
+              width:isUploader? `${percentage}%`: isAdminOrDocumentRole ? `${percentage}%` : `${percentage}%`,
               height: "100%",
               background: "linear-gradient(to right, #007bff, #00d4ff)",
               borderRadius: "20px",

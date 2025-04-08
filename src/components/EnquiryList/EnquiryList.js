@@ -438,7 +438,7 @@ const EnquiryList = () => {
                     ) : (
                         <tr>
                             <td colSpan="4" className="enquiry-table-td">
-                                No enquirys found for the selected date.
+                                No enquiries found....
                             </td>
                         </tr>
                     )}

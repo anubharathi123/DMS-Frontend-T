@@ -43,6 +43,23 @@ const UserList = () => {
   }, [showSearchInfo]);
 
   useEffect(() => {
+      // Function to handle clicks outside the calendar
+      const handleClickOutside = (event) => {
+        if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+          setIsCalendarOpen(false);
+        }
+      };
+  
+      // Add event listener
+      document.addEventListener("mousedown", handleClickOutside);
+  
+      // Clean up event listener on component unmount
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
+  useEffect(() => {
     const fetchDetails = async () => {
       try {
         setIsLoading(true);
@@ -212,7 +229,9 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody className="userlist_tbody">
-          {paginatedData.map((item, index) => (
+
+          { paginatedData > 0 ? (
+          paginatedData.map((item, index) => (
             <tr key={index} className="userlist_row">
               <td className="userlist_td">{item.username}</td>
               <td className="userlist_td">{item.email}</td>
@@ -224,7 +243,12 @@ const UserList = () => {
               </td>
             </tr>
   
-          ))}
+          ))
+          ):(
+            <tr>
+              <td colSpan="4" className="userlist_td">No deleted users found.....</td>
+            </tr>
+          )}
           
         </tbody>
       </table>

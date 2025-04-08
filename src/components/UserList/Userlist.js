@@ -45,6 +45,23 @@ const UserList = () => {
   }, [showSearchInfo]);
 
   useEffect(() => {
+      // Function to handle clicks outside the calendar
+      const handleClickOutside = (event) => {
+        if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+          setIsCalendarOpen(false);
+        }
+      };
+  
+      // Add event listener
+      document.addEventListener("mousedown", handleClickOutside);
+  
+      // Clean up event listener on component unmount
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
+  useEffect(() => {
     const fetchDetails = async () => {
       try {
         setIsLoading(true);

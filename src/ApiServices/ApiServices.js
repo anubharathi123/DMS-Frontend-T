@@ -160,7 +160,7 @@ const authService = {
   },
 
   organizationIdDetails: async (id) => {
-    return handleResponse(apiClient.get(`organization_details/${id}/details`))   
+    return handleResponse(apiClient.get(`owner/${id}/details`))   
   },
 
   MonthYearCompany: async () => {

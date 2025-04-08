@@ -266,3 +266,10 @@
     margin-left: 51%;
     font-size: 12px !important;
 }
+
+.adminlist_no_data {
+  text-align: center;
+  font-size: 14px;
+  padding: 10px;
+  margin-top: 20px;
+}

@@ -50,6 +50,23 @@ const AdminList = () => {
     };
   }, [showSearchInfo]);
   
+   useEffect(() => {
+      // Function to handle clicks outside the calendar
+      const handleClickOutside = (event) => {
+        if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+          setIsCalendarOpen(false);
+        }
+      };
+  
+      // Add event listener
+      document.addEventListener("mousedown", handleClickOutside);
+  
+      // Clean up event listener on component unmount
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+  
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -265,7 +282,7 @@ const AdminList = () => {
         ))
       ):(
         <tr>
-          <td colSpan="6" className="adminlist_no_data">No deleted admin is available</td>
+          <td colSpan="6" className="adminlist_no_data">No deleted admins found....</td>
         </tr>
       )}
 

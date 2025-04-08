@@ -58,6 +58,23 @@ const DocumentApproval = () => {
         };
       }, [showSearchInfo]);
 
+      useEffect(() => {
+              // Function to handle clicks outside the calendar
+              const handleClickOutside = (event) => {
+                if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+                  setIsCalendarOpen(false);
+                }
+              };
+          
+              // Add event listener
+              document.addEventListener("mousedown", handleClickOutside);
+          
+              // Clean up event listener on component unmount
+              return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+              };
+            }, []);
+
   const host = 'http://localhost:3000';
   const calendarRef = useRef(null);
   const url = API_URL1
@@ -358,7 +375,7 @@ const handleClosePopup = () => {
               )}
             </th>
             <th className="documentapproval_th px-6 py-3">Doc Type</th>
-            <th className="documentapproval_th px-6 py-3" style={{textAlignLast:"center"}}>Actions</th>
+            <th className="documentapproval_th px-6 py-3" >Actions</th>
           </tr>
         </thead>
 

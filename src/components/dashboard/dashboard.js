@@ -112,7 +112,7 @@ const DashboardApp = () => {
   const [DashboardStats, setDashboardStats] = useState({});
   const username = localStorage.getItem("name") || "User";
   const [data, setData] = useState([]);
-  console.log("!!!!!!!!!!!!!!!!!!!!!!", DashboardStats);
+  // console.log("!!!!!!!!!!!!!!!!!!!!!!", DashboardStats);
 
   const CustomTooltip = ({
     active,
@@ -364,7 +364,7 @@ const DashboardApp = () => {
   }, []);
 
   useEffect(() => {
-    const fetchAllDashboardData = async () => {
+    const fetchAllDashboardData = async (id) => {
       const startTime = performance.now();
       setIsLoading(true);
       setLoadingPercentage(0);
@@ -395,9 +395,9 @@ const DashboardApp = () => {
           apiServices.details(),
           apiServices.DashboardView(),
           apiServices.msi_Enquiry(),
-          // apiServices.organizationIdDetails(organizationId),
+          // apiServices.organizationIdDetails(),
         ]);
-        setOrganizationIdResponse(organizationIdResponse)
+        // setOrganizationIdResponse(organizationIdResponse)
 
         // 🟩 1. Set Org Count
         if (orgCountResponse) {
@@ -409,6 +409,7 @@ const DashboardApp = () => {
             emp: db.total_employees,
           }));
           setCompanyData(dashboard);
+          console.log("Dashboard Count:", dashboard);
         }
 
         // 🟩 2. Company Count Stats
@@ -534,6 +535,7 @@ const DashboardApp = () => {
           const response = organizationIdResponse.map((db) => ({
             
           }));
+          setOrganizationIdResponse(response);
           console.log("Organization ID Response:", response);
         }
 
@@ -769,7 +771,7 @@ console.log(client,"dinu")
             style={{ 
               marginTop: isUploader ? "0px" : isAdminOrDocumentRole ? "130px" : "0px" ,  
               position: "relative", 
-              bottom: isUploader ? "60px" : "",
+              bottom: isUploader ? "20px" : "",
             }}
           >
             Welcome,{" "}
@@ -920,7 +922,9 @@ console.log(client,"dinu")
             <div className="chart-container"
               style={{
                 position:isUploader ? "relative" : "",
-                top: isUploader ? "80px" : "",
+                // top: isUploader ? "2px" : "",
+                bottom: isUploader ? "10px" : "",
+                width: isUploader ? "100%" : "",
               }}>
 
             <CompanyTable

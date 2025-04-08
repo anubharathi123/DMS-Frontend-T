@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FaUser,
   FaUsers,
@@ -21,6 +21,7 @@ const CompanyTable = ({
   handleOpenModalData,
   openModalData,
   closeModalData,
+  setcloseModalData,
   searchTermAdmin,
   setSearchTermAdmin,
   isSearchFocused,
@@ -31,6 +32,8 @@ const CompanyTable = ({
 }) => {
   const role = localStorage.getItem("role");
   console.log(organizationId)
+  const closeModalDataref = useRef();
+  // const [openModalData, setOpenModalData] = useState(false);
 
   const dummyData = [
     {
@@ -160,6 +163,20 @@ const CompanyTable = ({
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (closeModalData && closeModalDataref.current && !closeModalDataref.current.contains(event.target)) {
+        setcloseModalData(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [closeModalData, setcloseModalData]);
+
 
   // For normal roles (PRODUCT OWNER, etc.)
   const normalSortAscending = () => {
@@ -198,7 +215,11 @@ const CompanyTable = ({
 
     return (
       <>
-        <div style={{ marginBottom: "20px", display: "flex", alignItems: "center", gap: "20px" }}>
+        <div style={{ 
+          marginBottom: "10px", 
+          display: "flex", 
+          alignItems: "center", 
+          gap: "20px"}}>
           <label style={{ display: "flex", alignItems: "center", fontSize: "14px", fontWeight: "500" }}>
             <input
               type="radio"
@@ -461,6 +482,7 @@ const CompanyTable = ({
 
       {openModalData && (
         <div
+        
           style={{
             position: "fixed",
             top: "50%",
@@ -474,7 +496,7 @@ const CompanyTable = ({
             zIndex: 1000,
           }}
         >
-          <h3>📅 Organization: {openModalData.org_name}</h3>
+          <h3>{openModalData.org_name}</h3>
           <p><strong>👤 Username:</strong> {openModalData.username}</p>
           <p><strong>📑 Total Documents:</strong> {openModalData.doc_count}</p>
           <p><strong>📑 Total Declarations:</strong>{}</p>
