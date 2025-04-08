@@ -640,8 +640,11 @@ cursor: pointer;
   padding: 4px;
   margin-left: -14px !important;
     width: fit-content;
-  margin-top: -4px;
-  margin-bottom: 5px;
+  /* margin-top: 4px; */
+  position: relative;
+  /* top: 0px; */
+  bottom: 4px;
+  /* margin-bottom: 5px; */
 }
 .dashboard-btngrp button {
   background: #c8c8c8;
@@ -697,13 +700,15 @@ cursor: pointer;
 
 .dashboard-search {
   padding: 8px 12px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
+  border-bottom: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
   outline: none;
   transition: 0.3s;
-   position: absolute; 
- margin-top: -22px;
+  position: relative;
+        bottom: 15px;
+ /* margin-top: -22px; */
 }
 
 .search-container {
@@ -722,8 +727,12 @@ cursor: pointer;
   padding: 8px;
   width: 200px;
   border: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
+  /* border: none; */
   border-radius: 5px;
   font-size: 14px;
+  position: relative;
+        bottom: 15px;
 }
 
 

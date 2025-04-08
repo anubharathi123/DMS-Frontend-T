@@ -197,21 +197,23 @@ const CompanyTable = ({
 
   }
 
-
-  const filteredData = companyData.filter((company) =>
-    company.org_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.uploaded_files_size_mb
-      ?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+  
+  const filteredData = (companyData || []).filter((company) =>
+    (company.org_name?.toLowerCase() || "").includes(searchTerm?.toLowerCase() || "") ||
+    (company.username?.toLowerCase() || "").includes(searchTerm?.toLowerCase() || "") ||
+    (company.role?.toLowerCase() || "").includes(searchTerm?.toLowerCase() || "") ||
+    (company.uploaded_files_size_mb?.toString().toLowerCase() || "").includes(searchTerm?.toLowerCase() || "")
   );
   //both sorting and row limit are working...
   const renderAdminView = () => {
-    const filteredUsers = companyData?.filter(
+    const filteredUsers = (companyData || []).filter(
       (user) =>
-        user.username?.toLowerCase().includes(searchTermAdmin.toLowerCase()) ||
-        user.role?.toLowerCase().includes(searchTermAdmin.toLowerCase())
-    ) || [];
+        (user.username?.toLowerCase() || "").includes(searchTermAdmin?.toLowerCase() || "") ||
+        (user.role?.toLowerCase() || "").includes(searchTermAdmin?.toLowerCase() || "")
+    );
+  
+    // return your JSX here
+  
 
     return (
       <>

@@ -82,7 +82,7 @@ const DashboardApp = () => {
   const [OrgCount,setOrgCount] = useState([]);
   const [count, setCount] = useState([]);
    const [chartData, setChartData] = useState([]);
-  const [selectedCompany, setSelectedCompany] = useState("");
+  // const [selectedCompany, setSelectedCompany] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
