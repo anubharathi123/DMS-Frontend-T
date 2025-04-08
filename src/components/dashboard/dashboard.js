@@ -73,6 +73,8 @@ const DashboardApp = () => {
   const [lineChartData, setLineChartData] = useState([]);
   const [enquiryData, setEnquiryData] = useState({});
   const [msiData, setMsiData] = useState({});
+  const [openModalData, setOpenModalData] = useState(null); // Manages modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Filter and UI states
   const [searchTerm, setSearchTerm] = useState("");
@@ -91,7 +93,7 @@ const DashboardApp = () => {
   const [uploaderCount, setUploaderCount] = useState(0);
   const [reviewerCount, setReviewerCount] = useState(0);
   const [viewerCount, setViewerCount] = useState(0);
-  const [clientData, setClientData] = useState(0);
+  const [client, setclient] = useState(0);
   const [adminProgress, setAdminProgress] = useState(0);
   const [selectedCompany, setSelectedCompany] = useState(null);
 
@@ -144,7 +146,7 @@ const DashboardApp = () => {
         }
         return acc;
       }, 0);
-      setClientData(totalSizeMB);
+      setclient(totalSizeMB);
     } catch (error) {
       console.error("Error fetching individual admin data:", error);
     }
@@ -354,6 +356,56 @@ const DashboardApp = () => {
     );
   }
 
+  const handleOpenModalData = (company) => {
+    console.log("Clicked Data:", company); // Debugging
+    setOpenModalData(company);
+  };
+
+   // Function to close the modal
+   const closeModalData = () => {
+    setOpenModalData(null);
+  };
+
+  const openModal = (company) => {
+    console.log("model opening");
+    setSelectedCompany(company);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedCompany(null);
+    setIsModalOpen(false);
+  };
+
+  const handleRowLimitChange = (e) => {
+    const value = e.target.value.trim();
+    if (value === "") {
+      setRowLimit(companyData.length); // Show all rows if input is empty
+    } else {
+      const parsedValue = parseInt(value, 10);
+      if (!isNaN(parsedValue) && parsedValue > 0) {
+        setRowLimit(parsedValue);
+      }
+    }
+  };
+
+  const sortAscending = () => {
+    const sortedData = [...companyData].sort(
+      (a, b) => parseFloat(a.doc_size) - parseFloat(b.doc_size)
+    );
+    setCompanyData(sortedData);
+  };
+
+  const sortDescending = () => {
+    const sortedData = [...companyData].sort(
+      (a, b) => parseFloat(b.doc_size) - parseFloat(a.doc_size)
+    );
+    setCompanyData(sortedData);
+  };
+
+  ChartJS.register(ArcElement, Legend, ChartDataLabels);
+
+
   // Prepare chart data
   const chartDataArray = Object.entries(chartData).flatMap(([year, months]) =>
     Object.entries(months).flatMap(([month, data]) =>
@@ -393,6 +445,49 @@ const DashboardApp = () => {
         : [],
     };
   });
+
+  console.log(client,"dinu")
+  const formattedData = chartDataArray.reduce((acc, item) => {
+    const { year, month, company, document_count, file_size } = item;
+
+    if (!acc[year]) {
+      acc[year] = {}; // Initialize year if not present
+    }
+
+    acc[year][month] = {
+      companyname: company,
+      Doccount: document_count, // Now only a number
+      FileSize: file_size, // Ensure file size is included
+    };
+
+    return acc;
+  }, {});
+
+  const detailsoforg = (clickedMonth) => {
+    if (clickedMonth) {
+      // Find data for the clicked month
+      const clickedData = groupedData.find(
+        (data) => data.month === clickedMonth
+      );
+
+      if (clickedData) {
+        console.log(clickedData);
+        openModal(clickedData); // Open modal with clicked data
+      }
+    }
+  };
+
+  const selectedCompanyData =
+  selectedCompany && selectedCompany !== "All Companies"
+    ? groupedData.filter((item) =>
+        item.companies.some((c) => c.company === selectedCompany)
+      )
+    : groupedData; // ✅ Show full data when "All Companies" is selected
+
+// ✅ Check if there's no data for the selection
+const isDataEmpty = selectedCompanyData.every(
+  (item) => item.total_documents === 0
+);
 
   // Calculate total file size in MB
   const totalFileSizeMB = companyData.reduce(
@@ -460,6 +555,9 @@ const DashboardApp = () => {
                   companyData={companyData}
                   setCompanyData={setCompanyData}
                   isLoading={isLoading}
+                  handleOpenModalData={handleOpenModalData}
+                  openModalData={openModalData}
+                  closeModalData={closeModalData}
                   rowLimit={rowLimit}
                   setRowLimit={setRowLimit}
                   searchTerm={searchTerm}
@@ -495,7 +593,7 @@ const DashboardApp = () => {
             />
             
             <ProgressBarChart
-              client={clientData}
+              client={client}
               totalSize={totalFileSizeMB}
               isUploader={isUploader}
               isAdminOrDocumentRole={isAdminOrDocumentRole}

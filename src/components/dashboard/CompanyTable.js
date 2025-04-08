@@ -271,7 +271,7 @@ const CompanyTable = ({
 
             </div>
 
-            <div className="dashboard-btngrp" style={{ margin: "25px 0 -10px", position: "relative" }}>
+            <div className="dashboard-btngrp" style={{ margin: "0px 0 -10px", position: "relative", bottom: "42px" }}>
               {isAdminOrDocumentRole ? (
                 <>
                   <button className="dashboard-top" onClick={adminSortAscending}>
@@ -317,7 +317,7 @@ const CompanyTable = ({
                       cursor: "pointer",
                     }}
                   >
-                    <div>
+                    <div style={{borderBottom:"none"}}>
                       <div style={{ fontWeight: "bold", display: "flex", alignItems: "center" }}>
                         <FaBuilding style={{ marginRight: "6px", fontSize: "13px", color: "#333" }} />
                         <span className="ellipsis-text">{user.username}</span>

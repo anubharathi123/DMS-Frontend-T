@@ -701,13 +701,13 @@ cursor: pointer;
 .dashboard-search {
   padding: 8px 12px;
   /* border: 1px solid #ccc; */
-  border-bottom: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
   border-radius: 6px;
   font-size: 14px;
-  outline: none;
+  /* outline: none; */
   transition: 0.3s;
-  position: relative;
-        bottom: 15px;
+  /* position: relative;
+        bottom: 15px; */
  /* margin-top: -22px; */
 }
 
@@ -732,7 +732,7 @@ cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
   position: relative;
-        bottom: 15px;
+        bottom: 35px;
 }
 
 
