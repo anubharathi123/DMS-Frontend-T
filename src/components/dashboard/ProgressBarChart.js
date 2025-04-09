@@ -18,10 +18,11 @@ const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, i
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         width: isAdminOrDocumentRole ? "10px" : "100%",
         minWidth: isAdminOrDocumentRole ? "390px" : "390px",
-        marginLeft: isUploader ? "500px" : isAdminOrDocumentRole ? "650px" : "-50px",
+        marginLeft: isUploader ? "600px" : isAdminOrDocumentRole ? "650px" : "-50px",
         margin: isAdminOrDocumentRole ? "none" : "auto",
-        marginTop: isUploader ? "-350px" : isReviewer ? "-340px" : isViewer ? "-330px " : isAdminOrDocumentRole ? "-375px" : "0px",
-        position: isAdminOrDocumentRole ? "absolute" : "relative",
+        marginTop: isReviewer ? "-340px" : isViewer ? "-330px " : isAdminOrDocumentRole ? "-375px" : "0px",
+        bottom: isUploader ? "485px" : "0px",
+        // position: "relative",
       }}
     >
       <h3

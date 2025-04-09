@@ -45,7 +45,8 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
             marginLeft: "0px",
             transform: "translateX(0px)",
             position: "relative",
-            bottom: isUploader ? "22px" : "",
+            bottom: isUploader ? "0px" : "",
+            top: isUploader ? "120px" : "0px",
             marginTop: isUploader ? " " : isAdminOrDocumentRole ? "-15px": "",
             left: "4%",
             width: isUploader ? "500px" : "300px", // ✅ Expand for uploader
