@@ -27,7 +27,8 @@ const CompanyTable = ({
   isSearchFocused,
   setIsSearchFocused,
   tableforadmin,
-  organizationId
+  organizationId,
+  orgSummary,
 
 }) => {
   const role = localStorage.getItem("role");
@@ -501,7 +502,7 @@ const CompanyTable = ({
           <h3>{openModalData.org_name}</h3>
           <p><strong>👤 Username:</strong> {openModalData.username}</p>
           <p><strong>📑 Total Documents:</strong> {openModalData.doc_count}</p>
-          <p><strong>📑 Total Declarations:</strong>{}</p>
+          <p><strong>📑 Total Declarations:</strong>{orgSummary.dec_count}</p>
           <p><strong>📁 Total File Size:</strong> {openModalData.doc_size}</p>
           <p><strong>👥 Employees:</strong> {openModalData.emp}</p>
           <button

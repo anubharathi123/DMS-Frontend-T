@@ -82,6 +82,7 @@ const DashboardApp = () => {
   const [selectedReportYear, setSelectedReportYear] = useState("");
   const [rowLimit, setRowLimit] = useState(5);
   const [uniqueReportYears, setUniqueReportYears] = useState([]);
+  const [orgSummary, setOrgSummary] = useState(null);
 
   // User role checks
   const isUploader = role === "UPLOADER";
@@ -129,6 +130,40 @@ const DashboardApp = () => {
 
     fetchDashboardData();
   }, []);
+
+  const fetchOrganizationSummary = async (orgid) => {
+    try {
+      const response = await apiServices.organizationIdDetails(orgid);
+  
+      const summaryData = {
+        org_name: response?.details?.company_name || 'N/A',
+        username: response?.summary?.org_username || 'N/A',
+        doc_count: response?.summary?.organization_document_count ?? 0,
+        dec_count: response?.summary?.declaration_count ?? 0,
+        doc_size: response?.summary?.org_filesize || '0.0 MB',
+        emp: response?.summary?.org_user_count ?? 0
+      };
+  
+      console.log("🧾 Summary Extracted:", summaryData);
+  
+      setOrgSummary(summaryData); // Now it's ready to use in UI
+    } catch (error) {
+      console.error("❌ Error fetching organization summary:", error);
+    }
+  };
+  
+
+  useEffect(() => {
+    // First fetch the org ID
+    fetchOrganizationDetails();
+  }, []);
+
+  useEffect(() => {
+    // Once ID is set, fetch summary
+    if (organizationId) {
+      fetchOrganizationSummary(organizationId);
+    }
+  }, [organizationId]);
 
   // const fetchDeclarationCount = async () => {
   //   try {
@@ -540,6 +575,42 @@ const companyCount= async () => {
     return acc;
   }, {});
 
+  const OrganizationDashboard = ({ organizationId }) => {
+    const [orgDetails, setOrgDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+  
+    useEffect(() => {
+      const fetchOrgDetails = async () => {
+        try {
+          const data = await apiServices.organizationIdDetails(organizationId);
+          console.log("Organization Full Data:", data); // 🔍 Console log full class data
+          setOrgDetails(data);
+        } catch (err) {
+          console.error("Failed to fetch organization details:", err);
+          setError("Failed to load data");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      if (organizationId) {
+        fetchOrgDetails();
+      }
+    }, [organizationId]);
+  
+    if (loading) return <p>Loading organization details...</p>;
+    if (error) return <p>{error}</p>;
+  
+    const summary = orgDetails.summary;
+    console.log("Summary:", summary); // 🔍
+
+    return ( 
+      ""
+    )
+  };    
+
+
   const detailsoforg = (clickedMonth) => {
     if (clickedMonth) {
       // Find data for the clicked month
@@ -629,6 +700,7 @@ const isDataEmpty = selectedCompanyData.every(
                 </div>
 
                 <CompanyTable
+                orgSummary={orgSummary}
                   companyData={companyData}
                   setCompanyData={setCompanyData}
                   isLoading={isLoading}
