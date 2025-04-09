@@ -151,7 +151,23 @@ const DashboardApp = () => {
       console.error("Error fetching individual admin data:", error);
     }
   };
-
+const fetchOrganizationCount= async () => {
+  try {
+    const orgCountResponse = await apiServices.organizationCount();
+    if (orgCountResponse) {
+      const dashboard = orgCountResponse.map(db => ({
+        org_name: db.organization_name,
+        username: db.organization_user,
+        doc_count: db.total_files_all,
+        doc_size: db.total_file_size_all,
+        emp: db.total_employees,
+      }));
+      setCompanyData(dashboard);
+    }
+  } catch (error) {
+    console.error("Error fetching organization details:", error);
+  }
+}
   // Fetch all dashboard data
   const fetchAllDashboardData = async () => {
     const startTime = performance.now();
@@ -165,32 +181,32 @@ const DashboardApp = () => {
 
     try {
       const [
-        orgCountResponse,
+        // orgCountResponse,
         companyCountResponse,
         yearMonthCompanyResponse,
         lineDataResponse,
         dashboardResponse,
         userCountResponse,
       ] = await Promise.all([
-        apiServices.organizationCount(),
+        // apiServices.organizationCount(),
         apiServices.companyCount(),
         apiServices.MonthYearCompany(),
         apiServices.getlinedata(),
         apiServices.DashboardView(),
-        apiServices.msi_Enquiry(),
+        // apiServices.msi_Enquiry(),
       ]);
 
       // Process organization count data
-      if (orgCountResponse) {
-        const dashboard = orgCountResponse.map(db => ({
-          org_name: db.organization_name,
-          username: db.organization_user,
-          doc_count: db.total_files_all,
-          doc_size: db.total_file_size_all,
-          emp: db.total_employees,
-        }));
-        setCompanyData(dashboard);
-      }
+      // if (orgCountResponse) {
+      //   const dashboard = orgCountResponse.map(db => ({
+      //     org_name: db.organization_name,
+      //     username: db.organization_user,
+      //     doc_count: db.total_files_all,
+      //     doc_size: db.total_file_size_all,
+      //     emp: db.total_employees,
+      //   }));
+      //   setCompanyData(dashboard);
+      // }
 
       // Process company count statistics
       if (companyCountResponse) {
@@ -330,6 +346,7 @@ const DashboardApp = () => {
     fetchOrganizationDetails();
     fetchAllDashboardData();
     fetchMonthlyDocumentData();
+    fetchOrganizationCount();
   }, []);
 
   // Fetch individual admin data when organizationId changes
