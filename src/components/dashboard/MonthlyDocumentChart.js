@@ -26,6 +26,8 @@ const MonthlyDocumentChart = ({  groupedData,
     // const [selectedReportYear, setSelectedReportYear] = useState('');
     const [hovered, setHovered] = useState(false);
   const isUploader = localStorage.getItem("role") === "UPLOADER";
+  const isReviewer = localStorage.getItem("role") === "REVIEWER";
+  const isViewer = localStorage.getItem("role") === "VIEWER";
 
 
   const defaultData = [
@@ -63,7 +65,7 @@ const MonthlyDocumentChart = ({  groupedData,
             background: "#ffffff",
             padding: "20px",
             marginRight:"10px",
-            display:isUploader?"none":"",
+            display:isUploader?"none": isReviewer? "none": isViewer?"none":"block",
             position: "relative",
             right: "5%",
             width: "100%",
@@ -152,6 +154,7 @@ const MonthlyDocumentChart = ({  groupedData,
             borderRadius: "20px",
             marginTop: "-120px",
             background: "#ffffff",
+            // display:"none",
             padding: "20px",
             width: "100%",
             maxWidth: "400px",

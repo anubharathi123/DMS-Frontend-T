@@ -64,7 +64,7 @@ const DashboardApp = () => {
   const role = localStorage.getItem("role");
 
   // Data states
-  const [dashboardStats, setDashboardStats] = useState({});
+  const [DashboardStats, setDashboardStats] = useState({});
   const [companyData, setCompanyData] = useState([]);
   const [orgCount, setOrgCount] = useState({});
   const [tableforadmin, settableforadmin] = useState({});
@@ -85,6 +85,8 @@ const DashboardApp = () => {
 
   // User role checks
   const isUploader = role === "UPLOADER";
+  const isReviewer = role === "REVIEWER";
+  const isViewer = role === "VIEWER";
   const isAdminOrDocumentRole = ["ADMIN", "UPLOADER", "APPROVER", "REVIEWER", "VIEWER"].includes(role);
   const isProductOwner = ["PRODUCT_OWNER", "PRODUCT_ADMIN"].includes(role);
 
@@ -113,6 +115,38 @@ const DashboardApp = () => {
       console.error("Error fetching organization details:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await apiServices.DashboardView();
+        console.log("Dashboard data:", response);
+        setDashboardStats(response);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  // const fetchDeclarationCount = async () => {
+  //   try {
+  //     const declarationCountResponse = await apiServices.organizationIdDetails();
+  //     if (declarationCountResponse) {
+  //       const declarationCount = declarationCountResponse.map((dc) => ({  
+  //         // org_name: dc.organization_name,
+  //         // username: dc.organization_user,   
+  //         // doc_count: dc.total_files_all,
+  //         // doc_size: dc.total_file_size_all,
+  //         // emp: dc.total_employees,
+  //       }));
+  //       setCompanyData(declarationCount);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching organization details:", error); 
+  //   }
+  // };
 
   // Fetch individual admin data
   const fetchIndividualAdminData = async (orgId) => {
@@ -251,6 +285,7 @@ const companyCount= async () => {
       // Process dashboard statistics
       if (dashboardResponse) {
         setDashboardStats(dashboardResponse);
+        console.log("Raw dashboard response:", dashboardResponse); 
       }
 
       // Process line chart data
@@ -542,7 +577,7 @@ const isDataEmpty = selectedCompanyData.every(
         <h2
           className={isAdminOrDocumentRole ? "dashboard-h2" : "dashboard-h2-1"}
           style={{
-            marginTop: isUploader ? "0px" : isAdminOrDocumentRole ? "130px" : "0px",
+            marginTop: isUploader ? "0px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "135px" : "0px",
             position: "relative",
             bottom: isUploader ? "20px" : "",
           }}
@@ -622,7 +657,7 @@ const isDataEmpty = selectedCompanyData.every(
         {(isAdminOrDocumentRole || isUploader) && (
           <>
             <CardAnalytics
-              DashboardStats={dashboardStats}
+              DashboardStats={DashboardStats}
               isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
             />
             
@@ -638,6 +673,8 @@ const isDataEmpty = selectedCompanyData.every(
               client={client}
               totalSize={totalFileSizeMB}
               isUploader={isUploader}
+              isReviewer={isReviewer}
+              isViewer = {isViewer}
               isAdminOrDocumentRole={isAdminOrDocumentRole}
             />
           </>

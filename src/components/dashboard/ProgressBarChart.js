@@ -1,7 +1,7 @@
 import React from "react";
 
-const ProgressBarChart = ({ totalSize, client, isUploader, isAdminOrDocumentRole }) => {
-  const role = localStorage.getItem("role");
+const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, isAdminOrDocumentRole }) => {
+  // const role = localStorage.getItem("role");
   const max = isUploader ? 10 : 504; // Max for uploader is 10MB
   const used = isUploader ? 10 : isAdminOrDocumentRole ? client : totalSize;
 
@@ -20,7 +20,7 @@ const ProgressBarChart = ({ totalSize, client, isUploader, isAdminOrDocumentRole
         minWidth: isAdminOrDocumentRole ? "390px" : "390px",
         marginLeft: isUploader ? "500px" : isAdminOrDocumentRole ? "650px" : "-50px",
         margin: isAdminOrDocumentRole ? "none" : "auto",
-        marginTop: isUploader ? "-350px" : isAdminOrDocumentRole ? "-375px" : "4px",
+        marginTop: isUploader ? "-350px" : isReviewer ? "-340px" : isViewer ? "-330px " : isAdminOrDocumentRole ? "-375px" : "0px",
         position: isAdminOrDocumentRole ? "absolute" : "relative",
       }}
     >

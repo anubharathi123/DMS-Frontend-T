@@ -393,7 +393,7 @@ const CompanyTable = ({
           max="100"
           value={rowLimit}
           className="dashboard_num-input"
-          style={{ left: "475px", bottom: "265px", position: "absolute", zIndex: 999 }}
+          style={{ left: "475px", bottom:isAdminOrDocumentRole? "205px":"265px", position: "absolute", zIndex: 999 }}
           onChange={(e) => {
             const value = e.target.value.trim();
             const parsed = parseInt(value, 10);
