@@ -168,6 +168,30 @@ const fetchOrganizationCount= async () => {
     console.error("Error fetching organization details:", error);
   }
 }
+
+const companyCount= async () => {
+  try {
+    const companyCountResponse = await apiServices.companyCount();
+    console.log(companyCountResponse, "companyCountResponse");
+    if (companyCountResponse) {
+      setOrgCount({
+        totalCompanies: companyCountResponse?.total_organizations || 0,
+        activeCompanies: companyCountResponse?.active_org_count || 0,
+        inactiveCompanies: companyCountResponse?.inactive_org_count || 0,
+        clientAdmins: companyCountResponse?.user_count || 0,
+        totalDocuments: companyCountResponse?.document_count || 0,
+        approvedDocuments: companyCountResponse?.approved_count || 0,
+        pendingDocuments: companyCountResponse?.pending_org_count || 0,
+        rejectedDocuments: companyCountResponse?.rejected_count || 0,
+        user_count: companyCountResponse?.user_count || 0,
+        deleted_org_count: companyCountResponse?.deleted_org_count || 0,
+      });
+      console.log(companyCountResponse?.employee_count || 0, "companyCountResponse");
+    }
+  } catch (error) {
+    console.error("Error fetching organization details:", error);
+  }
+}
   // Fetch all dashboard data
   const fetchAllDashboardData = async () => {
     const startTime = performance.now();
@@ -182,14 +206,14 @@ const fetchOrganizationCount= async () => {
     try {
       const [
         // orgCountResponse,
-        companyCountResponse,
+        // companyCountResponse,
         yearMonthCompanyResponse,
         lineDataResponse,
         dashboardResponse,
         userCountResponse,
       ] = await Promise.all([
         // apiServices.organizationCount(),
-        apiServices.companyCount(),
+        // apiServices.companyCount(),
         apiServices.MonthYearCompany(),
         apiServices.getlinedata(),
         apiServices.DashboardView(),
@@ -209,20 +233,20 @@ const fetchOrganizationCount= async () => {
       // }
 
       // Process company count statistics
-      if (companyCountResponse) {
-        setOrgCount({
-          totalCompanies: companyCountResponse.total_organizations || 0,
-          activeCompanies: companyCountResponse.active_org_count || 0,
-          inactiveCompanies: companyCountResponse.inactive_org_count || 0,
-          clientAdmins: companyCountResponse.user_count || 0,
-          totalDocuments: companyCountResponse.document_count || 0,
-          approvedDocuments: companyCountResponse.approved_count || 0,
-          pendingDocuments: companyCountResponse.pending_org_count || 0,
-          rejectedDocuments: companyCountResponse.rejected_count || 0,
-          user_count: companyCountResponse.user_count || 0,
-          deleted_org_count: companyCountResponse.deleted_org_count || 0,
-        });
-      }
+      // if (companyCountResponse) {
+      //   setOrgCount({
+      //     totalCompanies: companyCountResponse.total_organizations || 0,
+      //     activeCompanies: companyCountResponse.active_org_count || 0,
+      //     inactiveCompanies: companyCountResponse.inactive_org_count || 0,
+      //     clientAdmins: companyCountResponse.user_count || 0,
+      //     totalDocuments: companyCountResponse.document_count || 0,
+      //     approvedDocuments: companyCountResponse.approved_count || 0,
+      //     pendingDocuments: companyCountResponse.pending_org_count || 0,
+      //     rejectedDocuments: companyCountResponse.rejected_count || 0,
+      //     user_count: companyCountResponse.user_count || 0,
+      //     deleted_org_count: companyCountResponse.deleted_org_count || 0,
+      //   });
+      // }
 
       // Process dashboard statistics
       if (dashboardResponse) {
@@ -347,6 +371,7 @@ const fetchOrganizationCount= async () => {
     fetchAllDashboardData();
     fetchMonthlyDocumentData();
     fetchOrganizationCount();
+    companyCount();
   }, []);
 
   // Fetch individual admin data when organizationId changes
