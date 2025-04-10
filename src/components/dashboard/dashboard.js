@@ -122,19 +122,46 @@ const DashboardApp = () => {
       try {
         const response = await apiServices.DashboardView();
         console.log("Dashboard data:", response);
-        setDashboardStats(response);
-      } catch (err) {
-        console.error("Error fetching dashboard data:", err);
+        
+        // Process the response appropriately
+        const processedData = typeof response === 'number' ? 
+          { count: response } : 
+          response;
+        
+        setDashboardStats(processedData);
+  
+        if (role === "ADMIN") {
+          const response1 = await apiServices.details();
+          const orgId = response1?.details?.[7]?.id || response1?.details?.[1]?.id;
+          console.log("Organization ID:", orgId);
+          
+          if (orgId) {
+            setOrganizationId(orgId);
+            const summaryData = await fetchOrganizationSummary(orgId); // Note the await here
+            console.log("Organization ID set:", orgId, summaryData);
+            console.log("Summary Data:", summaryData);
+            if (summaryData) {
+              setDashboardStats(prev => ({
+                ...prev,
+                ...summaryData  // Merge with existing stats
+              }));
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
       }
-    };
-
+    }
+  
     fetchDashboardData();
   }, []);
 
   const fetchOrganizationSummary = async (orgid) => {
     try {
+      console.log("Fetching organization summary for ID:", orgid);
       const response = await apiServices.organizationIdDetails(orgid);
-  
+      console.log("Organization summary response:", response);  
+      
       const summaryData = {
         org_name: response?.details?.company_name || 'N/A',
         username: response?.summary?.org_username || 'N/A',
@@ -145,10 +172,12 @@ const DashboardApp = () => {
       };
   
       console.log("🧾 Summary Extracted:", summaryData);
-  
-      setOrgSummary(summaryData); // Now it's ready to use in UI
+      setOrgSummary(summaryData);
+      
+      return summaryData; // Return the full object, not just dec_count
     } catch (error) {
       console.error("❌ Error fetching organization summary:", error);
+      return null;
     }
   };
   
@@ -158,12 +187,12 @@ const DashboardApp = () => {
     fetchOrganizationDetails();
   }, []);
 
-  useEffect(() => {
-    // Once ID is set, fetch summary
-    if (organizationId) {
-      fetchOrganizationSummary(organizationId);
-    }
-  }, [organizationId]);
+  // useEffect(() => {
+  //   // Once ID is set, fetch summary
+  //   if (organizationId) {
+  //     fetchOrganizationSummary(organizationId);
+  //   }
+  // }, [organizationId]);
 
   // const fetchDeclarationCount = async () => {
   //   try {
@@ -223,8 +252,10 @@ const DashboardApp = () => {
 const fetchOrganizationCount= async () => {
   try {
     const orgCountResponse = await apiServices.organizationCount();
+    // console.log(orgCountResponse, "orgCountResponse");
     if (orgCountResponse) {
       const dashboard = orgCountResponse.map(db => ({
+        org_id : db.organization_id,
         org_name: db.organization_name,
         username: db.organization_user,
         doc_count: db.total_files_all,
@@ -468,7 +499,10 @@ const companyCount= async () => {
     );
   }
 
+
+
   const handleOpenModalData = (company) => {
+    fetchOrganizationSummary(company.org_id); // Fetch summary for the clicked company
     console.log("Clicked Data:", company); // Debugging
     setOpenModalData(company);
   };
@@ -648,7 +682,7 @@ const isDataEmpty = selectedCompanyData.every(
         <h2
           className={isAdminOrDocumentRole ? "dashboard-h2" : "dashboard-h2-1"}
           style={{
-            marginTop: isUploader ? "0px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "135px" : "0px",
+            // marginTop: isUploader ? "0px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "135px" : "0px",
             position: "relative",
             bottom: isUploader ? "20px" : "",
           }}
@@ -727,7 +761,7 @@ const isDataEmpty = selectedCompanyData.every(
 
         {/* Admin/Document Role Dashboard */}
         {(isAdminOrDocumentRole || isUploader) && (
-          <>
+          <div className="dashboard-cards-container-fit-1">
             <CardAnalytics
               DashboardStats={DashboardStats}
               isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
@@ -749,7 +783,7 @@ const isDataEmpty = selectedCompanyData.every(
               isViewer = {isViewer}
               isAdminOrDocumentRole={isAdminOrDocumentRole}
             />
-          </>
+          </div>
         )}
 
         {/* Admin Document Management */}

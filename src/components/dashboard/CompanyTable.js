@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import "./dashboard.css";
 import apiServices from "../../ApiServices/ApiServices";
+import { PiFilesBold } from "react-icons/pi";
 
 // import { MdArrowDropUp, MdArrowDropDown  } from "react-icons/md";
 
@@ -35,8 +36,40 @@ const CompanyTable = ({
   console.log(organizationId)
   const closeModalDataref = useRef();
   // const [openModalData, setOpenModalData] = useState(false);
+  const DeclarationData = async () => {
+    try {
+      const data = await apiServices.details();
+      console.log(data, "data");
 
-  const dummyData = [
+      if (data?.details[1]?.id) {
+        const organizationId1 = data.details[1].id;
+
+        const response = await apiServices.organizationIdDetails(organizationId1);
+        console.log(response, "response");
+
+        // if (response.status === 200) {
+          setDummyData(response.summary.sub);
+        // } else {
+        //   console.error("Error fetching data:", response.status);
+        }
+      // }
+       else {
+        console.error("Invalid data structure:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (role === "ADMIN") {
+      DeclarationData();
+    }
+  }, [role]);
+  // Dummy data for demonstration purposes
+const [dummyData,setDummyData] = useState([]);
+
+  const dummyData1 = [
     {
       "declaration_id": "12345",
       "total_size": "10MB",
@@ -205,6 +238,8 @@ const CompanyTable = ({
     (company.role?.toLowerCase() || "").includes(searchTerm?.toLowerCase() || "") ||
     (company.uploaded_files_size_mb?.toString().toLowerCase() || "").includes(searchTerm?.toLowerCase() || "")
   );
+
+  console.log(filteredData, "filteredData");
   //both sorting and row limit are working...
   const renderAdminView = () => {
     const filteredUsers = (companyData || []).filter(
@@ -231,7 +266,7 @@ const CompanyTable = ({
               onChange={handleOptionChange}
               style={{ marginRight: "8px" }}
             />
-            Company Data
+            Users
           </label>
           <label style={{ display: "flex", alignItems: "center", fontSize: "14px", fontWeight: "500" }}>
             <input
@@ -249,9 +284,9 @@ const CompanyTable = ({
 
         {selectedOption == "company" ? (
           <>
-            <div className="search-container" style={{ textAlign: "right", marginBottom: "10px" }}>
+            {/* <div className="search-container" style={{ textAlign: "right", marginBottom: "10px" }}> */}
 
-
+{/* 
 
               <input
                 type="text"
@@ -270,9 +305,9 @@ const CompanyTable = ({
                 }}
               />
 
-            </div>
+            </div> */}
 
-            <div className="dashboard-btngrp" style={{ margin: "0px 0 -10px", position: "relative", bottom: "42px" }}>
+            <div className="dashboard-btngrp" style={{ margin: "0px 0 -10px", position: "relative", bottom: "30px" }}>
               {isAdminOrDocumentRole ? (
                 <>
                   <button className="dashboard-top" onClick={adminSortAscending}>
@@ -359,18 +394,18 @@ const CompanyTable = ({
                     <div>
                       <div style={{ fontWeight: "bold", display: "flex", alignItems: "center" }}>
                         <FaBuilding style={{ marginRight: "6px", fontSize: "13px", color: "#333" }} />
-                        <span className="ellipsis-text">{data.declaration_id} : Declaration Number</span>
+                        <span className="ellipsis-text">{data.declaration_number} </span>
                       </div>
                       <div style={{ fontSize: "10px", color: "#777", marginTop: "2px" }}>
-                        <FaUser style={{ marginRight: "5px" }} />
-                        {data.total_size} Total Size
+                        <PiFilesBold style={{ marginRight: "5px" }} />
+                        Size : {data.file_size}
                       </div>
                     </div>
 
                     <div style={{ display: "flex", alignItems: "center", gap: "20px", fontSize: "11px", color: "#555" }}>
-                      <div><FaFileAlt style={{ marginRight: "5px" }} />{data.total_files} Total Files</div>
-                      <div><FaFolderOpen style={{ marginRight: "5px" }} />{data.approved_files} Approved</div>
-                      <div><FaUsers style={{ marginRight: "5px" }} />{data.pending_files} Pending</div>
+                      <div><FaFileAlt style={{ marginRight: "5px" }} />{data.file_count} Total Files</div>
+                      <div><FaFolderOpen style={{ marginRight: "5px" }} />{data.status_count.approved} Approved</div>
+                      <div><FaUsers style={{ marginRight: "5px" }} />{data.status_count.pending} Pending</div>
                     </div>
                   </div>
                 ))
@@ -502,7 +537,7 @@ const CompanyTable = ({
           <h3>{openModalData.org_name}</h3>
           <p><strong>👤 Username:</strong> {openModalData.username}</p>
           <p><strong>📑 Total Documents:</strong> {openModalData.doc_count}</p>
-          <p><strong>📑 Total Declarations:</strong>{orgSummary.dec_count}</p>
+          <p><strong>📑 Total Declarations:</strong>{orgSummary?.dec_count ?? 0}</p>
           <p><strong>📁 Total File Size:</strong> {openModalData.doc_size}</p>
           <p><strong>👥 Employees:</strong> {openModalData.emp}</p>
           <button

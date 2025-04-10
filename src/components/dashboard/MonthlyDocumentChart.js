@@ -19,9 +19,9 @@ const MonthlyDocumentChart = ({  groupedData,
   setIsModalOpen,
   setmodalOpenChart,
   isAdminOrDocumentRole,
-  // selectedReportYear,
-  // setSelectedReportYear,
-  // uniqueReportYears,
+  selectedReportYear,
+  setSelectedReportYear,
+  uniqueReportYears,
   dashboardData  }) => {
     // const [selectedReportYear, setSelectedReportYear] = useState('');
     const [hovered, setHovered] = useState(false);
@@ -75,7 +75,7 @@ const MonthlyDocumentChart = ({  groupedData,
            }}
         >
           <span className="dashboard_text1"><center>Trend Analysis</center></span>
-          {/* <div className="dropdown-container">
+          <div className="dropdown-container">
             <select
               className="dashboard-year-select"
               value={selectedReportYear}
@@ -87,7 +87,7 @@ const MonthlyDocumentChart = ({  groupedData,
                 </option>
               ))}
             </select>
-          </div> */}
+          </div>
 
 <ResponsiveContainer width="100%" style={{ marginTop: "20px" }} height={300}>
   <ComposedChart

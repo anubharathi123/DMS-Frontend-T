@@ -44,10 +44,11 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
         ? {
             marginLeft: "0px",
             transform: "translateX(0px)",
+            height:"170px",
             position: "relative",
             bottom: isUploader ? "22px" : "",
             marginTop: isUploader ? " " : isAdminOrDocumentRole ? "-15px": "",
-            left: "4%",
+            // left: "4%",
             width: isUploader ? "500px" : "300px", // ✅ Expand for uploader
           }
         : { position: "relative", right: "10px" }),
@@ -80,6 +81,7 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
         role === "ADMIN" ? (
           <>
             <Item label="Total Documents" value={DashboardStats?.document_count || 0} icon={<GrDocument />} />
+            <Item label="Declaration Count" value={DashboardStats?.dec_count || 0} icon={<GrDocument />} />
             <Item label="Approved" value={DashboardStats?.approved_count || 0} icon={<GrDocumentVerified style={{ color: "#aaffaa" }} />} />
             <Item label="Pending" value={DashboardStats?.pending_count || 0} icon={<GrDocumentTime style={{ color: "#ffcc00" }} />} />
             <Item label="Rejected" value={DashboardStats?.rejected_count|| 0} icon={<GrDocumentExcel/>} />
