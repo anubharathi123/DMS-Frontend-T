@@ -61,7 +61,7 @@ const MonthlyDocumentChart = ({  groupedData,
           className="dinu"
           style={{
             borderRadius: "20px",
-            marginTop: "-10px",
+            // marginTop: "-10px",
             background: "#ffffff",
             padding: "20px",
             marginRight:"10px",
