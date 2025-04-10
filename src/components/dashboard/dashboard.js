@@ -661,14 +661,30 @@ const isDataEmpty = selectedCompanyData.every(
   ) / 1024;
 
   return (
-    <div className="dashboard-body boy bg">
-      <div className="dashboard-container">
+    <div className="dashboard-body boy bg"
+      // style={{background: isUploader ? "linear-gradient(135deg,rgb(253, 226, 239) 0%, #ff5858 100%)" :""}}
+      >
+      <div className="dashboard-container"
+        style={{
+          background:isUploader?"":"",
+          height: isUploader ? "360px" : "auto",
+          padding: isUploader ? "0px" : "0px",
+          marginTop: isUploader ? "0px" : "0px",
+          position: isUploader ? "relative" : "relative",
+          bottom: isUploader ? "60px" : "0px",
+          left: isUploader ? "150px" : "0px",
+        
+        }}
+      >
         <h2
           className={isAdminOrDocumentRole ? "dashboard-h2" : "dashboard-h2-1"}
           style={{
             marginTop: isUploader ? "0px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "135px" : "0px",
             position: "relative",
-            top: isUploader ? "120px" : isAdminOrDocumentRole ? "0px" : "0px",
+            // top: isUploader ? "0px" : isAdminOrDocumentRole ? "0px" : "0px",
+            bottom: isUploader ? "20%" : isAdminOrDocumentRole ? "0px" : "0px",
+            right: isUploader ? "12%" : isAdminOrDocumentRole ? "0px" : "0px",
+            
             
           }}
         >
@@ -748,6 +764,7 @@ const isDataEmpty = selectedCompanyData.every(
         {(isAdminOrDocumentRole || isUploader) && (
           <>
             <CardAnalytics
+            isUploader={isUploader}
               DashboardStats={DashboardStats}
               isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
             />
@@ -763,6 +780,7 @@ const isDataEmpty = selectedCompanyData.every(
             <DeclarationCount
               isAdminOrDocumentRole={isAdminOrDocumentRole}
               orgSummary={orgSummary}
+              isUploader={isUploader}
               />
             
             <ProgressBarChart
@@ -781,11 +799,14 @@ const isDataEmpty = selectedCompanyData.every(
           <div className="admin-dashboard-container">
             <div className="chart-container"
               style={{
-                bottom: isUploader ? "130px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "0px" : "0px",
-                left: isUploader ? "50px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "0px" : "0px",
+                bottom: isReviewer ? "0px" : isViewer ? "" :"",
+                left: isUploader ? "50px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "20px" : "0px",
+                top: isAdminOrDocumentRole ? "150px" : "0px",
+                display:isUploader?"none": "",
               }}
             >
               <CompanyTable
+              isUploader={isUploader}
                 companyData={companyData}
                 isLoading={isLoading}
                 rowLimit={rowLimit}
