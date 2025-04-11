@@ -318,7 +318,7 @@ const handleClosePopup = () => {
           <select value={filterDoc} onChange={handleDocumentTypeChange} className="documenttable_filter_select py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
             <option value="">All</option>
             {uniqueDocumentTypes.map((type, index) => (
-              <option key={index} value={type}>{type}</option>
+              <option key={index} value={type}>{type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}</option>
             ))}
           </select>
         </div>
