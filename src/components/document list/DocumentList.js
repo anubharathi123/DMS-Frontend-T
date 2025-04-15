@@ -34,7 +34,9 @@ const DocumentTable = () => {
   const [endDate, setEndDate] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null); // To store selected file URL
   const [filteredBackupData, setFilteredBackupData] = useState([]);
-  const [assignedUser, setAssignedUser] = useState('');
+  const [assignedUserInfo, setAssignedUserInfo] = useState(null);
+  const [assignedUsers, setAssignedUsers] = useState([]);
+  const [reviewers, setReviewers] = useState([]);       // list of reviewers
   const [isEditing, setIsEditing] = useState(true); // allow edit initially if status is PENDING
   const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
@@ -94,6 +96,9 @@ const DocumentTable = () => {
         const response = await apiServices.getDocuments();
         console.log(response)
         const documents = response.documents.map(doc => ({
+          
+          docId:doc.id, 
+          assigned_to: doc.assigned_to?.username || null,
           declarationNumber: doc.declaration_number,
           file: doc.current_version?.file_path,
           fileName: doc.current_version?.file_path ? doc.current_version.file_path: '',
@@ -105,6 +110,9 @@ const DocumentTable = () => {
           viewed: false,
           version: doc.current_version?.version_number,
         })).sort((a, b) => new Date(b.updatedDate) - new Date(a.updatedDate));
+        // if(documents.status === "PENDING"){
+        //   console.log("Pending Doc ID", documents.id)
+        // }
 
         setData(documents);
         setFilteredData(documents);
@@ -123,12 +131,88 @@ const DocumentTable = () => {
     fetchDocuments();
   }, []);
 
+  const fetchAssignedUser = async (id) => {
+    try {
+      const assignedUserData = await apiServices.assignedUser(id);
+      const userid = assignedUserData?.id;
+      console.log("✅ Assigned User Data:", assignedUserData?.id);
+      
+      // If you want to pass this data somewhere:
+      // setAssignedUserData(assignedUserData);
+    } catch (error) {
+      console.error("❌ Error fetching assigned user:", error);
+    }
+  };
+  
+
+  // useEffect(() => {
+  //   if (assignedUser) {
+  //     fetchAssignedUser(assignedUser);
+  //   }
+  // }, [assignedUser]);
+  
+
+  useEffect(() => {
+    const fetchReviewer = async () => {
+      try {
+        setIsLoading(true);
+        const data = await apiServices.reviewerlist();
+        console.log("Reviewer List:", data);
+        console.log("✅ Organization ID:", data.organization_id);
+        console.log("✅ Organization Name:", data.organization_name);
+
+        const reviewers = data.reviewer_list;
+
+        if (Array.isArray(reviewers) && reviewers.length > 0) {
+          reviewers.forEach((reviewer, index) => {
+            // console.log(`🔹 Reviewer ${index + 1}:`);
+            // console.log("  ID:", reviewer.id);
+            // console.log("  Name:", reviewer.auth_user.first_name);
+            // console.log("  Username:", reviewer.auth_user.username);
+            // console.log("  Email:", reviewer.auth_user.email);
+            // console.log("  Mobile:", reviewer.mobile);
+            // console.log("  Role:", reviewer.role?.name);
+          });
+
+          // Pass the reviewers data to a state or function for further use
+          setReviewers(reviewers.map(reviewer => ({
+            id: reviewer.id,
+            name: reviewer.auth_user.first_name,
+            username: reviewer.auth_user.username,
+            email: reviewer.auth_user.email,
+            mobile: reviewer.mobile,
+            role: reviewer.role?.name,
+          })));
+        } else {
+          console.log("ℹ️ No reviewers found.");
+        }
+
+      } catch (error) {
+        console.error("❌ Error fetching reviewer list:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviewer();
+  }, []);
+  
+  
+  
+  
+  // Call the function here, not inside itself
+
+  
+  
+  // Call the function (once)
+  
   const filteredData1 = filteredData.filter((item) => {
     if (filter === '') {
       return item.declarationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.updatedDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.documentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.assigned_to.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.status.toLowerCase().includes(searchTerm.toLowerCase());
     } else {
       return item.status === filter && (
@@ -136,6 +220,7 @@ const DocumentTable = () => {
         item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.updatedDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.documentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.assigned_to.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.status.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -156,10 +241,44 @@ const DocumentTable = () => {
 
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
-  const handleSelectChange = (e) => {
-    setAssignedUser(e.target.value);
-    // setIsEditing(false); // lock editing once a user is selected
+  const handleSelectChange = (e, docId) => {
+    const selectedUserId = e.target.value;
+  
+    setAssignedUsers((prev) => ({
+      ...prev,
+      [docId]: selectedUserId,
+    }));
+  
+    console.log("🧑 Selected Reviewer ID:", selectedUserId);
+    console.log("📄 Document ID:", docId);
+  
+    const fetchAssignedUser = async (userId, documentId) => {
+      try {
+        const assignedUserData = await apiServices.assignedUser(userId, documentId);
+        console.log("✅ Assigned User Data:", assignedUserData);
+        setAssignedUserInfo(assignedUserData.map(assignedUser => ({
+          assigned_to: assignedUser.assigned_to,
+          docID:assignedUser.document_id,
+          message: assignedUser.message,
+        }))); // Set state to display in UI
+      } catch (error) {
+        console.error("❌ Error fetching assigned user:", error);
+      }
+    };
+  
+    fetchAssignedUser(selectedUserId, docId);
   };
+
+  
+  
+
+  // useEffect (() => {
+  //   if (assignedUserData) {
+  //     fetchAssignedUser(assignedUserData);
+  //   }
+  // }, [assignedUserData]);
+  
+  
 
   // const handleEditClick = () => {
   //   setIsEditing(true); // re-enable editing
@@ -446,33 +565,43 @@ const handleClosePopup = () => {
                                     "Null"
                                 )}
               {/* <a
-              title={item.fileName.split('/').pop()}
-              onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
-              style={{ cursor: "pointer", textDecoration: "underline" }}>
-  {item.fileName.split('/').pop().substring(0, 20) + '...'}
-</a> */}
-              </td>
+                      title={item.fileName.split('/').pop()}
+                      onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
+                      style={{ cursor: "pointer", textDecoration: "underline" }}>
+                {item.fileName.split('/').pop().substring(0, 20) + '...'}
+              </a> */}
+                      </td>
 
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               
               <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
               <td className="documenttable_td px-6 py-4">
               {item.status === "PENDING" ? (
-        isEditing ? (
-          <select className="documenttable_select" value={assignedUser} onChange={handleSelectChange}>
-            <option value="">Select User</option>
-            <option value="user1">Approver 1</option>
-            <option value="user2">Approver 2</option>
-          </select>
-        ) : (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>{assignedUser || 'Not assigned'}</span>
-            {/* <button onClick={handleEditClick}>Change</button> */}
-          </div>
-        )
-      ) : (
-        "Assigned:Reviewer"
-      )}
+  isEditing ? (
+    <select
+      className="documenttable_select"
+      value={assignedUsers[item.docId] || ""}
+      onChange={(e) => handleSelectChange(e, item.docId)}
+    >
+      {reviewers.map((reviewer) => (
+        <option key={reviewer.id} value={reviewer.id}>
+          {reviewer.name}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <span>
+        {assignedUsers[item.docId]
+          ? reviewers.find((r) => r.id === assignedUsers[item.docId])?.name || 'Unknown'
+          : 'Not assigned'}
+      </span>
+    </div>
+  )
+) : (
+  // "Assigned:Reviewer"
+ <>{item?.assigned_to}</>
+)}
               </td>
               <td className="documenttable_td px-6 py-4">
                 <span

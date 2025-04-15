@@ -165,6 +165,18 @@ const authService = {
     }
     return handleResponse(apiClient.get(`owner/${orgid}/details`))   
   },
+  reviewerlist:async () => {
+    return handleResponse(apiClient.get(`aprover_list/`))
+  },
+  assignedUser: async (userId, docId) => {
+    console.log("📤 Calling API with:", userId, docId);
+    if (!userId || !docId) {
+      throw new Error('Both userId and docId are required.');
+    }
+    return handleResponse(
+      apiClient.post(`assign-approver-document/${userId}/document/${docId}/`)
+    );
+  },
 
   MonthYearCompany: async () => {
     return handleResponse(apiClient.get('organization/state/')) 
