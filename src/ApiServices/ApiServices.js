@@ -163,7 +163,7 @@ const authService = {
     if (!orgid) {
       throw new Error('Organization ID is required.');
     }
-    return handleResponse(apiClient.get(`owner/${orgid}/details`))   
+    return handleResponse(apiClient.get(`owner/details`))   
   },
 
   MonthYearCompany: async () => {

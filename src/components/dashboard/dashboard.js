@@ -88,6 +88,7 @@ const DashboardApp = () => {
   const isUploader = role === "UPLOADER";
   const isReviewer = role === "REVIEWER";
   const isViewer = role === "VIEWER";
+  const isAdmin = role === "ADMIN";
   const isAdminOrDocumentRole = ["ADMIN", "UPLOADER", "APPROVER", "REVIEWER", "VIEWER"].includes(role);
   const isProductOwner = ["PRODUCT_OWNER", "PRODUCT_ADMIN"].includes(role);
 
@@ -684,8 +685,7 @@ const isDataEmpty = selectedCompanyData.every(
           style={{
             // marginTop: isUploader ? "0px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "135px" : "0px",
             position: "relative",
-            bottom: isUploader ? "20px" : "",
-          }}
+            bottom: isUploader || isReviewer ? "-20px" : "",          }}
         >
           Welcome, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()}
         </h2>
@@ -766,14 +766,14 @@ const isDataEmpty = selectedCompanyData.every(
               DashboardStats={DashboardStats}
               isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
             />
-            
-            <UserPieChart
+            {isAdmin ? <UserPieChart
               userCount={totalUsers}
               uploadCount={uploaderCount}
               reviewerCount={reviewerCount}
               viewerCount={viewerCount}
               isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
-            />
+            /> : "" }
+            
             
             <ProgressBarChart
               client={client}
