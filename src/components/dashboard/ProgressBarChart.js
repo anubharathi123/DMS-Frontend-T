@@ -22,6 +22,8 @@ const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, i
         // margin: isAdminOrDocumentRole ? "none" : "auto",
         // marginTop: isUploader ? "-350px" : isReviewer ? "-340px" : isViewer ? "-330px " : isAdminOrDocumentRole ? "-375px" : "0px",
         position: "relative",
+        marginTop: isUploader || isReviewer ? "40px" : "0px",
+        
       }}
     >
       <h3

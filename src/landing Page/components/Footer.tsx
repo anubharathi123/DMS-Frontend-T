@@ -54,7 +54,7 @@ export default function Footer() {
     name: '',
   email: '',
   mobile: '',
-  country: '',
+  country: 'UAE',
   company_name: '',
   designation: '',
   team_size: '',
@@ -103,7 +103,7 @@ export default function Footer() {
         name: '',
         email: '',
         mobile: '',
-        country: '',
+        country: 'UAE',
         company_name: '',
         designation: '',
         team_size: '',
@@ -200,16 +200,16 @@ export default function Footer() {
             />
             {errors.mobile && <Typography color="error">{errors.mobile}</Typography>}
 
-            <FormLabel>Country</FormLabel>
+            {/* <FormLabel>Country</FormLabel>
             <TextField
               name="country"
               fullWidth
               size="small"
-              value={formData.country}
+              value={formData.country || "UAE"}
               onChange={handleChange}
               error={!!errors.country}
               helperText={errors.country}
-            />
+            /> */}
 
             <FormLabel>Company Name</FormLabel>
             <TextField
@@ -261,8 +261,9 @@ export default function Footer() {
         native: true,
       }}
     >
-      <option value="">Select Country</option>
+      <option value="">UAE</option>
       <option value="us">United States</option>
+      {/* <option value="us">UAE</option> */}
       <option value="ca">Canada</option>
       <option value="gb">United Kingdom</option>
       <option value="au">Australia</option>

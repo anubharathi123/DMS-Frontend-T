@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/material.css';
 import authService from '../../ApiServices/ApiServices';
-import { isValidPhoneNumber, parsePhoneNumberFromString,getExampleNumber } from "libphonenumber-js";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import './SignUpCard.css'
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -105,19 +105,68 @@ export default function SignUpCard({ onSwitch }) {
   // };
 
   // Phone number validation (UAE: +971 followed by 9 digits)
+  // const handlePhoneChange = (value) => {
+  //   setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
+
+  //   // Parse the number properly to check if it's valid for UAE
+  //   const phoneNumber = parsePhoneNumberFromString(value);
+
+  //   if (!phoneNumber || !phoneNumber.isValid() || phoneNumber.nationalNumber.length !== 9) {
+  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number with 9 digits' }));
+  //   } else {
+  //     setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
+  //   }
+  // };
+  // const handlePhoneChange = (value) => {
+  //   setFormData((prevData) => ({ ...prevData, mobile: value || '' }));
+  
+  //   const phoneNumber = parsePhoneNumberFromString(value); // Don't pass 'AE'
+  
+  //   let error = '';
+  
+  //   if (!phoneNumber || !phoneNumber.isValid()) {
+  //     error = 'Enter a valid UAE phone number';
+  //   } else {
+  //     const countryCode = phoneNumber.country;
+  //     const nationalNumber = phoneNumber.nationalNumber;
+  
+  //     if (countryCode !== 'AE') {
+  //       error = 'Only UAE numbers are allowed';
+  //     } else if (nationalNumber.length !== 9 || !/^5\d{8}$/.test(nationalNumber)) {
+  //       error = 'UAE mobile must be 9 digits and start with 5';
+  //     }
+  //   }
+  
+  //   setErrors((prevErrors) => ({ ...prevErrors, mobile: error }));
+  // };
   const handlePhoneChange = (value) => {
-    setFormData((prevData) => ({ ...prevData, mobile: value || "" }));
-
-    // Parse the number properly to check if it's valid for UAE
-    const phoneNumber = parsePhoneNumberFromString(value, 'AE');
-
-    if (!phoneNumber || !phoneNumber.isValid() || phoneNumber.nationalNumber.length !== 9) {
-      setErrors((prevErrors) => ({ ...prevErrors, mobile: 'Enter a valid UAE phone number with 9 digits' }));
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, mobile: '' }));
+    if (!value.startsWith('+')) {
+      console.warn('Phone number missing + sign:', value); // ✅ Add this here
     }
-  };
 
+    const phoneWithPlus = value.startsWith('+') ? value : `+${value}`;
+    setFormData((prevData) => ({ ...prevData, mobile: phoneWithPlus }));
+  
+    const phoneNumber = parsePhoneNumberFromString(phoneWithPlus);
+  
+    let error = '';
+  
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      error = 'Enter a valid UAE phone number';
+    } else {
+      const countryCode = phoneNumber.country;
+      const nationalNumber = phoneNumber.nationalNumber;
+  
+      if (countryCode !== 'AE') {
+        error = 'Only UAE numbers are allowed';
+      } else if (!/^5\d{8}$/.test(nationalNumber)) {
+        error = 'UAE number must be 9 digits and start with 5';
+      }
+    }
+  
+    setErrors((prevErrors) => ({ ...prevErrors, mobile: error }));
+  };
+  
   
   
   const validateForm = () => {
@@ -128,12 +177,48 @@ export default function SignUpCard({ onSwitch }) {
     const isAllUpperCase = trimmedEmail === trimmedEmail.toUpperCase();
     if (!formData.username) tempErrors.username = 'Username is required';
     if (!formData.companyName) tempErrors.companyName = 'Company Name is required';
-    if (!formData.personName) tempErrors.personName = 'Person Name is required';
-  
-    const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE');
-    if (!formData.mobile || !phoneNumber || !phoneNumber.isValid()) {
-      tempErrors.mobile = 'Enter a valid UAE phone number';
+    // if (!formData.personName) tempErrors.personName = 'Person Name is required'; 
+    if (!formData.personName) {
+      tempErrors.personName = 'Person Name is required';
+    } else if (!/^[a-zA-Z\s'-]+$/.test(formData.personName)) {
+      tempErrors.personName = 'Person Name must not include special characters or numbers';
     }
+    
+    
+  
+    // const phoneNumber = parsePhoneNumberFromString(formData.mobile, 'AE');
+    // if (!formData.mobile || !phoneNumber || !phoneNumber.isValid() || !/^5\d{8}$/.test(phoneNumber.nationalNumber)) {
+    //   tempErrors.mobile = 'Enter a valid UAE mobile number (9 digits, starting with 5)';
+    // }
+
+
+//     const phoneNumber = parsePhoneNumberFromString(formData.mobile);
+// if (
+//   !formData.mobile ||
+//   !phoneNumber ||
+//   !phoneNumber.isValid() ||
+//   phoneNumber.country !== 'AE' ||
+//   !/^5\d{8}$/.test(phoneNumber.nationalNumber)
+// ) {
+//   tempErrors.mobile = 'Enter a valid UAE mobile number (9 digits, starting with 5)';
+// }
+
+const phoneWithPlus = formData.mobile.startsWith('+') ? formData.mobile : `+${formData.mobile}`;
+const phoneNumber = parsePhoneNumberFromString(phoneWithPlus);
+
+if (
+  !formData.mobile ||
+  !phoneNumber ||
+  !phoneNumber.isValid() ||
+  phoneNumber.country !== 'AE' ||
+  !/^5\d{8}$/.test(phoneNumber.nationalNumber)
+) {
+  tempErrors.mobile = 'Enter a valid UAE mobile number (9 digits, starting with 5)';
+}
+
+
+
+    
      const domain = trimmedEmail.split('@')[1]?.toLowerCase();
      const isSubdomain = domain?.split('.').length > 2;
     
@@ -151,7 +236,7 @@ export default function SignUpCard({ onSwitch }) {
       tempErrors.password = 'Password must include uppercase, lowercase, number & special char, no spaces';
     } else if (isPasswordSameAsEmail) {
       tempErrors.password = 'Password should not be same as email';
-    } else if (/[^\x00-\x7F]/.test(password)) {
+    } else if (/[\uD800-\uDFFF]/.test(password)) {
       tempErrors.password = 'Emoji or non-standard characters not allowed';
     }
     
@@ -273,14 +358,14 @@ export default function SignUpCard({ onSwitch }) {
 <FormControl>
   <FormLabel>Email <span className="mandatory">*</span></FormLabel>
   <TextField
-    name="email"
-    value={formData.email}
-    onChange={(e) => {
-      const trimmedValue = e.target.value.trim();
-      handleChange({ target: { name: 'email', value: trimmedValue } });
-    }}
-    error={!!errors.email}
-    helperText={errors.email}
+      name="email"
+      value={formData.email}
+      onChange={(e) => {
+        const trimmedValue = e.target.value.trim();
+        handleChange({ target: { name: 'email', value: trimmedValue } });
+      }}
+      error={!!errors.email}
+      helperText={errors.email}
   />
 </FormControl>
 
@@ -288,7 +373,7 @@ export default function SignUpCard({ onSwitch }) {
 
         <FormControl>
           <FormLabel>Mobile <span className="mandatory">*</span></FormLabel>
-          <PhoneInput
+          {/* <PhoneInput
             country={'ae'}
             value={formData.mobile}
             placeholder={getExampleNumber}
@@ -298,7 +383,17 @@ export default function SignUpCard({ onSwitch }) {
               required:true
             }}
             enableSearch
-          />
+          /> */}
+            <PhoneInput
+              country={'ae'}
+              onlyCountries={['ae']}
+              value={formData.mobile}
+              onChange={handlePhoneChange}
+              inputStyle={{ width: '432px', paddingTop:'8px', paddingBottom:'8px' }}
+              inputProps={{ required: true }}
+              enableSearch
+            />
+
           {errors.mobile && <Typography color="error">{errors.mobile}</Typography>}
         </FormControl>
         <FormControl>

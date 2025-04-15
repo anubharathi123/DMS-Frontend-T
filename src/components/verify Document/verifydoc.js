@@ -86,7 +86,7 @@ const DocumentApproval = () => {
   const fetchDocuments = async () => {
     try {
       setIsLoading(true);
-      const response = await apiServices.getDocuments();
+      const response = await apiServices.getDocumentsPending();
       console.log('Documents:', response);
       const documents = response.documents
         .filter(doc => doc.status?.toLowerCase() === 'pending') // Filter documents with status 'pending'
