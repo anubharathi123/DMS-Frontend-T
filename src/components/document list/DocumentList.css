@@ -61,7 +61,8 @@
   padding: 8px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-  top: 40px;
+  /* top: 40px; */
+  bottom:66%;
   left: 10px;
   z-index: 100;
   font-size: 12px;
@@ -267,9 +268,13 @@ padding-left: .5rem !important;
   z-index: 10;
 }
 
-
-
-
+.documenttable_select {
+  font-size: 12px !important;
+    /* padding-top: .5rem !important;
+    padding-bottom: .5rem !important; */
+    border-radius: 7px;
+    width: 100px;
+}
 
 /* Make sure the table is properly styled */
 .documenttable_table {

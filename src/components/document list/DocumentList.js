@@ -34,6 +34,8 @@ const DocumentTable = () => {
   const [endDate, setEndDate] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null); // To store selected file URL
   const [filteredBackupData, setFilteredBackupData] = useState([]);
+  const [assignedUser, setAssignedUser] = useState('');
+  const [isEditing, setIsEditing] = useState(true); // allow edit initially if status is PENDING
   const [userRole, setUserRole] = useState(null); // Store user role
   const searchInfoRef = useRef(null); // Reference for search info popup
   const url = API_URL1
@@ -153,6 +155,15 @@ const DocumentTable = () => {
   }, [filterDate, data]);
 
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
+  const handleSelectChange = (e) => {
+    setAssignedUser(e.target.value);
+    // setIsEditing(false); // lock editing once a user is selected
+  };
+
+  // const handleEditClick = () => {
+  //   setIsEditing(true); // re-enable editing
+  // };
 
   const handleBackupClick = () => {
     navigate('/backup');
@@ -411,6 +422,7 @@ const handleClosePopup = () => {
               )}
             </th>
             <th className="documenttable_th px-6 py-3">Doc Type</th>
+            <th className="documenttable_th px-6 py-3">Assign To</th>
             <th className="documenttable_th px-6 py-3">Status</th>
             <th className="documenttable_th px-6 py-3">Comments</th>
           </tr>
@@ -445,6 +457,24 @@ const handleClosePopup = () => {
               
               <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
               <td className="documenttable_td px-6 py-4">
+              {item.status === "PENDING" ? (
+        isEditing ? (
+          <select className="documenttable_select" value={assignedUser} onChange={handleSelectChange}>
+            <option value="">Select User</option>
+            <option value="user1">Approver 1</option>
+            <option value="user2">Approver 2</option>
+          </select>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>{assignedUser || 'Not assigned'}</span>
+            {/* <button onClick={handleEditClick}>Change</button> */}
+          </div>
+        )
+      ) : (
+        "Assigned:Reviewer"
+      )}
+              </td>
+              <td className="documenttable_td px-6 py-4">
                 <span
                   data-tip={item.rejectionReason} 
                   className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
@@ -456,6 +486,7 @@ const handleClosePopup = () => {
                  
                 </span>
               </td>
+              
               <td className="documenttable_td px-6 py-4">
               {item.status === "REJECTED" ? (
     <div className="tooltip-container">
@@ -463,7 +494,7 @@ const handleClosePopup = () => {
       <div className="tooltip-content">{item.rejectionReason}</div>
     </div>
   ) : (
-    <span>-</span>
+    <span>----</span>
   )}
                      
               </td>

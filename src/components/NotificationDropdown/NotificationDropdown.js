@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiServices from '../../ApiServices/ApiServices'; // Ensure correct import path
+import Loader from "react-js-loader";
 import './NotificationDropdown.css';
 
 const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
@@ -14,39 +15,39 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
 
   
   
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const details_data = await apiServices.details();
-        let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
-        if (!org_id) throw new Error("Organization ID not found");
+  // useEffect(() => {
+  //   const fetchNotifications = async () => {
+  //     try {
+  //       const details_data = await apiServices.details();
+  //       let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
+  //       if (!org_id) throw new Error("Organization ID not found");
 
-        setOrgId(org_id);
+  //       setOrgId(org_id);
 
-        // Fetch notifications using the obtained org_id
-        const response = await apiServices.OrgNotification();
-        console.log(response);
-        const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-        .map((not, index) => ({
-            not_message:not.message,
-            not_title:not.title,
-            id:response[index].id 
-        }));
+  //       // Fetch notifications using the obtained org_id
+  //       const response = await apiServices.OrgNotification();
+  //       console.log(response);
+  //       const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+  //       .map((not, index) => ({
+  //           not_message:not.message,
+  //           not_title:not.title,
+  //           id:response[index].id 
+  //       }));
 
-        setNotifications(sortedNotifications);
-        onNotificationsUpdate(sortedNotifications); // Pass to parent
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-        setError(err.message || "Failed to load notifications");
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setNotifications(sortedNotifications);
+  //       onNotificationsUpdate(sortedNotifications); // Pass to parent
+  //     } catch (err) {
+  //       console.error("Error fetching notifications:", err);
+  //       setError(err.message || "Failed to load notifications");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (!orgId) {
-      fetchNotifications();
-    }
-  }, [orgId, onNotificationsUpdate]); // Re-run when orgId updates
+  //   if (!orgId) {
+  //     fetchNotifications();
+  //   }
+  // }, [orgId, onNotificationsUpdate]); // Re-run when orgId updates
 
   const fetchOrgAndNotifications = async () => {
     try {
@@ -63,7 +64,7 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
       const response = await apiServices.OrgNotification();
       console.log(response);
       const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-      .map((not, index) => ({
+      .map((not) => ({
           not_message:not.notification.message,
           not_title:not.notification.title,
           id:not.id,
@@ -75,7 +76,7 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
       console.error('Error fetching notifications:', err);
       setError(err.message || 'Failed to load notifications');
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 500); // Delay loading state by 2 seconds
     }
   };
 
@@ -133,12 +134,16 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
 
   return (
     <div className="notification-page">
-      <button type="button" className="notification-close" onClick={closeNotification}>
+      {/* <button type="button" className="notification-close" onClick={closeNotification}>
         x
-      </button>
+      </button> */}
       <h3>Notifications</h3>
       {loading ? (
-        <p>Loading notifications...</p>
+        // <p>Loading notifications...</p>
+        <div className="notification-loading">
+    <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={60} />
+    <p style={{ marginTop: "10px", color: "#555" }}>Loading notifications...</p>
+  </div>
       ) : error ? (
         <p className="error-message">{error}</p>
       ) : notifications.length > 0 ? (

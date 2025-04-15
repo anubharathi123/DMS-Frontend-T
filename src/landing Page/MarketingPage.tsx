@@ -9,9 +9,9 @@ import Highlights from './components/Highlights';
 import Pricing from './components/Pricing';
 import Features from './components/Features';
 import Testimonials from './components/Testimonials';
-import FAQ from './components/FAQ';
+// import FAQ from './components/FAQ';
 import Footer from './components/Footer';
-import Leader from './components/leadership'
+// import Leader from './components/leadership'
 
 export default function MarketingPage(props: { disableCustomTheme?: boolean }) {
   return (
@@ -30,9 +30,9 @@ export default function MarketingPage(props: { disableCustomTheme?: boolean }) {
         {/* <Divider /> */}
         {/* <Pricing /> */}
         <Divider />
-        <Leader />
+        {/* <Leader /> */}
         <Divider />
-        <FAQ />
+        {/* <FAQ /> */}
         <Divider />
         <Footer />
       </div>
