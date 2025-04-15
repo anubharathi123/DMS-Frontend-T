@@ -155,7 +155,7 @@ const FileSizeTrendsChart = ({
         )}
       </center>
 
-      <div className="chart">
+      <div className="chart" >
       <MonthlyDocumentChart
   groupedData={
     isAdminOrDocumentRole || !selectedCompany

@@ -160,7 +160,7 @@ const MonthlyDocumentChart = ({  groupedData,
             maxWidth: "400px",
             height: "300px",
             boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-            marginLeft: "70px",
+            marginLeft: "40px",
           }}
         >
           {groupedData.length > 0 ?  (

@@ -205,7 +205,7 @@ export default function Footer() {
               name="country"
               fullWidth
               size="small"
-              value={formData.country}
+              value={formData.country || "UAE"}
               onChange={handleChange}
               error={!!errors.country}
               helperText={errors.country}
@@ -261,8 +261,9 @@ export default function Footer() {
         native: true,
       }}
     >
-      <option value="">Select Country</option>
+      <option value="">UAE</option>
       <option value="us">United States</option>
+      {/* <option value="us">UAE</option> */}
       <option value="ca">Canada</option>
       <option value="gb">United Kingdom</option>
       <option value="au">Australia</option>

@@ -140,7 +140,7 @@
 .search-container {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
   padding-bottom: 2px;
   width: fit-content;
 }
