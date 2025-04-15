@@ -54,7 +54,7 @@ export default function Footer() {
     name: '',
   email: '',
   mobile: '',
-  country: '',
+  country: 'UAE',
   company_name: '',
   designation: '',
   team_size: '',
@@ -103,7 +103,7 @@ export default function Footer() {
         name: '',
         email: '',
         mobile: '',
-        country: '',
+        country: 'UAE',
         company_name: '',
         designation: '',
         team_size: '',
@@ -200,7 +200,7 @@ export default function Footer() {
             />
             {errors.mobile && <Typography color="error">{errors.mobile}</Typography>}
 
-            <FormLabel>Country</FormLabel>
+            {/* <FormLabel>Country</FormLabel>
             <TextField
               name="country"
               fullWidth
@@ -209,7 +209,7 @@ export default function Footer() {
               onChange={handleChange}
               error={!!errors.country}
               helperText={errors.country}
-            />
+            /> */}
 
             <FormLabel>Company Name</FormLabel>
             <TextField

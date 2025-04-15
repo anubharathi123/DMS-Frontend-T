@@ -134,9 +134,9 @@ export default function AppAppBar() {
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2, alignItems: "center" }}>
           <Button variant="text" color="info" onClick={() => scroll("hero")}>Home</Button>
             <Button variant="text" color="info" onClick={() => scroll("features")}>Features</Button>
-            <Button variant="text" color="info" onClick={() => scroll("testimonials")}>Testimonials</Button>
+            {/* <Button variant="text" color="info" onClick={() => scroll("testimonials")}>Testimonials</Button>
             <Button variant="text" color="info" onClick={() => scroll("leaders")}>Our Leaders</Button>
-            <Button variant="text" color="info" onClick={() => scroll("faq")}>FAQ's</Button>
+            <Button variant="text" color="info" onClick={() => scroll("faq")}>FAQ's</Button> */}
             <Button variant="text" color="info" onClick={() => scroll("footer")}>Contact Us</Button>
             
             <Button 
@@ -170,18 +170,18 @@ export default function AppAppBar() {
                 </Box>
                 <MenuItem onClick={() => { scroll("hero"); setOpen(false); }}>Home</MenuItem>
                 <MenuItem onClick={() => { scroll("features"); setOpen(false); }}>Features</MenuItem>
-                <MenuItem onClick={() => { scroll("testimonials"); setOpen(false); }}>Testimonials</MenuItem>
+                {/* <MenuItem onClick={() => { scroll("testimonials"); setOpen(false); }}>Testimonials</MenuItem>
                 <MenuItem onClick={() => { scroll("leaders"); setOpen(false); }}>Our Leaders</MenuItem>
-                <MenuItem onClick={() => { scroll("faq"); setOpen(false); }}>FAQ's</MenuItem>
+                <MenuItem onClick={() => { scroll("faq"); setOpen(false); }}>FAQ's</MenuItem> */}
                 <MenuItem onClick={() => { scroll("footer"); setOpen(false); }}>Contact Us</MenuItem>
                 <Divider sx={{ my: 2 }} />
-                <MenuItem>
+                {/* <MenuItem> 
                   <Button color="primary" variant="contained" fullWidth>
                     Sign Up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
+                  </Button> 
+                 </MenuItem> */}
+                <MenuItem onClick={() => { window.location.href = '/login'; setOpen(false); }}>
+                  <Button color="primary" variant="contained" fullWidth>
                     Sign In
                   </Button>
                 </MenuItem>
