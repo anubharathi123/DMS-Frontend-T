@@ -18,7 +18,6 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 //   Tooltip,
 //   ResponsiveContainer,
 // } from "recharts";
-import DeclarationCount from "./DeclarationCount";
 import {
   Chart as ChartJS,
   BarElement,
@@ -181,16 +180,6 @@ const DashboardApp = () => {
       return null;
     }
   };
-
-  const fetchOrganizationSummary1 = async (orgid) => {
-    try {
-      const response = await apiServices.organizationIdDetails(orgid);
-      setOrgSummary(response);
-      console.log("📦 Full Organization Summary:", response);
-    } catch (error) {
-      console.error("❌ Error fetching organization summary:", error);
-    }
-  };
   
 
   useEffect(() => {
@@ -202,13 +191,6 @@ const DashboardApp = () => {
   //   // Once ID is set, fetch summary
   //   if (organizationId) {
   //     fetchOrganizationSummary(organizationId);
-  //   }
-  // }, [organizationId]);
-
-  // useEffect(() => {
-  //   // Once ID is set, fetch summary
-  //   if (organizationId) {
-  //     fetchOrganizationSummary1(organizationId);
   //   }
   // }, [organizationId]);
 
@@ -627,40 +609,40 @@ const companyCount= async () => {
     return acc;
   }, {});
 
-  // const OrganizationDashboard = ({ organizationId }) => {
-  //   const [orgDetails, setOrgDetails] = useState(null);
-  //   const [loading, setLoading] = useState(true);
-  //   const [error, setError] = useState("");
+  const OrganizationDashboard = ({ organizationId }) => {
+    const [orgDetails, setOrgDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
   
-  //   useEffect(() => {
-  //     const fetchOrgDetails = async () => {
-  //       try {
-  //         const data = await apiServices.organizationIdDetails(organizationId);
-  //         console.log("Organization Full Data:", data); // 🔍 Console log full class data
-  //         setOrgDetails(data);
-  //       } catch (err) {
-  //         console.error("Failed to fetch organization details:", err);
-  //         setError("Failed to load data");
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
+    useEffect(() => {
+      const fetchOrgDetails = async () => {
+        try {
+          const data = await apiServices.organizationIdDetails(organizationId);
+          console.log("Organization Full Data:", data); // 🔍 Console log full class data
+          setOrgDetails(data);
+        } catch (err) {
+          console.error("Failed to fetch organization details:", err);
+          setError("Failed to load data");
+        } finally {
+          setLoading(false);
+        }
+      };
   
-  //     if (organizationId) {
-  //       fetchOrgDetails();
-  //     }
-  //   }, [organizationId]);
+      if (organizationId) {
+        fetchOrgDetails();
+      }
+    }, [organizationId]);
   
-  //   if (loading) return <p>Loading organization details...</p>;
-  //   if (error) return <p>{error}</p>;
+    if (loading) return <p>Loading organization details...</p>;
+    if (error) return <p>{error}</p>;
   
-  //   const summary = orgDetails.summary;
-  //   console.log("Summary:", summary); // 🔍
+    const summary = orgDetails.summary;
+    console.log("Summary:", summary); // 🔍
 
-  //   return ( 
-  //     ""
-  //   )
-  // };    
+    return ( 
+      ""
+    )
+  };    
 
 
   const detailsoforg = (clickedMonth) => {
@@ -695,31 +677,14 @@ const isDataEmpty = selectedCompanyData.every(
   ) / 1024;
 
   return (
-    <div className="dashboard-body boy bg"
-      // style={{background: isUploader ? "linear-gradient(135deg,rgb(253, 226, 239) 0%, #ff5858 100%)" :""}}
-      >
-      <div className="dashboard-container"
-        style={{
-          background:isUploader?"":"",
-          height: isUploader ? "360px" : "auto",
-          padding: isUploader ? "0px" : "0px",
-          marginTop: isUploader ? "0px" : "0px",
-          position: isUploader ? "relative" : "relative",
-          bottom: isUploader ? "60px" : "0px",
-          left: isUploader ? "150px" : "0px",
-        
-        }}
-      >
+    <div className="dashboard-body boy bg">
+      <div className="dashboard-container">
         <h2
           className={isAdminOrDocumentRole ? "dashboard-h2" : "dashboard-h2-1"}
           style={{
             // marginTop: isUploader ? "0px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "135px" : "0px",
             position: "relative",
-            // top: isUploader ? "0px" : isAdminOrDocumentRole ? "0px" : "0px",
-            bottom: isUploader ? "20%" : isAdminOrDocumentRole ? "0px" : "0px",
-            right: isUploader ? "12%" : isAdminOrDocumentRole ? "0px" : "0px",
-            
-            
+            bottom: isUploader ? "20px" : "",
           }}
         >
           Welcome, {username.charAt(0).toUpperCase() + username.slice(1).toLowerCase()}
@@ -798,7 +763,6 @@ const isDataEmpty = selectedCompanyData.every(
         {(isAdminOrDocumentRole || isUploader) && (
           <div className="dashboard-cards-container-fit-1">
             <CardAnalytics
-            isUploader={isUploader}
               DashboardStats={DashboardStats}
               isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
             />
@@ -810,12 +774,6 @@ const isDataEmpty = selectedCompanyData.every(
               viewerCount={viewerCount}
               isAdminOrDocumentRole={isAdminOrDocumentRole || isUploader}
             />
-
-            <DeclarationCount
-              isAdminOrDocumentRole={isAdminOrDocumentRole}
-              orgSummary={orgSummary}
-              isUploader={isUploader}
-              />
             
             <ProgressBarChart
               client={client}
@@ -831,16 +789,8 @@ const isDataEmpty = selectedCompanyData.every(
         {/* Admin Document Management */}
         {isAdminOrDocumentRole && (
           <div className="admin-dashboard-container">
-            <div className="chart-container"
-              style={{
-                bottom: isReviewer ? "0px" : isViewer ? "" :"",
-                left: isUploader ? "50px" : isReviewer ? "0px" : isViewer ? "" : isAdminOrDocumentRole ? "20px" : "0px",
-                top: isAdminOrDocumentRole ? "150px" : "0px",
-                display:isUploader?"none": "",
-              }}
-            >
+            <div className="chart-container">
               <CompanyTable
-              isUploader={isUploader}
                 companyData={companyData}
                 isLoading={isLoading}
                 rowLimit={rowLimit}
