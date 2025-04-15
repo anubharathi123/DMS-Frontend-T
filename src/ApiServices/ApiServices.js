@@ -159,11 +159,8 @@ const authService = {
     return handleResponse(apiClient.get('organizations/dashboard/'))
   },
 
-  organizationIdDetails: async (orgid) => {
-    if (!orgid) {
-      throw new Error('Organization ID is required.');
-    }
-    return handleResponse(apiClient.get(`owner/${orgid}/details`))   
+  organizationIdDetails: async () => {
+    return handleResponse(apiClient.get(`owner/details`))   
   },
 
   MonthYearCompany: async () => {
@@ -404,6 +401,8 @@ const authService = {
     return handleResponse(apiClient.post('documents/upload/', data));
   },
   getDocuments: async () => handleResponse(apiClient.get('documents/')),
+  getDocumentsPending: async () => handleResponse(apiClient.get('pending-reviewer-document/')),
+
   checkdeclarationdoc: async (declaration) => handleResponse(apiClient.get(`documents/${Number(declaration)}/`)),
 
   getDocumentById: async (docId) => {
@@ -432,6 +431,14 @@ const authService = {
     }
     return handleResponse(apiClient.post(`documents/${docId}/approve/`));
   },
+
+  pendingDocument: async (docId) => {
+    if (!docId) {
+      throw new Error('Document ID is required to approve a document.');
+    }
+    return handleResponse(apiClient.post(`documents/${docId}/approve/`));
+  },
+
   rejectDocument: async (docId, reason) => {
     // if (!docId || !reason) {
     //   throw new Error('Document ID and rejection reason are required.');
