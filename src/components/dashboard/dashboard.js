@@ -804,7 +804,7 @@ const isDataEmpty = selectedCompanyData.every(
         {isAdminOrDocumentRole && (
           <div className="admin-dashboard-container">
             <div className="chart-container">
-            <div className="aswin">
+            {/* <div className="aswin"> */}
               <CompanyTable
                 companyData={companyData}
                 isLoading={isLoading}
@@ -816,10 +816,14 @@ const isDataEmpty = selectedCompanyData.every(
                 setRowLimit={setRowLimit}
               />
             
-
-            
+            </div>
+            <div className="trend-chart-container">
               <MonthlyDocumentChart
                 selectedReportYear={selectedReportYear}
+                setmodalOpenChart={setIsModalOpen}
+                setchartcomapny={setSelectedCompany}
+                chartcomapny={selectedCompany}
+                modalOpenChart={isModalOpen}
                 setSelectedReportYear={setSelectedReportYear}
                 uniqueReportYears={uniqueReportYears}
                 groupedData={groupedData}
@@ -832,7 +836,8 @@ const isDataEmpty = selectedCompanyData.every(
 }
             </div>
             </div>
-          </div>
+            
+          // </div>
         )}
       </div>
     </div>

@@ -29,6 +29,7 @@
   /* position: fixed; */
   /* margin-top: 620px; */
   overflow-x: hidden;
+  /* height: 100px; */
 }
   /* Skeleton Animation */
 
@@ -398,6 +399,10 @@
 margin-top: -30px;
 }
 
+
+.recharts-line{
+visibility: hidden;
+}
 /* .piechart-text {
 position: relative;
 bottom: 100%;
@@ -1135,10 +1140,10 @@ select {
 }
 
 .admin-dashboard-container {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
   align-items: flex-start;
-  gap: 20px;
+  /* gap: 20px; */
   width: 100%;
   padding: 20px;
 }
@@ -1146,6 +1151,7 @@ select {
 /* Chart takes 50% of the space */
 .chart-container {
   flex: 1;
+  width: 90%;
   max-width: 90%;
    border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -1159,9 +1165,9 @@ select {
     left: 35px;
     top: 99px; */
 }
-.recharts-yAxis{
+/* .recharts-yAxis{
   visibility: hidden;
-}
+} */
 /* Table takes 50% of the space */
 .table-container {
   flex: 1;
@@ -1328,12 +1334,21 @@ select {
 
 
 .aswin{
-  margin-top: 80px;
+  /* margin-top: 80px; */
   position: relative;
  }
 
  .dinu{
   position: relative;
-  bottom: 135px;
-  right: 25px;
+  /* bottom: 135px; */
+  /* right: 25px; */
+  padding: 0px;
+ }
+
+ .trend-chart-container{
+  display: flex;
+  width: 95%;
+  justify-content: space-between;
+  margin-top: 10px;
+
  }

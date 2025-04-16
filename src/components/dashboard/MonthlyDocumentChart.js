@@ -67,7 +67,7 @@ const MonthlyDocumentChart = ({  groupedData,
             marginRight:"10px",
             display:isUploader?"none": isReviewer? "none": isViewer?"none":"block",
             position: "relative",
-            right: "5%",
+            // right: "5%",
             width: "100%",
              maxWidth: "400px",
             height: "300px",
@@ -189,7 +189,9 @@ const MonthlyDocumentChart = ({  groupedData,
                           padding: "10px",
                           borderRadius: "8px",
                           boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-                          fontSize: "12px"
+                          fontSize: "12px",
+                          height: "150px",
+                          overflowY: "auto",
                         }}>
                           <p><strong>📅 Month:</strong> {monthData.month}</p>
                           <strong>Company Breakdown:</strong>

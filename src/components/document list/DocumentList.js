@@ -98,7 +98,7 @@ const DocumentTable = () => {
         const documents = response.documents.map(doc => ({
           
           docId:doc.id, 
-          assigned_to: doc.assigned_to?.username || null,
+          assigned_to: doc.assigned_to?.first_name || null,
           declarationNumber: doc.declaration_number,
           file: doc.current_version?.file_path,
           fileName: doc.current_version?.file_path ? doc.current_version.file_path: '',
@@ -256,12 +256,15 @@ const DocumentTable = () => {
       try {
         const assignedUserData = await apiServices.assignedUser(userId, documentId);
         console.log("✅ Assigned User Data:", assignedUserData);
-        setAssignedUserInfo(assignedUserData.map(assignedUser => ({
-          assigned_to: assignedUser.assigned_to,
-          docID:assignedUser.document_id,
-          message: assignedUser.message,
-        }))); // Set state to display in UI
+        
+        // setAssignedUserInfo(assignedUserData.map(assignedUser => ({
+        //   assigned_to: assignedUser.assigned_to,
+        //   docID:assignedUser.document_id,
+        //   message: assignedUser.message,
+        // }))); // Set state to display in UI
+        alert("Assigned User Data Successfully");
       } catch (error) {
+        alert("❌ Error fetching assigned user");
         console.error("❌ Error fetching assigned user:", error);
       }
     };
@@ -542,10 +545,10 @@ const handleClosePopup = () => {
             </th>
             <th className="documenttable_th px-6 py-3">Doc Type</th>
             
-            {role == "ADMIN" ?
+            {/* {role == "ADMIN" ? */}
               <th className="documenttable_th px-6 py-3">Assign To </th>
-              : ""
-              }
+              {/* : ""
+              } */}
             
             <th className="documenttable_th px-6 py-3">Status</th>
             <th className="documenttable_th px-6 py-3">Comments</th>
@@ -580,9 +583,9 @@ const handleClosePopup = () => {
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               
               <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
-              {role === "ADMIN" && (
+              {/* {role === "ADMIN" && ( */}
               <td className="documenttable_td px-6 py-4">
-              {item.status === "PENDING" ? (
+              {role === "ADMIN" ? (
   isEditing ? (
     <select
       className="documenttable_select"
@@ -609,7 +612,7 @@ const handleClosePopup = () => {
  <>{item?.assigned_to}</>
 )}
               </td>
-              )}
+              {/* )} */}
               <td className="documenttable_td px-6 py-4">
                 <span
                   data-tip={item.rejectionReason} 

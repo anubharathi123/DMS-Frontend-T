@@ -57,6 +57,7 @@ const DeclarationDeatilsMonthly = () => {
 
   const mergedData = defaultMonths.map((month) => {
     const match = transformedData.find((item) => item.month === month);
+    console.log("Merged Data", match);
     return match || { month, total_documents: 0, companies: [] };
   });
 
@@ -84,7 +85,7 @@ const DeclarationDeatilsMonthly = () => {
       >
         {isAdminOrDocumentRole && (
           <>
-            <span className="dashboard_text1"><center>Trend Analysis</center></span>
+            <span className="dashboard_text1"><center>Declaration</center></span>
             <div className="dropdown-container">
               <select
                 className="dashboard-year-select"
@@ -128,7 +129,7 @@ const DeclarationDeatilsMonthly = () => {
                       }}
                     >
                       <p><strong>📅 Month:</strong> {monthData.month}</p>
-                      <p><strong>📄 Documents Uploaded:</strong> {monthData.total_documents}</p>
+                      <p><strong>📄 Declaration Uploaded:</strong> {monthData.total_documents}</p>
                       {monthData.companies.length > 0 && (
                         <>
                           <strong>Company Breakdown:</strong>
