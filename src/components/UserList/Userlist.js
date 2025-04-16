@@ -10,6 +10,8 @@ import refreshIcon from '../../assets/images/refresh-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import Plus from '../../assets/images/pluslogo.png';
+import plus from '../../assets/images/Pluslogo2.png';
 
 const UserList = () => {
   const [data, setData] = useState([]);
@@ -236,15 +238,29 @@ const UserList = () => {
   return (
     <div className="userlist-container">
       <h1 className="userlist-header">User Details</h1>
+      <div className="userlist-header-actions">
+      {/* <button className="user_createbtn" onClick={handleCreateUser}>
+        + New User
+      </button> */}
+       <button
+  className="organization_createbtn"
+  onClick={() => navigate(handleCreateUser)}
+>
+  <img
+    src={Plus}
+    alt="Company Logo"
+    style={{
+      width: "25px",
+      height: "25px",
+      right:"95%",
+    }}
+  />
+</button>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
       <option value="">Select an Option </option>
-     <option value="New User">New User</option>
      <option value="Deleted List">Deleted List</option>
    </select>
-      {/* <div>
-        <button className='user_createbtn' onClick={handleCreateUser} > + New User</button> 
-        <button className='user_createbtn' onClick={handleDelete} > Deleted User List</button> 
-        </div> */}
+   </div>
         {actionMessage && <div className="userlist_action_message">{actionMessage}</div>}
 
         <div className="userlist-controls">

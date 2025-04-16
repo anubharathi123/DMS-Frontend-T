@@ -28,11 +28,11 @@
     margin-right: 10px;
     font-size: 12px;
     position: relative;
-    left: 73%;
+    left: 35%;
 }
 
 .admin_createbtn:hover {
-  background-color: #000b58 !important;
+  background-color: #000b58;
     color: white;
 }
 

@@ -230,6 +230,60 @@
     color: #495057;
     cursor: not-allowed;
   }
+  /* .user_createbtn {
+    padding: 10px 20px;
+    background-color: #005eff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    padding-right: 10px;
+  } */
   
- 
+  .user_createbtn:hover {
+    background-color: #1c3aa9;
+  }
+  
+  /* .userlist-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  } */
+  
+  /* .organization-select {
+    padding: 8px ;
+    border-radius: 5px;
+    font-size: 14px;
+    min-width: 180px;
+  } */
+
+  .userlist-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; /* Add spacing between button and dropdown */
+    margin-bottom: 1rem;
+    flex-wrap: wrap; /* Ensures responsiveness */
+  }
+  
+  .user_createbtn {
+    padding: 8px 16px;
+    background-color: #000b58;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .organization-select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 150px;
+    /* left:-0% */
+  }
   

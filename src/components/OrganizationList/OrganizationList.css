@@ -8,6 +8,8 @@
   top: 65px;
 }
 
+
+
 .organization-header {
     font-size: 18px;
     font-weight: bold;
@@ -47,10 +49,9 @@
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 7px;
-    width: 100px;
+    width: 150px;
     font-size: 12px !important;
     position: relative;
-    left: 90%;
 }
 
 .organization-container_controls {
@@ -160,12 +161,6 @@
     font-size: 12px !important;
 }
 
-/* .organization-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px !important;
-    align-self: anchor-center;
-} */
 
 .organization-thead {
     display: table;
@@ -195,7 +190,7 @@
 
 .organization-tbody {
     display: block;
-    max-height: 300px; /* Adjust based on desired height */
+    max-height: 300px;
     overflow-y: auto;
 }
 
@@ -349,4 +344,37 @@
   cursor: pointer;
 }
 
+  .userlist-header-actions {
+    display: flex;
 
+    justify-content: space-between;
+    margin-left: 71%;
+    gap: 1rem; 
+    margin-bottom: 1rem;
+    flex-wrap: wrap; 
+  }
+
+  .organization_createbtn {
+    padding: 10px 20px;
+    background-color: #000b58;
+    color: white;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 25px;
+    /* margin-right: 10px; */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+  .plus-icon {
+    margin-right: 6px; /* Adjust spacing as needed */
+    font-weight: bold;
+  }
+  
+  .organization_createbtn:hover {
+    background-color: #1c3aa9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  

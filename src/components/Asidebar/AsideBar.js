@@ -4,7 +4,7 @@ import {
   User, LayoutDashboard, Building2, UserPlus, ListOrdered,FileCheck2, FileText, Settings,Upload,ChartNoAxesCombined, FileQuestion
 } from "lucide-react"; // Importing icons
 import "./AsideBar.css";
-import Logo from "../../assets/images/Logo3.png";
+import Logo from "../../assets/images/Logo.png";
 import authService from "../../ApiServices/ApiServices";
 
 const AsideBar = () => {
@@ -60,16 +60,15 @@ const AsideBar = () => {
     <aside className="aside-bar">
       <div className="logo">
         <a href="http://localhost:3000/" target="_blank" rel="noopener noreferrer">
-          <img
-            src={Logo}
-            alt="Company Logo"
-            style={{
-              width: "130px",
-              marginTop: "-15px",
-              marginBottom: "15px",
-              height: "auto",
-            }}
-          />
+        <img
+          src={Logo}
+          alt="Company Logo"
+          style={{
+            width: "100%",              // Adjust as needed
+            height: "100%",
+            objectFit: "contain",        // Ensures it scales cleanly
+          }}
+        />
         </a>
       </div>
 

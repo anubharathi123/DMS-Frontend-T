@@ -317,11 +317,16 @@ const AdminList = () => {
   return (
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Details</h1>
-      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+      <div className="admin-list-header-actions">
+      <button className="admin_createbtn" onClick={() => navigate('/AdminCreation')}>
+        <span class="plus-icon">+</span>
+        <span>Create New</span>
+      </button>
+      <select className="admin-select" onChange={(e) => handleDropdownChange(e.target.value)}>
       <option value="">Select an Option </option>
-     <option value="New Admin">Add Admin</option>
      <option value="Deleted List">Deleted List</option>
    </select>
+   </div>
       {/* <div>
       <button className='admin_createbtn' onClick={handleCreateAdmin} > + New Admin</button>
       <button className='admin_createbtn' onClick={handleDeleteList} > Deleted Admin List</button> 
