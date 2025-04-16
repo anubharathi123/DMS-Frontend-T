@@ -18,7 +18,6 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
     "VIEWER",
   ].includes(role);
   const isUploader = role === "UPLOADER";
-  const isReviewer = role === "REVIEWER";
 
 
   // const UploaderStats = ({ stats }) => (
@@ -36,19 +35,24 @@ const CardAnalytics = ({ OrgCount, DashboardStats}) => {
     style={{
       background: "linear-gradient(135deg, #f857a6 0%, #ff5858 100%)",
       color: "white",
-      padding: "20px 30px",
+      padding: "20px",
       borderRadius: "20px",
       boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-      width: isUploader || isReviewer   ? "60%" : "300px",       // Full stretch only for uploader
-      marginLeft: isUploader || isReviewer ? "0" : "auto",
-      marginRight: isUploader || isReviewer ? "0" : "auto",
-      marginTop: isUploader || isReviewer ? "10px" : isAdminOrDocumentRole ? "-15px" : "",
-      position: "relative",
-      height: isUploader ? "auto" : "170px",
-      
+      width: "80%",
+      maxWidth: isUploader ? "290px" : "300px", // ✅ Expand if uploader
+      ...(isAdminOrDocumentRole
+        ? {
+            marginLeft: "0px",
+            transform: "translateX(0px)",
+            height:"170px",
+            position: "relative",
+            bottom: isUploader ? "22px" : "",
+            marginTop: isUploader ? " " : isAdminOrDocumentRole ? "-15px": "",
+            // left: "4%",
+            width: isUploader ? "500px" : "300px", // ✅ Expand for uploader
+          }
+        : { position: "relative", right: "10px" }),
     }}
-    
-    
   >
   
   

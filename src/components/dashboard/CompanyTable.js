@@ -15,7 +15,6 @@ import { PiFilesBold } from "react-icons/pi";
 // import { MdArrowDropUp, MdArrowDropDown  } from "react-icons/md";
 
 const CompanyTable = ({
-  OrganizationId,
   companyData,
   setCompanyData,
   isLoading,
@@ -29,23 +28,24 @@ const CompanyTable = ({
   isSearchFocused,
   setIsSearchFocused,
   tableforadmin,
+  organizationId,
   orgSummary,
 
 }) => {
   const role = localStorage.getItem("role");
+  console.log(organizationId)
   const closeModalDataref = useRef();
   // const [openModalData, setOpenModalData] = useState(false);
   const DeclarationData = async () => {
     try {
       const data = await apiServices.details();
       console.log(data, "data");
-      const response = await apiServices.organizationIdDetails();
-      console.log(response, "dec details");
 
       if (data?.details[1]?.id) {
         const organizationId1 = data.details[1].id;
 
-        
+        const response = await apiServices.organizationIdDetails(organizationId1);
+        console.log(response, "response");
 
         // if (response.status === 200) {
           setDummyData(response.summary.sub);
@@ -61,6 +61,11 @@ const CompanyTable = ({
     }
   };
 
+  useEffect(() => {
+    if (role === "ADMIN") {
+      DeclarationData();
+    }
+  }, [role]);
   // Dummy data for demonstration purposes
 const [dummyData,setDummyData] = useState([]);
 
@@ -158,8 +163,6 @@ const [dummyData,setDummyData] = useState([]);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
-    DeclarationData();
-
   };
 
 
