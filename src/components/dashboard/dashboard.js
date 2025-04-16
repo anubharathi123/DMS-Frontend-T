@@ -35,6 +35,7 @@ import ProgressBarChart from "./ProgressBarChart";
 import FileSizeTrendsChart from "./FileSizeTrendsChart";
 import CompanyTable from "./CompanyTable";
 import { useParams } from "react-router-dom";
+import DeclarationDeatilsMonthly from "./DeclarationDeatilsMonthly";
 
 // Register ChartJS components
 ChartJS.register(
@@ -803,6 +804,7 @@ const isDataEmpty = selectedCompanyData.every(
         {isAdminOrDocumentRole && (
           <div className="admin-dashboard-container">
             <div className="chart-container">
+            <div className="aswin">
               <CompanyTable
                 companyData={companyData}
                 isLoading={isLoading}
@@ -813,9 +815,9 @@ const isDataEmpty = selectedCompanyData.every(
                 tableforadmin={tableforadmin}
                 setRowLimit={setRowLimit}
               />
-            </div>
+            
 
-            <div className="aswin">
+            
               <MonthlyDocumentChart
                 selectedReportYear={selectedReportYear}
                 setSelectedReportYear={setSelectedReportYear}
@@ -824,6 +826,11 @@ const isDataEmpty = selectedCompanyData.every(
                 isAdminOrDocumentRole={isAdminOrDocumentRole}
                 dashboardData={dashboardData}
               />
+              {isAdmin ?
+              <DeclarationDeatilsMonthly />
+              :""
+}
+            </div>
             </div>
           </div>
         )}

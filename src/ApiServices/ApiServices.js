@@ -200,6 +200,11 @@ const authService = {
 
   notificationMarkasUnRead:async (id) => {
     return handleResponse(apiClient.get(`notification_delivery/${id}/false/`))
+
+  },
+
+  declarationDetailsMonthly:async () => {
+    return handleResponse(apiClient.get(`declaration_details/month/`))
   },
 
   organizationCountDas: async () => {

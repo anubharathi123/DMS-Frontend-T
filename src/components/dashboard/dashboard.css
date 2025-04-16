@@ -26,8 +26,9 @@
   background-color: white !important;
 }
 .boy{
-  position: fixed;
-  margin-top: 620px;
+  /* position: fixed; */
+  /* margin-top: 620px; */
+  overflow-x: hidden;
 }
   /* Skeleton Animation */
 
@@ -377,7 +378,7 @@
 
 .dashboard-body{
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 
 .charts-container {
