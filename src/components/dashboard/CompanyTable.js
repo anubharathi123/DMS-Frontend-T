@@ -62,85 +62,13 @@ const CompanyTable = ({
   };
 
   useEffect(() => {
-    if (role === "ADMIN") {
+    if (isAdminOrDocumentRole) {
       DeclarationData();
     }
   }, [role]);
   // Dummy data for demonstration purposes
 const [dummyData,setDummyData] = useState([]);
 
-  const dummyData1 = [
-    {
-      "declaration_id": "12345",
-      "total_size": "10MB",
-      "total_files": 5,
-      "approved_files": 3,
-      "pending_files": 2,
-    },
-    {
-      "declaration_id": "12346",
-      "total_size": "20MB",
-      "total_files": 10,
-      "approved_files": 7,
-      "pending_files": 3,
-    },
-    {
-      "declaration_id": "12347",
-      "total_size": "50MB",
-      "total_files": 15,
-      "approved_files": 10,
-      "pending_files": 5,
-    },
-    {
-      "declaration_id": "12348",
-      "total_size": "100MB",
-      "total_files": 25,
-      "approved_files": 20,
-      "pending_files": 5,
-    },
-    {
-      "declaration_id": "12349",
-      "total_size": "200MB",
-      "total_files": 50,
-      "approved_files": 40,
-      "pending_files": 10,
-    },
-    {
-      "declaration_id": "12350",
-      "total_size": "500MB",
-      "total_files": 120,
-      "approved_files": 100,
-      "pending_files": 20,
-    },
-    {
-      "declaration_id": "12351",
-      "total_size": "1GB",
-      "total_files": 200,
-      "approved_files": 150,
-      "pending_files": 50,
-    },
-    {
-      "declaration_id": "12352",
-      "total_size": "2GB",
-      "total_files": 300,
-      "approved_files": 250,
-      "pending_files": 50,
-    },
-    {
-      "declaration_id": "12353",
-      "total_size": "750MB",
-      "total_files": 180,
-      "approved_files": 150,
-      "pending_files": 30,
-    },
-    {
-      "declaration_id": "12354",
-      "total_size": "300MB",
-      "total_files": 70,
-      "approved_files": 60,
-      "pending_files": 10,
-    },
-  ];
 
   const [selectedOption, setSelectedOption] = useState('company'); // State for selection (either 'company' or 'dummy')
 
@@ -164,6 +92,14 @@ const [dummyData,setDummyData] = useState([]);
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
+
+  useEffect(() => {
+    // Adjust default selection dynamically if role changes
+    if (role !== "ADMIN") {
+      setSelectedOption("declaration");
+    }
+  }, [role]);
+
 
 
 
@@ -253,11 +189,13 @@ const [dummyData,setDummyData] = useState([]);
 
     return (
       <>
+     
         <div style={{ 
           marginBottom: "10px", 
           display: "flex", 
           alignItems: "center", 
           gap: "20px"}}>
+             {role=="ADMIN" ?
           <label style={{ display: "flex", alignItems: "center", fontSize: "14px", fontWeight: "500" }}>
             <input
               type="radio"
@@ -268,6 +206,8 @@ const [dummyData,setDummyData] = useState([]);
             />
             Users
           </label>
+          :""
+            }
           <label style={{ display: "flex", alignItems: "center", fontSize: "14px", fontWeight: "500" }}>
             <input
               type="radio"
@@ -306,7 +246,7 @@ const [dummyData,setDummyData] = useState([]);
               />
 
             </div> */}
-
+ {role=="ADMIN" ?
             <div className="dashboard-btngrp" style={{ margin: "0px 0 -10px", position: "relative", bottom: "30px" }}>
               {isAdminOrDocumentRole ? (
                 <>
@@ -337,6 +277,9 @@ const [dummyData,setDummyData] = useState([]);
                 onChange={handleRowLimitChange}
               />
             </div>
+            :""
+          }
+           {role=="ADMIN" ?
             <div>
               {filteredUsers.length > 0 ? (
                 filteredUsers.slice(0, rowLimit).map((user, index) => (
@@ -375,7 +318,8 @@ const [dummyData,setDummyData] = useState([]);
               ) : (
                 <p style={{ color: "red", textAlign: "center" }}>No data found</p>
               )}
-            </div> </>) : (<div>
+            </div>:""
+            } </>) : (<div>
               {dummyData.length > 0 ? (
                 dummyData.map((data, index) => (
 
@@ -536,8 +480,9 @@ const [dummyData,setDummyData] = useState([]);
         >
           <h3>{openModalData.org_name}</h3>
           <p><strong>👤 Username:</strong> {openModalData.username}</p>
-          <p><strong>📑 Total Documents:</strong> {openModalData.doc_count}</p>
+          {console.log(orgSummary, "orgSummary")}
           <p><strong>📑 Total Declarations:</strong>{orgSummary?.dec_count ?? 0}</p>
+          <p><strong>📑 Total Documents:</strong> {openModalData.doc_count}</p>
           <p><strong>📁 Total File Size:</strong> {openModalData.doc_size}</p>
           <p><strong>👥 Employees:</strong> {openModalData.emp}</p>
           <button

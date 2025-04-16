@@ -161,7 +161,7 @@ const DashboardApp = () => {
   const fetchOrganizationSummary = async (orgid) => {
     try {
       console.log("Fetching organization summary for ID:", orgid);
-      const response = await apiServices.organizationIdDetails(orgid);
+      const response = await apiServices.organizationIdDetails1(orgid);
       console.log("Organization summary response:", response);  
       
       const summaryData = {
@@ -172,7 +172,14 @@ const DashboardApp = () => {
         doc_size: response?.summary?.org_filesize || '0.0 MB',
         emp: response?.summary?.org_user_count ?? 0
       };
-  
+    // const matchedOrg = summaryData.find(item => item.id === orgid);
+    // if (matchedOrg) {
+    //   console.log("✅ Matched Organization from map:", matchedOrg);
+    //   // You can attach or merge data if needed
+    //   summaryData.extra_info = matchedOrg.extra_info || null;
+    // } else {
+    //   console.warn("⚠️ No matching organization found in map");
+    // }
       console.log("🧾 Summary Extracted:", summaryData);
       setOrgSummary(summaryData);
       
@@ -751,6 +758,10 @@ const isDataEmpty = selectedCompanyData.every(
 
               <FileSizeTrendsChart
                 selectedReportYear={selectedReportYear}
+                setmodalOpenChart={setIsModalOpen}
+                setchartcomapny={setSelectedCompany}
+                chartcomapny={selectedCompany}
+                modalOpenChart={isModalOpen}
                 setSelectedReportYear={setSelectedReportYear}
                 uniqueReportYears={uniqueReportYears}
                 companyData={companyData}

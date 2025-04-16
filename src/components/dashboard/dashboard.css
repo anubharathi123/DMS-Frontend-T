@@ -18,7 +18,7 @@
   justify-content: center;
   /* align-items: center; */
   margin-left: 223px;
-  margin-top: 40px;
+  margin-top: 60px;
   align-items: flex-start;
 }
 
@@ -351,7 +351,7 @@
 .dashboard-cards-container-fit-1{
   display: flex;
     position: static;
-    width: 90%;
+    width: 95%;
     flex-direction: row;
     /* flex-wrap: wrap; */
     justify-content: space-between;
@@ -1145,7 +1145,7 @@ select {
 /* Chart takes 50% of the space */
 .chart-container {
   flex: 1;
-  max-width: 50%;
+  max-width: 90%;
    border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -1158,7 +1158,9 @@ select {
     left: 35px;
     top: 99px; */
 }
-
+.recharts-yAxis{
+  visibility: hidden;
+}
 /* Table takes 50% of the space */
 .table-container {
   flex: 1;

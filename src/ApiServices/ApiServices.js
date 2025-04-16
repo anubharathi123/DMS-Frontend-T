@@ -159,8 +159,11 @@ const authService = {
     return handleResponse(apiClient.get('organizations/dashboard/'))
   },
 
-  organizationIdDetails: async () => {
+  organizationIdDetails: async (id) => {
     return handleResponse(apiClient.get(`owner/details`))   
+  },
+  organizationIdDetails1: async (id) => {
+    return handleResponse(apiClient.get(`owner/${id}/details`))   
   },
   reviewerlist:async () => {
     return handleResponse(apiClient.get(`aprover_list/`))

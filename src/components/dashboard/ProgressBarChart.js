@@ -17,7 +17,7 @@ const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, i
         borderRadius: "12px",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         // width: isAdminOrDocumentRole ? "10px" : "100%",
-        minWidth: isAdminOrDocumentRole ? "300px" : "390px",
+        minWidth: isAdminOrDocumentRole ? "400px" : "390px",
         // marginLeft: isUploader ? "500px" : isAdminOrDocumentRole ? "650px" : "-50px",
         // margin: isAdminOrDocumentRole ? "none" : "auto",
         // marginTop: isUploader ? "-350px" : isReviewer ? "-340px" : isViewer ? "-330px " : isAdminOrDocumentRole ? "-375px" : "0px",

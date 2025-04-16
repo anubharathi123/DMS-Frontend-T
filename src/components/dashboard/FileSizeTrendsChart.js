@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MonthlyDocumentChart from "./MonthlyDocumentChart"; // Ensure this path is correct
 
-const FileSizeTrendsChart = ({
+const   FileSizeTrendsChart = ({
   selectedReportYear,
   setSelectedReportYear,
   uniqueReportYears,

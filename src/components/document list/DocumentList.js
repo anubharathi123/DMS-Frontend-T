@@ -541,7 +541,12 @@ const handleClosePopup = () => {
               )}
             </th>
             <th className="documenttable_th px-6 py-3">Doc Type</th>
-            <th className="documenttable_th px-6 py-3">Assign To</th>
+            
+            {role == "ADMIN" ?
+              <th className="documenttable_th px-6 py-3">Assign To </th>
+              : ""
+              }
+            
             <th className="documenttable_th px-6 py-3">Status</th>
             <th className="documenttable_th px-6 py-3">Comments</th>
           </tr>
@@ -575,6 +580,7 @@ const handleClosePopup = () => {
               <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
               
               <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
+              {role === "ADMIN" && (
               <td className="documenttable_td px-6 py-4">
               {item.status === "PENDING" ? (
   isEditing ? (
@@ -603,6 +609,7 @@ const handleClosePopup = () => {
  <>{item?.assigned_to}</>
 )}
               </td>
+              )}
               <td className="documenttable_td px-6 py-4">
                 <span
                   data-tip={item.rejectionReason} 
