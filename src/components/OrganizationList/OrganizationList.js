@@ -12,7 +12,8 @@ import refreshIcon from '../../assets/images/refresh-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-
+import Plus from '../../assets/images/pluslogo.png';
+import plus from '../../assets/images/Pluslogo2.png'
 const OrganizationList = () => {
     const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -95,22 +96,6 @@ const OrganizationList = () => {
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
     
-
-    // const handleFreeze = async (id, status) => {
-    //     try {
-    //         const confirmMsg = status ? "Resume" : "Freeze";
-    //         if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
-    //         setIsLoading(true);
-    //         const response = status ? await apiServices.resumeOrganization(id) : await apiServices.freezeOrganization(id);
-    //         if (response.error) {
-    //             setData(prevData => prevData.map(org => org.id === id ? { ...org, status: !status } : org));
-    //         }
-    //     } catch (error) {
-    //         console.error("Error freezing organization:", error);
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // };
 
     const handleFreeze = async (id, status) => {
         try {
@@ -298,21 +283,21 @@ const OrganizationList = () => {
         <div className="organization-main">
             <h1 className="organization-header">Organization Details</h1>
            
-{(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
-     <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-        <option value="">Select an Option </option>
-     <option value="Create Organization">Create Organization</option>
+        {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
+    
+        <div className="userlist-header-actions">
+      <button className="organization_createbtn" onClick={() => navigate('/CompanyCreation')}>
+        <span class="plus-icon">+</span>
+        <span>Create New</span>
+      </button>
+      <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+      <option value="">Select an Option </option>
      <option value="Deleted List">Deleted List</option>
-      <option value="MSI Approval">MSI Approval</option>
+     <option value="MSI Approval">MSI Approval</option>
    </select>
+   </div>
 
-//   <div>
-//     <button className='org_createbtn1' onClick={handleCreateOrganization} > + Create Organization</button>
-
-//     <button className='org_createbtn1' onClick={handledeleteOrganization} > Deleted List</button>
-//     <button className='org_createbtn1' onClick={handlePendingOrganization}> Pending List</button> 
-//   </div>
-)}
+        )}
 
             <div className='organization-container_controls'>
                 <div className='organization-search'>

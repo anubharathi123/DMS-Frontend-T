@@ -53,13 +53,28 @@
   overflow: hidden;  
 }
 
-.logo {
+/* .logo {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
   max-width: 100%;
+} */
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+    margin-bottom: 20px;
+    width: 75%;
+  max-width: 100%;
+  padding: 10px;
+  
+  background-color: white;       /* White box background */
+  border-radius: 12px;           /* Rounded corners */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Optional: subtle shadow */
 }
+
 
 nav {
   /* Removed scrolling */
