@@ -76,14 +76,14 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
       console.error('Error fetching notifications:', err);
       setError(err.message || 'Failed to load notifications');
     } finally {
-      setTimeout(() => setLoading(false), 500); // Delay loading state by 2 seconds
+      setTimeout(() => setLoading(false), 3000); // Delay loading state by 2 seconds
     }
   };
 
   useEffect(() => {
     
     if (!orgId) { // Prevent multiple API calls
-      fetchOrgAndNotifications();
+    fetchOrgAndNotifications();
     }
   }, [orgId]); // Depend only on orgId
 

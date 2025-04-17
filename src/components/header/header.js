@@ -441,7 +441,7 @@ const Header = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const details_data = await ApiService.details();
+        const details_data =  ApiService.details();
         let org_id =
           details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
         if (!org_id) throw new Error("Organization ID not found");
@@ -465,7 +465,7 @@ const Header = () => {
     };
 
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 10000);
+    const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
 
