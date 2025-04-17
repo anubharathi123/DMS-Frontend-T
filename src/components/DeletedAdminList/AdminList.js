@@ -180,6 +180,7 @@ const AdminList = () => {
   const totalPages = Math.max(1, Math.ceil(filteredData1.length / rowsPerPage));
 
   const paginatedData = filteredData1.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+  console.log(paginatedData, "paginatedData")
 
   return (
     <div className="adminlist_container">
@@ -263,7 +264,7 @@ const AdminList = () => {
           </tr>
         </thead>
         <tbody className="adminlist_tbody">
-        { paginatedData > 0 ? (
+        { paginatedData.length > 0 ? (
         paginatedData.map((item, index) => (
           <tr
             key={index}

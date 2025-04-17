@@ -239,14 +239,14 @@ const UserList = () => {
     <div className="userlist-container">
       <h1 className="userlist-header">User Details</h1>
       <div className="userlist-header-actions">
-      {/* <button className="user_createbtn" onClick={handleCreateUser}>
+      <button className="user_createbtn" onClick={handleCreateUser}>
         + New User
-      </button> */}
-       <button
+      </button>
+       {/* <button
   className="organization_createbtn"
   onClick={() => navigate(handleCreateUser)}
->
-  <img
+> */}
+  {/* <img
     src={Plus}
     alt="Company Logo"
     style={{
@@ -254,8 +254,8 @@ const UserList = () => {
       height: "25px",
       right:"95%",
     }}
-  />
-</button>
+  /> */}
+{/* </button> */}
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
       <option value="">Select an Option </option>
      <option value="Deleted List">Deleted List</option>

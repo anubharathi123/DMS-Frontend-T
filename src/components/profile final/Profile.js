@@ -245,9 +245,9 @@ function ProfileCard() {
       let userId = null;
   
       if (data.type === "User") {
-        userId = data.details[5].id;
+        userId = data.details[3].id;
       } else if (data.type === "Organization") {
-        userId = data.details[1].id;
+        userId = data.details[6].id;
       }
   
       if (!userId) {

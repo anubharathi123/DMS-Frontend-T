@@ -86,7 +86,7 @@ const DeclarationDeatilsMonthly = () => {
         {isAdminOrDocumentRole && (
           <>
             <span className="dashboard_text1"><center>Declaration</center></span>
-            <div className="dropdown-container">
+            {/* <div className="dropdown-container">
               <select
                 className="dashboard-year-select"
                 value={selectedReportYear}
@@ -96,7 +96,7 @@ const DeclarationDeatilsMonthly = () => {
                   <option key={index} value={year}>{year}</option>
                 ))}
               </select>
-            </div>
+            </div> */}
           </>
         )}
 

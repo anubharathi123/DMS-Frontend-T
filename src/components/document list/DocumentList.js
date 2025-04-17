@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import DatePicker from 'react-datepicker';
-import apiServices, {API_URL1} from '../../ApiServices/ApiServices';
+import apiServices, { API_URL1 } from '../../ApiServices/ApiServices';
 import './DocumentList.css';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
@@ -72,21 +72,21 @@ const DocumentTable = () => {
   }, [showSearchInfo]);
 
   useEffect(() => {
-        // Function to handle clicks outside the calendar
-        const handleClickOutside = (event) => {
-          if (calendarRef.current && !calendarRef.current.contains(event.target)) {
-            setIsCalendarOpen(false);
-          }
-        };
-    
-        // Add event listener
-        document.addEventListener("mousedown", handleClickOutside);
-    
-        // Clean up event listener on component unmount
-        return () => {
-          document.removeEventListener("mousedown", handleClickOutside);
-        };
-      }, []);
+    // Function to handle clicks outside the calendar
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setIsCalendarOpen(false);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -96,12 +96,12 @@ const DocumentTable = () => {
         const response = await apiServices.getDocuments();
         console.log(response)
         const documents = response.documents.map(doc => ({
-          
-          docId:doc.id, 
+
+          docId: doc.id,
           assigned_to: doc.assigned_to?.first_name || null,
           declarationNumber: doc.declaration_number,
           file: doc.current_version?.file_path,
-          fileName: doc.current_version?.file_path ? doc.current_version.file_path: '',
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path : '',
           updatedDate: doc.updated_at,
           documentType: doc.document_type?.name || '',
           status: doc.status || '',
@@ -136,21 +136,21 @@ const DocumentTable = () => {
       const assignedUserData = await apiServices.assignedUser(id);
       const userid = assignedUserData?.id;
       console.log("✅ Assigned User Data:", assignedUserData?.id);
-      
+
       // If you want to pass this data somewhere:
       // setAssignedUserData(assignedUserData);
     } catch (error) {
       console.error("❌ Error fetching assigned user:", error);
     }
   };
-  
+
 
   // useEffect(() => {
   //   if (assignedUser) {
   //     fetchAssignedUser(assignedUser);
   //   }
   // }, [assignedUser]);
-  
+
 
   useEffect(() => {
     const fetchReviewer = async () => {
@@ -196,16 +196,16 @@ const DocumentTable = () => {
 
     fetchReviewer();
   }, []);
-  
-  
-  
-  
+
+
+
+
   // Call the function here, not inside itself
 
-  
-  
+
+
   // Call the function (once)
-  
+
   const filteredData1 = filteredData.filter((item) => {
     if (filter === '') {
       return item.declarationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -243,20 +243,20 @@ const DocumentTable = () => {
 
   const handleSelectChange = (e, docId) => {
     const selectedUserId = e.target.value;
-  
+
     setAssignedUsers((prev) => ({
       ...prev,
       [docId]: selectedUserId,
     }));
-  
+
     console.log("🧑 Selected Reviewer ID:", selectedUserId);
     console.log("📄 Document ID:", docId);
-  
+
     const fetchAssignedUser = async (userId, documentId) => {
       try {
         const assignedUserData = await apiServices.assignedUser(userId, documentId);
         console.log("✅ Assigned User Data:", assignedUserData);
-        
+
         // setAssignedUserInfo(assignedUserData.map(assignedUser => ({
         //   assigned_to: assignedUser.assigned_to,
         //   docID:assignedUser.document_id,
@@ -268,20 +268,20 @@ const DocumentTable = () => {
         console.error("❌ Error fetching assigned user:", error);
       }
     };
-  
+
     fetchAssignedUser(selectedUserId, docId);
   };
 
-  
-  
+
+
 
   // useEffect (() => {
   //   if (assignedUserData) {
   //     fetchAssignedUser(assignedUserData);
   //   }
   // }, [assignedUserData]);
-  
-  
+
+
 
   // const handleEditClick = () => {
   //   setIsEditing(true); // re-enable editing
@@ -297,7 +297,7 @@ const DocumentTable = () => {
     setFilterDate(null);
     setIsCalendarOpen(false);
     setCurrentPage(1);
-};
+  };
 
   const handleCloseBackup = () => {
     setIsBackupOpen(false);
@@ -306,7 +306,7 @@ const DocumentTable = () => {
   // const handleRejection = async (declarationNumber,status) => {
   //   try {
   //     console.log('Rejection:', declarationNumber, status);
-      
+
   //   }
   // }
 
@@ -326,16 +326,16 @@ const DocumentTable = () => {
 
   const handleOpenFile = (msa_doc) => {
     if (msa_doc) {
-        setSelectedFile(`${url}${msa_doc}`);
+      setSelectedFile(`${url}${msa_doc}`);
     } else {
-        alert("No file available.");
+      alert("No file available.");
     }
-};
+  };
 
   const handleDownload = async () => {
     if (!startDate || !endDate) {
-        alert("Please select both start and end dates.");
-        return;
+      alert("Please select both start and end dates.");
+      return;
     }
 
     console.log("Selected Dates:", startDate, endDate);
@@ -344,62 +344,62 @@ const DocumentTable = () => {
 
     // ✅ Validate Dates
     if (isNaN(parsedStartDate) || isNaN(parsedEndDate)) {
-        alert("Invalid date format. Please select valid dates.");
-        return;
+      alert("Invalid date format. Please select valid dates.");
+      return;
     }
     if (parsedStartDate > parsedEndDate) {
-        alert("Start date cannot be greater than the end date.");
-        return;
+      alert("Start date cannot be greater than the end date.");
+      return;
     }
 
     try {
-        // ✅ Fetch ZIP file from API
-        const response = await apiServices.rangesearch({
-            params: {
-                start_date: startDate, 
-                end_date: endDate
-            },
-            responseType: 'blob'  // Ensures the response is a file
-        });
+      // ✅ Fetch ZIP file from API
+      const response = await apiServices.rangesearch({
+        params: {
+          start_date: startDate,
+          end_date: endDate
+        },
+        responseType: 'blob'  // Ensures the response is a file
+      });
 
-        console.log("Response:", response);
+      console.log("Response:", response);
 
-        if (response.status === 404) {
-            alert("No files found for the selected date range.");
-            return;
-        }
+      if (response.status === 404) {
+        alert("No files found for the selected date range.");
+        return;
+      }
 
-        // ✅ Check for a valid ZIP file
-        if (!response || response.size === 0) {
-            throw new Error("Received an empty or invalid file.");
-        }
+      // ✅ Check for a valid ZIP file
+      if (!response || response.size === 0) {
+        throw new Error("Received an empty or invalid file.");
+      }
 
-        // ✅ Download the ZIP file
-        const blob = new Blob([response], { type: "application/zip" });
-        console.log(blob)
-        const url = window.URL.createObjectURL(blob);
-        console.log(url)
+      // ✅ Download the ZIP file
+      const blob = new Blob([response], { type: "application/zip" });
+      console.log(blob)
+      const url = window.URL.createObjectURL(blob);
+      console.log(url)
 
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `documents_${startDate}_${endDate}.zip`);
-        document.body.appendChild(link);
-        link.click();
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `documents_${startDate}_${endDate}.zip`);
+      document.body.appendChild(link);
+      link.click();
 
-        // ✅ Cleanup
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(link);
+      // ✅ Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
 
-        console.log("Download successful.");
+      console.log("Download successful.");
     } catch (error) {
-        console.error("Download error:", error);
-        alert(error.message || "Error downloading files. Please try again.");
+      console.error("Download error:", error);
+      alert(error.message || "Error downloading files. Please try again.");
     }
-};
+  };
 
-const handleClosePopup = () => {
-  setSelectedFile(null);
-};
+  const handleClosePopup = () => {
+    setSelectedFile(null);
+  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -422,44 +422,44 @@ const handleClosePopup = () => {
       const response = await fetch(fileUrl);
       const blob = await response.blob();
       const blobUrl = window.URL.createObjectURL(blob);
-  
+
       const a = document.createElement("a");
       a.href = blobUrl;
       a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-  
+
       window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error("Download failed:", error);
     }
   };
-  
+
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  
+
   const filedownload = async (file) => {
     try {
       const response = await apiServices.media({ file });
-  
+
       if (!response || response.status !== 200) {
         throw new Error("Failed to download file");
       }
-  
+
       // Convert response to Blob
       const blob = new Blob([response.data], { type: response.headers["content-type"] });
       const url = window.URL.createObjectURL(blob);
-  
+
       // Create a download link
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", file.split('/').pop()); // Extracts the file name
       document.body.appendChild(link);
       link.click();
-  
+
       // Cleanup
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
@@ -473,9 +473,9 @@ const handleClosePopup = () => {
     <div className="documenttable_container">
       <h1 className="documentlist_header">Document Details</h1>
       {(role === "ADMIN") && (
-  <button className='doc-backup' onClick={handleBackupClick}>Backup</button> 
-)}
- 
+        <button className='doc-backup' onClick={handleBackupClick}>Backup</button>
+      )}
+
       {actionMessage && <div className="documenttable_action_message">{actionMessage}</div>}
       <div className="documenttable_controls flex justify-between mb-4">
         <div className="documenttable_search flex items-center">
@@ -488,13 +488,13 @@ const handleClosePopup = () => {
             className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
           />
           <button className='document_searchinfo' onClick={handleSearchInfo}>
-            <IoMdInformationCircleOutline/> 
-            </button>
-            {showSearchInfo && (
-              <div ref={searchInfoRef} className="search-info-popup">
-                  Date filter format should be like this: yyyy-mm-dd
-              </div>
-            )}
+            <IoMdInformationCircleOutline />
+          </button>
+          {showSearchInfo && (
+            <div ref={searchInfoRef} className="search-info-popup">
+              Date filter format should be like this: yyyy-mm-dd
+            </div>
+          )}
         </div>
         <div className="documenttable_filter flex items-center">
           <label className="documenttable_filter_label mr-2">Filter by Status:</label>
@@ -544,105 +544,108 @@ const handleClosePopup = () => {
               )}
             </th>
             <th className="documenttable_th px-6 py-3">Doc Type</th>
-            
+
             {/* {role == "ADMIN" ? */}
-              <th className="documenttable_th px-6 py-3">Assign To </th>
-              {/* : ""
+            <th className="documenttable_th px-6 py-3">Assign To </th>
+            {/* : ""
               } */}
-            
+
             <th className="documenttable_th px-6 py-3">Status</th>
             <th className="documenttable_th px-6 py-3">Comments</th>
           </tr>
         </thead>
         <tbody className="documenttable_tbody">
-          { paginatedData.length > 0 ? (
+          {paginatedData.length > 0 ? (
             paginatedData.map((item, index) => (
-            <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
-              
-              <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
-              <td className="documenttable_td px-6 py-4">
-              {item.fileName ? (
-                                    <button
-                                        title={item.fileName}
-                                        className="file-button"
-                                        onClick={() => handleOpenFile(item.fileName)}
-                                    >
-                                        {item.fileName.split('/').pop().substring(0, 20) + '...'}
-                                    </button>
-                                ) : (
-                                    "Null"
-                                )}
-              {/* <a
+              <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
+
+                <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
+                <td className="documenttable_td px-6 py-4">
+                  {item.fileName ? (
+                    <button
+                      title={item.fileName}
+                      className="file-button"
+                      onClick={() => handleOpenFile(item.fileName)}
+                    >
+                      {item.fileName.split('/').pop().substring(0, 20) + '...'}
+                    </button>
+                  ) : (
+                    "Null"
+                  )}
+                  {/* <a
                       title={item.fileName.split('/').pop()}
                       onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
                       style={{ cursor: "pointer", textDecoration: "underline" }}>
                 {item.fileName.split('/').pop().substring(0, 20) + '...'}
               </a> */}
-                      </td>
+                </td>
 
-              <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              
-              <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
-              {/* {role === "ADMIN" && ( */}
-              <td className="documenttable_td px-6 py-4">
-              {role === "ADMIN" ? (
-  isEditing ? (
-    <select
-      className="documenttable_select"
-      value={assignedUsers[item.docId] || ""}
-      onChange={(e) => handleSelectChange(e, item.docId)}
-    >
-      {reviewers.map((reviewer) => (
-        <option key={reviewer.id} value={reviewer.id}>
-          {reviewer.name}
-        </option>
-      ))}
-    </select>
-  ) : (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <span>
-        {assignedUsers[item.docId]
-          ? reviewers.find((r) => r.id === assignedUsers[item.docId])?.name || 'Unknown'
-          : 'Not assigned'}
-      </span>
-    </div>
-  )
-) : (
-  // "Assigned:Reviewer"
- <>{item?.assigned_to}</>
-)}
-              </td>
-              {/* )} */}
-              <td className="documenttable_td px-6 py-4">
-                <span
-                  data-tip={item.rejectionReason} 
-                  className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
-                    ${item.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 
-                    item.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 
-                    'bg-green-100 text-green-800'}`}
-                >
-                  {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
-                 
-                </span>
-              </td>
-              
-              <td className="documenttable_td px-6 py-4">
-              {item.status === "REJECTED" ? (
-    <div className="tooltip-container">
-      <span className="tooltip-trigger">{item.rejectionReason.split('/').pop().substring(0,20)+'.......'}</span>
-      <div className="tooltip-content">{item.rejectionReason}</div>
-    </div>
-  ) : (
-    <span>----</span>
-  )}
-                     
-              </td>
-            </tr>
+                <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+
+                <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
+                {/* {role === "ADMIN" && ( */}
+                <td className="documenttable_td px-6 py-4">
+                  {role === "ADMIN" ? (
+                    item.status !== "APPROVED" ? (
+                      isEditing ? (
+                        <select
+                          className="documenttable_select"
+                          value={assignedUsers[item.docId] || ""}
+                          onChange={(e) => handleSelectChange(e, item.docId)}
+                        >
+                          {reviewers.map((reviewer) => (
+                            <option key={reviewer.id} value={reviewer.id}>
+                              {reviewer.name}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span>
+                            {assignedUsers[item.docId]
+                              ? reviewers.find((r) => r.id === assignedUsers[item.docId])?.name || 'Unknown'
+                              : 'Not assigned'}
+                          </span>
+                        </div>
+                      )
+                    ) : (
+                      // "Assigned:Reviewer"
+                      <>{item?.assigned_to}</>
+                    )
+                  ) : ""
+                  }
+                </td>
+                {/* )} */}
+                <td className="documenttable_td px-6 py-4">
+                  <span
+                    data-tip={item.rejectionReason}
+                    className={`documenttable_status text-xs font-medium py-1 px-2 rounded 
+                    ${item.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                        item.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
+                          'bg-green-100 text-green-800'}`}
+                  >
+                    {item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase()}
+
+                  </span>
+                </td>
+
+                <td className="documenttable_td px-6 py-4">
+                  {item.status === "REJECTED" ? (
+                    <div className="tooltip-container">
+                      <span className="tooltip-trigger">{item.rejectionReason.split('/').pop().substring(0, 20) + '.......'}</span>
+                      <div className="tooltip-content">{item.rejectionReason}</div>
+                    </div>
+                  ) : (
+                    <span>----</span>
+                  )}
+
+                </td>
+              </tr>
             ))
-          ):(
+          ) : (
             <tr>
               <td colSpan="4" className="organization-table-td">
-                  No documents found...
+                No documents found...
               </td>
             </tr>
           )}
@@ -654,31 +657,31 @@ const handleClosePopup = () => {
         </div>
 
         {selectedFile && (
-    <div className="popup-overlay">
-        <div className="popup-content">
-            <button className="popup-close" onClick={handleClosePopup}>✖</button>
-            <iframe 
-                src={selectedFile} 
-                title="Document Viewer" 
+          <div className="popup-overlay">
+            <div className="popup-content">
+              <button className="popup-close" onClick={handleClosePopup}>✖</button>
+              <iframe
+                src={selectedFile}
+                title="Document Viewer"
                 className="popup-iframe"
-                style={{ width: "100%", height: "500px" }} 
-            />
-        
+                style={{ width: "100%", height: "500px" }}
+              />
+
               <button className='file-download' >
                 Download
-            </button>
-        </div>
-    </div>
-)}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Reset Filter Button */}
-              {(searchTerm || filter || filterDate) && (
-                     <button className="reset-filter-btn" onClick={handleResetFilter} 
-                                disabled={!searchTerm && !filter && !filterDate}>
-                                    Reset Filter 
-                                    <img className='refresh-icon' src={refreshIcon}/>
-                                    </button>
-                                    )}
+        {(searchTerm || filter || filterDate) && (
+          <button className="reset-filter-btn" onClick={handleResetFilter}
+            disabled={!searchTerm && !filter && !filterDate}>
+            Reset Filter
+            <img className='refresh-icon' src={refreshIcon} />
+          </button>
+        )}
         <div className="documenttable_paging flex items-center">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -695,9 +698,9 @@ const handleClosePopup = () => {
             Next
           </button>
         </div>
-        
+
       </div>
-      
+
       {isLoading && (
         <div className="loading-popup">
           <div className="loading-popup-content">

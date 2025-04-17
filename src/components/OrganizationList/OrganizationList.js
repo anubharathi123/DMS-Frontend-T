@@ -61,7 +61,7 @@ const OrganizationList = () => {
         try {
             setIsLoading(true);
             const response = await apiServices.getOrganizations();
-            // console.log("Organization Data:", response);
+            console.log("Organization Data:", response);
             const organization = response.approved_organizations.map(org => ({
                 id: org.id,
                 username: org.auth_user.username,
@@ -78,6 +78,7 @@ const OrganizationList = () => {
             .filter(org => org.approve === true).filter(org => org.msi === true)
             .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
             setData(filterdata);
+            console.log(filterdata, "organization-filter data");
             // console.log("Organization Data:", organization);
 
             if (organization.length === 0) {
@@ -253,6 +254,7 @@ const OrganizationList = () => {
     
 
     const handleDelete = async (id) => {
+        console.log("Delete ID:", id);
         if (!window.confirm("Are you sure you want to delete this organization?")) {
             return;
         }
@@ -274,7 +276,7 @@ const OrganizationList = () => {
     };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    const paginatedData = filteredData.filter(org => !org.delete).slice(
+    const paginatedData = filteredData.filter((org) => !org.is_delete).slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
     );

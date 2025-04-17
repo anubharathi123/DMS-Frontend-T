@@ -40,7 +40,7 @@
     width: fit-content;
     font-size: 12px;
     position: relative;
-    left: 89%;
+    /* left: 89%; */
   }
 
   .user_createbtn:hover {
@@ -262,6 +262,7 @@
   } */
 
   .userlist-header-actions {
+    width: 300px;
     display: flex;
     justify-content: space-between;
     align-items: center;
