@@ -366,14 +366,16 @@ const [dummyData,setDummyData] = useState([]);
     return isLoading ? (
       <p>Loading...</p>
     ) : filteredData.length > 0 ? (
-      <>
+
+      <div className="parent-relative">
+      <div className="input-absolute">
         <input
           type="text"
           min="0"
           max="100"
           value={rowLimit}
           className="dashboard_num-input"
-          style={{ left: "475px", bottom:isAdminOrDocumentRole? "205px":"265px", position: "absolute", zIndex: 999 }}
+          style={{  bottom:isAdminOrDocumentRole? "205px":"265px", position: "absolute", zIndex: 999 }}
           onChange={(e) => {
             const value = e.target.value.trim();
             const parsed = parseInt(value, 10);
@@ -385,6 +387,7 @@ const [dummyData,setDummyData] = useState([]);
             }
           }}
         />
+        </div>
         {/* {selectedOption == "dummy" ?  : } */}
 
         {filteredData
@@ -438,7 +441,7 @@ const [dummyData,setDummyData] = useState([]);
               </div>
             </div>
           ))}
-      </>
+      </div>
     ) : (
       <p style={{ color: "red", textAlign: "center" }}>No data found</p>
     );

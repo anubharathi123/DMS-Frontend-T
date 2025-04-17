@@ -613,7 +613,7 @@ canvas {
  position: relative;
  bottom: 55px;
  left:90px;
- z-index: 99;
+ /* z-index: 10; */
  /* margin-right: 23px; */
 }
 
@@ -1351,4 +1351,16 @@ select {
   justify-content: space-between;
   margin-top: 10px;
 
+ }
+
+
+ /* .parent-realative {
+  position: relative;
+ 
+ } */
+
+ .input-absolute * {
+  /* position: absolute; */
+  /* top: 1%; */
+  right: 51%; 
  }
