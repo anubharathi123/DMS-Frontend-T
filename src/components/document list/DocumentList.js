@@ -612,7 +612,7 @@ const DocumentTable = () => {
                       // "Assigned:Reviewer"
                       <>{item?.assigned_to}</>
                     )
-                  ) : ""
+                  ) : <>{item?.assigned_to}</>
                   }
                 </td>
                 {/* )} */}
