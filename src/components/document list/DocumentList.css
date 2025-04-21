@@ -28,7 +28,13 @@
     width: fit-content;
     font-size: 12px;
     position: relative;
-    left: 91%;
+    margin-left: 25px;
+}
+
+.doc-backup-left {
+    
+  width: fit-content;
+  margin: 0 0 0 auto;
 }
 
 .doc-backup:hover {

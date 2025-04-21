@@ -263,6 +263,15 @@ const authService = {
   OrgNotification: async () => {
     return handleResponse(apiClient.get(`notification_delivery/`))
   },
+
+
+  // Bulk Assign
+  BulkAssign: async (id) => {
+    return handleResponse(apiClient.post(`assign-approver-document/bulk/${id}/`))
+  },
+
+
+
   // Organization APIs
   createOrganization: async (data) => {
     // if (!data.name || !data.owner_email) {
