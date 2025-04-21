@@ -441,7 +441,7 @@ const Header = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const details_data =  ApiService.details();
+        const details_data = await ApiService.details();
         let org_id =
           details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
         if (!org_id) throw new Error("Organization ID not found");
