@@ -585,36 +585,69 @@ const DocumentTable = () => {
                 <td className="documenttable_td px-6 py-4">{mappings[item.documentType.toLowerCase()] || item.documentType}</td>
                 {/* {role === "ADMIN" && ( */}
                 <td className="documenttable_td px-6 py-4">
-                  {role === "ADMIN" ? (
-                    item.status !== "APPROVED" ? (
-                      isEditing ? (
-                        <select
-                          className="documenttable_select"
-                          value={assignedUsers[item.docId] || ""}
-                          onChange={(e) => handleSelectChange(e, item.docId)}
-                        >
-                          {reviewers.map((reviewer) => (
-                            <option key={reviewer.id} value={reviewer.id}>
-                              {reviewer.name}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <span>
-                            {assignedUsers[item.docId]
-                              ? reviewers.find((r) => r.id === assignedUsers[item.docId])?.name || 'Unknown'
-                              : 'Not assigned'}
-                          </span>
-                        </div>
-                      )
-                    ) : (
-                      // "Assigned:Reviewer"
-                      <>{item?.assigned_to}</>
-                    )
-                  ) : <>{item?.assigned_to}</>
-                  }
-                </td>
+  {role === "ADMIN" ? (
+    <>
+      {/* Case 1: No reviewer assigned */}
+      {!item.assigned_to ? (
+        item.status !== "APPROVED" && item.status !== "REJECTED" ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <select
+              className="documenttable_select"
+              value={assignedUsers[item.docId] || ""}
+              onChange={(e) => handleSelectChange(e, item.docId)}
+            >
+              <option value="" disabled>Select Reviewer</option>
+              {reviewers.map((reviewer) => (
+                <option key={reviewer.id} value={reviewer.id}>
+                  {reviewer.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <span style={{alignItems:"center"}}>---</span>
+        )
+      ) : (
+        <>
+          {/* Case 2: Reviewer is assigned */}
+          {item.status === "APPROVED" || item.status === "REJECTED" ? (
+            <span>{item.assigned_to}</span>
+            // <span>
+            //   {
+            //     reviewers.find(
+            //       (r) =>
+            //         r.id ===
+            //         (assignedUsers[item.docId] || item.assigned_to)
+            //     )?.name || 'Unknown'
+            //   }
+            // </span>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <select
+                className="documenttable_select"
+                value={assignedUsers[item.docId] || item.assigned_to}
+                onChange={(e) => handleSelectChange(e, item.docId)}
+              >
+                <option value="" disabled>Select Reviewer</option>
+                {reviewers.map((reviewer) => (
+                  <option key={reviewer.id} value={reviewer.id}>
+                    {reviewer.name}
+                  </option>
+                ))}
+              </select>
+              {/* "hello" */}
+            </div>
+            
+          )}
+        </>
+      )}
+      
+    </>
+  ) : (
+    <>{item?.assigned_to}</>
+  )}
+</td>
+
                 {/* )} */}
                 <td className="documenttable_td px-6 py-4">
                   <span
