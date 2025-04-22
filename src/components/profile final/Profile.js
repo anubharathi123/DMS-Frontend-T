@@ -241,13 +241,15 @@ function ProfileCard() {
   const handleSaveDetails = async () => {
     try {
       // Fetch user details to get the correct user ID
+
       const data = await authService.details();
+      console.log(data, "data from profile card");
       let userId = null;
   
       if (data.type === "User") {
         userId = data.details[3].id;
       } else if (data.type === "Organization") {
-        userId = data.details[6].id;
+        userId = data.details[1].id;
       }
   
       if (!userId) {
@@ -263,6 +265,7 @@ function ProfileCard() {
         email: editMail,
         mobile: editMobile,
       };
+      console.log("Updated Profile Data:", updatedProfile);
   
       // Send update request
       const response = await authService.saveprofile(userId, updatedProfile);

@@ -270,6 +270,12 @@ const authService = {
     return handleResponse(apiClient.post(`assign-approver-document/bulk/${id}/`))
   },
 
+  // Asssign Selected Document
+  SelectedAssign: async (id, data1) => {
+    return handleResponse(apiClient.post(`assign-approver-selected-document/${id}/`, data1))
+    
+  },
+
 
 
   // Organization APIs
