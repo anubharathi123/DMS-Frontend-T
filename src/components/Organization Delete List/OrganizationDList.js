@@ -11,6 +11,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'; 
+import { faRepeat } from '@fortawesome/free-solid-svg-icons'; 
 
 
 const OrganizationList = () => {
@@ -205,6 +206,26 @@ const calendarRef = useRef(null);
             setIsLoading(false);
         }
     };
+
+    const handleRestore = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this organization?")) {
+        }
+        try {
+            setIsLoading(true);
+    
+            // Call API to delete the organization
+            const response = await apiServices.RestoreOrganizationdelete(id);
+            console.log(response,response.success,response.message)
+           // Ensure API returns success
+                fetchOrganization()
+            
+        } catch (error) {
+            console.error("Error deleting organization:", error);
+            alert("An error occurred while deleting.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.slice(
@@ -295,6 +316,7 @@ const calendarRef = useRef(null);
                         </th>
                         {/* <th className="organization-table-th">Status</th> */}
                         <th className="organization-table-th">Actions</th>
+                        <th className="organization-table-th">Restore</th>
                     </tr>
                 </thead>
                 
@@ -331,7 +353,16 @@ const calendarRef = useRef(null);
                                         onClick={() => handleDelete(org.id)}>
                                         <FontAwesomeIcon icon={faTrash} />
                                     </button>
-                                    <span style={{color:'black'}}>Permanent Delete</span>
+                                    {/* <span style={{color:'black'}}>Permanent Delete</span> */}
+                                </td>
+                                <td className="organization-table-td">
+                                {/* <i class="fa-solid fa-repeat"></i> */}
+                                    <button
+                                        className="organization-delete"
+                                        onClick={() => handleRestore(org.id)}>
+                                        <FontAwesomeIcon icon={faRepeat} />
+                                    </button>
+                                    <span style={{color:'black'}}></span>
                                 </td>
                             </tr>
                         ))

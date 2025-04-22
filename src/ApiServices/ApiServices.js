@@ -391,6 +391,13 @@ const authService = {
     return handleResponse(apiClient.delete(`organization_delete/${orgId}/`))
   },
 
+  RestoreOrganizationdelete:async(orgId) => {
+    if (!orgId) {
+      throw new Error('Organization ID is required to delete an organization permanently.');
+    } 
+    return handleResponse(apiClient.post(`organization_undelete/${orgId}/`))
+  },
+
   addSubAdmin: async (orgId, data) => {
     if (!orgId || !data.email) {
       throw new Error('Organization ID and sub-admin email are required.');
