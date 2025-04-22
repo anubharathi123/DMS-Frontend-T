@@ -49,9 +49,10 @@
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
     border-radius: 7px;
-    width: 150px;
+    /* width: 150px; */
     font-size: 12px !important;
     position: relative;
+    align-self: flex-end;
 }
 
 .organization-container_controls {

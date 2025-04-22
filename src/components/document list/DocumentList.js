@@ -476,7 +476,7 @@ const DocumentTable = () => {
       setSelectedRows([]);
     }
   };
-  
+
 
 
   console.log("paginatedData", paginatedData);
@@ -488,9 +488,9 @@ const DocumentTable = () => {
       {(role === "ADMIN") && (
         <>
           <div className='doc-backup-left'>
-            {selectedRows.length > 0 && 
-            <button className='doc-backup' onClick={() => setShowModal1(!showModal1)}>Assign Selected Documents</button>
-        }
+            {selectedRows.length > 0 &&
+              <button className='doc-backup' onClick={() => setShowModal1(!showModal1)}>Assign Selected Documents</button>
+            }
             <button className='doc-backup' onClick={handleBackupClick}>Backup</button>
             <button onClick={() => setShowModal(!showModal)} className='doc-backup'>
               {showModal ? 'Hide Popup' : 'Assign Reviewer'}
@@ -615,8 +615,8 @@ const DocumentTable = () => {
       <table className="documenttable_table w-full text-sm text-left text-gray-500">
         <thead className="documenttable_thead text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-              {/* {selectedRows.length > 0 &&  */}
-              <th className="documenttable_th px-6 py-3" style={{ width: '3%' }}>
+            {/* {selectedRows.length > 0 &&  */}
+            <th className="documenttable_th px-6 py-3" style={{ width: '3%' }}>
               <input
                 type="checkbox"
                 checked={selectedRows.length === paginatedData.length && paginatedData.length > 0}
@@ -624,7 +624,7 @@ const DocumentTable = () => {
               />
             </th>
             {/* } */}
-            
+
             <th className="documenttable_th px-6 py-3">Declaration Number</th>
             <th className="documenttable_th px-6 py-3">File Name</th>
             <th className="documenttable_th px-6 py-3">Updated Date
@@ -667,13 +667,13 @@ const DocumentTable = () => {
 
               <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
                 <td className="documenttable_td px-6 py-4>" style={{ width: '5%' }}>
-                  
-                <input
-                  type="checkbox"
-                  checked={selectedRows.includes(item.docId)}
-                  onChange={() => handleCheckboxChange(item.docId)}
+
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(item.docId)}
+                    onChange={() => handleCheckboxChange(item.docId)}
                   />
-                  </td>
+                </td>
 
                 <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
                 <td className="documenttable_td px-6 py-4">
@@ -793,8 +793,14 @@ const DocumentTable = () => {
                 <td className="documenttable_td px-6 py-4">
                   {item.status === "REJECTED" ? (
                     <div className="tooltip-container">
-                      <span className="tooltip-trigger">{item.rejectionReason.split('/').pop().substring(0, 20) + '.......'}</span>
-                      <div className="tooltip-content">{item.rejectionReason}</div>
+                      <span
+                        className="tooltip-trigger"
+                        title={item.rejectionReason}
+                      >
+                        {item.rejectionReason.split('/').pop().substring(0, 20) + '.......'}
+                      </span>
+
+                      {/* <div className="tooltip-content">{item.rejectionReason}</div> */}
                     </div>
                   ) : (
                     <span>----</span>
