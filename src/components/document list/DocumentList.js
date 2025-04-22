@@ -329,6 +329,8 @@ const DocumentTable = () => {
   };
 
   const handlePageChange = (pageNumber) => {
+    setSelectedRows([]); // Clear selected rows when changing pages
+
     setCurrentPage(pageNumber);
   };
 
@@ -390,6 +392,7 @@ const DocumentTable = () => {
     if (selectedReviewer1) {
       handleSelectedAssignClick(selectedRows, selectedReviewer1);
       setShowModal1(false); // close modal after saving
+      setSelectedRows([]); // Clear selected rows after saving
     } else {
       alert('Please select a reviewer');
     }
@@ -446,7 +449,7 @@ const DocumentTable = () => {
 
 
   const handleCheckboxChange = (docId) => {
-    window.alert("Checkbox clicked for document ID: " + docId);
+    // window.alert("Checkbox clicked for document ID: " + docId);
     setSelectedRows((prevSelected) =>
       prevSelected.includes(docId)
         ? prevSelected.filter((id) => id !== docId)
@@ -485,8 +488,9 @@ const DocumentTable = () => {
       {(role === "ADMIN") && (
         <>
           <div className='doc-backup-left'>
-
+            {selectedRows.length > 0 && 
             <button className='doc-backup' onClick={() => setShowModal1(!showModal1)}>Assign Selected Documents</button>
+        }
             <button className='doc-backup' onClick={handleBackupClick}>Backup</button>
             <button onClick={() => setShowModal(!showModal)} className='doc-backup'>
               {showModal ? 'Hide Popup' : 'Assign Reviewer'}
@@ -611,13 +615,16 @@ const DocumentTable = () => {
       <table className="documenttable_table w-full text-sm text-left text-gray-500">
         <thead className="documenttable_thead text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th>
+              {/* {selectedRows.length > 0 &&  */}
+              <th className="documenttable_th px-6 py-3" style={{ width: '3%' }}>
               <input
                 type="checkbox"
                 checked={selectedRows.length === paginatedData.length && paginatedData.length > 0}
                 onChange={handleSelectAll}
               />
             </th>
+            {/* } */}
+            
             <th className="documenttable_th px-6 py-3">Declaration Number</th>
             <th className="documenttable_th px-6 py-3">File Name</th>
             <th className="documenttable_th px-6 py-3">Updated Date
@@ -659,11 +666,14 @@ const DocumentTable = () => {
             paginatedData.map((item, index) => (
 
               <tr key={index} className="documenttable_row bg-white border-b hover:bg-gray-50">
+                <td className="documenttable_td px-6 py-4>" style={{ width: '5%' }}>
+                  
                 <input
                   type="checkbox"
                   checked={selectedRows.includes(item.docId)}
                   onChange={() => handleCheckboxChange(item.docId)}
-                />
+                  />
+                  </td>
 
                 <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
                 <td className="documenttable_td px-6 py-4">
