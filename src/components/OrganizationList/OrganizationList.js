@@ -292,6 +292,9 @@ const OrganizationList = () => {
         <span class="plus-icon">+</span>
         <span>Create New</span>
       </button>
+      <button className="organization_createbtn" onClick={() =>fetchOrganization()}>
+        <span>Refresh</span>
+      </button>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
       <option value="">Select an Option </option>
      <option value="Deleted List">Deleted List</option>

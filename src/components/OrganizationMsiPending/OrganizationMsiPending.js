@@ -60,36 +60,38 @@ const calendarRef = useRef(null);
         setShowSearchInfo(!showSearchInfo);
       };
 
-      useEffect(() => {
-        const fetchOrganization = async () => {
-            try {
-                setIsLoading(true);
-                const response = await apiServices.pendingMsiOrganizations();
-                console.log(response)
-                const organization = response.pending_organizations.map(org => ({
-                    id: org.id,
-                    username: org.auth_user.username,
-                    org_name: org.company_name,
-                    msa_doc: org.contract_doc,
-                    created_date: org.created_at,
-                    email: org.auth_user.email,
-                    delete: org.is_delete,
-                    msi:org.is_msi,
-                }));
-                const filterdata = organization.filter(org => !org.msi)
-                .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-                setData(filterdata);
-    
-                if (organization.length === 0) {
-                    setActionMessage("No Organizations are found in the list.");
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
+      const fetchOrganization = async () => {
+        try {
+            setIsLoading(true);
+            const response = await apiServices.pendingMsiOrganizations();
+            console.log(response)
+            const organization = response.pending_organizations.map(org => ({
+                id: org.id,
+                username: org.auth_user.username,
+                org_name: org.company_name,
+                msa_doc: org.contract_doc,
+                created_date: org.created_at,
+                email: org.auth_user.email,
+                delete: org.is_delete,
+                msi:org.is_msi,
+            }));
+            const filterdata = organization.filter(org => !org.msi)
+            .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+            setData(filterdata);
+
+            if (organization.length === 0) {
+                setActionMessage("No Organizations are found in the list.");
             }
-        };
-    
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+      useEffect(() => {
+        
         fetchOrganization();
     }, [navigate]); // Triggers when returning from navigation
     
@@ -368,6 +370,10 @@ const calendarRef = useRef(null);
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization MSI for Approval</h1>
+            <div  style={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center', gap: '10px', width: "content-fit", marginLeft: "auto" }}>
+            <button className="organization_createbtn" onClick={() =>fetchOrganization()}>
+            <span>Refresh</span>
+            </button>
             <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
               <option value="">Select an Option </option>
               <option value="Organization List">Organization List</option>
@@ -375,6 +381,7 @@ const calendarRef = useRef(null);
               {/* <option value="Registered List">Registered List</option> */}
               <option value="Deleted List">Deleted List</option>
             </select>
+            </div>
             {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             <div className='organization-container_controls'>
                 <div className='organization-search'>

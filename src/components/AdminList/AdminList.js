@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faPencil, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 
+
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -57,40 +58,40 @@ const AdminList = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showSearchInfo]);
-  
+  const fetchAdmins = async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiServices.getAdmins(); // Adjust based on API
+      console.log(response)
+      const admins = response.product_admins.map(admin => ({
+        id: admin.id,
+        username: admin.auth_user.username,
+        name: admin.auth_user.first_name,
+        email: admin.auth_user.email,
+        createdAt: admin.created_at,
+        status: admin.is_frozen,
+        OrgId: admin.organization.id,
+        role: admin.role.name,
+        delete: admin.is_delete,
+      })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      console.log(admins)
+      const filterdata = admins.filter(item => !item.delete)
+      setData(filterdata);
+      setFilteredData(filterdata);
+
+      if (admins.length === 0) {
+        setActionMessage('No admins available.');
+      }
+    } catch (error) {
+      console.error('Error fetching admins:', error);
+      setActionMessage('Error fetching admins. Please try again later.');
+    } finally {
+      setIsLoading(false); // End loading
+    }
+  };
 
   useEffect(() => {
-    const fetchAdmins = async () => {
-      try {
-        setIsLoading(true);
-        const response = await apiServices.getAdmins(); // Adjust based on API
-        console.log(response)
-        const admins = response.product_admins.map(admin => ({
-          id: admin.id,
-          username: admin.auth_user.username,
-          name: admin.auth_user.first_name,
-          email: admin.auth_user.email,
-          createdAt: admin.created_at,
-          status: admin.is_frozen,
-          OrgId: admin.organization.id,
-          role: admin.role.name,
-          delete: admin.is_delete,
-        })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        console.log(admins)
-        const filterdata = admins.filter(item => !item.delete)
-        setData(filterdata);
-        setFilteredData(filterdata);
-  
-        if (admins.length === 0) {
-          setActionMessage('No admins available.');
-        }
-      } catch (error) {
-        console.error('Error fetching admins:', error);
-        setActionMessage('Error fetching admins. Please try again later.');
-      } finally {
-        setIsLoading(false); // End loading
-      }
-    };
+    
     fetchAdmins();
   }, [refresh]); // <-- Refresh the list when refresh changes
 
@@ -317,8 +318,12 @@ const AdminList = () => {
   return (
     <div className="adminlist_container">
       <h1 className="adminlist_header">Admin Details</h1>
-      <div className="admin-list-header-actions">
-      <button className="admin_createbtn" onClick={() => navigate('/AdminCreation')}>
+      <div className="admin-list-header-actions" style={{ width: "fitContent", marginLeft: "auto" }}>
+
+      <button className="admin_createbtn" onClick={() =>fetchAdmins()} style={{ marginLeft: 0 }}>
+            <span>Refresh</span>
+      </button>
+      <button className="admin_createbtn" onClick={() => navigate('/AdminCreation')} style={{ marginLeft: 0 }}>
         <span class="plus-icon">+</span>
         <span>Create New</span>
       </button>

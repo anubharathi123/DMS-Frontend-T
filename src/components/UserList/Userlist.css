@@ -264,11 +264,12 @@
   .userlist-header-actions {
     /* width: 300px; */
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
-    gap: 1rem; /* Add spacing between button and dropdown */
+    /* gap: 1rem; Add spacing between button and dropdown */
     margin-bottom: 1rem;
     flex-wrap: wrap; /* Ensures responsiveness */
+    margin-left: auto;
   }
   
   .user_createbtn {

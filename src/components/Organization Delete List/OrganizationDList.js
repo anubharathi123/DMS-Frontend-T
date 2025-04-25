@@ -242,6 +242,11 @@ const OrganizationList = () => {
     return (
         <div className="organization-main">
             <h1 className="organization-header">Organization Deleted Details</h1>
+            <div style={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center', gap: '10px', width: "content-fit", marginLeft: "auto" }}>
+
+            <button className="organization_createbtn" onClick={() =>fetchOrganization()}>
+            <span>Refresh</span>
+            </button>
             <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
                 <option value="">Select an Option </option>
                 <option value="Organization List">Organization List</option>
@@ -250,6 +255,7 @@ const OrganizationList = () => {
                 <option value="MSI Approval">MSI Approval</option>
 
             </select>
+            </div>
             {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             {/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (
   <button className='org_createbtn' onClick={handleCreateOrganization} > + New Organization</button> 

@@ -28,7 +28,8 @@
     margin-right: 10px;
     font-size: 12px;
     position: relative;
-    left: 35%;
+    /* left: 35%; */
+    margin-left: auto;
 }
 
 .admin_createbtn:hover {
@@ -272,4 +273,13 @@
   font-size: 14px;
   padding: 10px;
   margin-top: 20px;
+}
+
+
+.new-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  left: auto;
 }

@@ -540,8 +540,8 @@ background-color: #000b58;
 .admin-list-header-actions {
 display: flex;
 justify-content: space-between;
-margin-left: 57%;
-gap: 1rem; /* Add spacing between button and dropdown */
+/* margin-left: 57%; */
+/* gap: 1rem; */
 margin-bottom: 1rem;
 flex-wrap: wrap; /* Ensures responsiveness */
 }

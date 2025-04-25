@@ -398,6 +398,13 @@ const authService = {
     return handleResponse(apiClient.post(`organization_undelete/${orgId}/`))
   },
 
+  RestoreUserdelete:async(orgId) => {
+    if (!orgId) {
+      throw new Error('Organization ID is required to restore an user.');
+    } 
+    return handleResponse(apiClient.patch(`auth/${orgId}/un_delete/`))
+  },
+
   addSubAdmin: async (orgId, data) => {
     if (!orgId || !data.email) {
       throw new Error('Organization ID and sub-admin email are required.');
