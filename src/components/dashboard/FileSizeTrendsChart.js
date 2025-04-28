@@ -39,16 +39,16 @@ const FileSizeTrendsChart = ({
     console.log("Year", selectedReportYear);
   }, [companyData]);
 
-  console.log(chartcomapny, "chartcomapny");
-  // console.log(modalOpenChart["companies"], "modalOpenChart");
-  console.log(selectedReportYear, "selectedReportYear");
-  console.log(uniqueReportYears, "uniqueReportYears")
-  console.log(selectedReportYear, "selectedReportYear")
-  console.log(selectedCompany, "selectedCompany")
-  console.log(setSelectedReportYear, "setSelectedReportYear")
-  console.log(uniqueReportYears, "uniqueReportYears")
-  console.log(selectedCompany, "selectedCompany")
-  console.log(setSelectedCompany, "setSelectedCompany")
+  // console.log(chartcomapny, "chartcomapny");
+  // console.log(modalOpenChart.companies, "modalOpenChart");
+  // console.log(selectedReportYear, "selectedReportYear");
+  // console.log(uniqueReportYears, "uniqueReportYears")
+  // console.log(selectedReportYear, "selectedReportYear")
+  // console.log(selectedCompany, "selectedCompany")
+  // console.log(setSelectedReportYear, "setSelectedReportYear")
+  // console.log(uniqueReportYears, "uniqueReportYears")
+  // console.log(selectedCompany, "selectedCompany")
+  // console.log(setSelectedCompany, "setSelectedCompany")
 
   return (
     <div className="chart">
@@ -107,17 +107,17 @@ const FileSizeTrendsChart = ({
 
             <p>
               <strong>📑 Total Documents:</strong>{" "}
-              {chartcomapny ? chartcomapny.document_count : modalOpenChart.total_documents}
+              {chartcomapny && chartcomapny.document_count ? chartcomapny.document_count : modalOpenChart.total_documents}
             </p>
             <p>
               <strong>🏚 Company:</strong>{" "}
-              {chartcomapny
+              {chartcomapny && chartcomapny.company
                 ? chartcomapny.company
                 : modalOpenChart.companies[0]?.company}
             </p>
             <p>
               <strong>📁 Total File Size:</strong>{" "}
-              {chartcomapny
+              {chartcomapny && chartcomapny.file_size
                 ? chartcomapny.file_size
                 : modalOpenChart.total_file_size}
             </p>
