@@ -368,7 +368,14 @@ function ProfileCard() {
   const handleRemoveProfileImage = async () => {
     const data = await authService.details();
     console.log(data);
-    let id = data.details[3]?.id || data.details[1]?.id;
+    console.log(role);
+    let id = ""
+    if (role === "ADMIN") {
+      id = data.details[1]?.id;
+    }
+    else {
+      id = data.details[3]?.id;
+    }
     console.log(id);
     if (id) {
       await authService.delprofile(id);

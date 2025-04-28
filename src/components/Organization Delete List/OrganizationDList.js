@@ -236,7 +236,7 @@ const OrganizationList = () => {
         currentPage * rowsPerPage
     );
 
-  const togglePopup = () => setShowPopup(!showPopup);
+    const togglePopup = () => setShowPopup(!showPopup);
 
 
     return (
@@ -244,17 +244,21 @@ const OrganizationList = () => {
             <h1 className="organization-header">Organization Deleted Details</h1>
             <div style={{ display: 'flex', justifyContent: 'cneter', alignItems: 'center', gap: '10px', width: "content-fit", marginLeft: "auto" }}>
 
-            <button className="organization_createbtn" onClick={() =>fetchOrganization()}>
-            <span>Refresh</span>
-            </button>
-            <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
-                <option value="">Select an Option </option>
-                <option value="Organization List">Organization List</option>
-                <option value="Create Organization">Create Organization</option>
-                {/* <option value="Registered List">Registered List</option> */}
-                <option value="MSI Approval">MSI Approval</option>
+                <button className="organization_createbtn" onClick={() => navigate('/CompanyCreation')}>
+                    <span class="plus-icon">+</span>
+                    <span>Create New</span>
+                </button>
+                <button className="organization_createbtn" onClick={() => fetchOrganization()}>
+                    <span>Refresh</span>
+                </button>
+                <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
+                    <option value="">Select an Option </option>
+                    <option value="Organization List">Organization List</option>
+                    {/* <option value="Create Organization">Create Organization</option> */}
+                    {/* <option value="Registered List">Registered List</option> */}
+                    <option value="MSI Approval">MSI Approval</option>
 
-            </select>
+                </select>
             </div>
             {/* <button className='organization-backbtn' onClick={handleNavigate} >Back</button> */}
             {/* {(role === "PRODUCT_OWNER" || "PRODUCT_ADMIN") && (

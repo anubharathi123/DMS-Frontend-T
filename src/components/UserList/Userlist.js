@@ -63,7 +63,7 @@ const UserList = () => {
       };
     }, []);
 
-  useEffect(() => {
+
     const fetchDetails = async () => {
       try {
         setIsLoading(true);
@@ -93,6 +93,8 @@ const UserList = () => {
         setIsLoading(false);
       }
     };
+  useEffect(() => {
+    
     fetchDetails();
   }, [refresh]);
 
@@ -256,6 +258,9 @@ const UserList = () => {
     }}
   /> */}
 {/* </button> */}
+<button className="admin_createbtn" onClick={() =>fetchDetails()}  style={{ marginLeft: 0 }}>
+            <span>Refresh</span>
+      </button>
       <select className="organization-select" onChange={(e) => handleDropdownChange(e.target.value)}>
       <option value="">Select an Option </option>
      <option value="Deleted List">Deleted List</option>

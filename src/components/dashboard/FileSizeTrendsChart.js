@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MonthlyDocumentChart from "./MonthlyDocumentChart"; // Ensure this path is correct
 
-const   FileSizeTrendsChart = ({
+const FileSizeTrendsChart = ({
   selectedReportYear,
   setSelectedReportYear,
   uniqueReportYears,
@@ -38,12 +38,23 @@ const   FileSizeTrendsChart = ({
     }
     console.log("Year", selectedReportYear);
   }, [companyData]);
-  
+
+  console.log(chartcomapny, "chartcomapny");
+  // console.log(modalOpenChart["companies"], "modalOpenChart");
+  console.log(selectedReportYear, "selectedReportYear");
+  console.log(uniqueReportYears, "uniqueReportYears")
+  console.log(selectedReportYear, "selectedReportYear")
+  console.log(selectedCompany, "selectedCompany")
+  console.log(setSelectedReportYear, "setSelectedReportYear")
+  console.log(uniqueReportYears, "uniqueReportYears")
+  console.log(selectedCompany, "selectedCompany")
+  console.log(setSelectedCompany, "setSelectedCompany")
+
   return (
     <div className="chart">
       <h3 className="dashboard_text">
         Trend Analysis
-       </h3>
+      </h3>
       <center>
         <div className="slicer">
           <div className="dropdown-container">
@@ -61,21 +72,21 @@ const   FileSizeTrendsChart = ({
           </div>
 
           <div className="dropdown-container">
-          <select
-  className="company-dropdown"
-  value={selectedCompany}
-  onChange={(e) => setSelectedCompany(e.target.value)}>
-  {companyData.map((company, index) => (
-    <option key={index} value={company.org_name}>
-      {company.org_name}
-    </option>
-  ))}
-</select>
+            <select
+              className="company-dropdown"
+              value={selectedCompany}
+              onChange={(e) => setSelectedCompany(e.target.value)}>
+              {companyData.map((company, index) => (
+                <option key={index} value={company.org_name}>
+                  {company.org_name}
+                </option>
+              ))}
+            </select>
 
           </div>
         </div>
 
-        
+
         {modalOpenChart && (
           <div
             style={{
@@ -96,9 +107,7 @@ const   FileSizeTrendsChart = ({
 
             <p>
               <strong>📑 Total Documents:</strong>{" "}
-              {chartcomapny
-                ? chartcomapny.document_count
-                : modalOpenChart.total_documents}
+              {chartcomapny ? chartcomapny.document_count : modalOpenChart.total_documents}
             </p>
             <p>
               <strong>🏚 Company:</strong>{" "}
@@ -149,32 +158,32 @@ const   FileSizeTrendsChart = ({
                 borderRadius: "5px",
               }}
             >
-              Close
+              Close123
             </button>
           </div>
         )}
       </center>
 
       <div className="chart" >
-      <MonthlyDocumentChart
-  groupedData={
-    isAdminOrDocumentRole || !selectedCompany
-      ? groupedData
-      : groupedData.filter((entry) =>
-          entry.companies?.some(
-            (company) => company.company === selectedCompany
-          )
-        )
-  }
-  setModalData={setModalData}
-  setIsModalOpen={setIsModalOpen}
-  setmodalOpenChart={setmodalOpenChart}
-  isAdminOrDocumentRole={isAdminOrDocumentRole}
-  dashboardData={dashboardData}
-  selectedReportYear={selectedReportYear}
-  setSelectedReportYear={setSelectedReportYear}
-  uniqueReportYears={uniqueReportYears}
-/>
+        <MonthlyDocumentChart
+          groupedData={
+            isAdminOrDocumentRole || !selectedCompany
+              ? groupedData
+              : groupedData.filter((entry) =>
+                entry.companies?.some(
+                  (company) => company.company === selectedCompany
+                )
+              )
+          }
+          setModalData={setModalData}
+          setIsModalOpen={setIsModalOpen}
+          setmodalOpenChart={setmodalOpenChart}
+          isAdminOrDocumentRole={isAdminOrDocumentRole}
+          dashboardData={dashboardData}
+          selectedReportYear={selectedReportYear}
+          setSelectedReportYear={setSelectedReportYear}
+          uniqueReportYears={uniqueReportYears}
+        />
 
       </div>
 
