@@ -163,6 +163,7 @@ const UserList = () => {
             if (!window.confirm("Are you sure you want to restore this user?")) {
             }
             try {
+              console.log(id, "id")
                 setIsLoading(true);
     
                 // Call API to delete the organization

@@ -21,7 +21,7 @@ import ColorModeIconDropdown from "../theme/ColorModeIconDropdown";
 import DartLogo from "../../assets/images/VDart-dark-logo.png";
 import WhiteLogo from "../../assets/images/company_logo.png";
 import Logo1 from "../../assets/images/Logo.png";
-
+import ProfileCard from "../../components/profile final/Profile";
 // Custom Styled Toolbar
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -39,6 +39,41 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
+  const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
+  const profileButtonRef = React.useRef(null);
+  const profileDropdownRef = React.useRef(null);
+
+  const iconColor = "#ccc"; // Adjust as needed
+  const profileImage = null; // Or your logic to get the image
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('');
+  const handleNavigateHome = () => window.location.href = '/';
+  const handleNavigate404 = () => window.location.href = '/settings';
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = '/login';
+  };
+
+  React.useEffect(() => {
+    const storedName = localStorage.getItem("name");
+    const storedEmail = localStorage.getItem("email");
+
+
+    // Function to capitalize the first letter
+    function capitalize(str: string): string {
+      if (!str) return "";
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
+
+    const capitalizedName = storedName ? capitalize(storedName) : "";
+    const capitalizedEmail = storedEmail ? capitalize(storedEmail) : "";
+
+    if (capitalizedName) setName(capitalizedName);
+    if (capitalizedEmail) setEmail(capitalizedEmail);
+  }, []);
+
+
   const theme = useTheme();
   const logo = theme.palette.mode === "light" ? Logo1 : Logo1;
 
@@ -76,81 +111,77 @@ export default function AppAppBar() {
         backgroundImage: "none",
       }}
     >
-      {/* Top Bar for Contact Info */}
       <Container maxWidth="xl" sx={{ mb: 2 }}>
-        {/* <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between", 
-            alignItems: "center",
-            bgcolor: "#007aff", 
-            color: "white",
-            py: 0.5,
-            px: 2,
-            fontSize: "0.875rem",
-          }}
-        > */}
-          {/* Left Side - Contact Info */}
-          {/* <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}> */}
-            {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <PhoneIcon fontSize="small" />
-              <Typography variant="body2">987654343</Typography>
-            </Box> */}
 
-            {/* <Divider orientation="vertical" flexItem sx={{ bgcolor: "darkblue", height: 16 }} /> */}
-
-            {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <EmailIcon fontSize="small" />
-              <Typography variant="body2">Inten@vdartinc.com</Typography>
-            </Box> */}
-          {/* </Box> */}
-
-          {/* Right Side - Sign In / Sign Up Buttons */}
-          {/* <Box sx={{ display: "flex", gap: 1 }}> */}
-          {/* <Button 
-   variant="outlined" 
-  size="small" 
- sx={{ color: "white", borderColor: "white" }} 
-  onClick={() => window.location.href = '/login'}
-> */}
-  {/* Sign in
-</Button>
-<Button color="primary" variant="contained" size="small">
-  Sign up
-</Button> */}
-
-          {/* </Box> */}
-        {/* </Box> */}
       </Container>
 
-      {/* Main Navbar */}
       <Container maxWidth="xl">
         <StyledToolbar variant="dense" disableGutters>
           <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}>
-            <img src={logo} alt="Vdart Logo" style={{ height: "30px", marginRight: "30px"}} />
+            <img src={logo} alt="Vdart Logo" style={{ height: "30px", marginRight: "30px" }} />
           </Box>
 
-          {/* Navigation Links */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2, alignItems: "center" }}>
-          <Button variant="text" color="info" onClick={() => scroll("hero")}>Home</Button>
+            <Button variant="text" color="info" onClick={() => scroll("hero")}>Home</Button>
             <Button variant="text" color="info" onClick={() => scroll("features")}>Features</Button>
-            {/* <Button variant="text" color="info" onClick={() => scroll("testimonials")}>Testimonials</Button>
-            <Button variant="text" color="info" onClick={() => scroll("leaders")}>Our Leaders</Button>
-            <Button variant="text" color="info" onClick={() => scroll("faq")}>FAQ's</Button> */}
+
             <Button variant="text" color="info" onClick={() => scroll("footer")}>Contact Us</Button>
-            
-            <Button 
-   variant="outlined" 
-  size="small" 
- sx={{ color: "white", borderColor: "black", background:'black' }} 
-  onClick={() => window.location.href = '/login'}
->
-  Sign In
-</Button>
-            {/* <ColorModeIconDropdown /> */}
+            {localStorage.getItem("token") ? (
+              <>
+                <Box sx={{ position: 'relative' }}>
+                  <button
+                    type="button"
+                    className="profilebtn"
+                    style={{ background: iconColor }}
+                    onClick={() =>
+                      setActiveDropdown(activeDropdown === "profile" ? null : "profile")
+                    }
+                    ref={profileButtonRef}
+                  >
+                    {profileImage ? (
+                      <img src={profileImage} alt="Profile" className="profile-icon1" />
+                    ) : (
+                      <div className="profile-icon">{getInitials(name)}</div>
+                    )}
+                  </button>
+
+                  {activeDropdown === "profile" && (
+                    <div className="profile-dropdown" ref={profileDropdownRef}>
+                      <p style={{color : "black"}}><b>{name}</b></p>
+                      <p style={{color : "black"}}>{email}</p>
+                      <hr />
+                      <ul className="dropdown-menu">
+                        <li>
+                          <button type="button" className="dropdown-item" onClick={handleNavigateHome}>
+                            Home
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" className="dropdown-item" onClick={handleNavigate404}>
+                            Settings
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" className="signout-button" onClick={handleLogout}>
+                            LogOut
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </Box>
+              </>
+            ) : (<Button
+              variant="outlined"
+              size="small"
+              sx={{ color: "white", borderColor: "black", background: 'black' }}
+              onClick={() => window.location.href = '/login'}
+            >
+              Sign In
+            </Button>)}
+
           </Box>
 
-          {/* Mobile Menu */}
           <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
             <ColorModeIconDropdown size="medium" />
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
@@ -170,21 +201,13 @@ export default function AppAppBar() {
                 </Box>
                 <MenuItem onClick={() => { scroll("hero"); setOpen(false); }}>Home</MenuItem>
                 <MenuItem onClick={() => { scroll("features"); setOpen(false); }}>Features</MenuItem>
-                {/* <MenuItem onClick={() => { scroll("testimonials"); setOpen(false); }}>Testimonials</MenuItem>
-                <MenuItem onClick={() => { scroll("leaders"); setOpen(false); }}>Our Leaders</MenuItem>
-                <MenuItem onClick={() => { scroll("faq"); setOpen(false); }}>FAQ's</MenuItem> */}
                 <MenuItem onClick={() => { scroll("footer"); setOpen(false); }}>Contact Us</MenuItem>
                 <Divider sx={{ my: 2 }} />
-                {/* <MenuItem> 
-                  <Button color="primary" variant="contained" fullWidth>
-                    Sign Up
-                  </Button> 
-                 </MenuItem> */}
                 <MenuItem onClick={() => { window.location.href = '/login'; setOpen(false); }}>
-                  <Button color="primary" variant="contained" fullWidth>
-                    Sign In
-                  </Button>
                 </MenuItem>
+                <Button color="primary" variant="contained" fullWidth>
+                  Sign In
+                </Button>
               </Box>
             </Drawer>
           </Box>
