@@ -428,11 +428,11 @@ const [dummyData,setDummyData] = useState([]);
               >
                 <div>
                   <FaFileAlt style={{ marginRight: "5px" }} />
-                  {company.doc_count} Docs
+                  {company.uploaded_files_count} Docs
                 </div>
                 <div>
                   <FaFolderOpen style={{ marginRight: "5px" }} />
-                  {company.doc_size}
+                  {company.uploaded_files_size_mb}
                 </div>
                 <div>
                   <FaUsers style={{ marginRight: "5px" }} />
