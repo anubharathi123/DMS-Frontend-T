@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 
-const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, isAdminOrDocumentRole }) => {
-  // const role = localStorage.getItem("role");
-  const max = isUploader ? 10 : 504; // Max for uploader is 10MB
+const ProgressBarChart = ({
+  totalSize,
+  client,
+  isUploader,
+  isReviewer,
+  isViewer,
+  isAdminOrDocumentRole,
+}) => {
+  const [showDetails, setShowDetails] = useState(false); // 👈 state to toggle details
+
+  const max = isUploader ? 10 : 504;
   const used = isUploader ? 10 : isAdminOrDocumentRole ? client : totalSize;
 
   const roundedUsed = used > max ? max : used.toFixed(2);
   const percentage = Math.min((used / max) * 100, 100).toFixed(2);
-  const fullLabel = `${roundedUsed} MB `;
+  const fullLabel = `${roundedUsed} MB`;
+
+  const toggleDetails = () => {
+    setShowDetails(!showDetails); // 👈 toggle the visibility
+  };
 
   return (
     <div
@@ -16,25 +28,42 @@ const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, i
         padding: "14px 16px",
         borderRadius: "12px",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        // width: isAdminOrDocumentRole ? "10px" : "100%",
         minWidth: isAdminOrDocumentRole ? "400px" : "390px",
-        // marginLeft: isUploader ? "500px" : isAdminOrDocumentRole ? "650px" : "-50px",
-        // margin: isAdminOrDocumentRole ? "none" : "auto",
-        // marginTop: isUploader ? "-350px" : isReviewer ? "-340px" : isViewer ? "-330px " : isAdminOrDocumentRole ? "-375px" : "0px",
         position: "relative",
       }}
     >
       <h3
+        title="Click to view storage details"
+        onClick={toggleDetails} // 👈 now shows details instead of alert
         style={{
           marginBottom: "8px",
           fontSize: "15px",
           fontWeight: "700",
           color: "#007bff",
           textAlign: "center",
+          cursor: "pointer",
         }}
       >
         Storage Usage
       </h3>
+
+      {showDetails && (
+        <div
+          style={{
+            background: "#f9f9f9",
+            padding: "10px",
+            marginBottom: "10px",
+            borderRadius: "8px",
+            fontSize: "13px",
+            color: "#333",
+            textAlign: "center",
+          }}
+        >
+          <p><strong>Max Size:</strong> {max} MB</p>
+          <p><strong>Used:</strong> {roundedUsed} MB</p>
+          <p><strong>Usage %:</strong> {percentage}%</p>
+        </div>
+      )}
 
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <div
@@ -51,6 +80,7 @@ const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, i
             fontWeight: "bold",
             fontSize: "13px",
             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+            cursor: "default",
           }}
         >
           {fullLabel}
@@ -67,7 +97,7 @@ const ProgressBarChart = ({ totalSize, client, isUploader,isReviewer,isViewer, i
         >
           <div
             style={{
-              width:isUploader? `${percentage}%`: isAdminOrDocumentRole ? `${percentage}%` : `${percentage}%`,
+              width: `${percentage}%`,
               height: "100%",
               background: "linear-gradient(to right, #007bff, #00d4ff)",
               borderRadius: "20px",

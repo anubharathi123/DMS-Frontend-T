@@ -162,42 +162,52 @@ function ProfileCard() {
   const isProductOwner = role === "PRODUCT_OWNER";
 
   return (
-    <>
+  <div className="profile-fullscreen-wrapper">
+    <div className="card-container">
       <h1 className="profile-title">Profile</h1>
-      <div className="card-container">
-        <header className="profile-header">
+      <header className="profile-header">
         {profileImage ? (
           <img className="profile_img" src={profileImage} alt="Profile" />
         ) : (
           <div className="profile-img">{getInitials(name)}</div>
         )}
-          
-          <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
-          
-            <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
-            <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
-          </button>
-        </header>
-        <h1 className="bold-text">{name}</h1>
-        <h2 className="normal-text">Role: {formattedRole}</h2>
-        <h2 className="normal-text">Mail ID: {mail}</h2>
-        <h2 className="normal-text">Mobile: {mobile}</h2>
 
-        {cropperVisible && (
-          <div className="cropper-modal">
-            <div className="cropper-modal-content">
-              <h2 className="cropper-header">Crop Your Photo</h2>
-              <Cropper src={imageToCrop} ref={cropperRef} style={{ height: "300px", width: "100%" }} aspectRatio={1} guides={true} />
-              <div className="cropper-actions">
-                <button onClick={handleSaveCrop} style={{ background: iconColor }} className="btn-save-crop">Save Changes</button>
-                <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">Cancel</button>
-              </div>
+        <button className="edit_photo" onClick={() => fileInputRef.current.click()}>
+          <img className="profile_edit" src={ProfileEdit} alt="Edit Profile" />
+          <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageChange} />
+        </button>
+      </header>
+      <h1 className="bold-text">{name}</h1>
+      <h2 className="normal-text">Role: {formattedRole}</h2>
+      <h2 className="normal-text">Mail ID: {mail}</h2>
+      <h2 className="normal-text">Mobile: {mobile}</h2>
+
+      {cropperVisible && (
+        <div className="cropper-modal">
+          <div className="cropper-modal-content">
+            <h2 className="cropper-header">Crop Your Photo</h2>
+            <Cropper
+              src={imageToCrop}
+              ref={cropperRef}
+              style={{ height: "300px", width: "100%" }}
+              aspectRatio={1}
+              guides={true}
+            />
+            <div className="cropper-actions">
+              <button onClick={handleSaveCrop} style={{ background: iconColor }} className="btn-save-crop">
+                Save Changes
+              </button>
+              <button onClick={() => setCropperVisible(false)} className="btn-cancel-crop">
+                Cancel
+              </button>
             </div>
           </div>
-        )}
-      </div>
-    </>
-  );
+        </div>
+      )}
+    </div>
+  </div>
+);
+
 }
 
 export default ProfileCard;

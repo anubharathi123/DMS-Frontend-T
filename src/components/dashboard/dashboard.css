@@ -11,25 +11,41 @@
   --beige: #f4b7;
 }
 
-/* General Dashboard Container */
-.dashboard-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* align-items: center; */
-  margin-left: 223px;
-  margin-top: 60px;
-  align-items: flex-start;
-}
 
-.bg{
-  background-color: white !important;
-}
 .boy{
   /* position: fixed; */
   /* margin-top: 620px; */
   overflow-x: hidden;
   /* height: 100px; */
+}/* General Dashboard Container */
+.dashboard-container { 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    width: calc(100vw - 0px); /* Prevents scrollbar */
+    height: 100vh;
+    margin-top: 70px; /* Header height */
+    padding: 20px; /* Adds breathing room */
+    box-sizing: border-box;
+    overflow-x: hidden; /* Ensure no horizontal scroll */
+}
+
+.dashboard-table-container {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+/* For WebKit browsers (Chrome, Safari, Edge) */
+.dashboard-table-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+.bg{
+  background-color: white !important;
 }
   /* Skeleton Animation */
 
@@ -85,6 +101,7 @@
   color: var(--dark-blue);
   font-size: 20px;
   text-align: center;
+  
 }
 
 .dashboard-h2 {
@@ -156,19 +173,6 @@
   font-size: 12px;
 }
 
-
-.dashboard-table-container {
- height: 82%;
-  border-radius: 12px;
- cursor: pointer;
- margin-top: -10px;
-  /* width: 460px; */
-}
-
-.dashboard-table-container::-webkit-scrollbar {
-  width: 8px;
-}
- 
 .dashboard-table-container::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 4px;
@@ -501,6 +505,7 @@ canvas {
 
 .dropdown-container {
   display: flex;
+  margin-bottom: 16px; /* Adjust the value as needed */
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -1069,46 +1074,6 @@ select {
 }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .chart-container {
   width: 50%;
   background: #fff;
@@ -1364,3 +1329,31 @@ select {
   /* top: 1%; */
   right: 51%; 
  }
+
+ .storage-usage-card {
+  background: #f4f8ff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.storage-bar-container {
+  background: #e1eaff;
+  border-radius: 10px;
+  height: 20px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.storage-bar {
+  background-color: #4e84db;
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  transition: width 0.5s ease;
+}
+
+.storage-stats p {
+  margin: 5px 0;
+  font-size: 14px;
+}

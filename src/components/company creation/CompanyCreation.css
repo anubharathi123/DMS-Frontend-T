@@ -7,6 +7,7 @@
 
 .company-creation-container {
   display: flex;
+  position: fixed;
   justify-content: center;
   align-items: center;
   height: 100vh;

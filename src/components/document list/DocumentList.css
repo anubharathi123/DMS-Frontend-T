@@ -1,12 +1,14 @@
 /* Container */
-.documenttable_container{
+.documenttable_container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 75%;
-  margin-left: 250px;
-  position: absolute;
-  top: 65px;
+  gap: 5px;
+  width: 95%; /* Change to 100% for full width */
+  height: calc(100vh - 65px); /* Full height minus header height */
+  margin: 0; /* Remove left margin for full width */
+  position: fixed; /* Change to fixed to keep it in place */
+  top: 35px; /* Position it below the header */
+  overflow: auto; /* Allow scrolling if content overflows */
 }
 
 .documentlist_header{
@@ -387,5 +389,3 @@ padding-left: .5rem !important;
 .tooltip-container:hover .tooltip-content {
   display: block;
 }
-
-

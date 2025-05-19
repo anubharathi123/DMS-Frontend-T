@@ -1,157 +1,235 @@
-/* Updated AsideBar CSS - Scrollbar Removed & Settings at the Bottom */
-
-.aside-bar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.aside-bar li {
-  display: flex;
-  align-items: center;
-  padding: 6px;
-}
-
-.aside-bar li a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #fff;
-  padding: 3px;
-  transition: 0.3s;
-  height: 40px;
-}
-
-.aside-bar li a .aside-icon {
-  margin-right: 6px;
-  color: #fff;
-}
-
-.aside-bar li a.active {
-  font-weight: bold;
-  color: #007bff;
-}
-
-.aside-bar li a.active .aside-icon {
-  color: #007bff;
-}
-
+/* ========== Sidebar Base ========== */
 .aside-bar {
-  z-index: 3;
-  width: 180px;
-  min-width: 180px; 
-  height: 100%;
-  background-color: #000B58;
-  color: #fff;
   position: fixed;
   top: 0;
   left: 0;
+  height: 100vh;
+  width: 260px;
+  background: #000b58;
+  color: #ecf0f1;
+  transition: transform 0.3s ease;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  /* Removed overflow to disable scrolling */
-  overflow: hidden;  
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
 }
 
-/* .logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  max-width: 100%;
-} */
-.logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 24px;
-    margin-bottom: 20px;
-    width: 75%;
-  max-width: 100%;
-  padding: 10px;
-  
-  background-color: white;       /* White box background */
-  border-radius: 12px;           /* Rounded corners */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Optional: subtle shadow */
+.aside-bar.closed {
+  transform: translateX(-100%);
 }
 
-
-nav {
-  /* Removed scrolling */
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+.aside-bar.open {
+  transform: translateX(0);
 }
 
-nav ul {
+/* ========== Logo Section ========== */
+.logo-container {
+  padding: 24px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-img {
+  max-width: 80%;
+  height: auto;
+  background-color: #f5f5f5;
+  transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.03);
+}
+
+/* ========== Navigation ========== */
+.sidebar-nav {
+  flex: 1;
+  padding: 15px 0;
+}
+
+.nav-menu {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.nav-item {
+  margin: 4px 0;
+}
+
+.nav-item a {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
   align-items: center;
-}
-
-nav ul li {
-  padding: 2px 3px;
-  cursor: pointer;
-  border-radius: 8px;
-  position: relative;
-  width: 92%;
-  transition: background-color 0.3s ease-in-out;
-}
-
-nav ul li:last-child {
-  margin-bottom: 6px;
-}
-
-nav ul li.active {
-  background-color: #006A67;
-}
-
-nav ul li img {
-  width: 20px;
-  height: 20px;
-  transition: filter 0.3s ease-in-out;
-  margin-left: auto;
-}
-
-nav ul li a {
+  padding: 12px 20px;
+  color: #f5f5f5;
   text-decoration: none;
-  color: #FFF4B7;
-  font-size: 0.95rem;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border-left: 4px solid transparent;
+}
+
+.nav-item a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  padding-left: 22px;
+  color: #ffffff;
+}
+
+.nav-item a.active {
+  background: rgba(52, 152, 219, 0.15);
+  border-left-color: #3498db;
+  color: #ffffff;
+}
+
+.nav-icon {
+  margin-right: 12px;
+  min-width: 20px;
+  transition: transform 0.2s ease;
+}
+
+.nav-item a:hover .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+/* ========== Dropdowns ========== */
+.dropdown-header {
   display: flex;
   align-items: center;
-  gap: 6px;
+  padding: 12px 20px;
+  cursor: pointer;
+  color: #f5f5f5;
+  transition: all 0.25s ease;
+  border-left: 4px solid transparent;
+}
+
+.dropdown-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+  padding-left: 22px;
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.1);
+  transition: max-height 0.4s ease;
+}
+
+.dropdown-content.open {
+  max-height: 500px;
+}
+
+.dropdown-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-content li a {
+  padding: 10px 20px 10px 56px;
+  font-size: 13px;
+  color: #ecf0f1;
+  display: block;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+}
+
+.dropdown-content li a:hover {
+  background: rgba(255, 255, 255, 0.03);
+  padding-left: 58px;
+}
+
+.dropdown-content li a.active {
+  background: rgba(52, 152, 219, 0.15);
+}
+
+.dropdown-icon {
+  margin-right: 8px;
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* ========== Hamburger Button ========== */
+.hamburger-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1100;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.hamburger-btn:hover {
+  transform: scale(1.1);
+}
+
+/* ========== Logout Section ========== */
+.nav-item.logout {
+  margin-top: auto;
+  padding: 10px 20px;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
   width: 100%;
-  transition: color 0.3s, background-color 0.3s;
+  background: none;
+  border: none;
+  color: #f5f5f5;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 0;
+  transition: background-color 0.2s ease;
+  text-align: left;
 }
 
-nav ul li:hover {
-  background-color: #003161;
+.logout-btn:hover {
+  background-color: #f44336;
+  color: #ffffff;
+  border-radius: 4px;
 }
 
-nav ul li i {
-  font-size: 1.2rem;
-  transition: transform 0.3s ease-in-out;
+.logout-btn .nav-icon {
+  margin-right: 12px;
 }
 
-nav ul li:hover i {
-  transform: scale(1.05);
+/* ========== Scrollbar ========== */
+.aside-bar::-webkit-scrollbar {
+  width: 6px;
+}
+.aside-bar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+.aside-bar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+.aside-bar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
-nav ul li a.active {
-  color: #FFF4B7;
-  border-radius: 8px;
-}
-
-/* Move Settings to the Bottom */
-.settings1 {
-  margin-bottom:-150px ; /* Pushes settings to the bottom */
-}
-#set{
-  margin-left: 30px;
-  margin-top: -22px;
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .aside-bar {
+    width: 220px;
+  }
+  .nav-item a {
+    padding: 10px 16px;
+  }
+  .dropdown-content li a {
+    padding-left: 48px;
+  }
 }

@@ -6,21 +6,26 @@
   --white: #ffffff;
 }
 
-.file-upload-page-outer{
-  text-align: -webkit-center;
-  text-align-last: left;
+.file-upload-page-outer {
+  text-align: center; /* Center the content */
   width: 100%;
-  /* height: 100vh; */
+  height: calc(100vh - 60px); /* Full height minus the header height */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  
+  margin: 0; /* Remove left margin for full width */
+  position: fixed; /* Keep it in place */
+  top: 100px; /* Position it below the header */
+  overflow: hidden; /* Prevent overflow */
 }
 .file-upload-page {
-  max-width: 783px;
-  /* margin: 50px auto; */
-  margin-left: 250px;
-  margin-top: 70px;
-  padding: 20px;
+  max-width: 783px; /* Optional: Set a max width */
+  width: 100%; /* Change to 100% for full width */
+  padding: 5px;
   background-color: var(--white);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: absolute; /* Position the inner content absolutely */
 }
 
 .page-title {

@@ -1,11 +1,16 @@
 .organization-main {
     display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 75%;
-  margin-left: 250px;
-  position: absolute;
-  top: 65px;
+    flex-direction: column;
+    gap: 10px; /* Reduce the main gap */
+    width: 96vw;
+    height: calc(100vh - 65px); /* Full height minus header */
+    margin-left: 0;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    padding: 30px;
+    overflow: auto;
+    background-color: #f9fafb;
 }
 
 .organization-header {

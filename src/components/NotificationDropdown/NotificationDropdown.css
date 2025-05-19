@@ -1,34 +1,18 @@
 /* Notification Popup Container */
-/* .notification-page {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 450px;
-  max-height: 65vh; 
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease-in-out;
-} */
 .notification-popup {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 450px;
-  max-height: 60vh; 
+  top: 20px; /* Adjust to avoid overlap */
+  right: 20px; /* Adjust to avoid overlap */
+  width: 350px;
+  max-height: 60vh;
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  z-index: 1100;  /* Increased z-index to ensure it's on top */
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease-in-out;
 }
 
 /* Popup Header */
@@ -174,13 +158,9 @@ h3 {
 
   .notification-item {
     padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
   }
-
-  /* .notification-item.active {
-    background-color: #636161; /* Light grey 
-  } */
 
   .notification-item.read {
     background-color: #d3d3d3 !important;

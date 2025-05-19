@@ -14,17 +14,16 @@ body.dark-theme {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  background-color: #000B58 !important; /* Updated to Light Blue */
+  background-color: #000B58 !important;
   gap: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   position: relative;
+  padding: 10px;
 }
 
 .header-profile-image {
-  /* width: 100%;         */
   height: 100%;       
   border-radius: 50%; 
-  /* object-fit: cover;   */
 }
 
 /* Search Bar */
@@ -33,26 +32,34 @@ body.dark-theme {
   display: flex;
   align-items: center;
   border-radius: 4px;
-  padding: 5px;
   width: 220px;
 }
 
 .search-input {
   height: 30px;
-  width: 100% !important;
-  padding: 5px !important;
-  border: 1px solid #006A67 !important; /* Updated to Teal */
+  width: 100%;
+  padding: 5px 30px 5px 10px !important;
+  border: 1px solid #006A67 !important;
   border-radius: 8px !important;
   font-size: 14px !important;
   color: #333;
 }
 
+.search-icon-btn {
+  position: absolute;
+  right: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .search_icon {
   width: 20px;
   height: 20px;
-  position: absolute;
-  right: 10px;
-  cursor: pointer;
 }
 
 .search-suggestions {
@@ -65,9 +72,9 @@ body.dark-theme {
   list-style: none;
   max-height: 150px;
   overflow-y: auto;
-  border: 1px solid #006A67; /* Updated to Teal */
+  border: 1px solid #006A67;
   border-radius: 4px;
-  background: #FFF4B7; /* Updated to Light Teal */
+  background: #FFF4B7;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
@@ -81,6 +88,7 @@ body.dark-theme {
 
 .suggestion-item:hover {
   background-color: #006A67; 
+  color: white;
 }
 
 .no-suggestions {
@@ -98,10 +106,11 @@ body.dark-theme {
   background: none;
   border-radius: 8px;
   cursor: pointer;
+  position: relative;
 }
 
 .notificationbtn:hover {
-  background: #66ccec; /* Updated to a light blue tone */
+  background: #66ccec;
 }
 
 .notification-icon {
@@ -113,12 +122,11 @@ body.dark-theme {
 .notification-badge {
   position: absolute;
   top: 5px;
-  right: 58px;
-  background:white;
+  right: 5px;
+  background: white;
   color: black;
   font-size: 12px;
   font-weight: bold;
- 
   border-radius: 50%;
   min-width: 15px;
   min-height: 15px;
@@ -136,27 +144,10 @@ body.dark-theme {
   background: #f9f9f9; 
   width: 380px;
   padding: 10px;
-  /* height: auto;
-  max-height: 300px; */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #006A67; /* Updated to Teal */
+  border: 1px solid #006A67;
   z-index: 2;
-}
-
-.close-button {
-  background: #000B58; /* Updated to Dark Blue */
-  border: none;
-  font-size: 20px;
-  border-radius: 25px;
-  cursor: pointer;
-  margin-left: 270px;
-  margin-bottom: 10px;
-}
-
-.close-button:hover {
-  background: #003161; /* Updated to Light Blue */
-  color: white;
 }
 
 /* Profile Button */
@@ -172,69 +163,6 @@ body.dark-theme {
   align-items: center;
   justify-content: center;
   margin-right: 5px;
-}
-
-/* Profile Image */
-.profile-image {
-  width: 30px;
-  height: 30px;
-  object-fit: cover; /* Ensures the image covers the circular button */
-  border-radius: 50%;
-}
-
-/* Profile Button Hover Effect */
-.profilebtn:hover {
-  background: #66ccec;
-}
-
-/* Profile Dropdown */
-.profile-dropdown {
-  position: absolute;
-  top: 70px;
-  right: 10px;
-  background: #f9f9f9; /* Updated to Light Teal */
-  border: 1px solid #006A67; /* Updated to Teal */
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 280px;
-}
-
-.profile-dropdown p {
-  margin: 5px 0;
-}
-
-.signout-button {
-  margin-top: 10px;
-  width: 100%;
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.signout-button:hover {
-  background: #c82333;
-}
-
-@media screen and (max-width: 931px) {
-  .Asidebar-header-mobile {
-    width: 100% !important;
-    position-area: y-end;
-  }
-}
-
-.name-input-container {
-  margin-right: 10px;
-}
-
-.name-input {
-  padding: 5px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
 .profile-icon1 {
@@ -244,62 +172,15 @@ body.dark-theme {
   object-fit: cover;
 }
 
-/* .icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-  background-color: lightgray; 
-} */
-
-
-
-.close-button {
-  background: #000B58; /* Updated to Dark Blue */
-  border: none;
-  font-size: 20px;
-  border-radius: 25px;
-  cursor: pointer;
-  margin-left: 270px;
-  margin-bottom: 10px;
-}
-
-.close-button:hover {
-  background: #003161; /* Updated to Light Blue */
-  color: white;
-}
-
-/* Profile Button */
-.profilebtn {
+.profile-icon {
   width: 40px;
   height: 40px;
-  border: none;
-  background: none;
-  border-radius: 20px;
-  cursor: pointer;
-  color: #f9f9f9;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
-}
-
-/* Profile Image */
-.profile-image {
-  width: 30px;
-  height: 30px;
-  object-fit: cover; /* Ensures the image covers the circular button */
-  border-radius: 50%;
-}
-
-/* Profile Button Hover Effect */
-.profilebtn:hover {
-  background: #66ccec;
+  font-weight: bold;
+  color: white;
 }
 
 /* Profile Dropdown */
@@ -307,36 +188,17 @@ body.dark-theme {
   position: absolute;
   top: 70px;
   right: 10px;
-  background: #f9f9f9; /* Updated to Light Teal */
-  border: 1px solid #006A67; /* Updated to Teal */
+  background: #f9f9f9;
+  border: 1px solid #006A67;
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 280px;
+  z-index: 2;
 }
 
 .profile-dropdown p {
   margin: 5px 0;
-}
-
-.signout-button {
-  margin-top: 10px;
-  width: 100%;
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.profile-dropdown {
-  position: absolute;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  min-width: 180px;
 }
 
 .dropdown-menu {
@@ -366,46 +228,29 @@ body.dark-theme {
   text-align: left;
   padding: 8px 10px;
   cursor: pointer;
-  text-align-last: center;
-    background: antiquewhite;
+  text-align: center;
+  background: antiquewhite;
   font-size: 14px;
   color: red;
+  border-radius: 4px;
+  margin-top: 5px;
 }
 
 .signout-button:hover {
   background: #f8d7da;
-
 }
 
-.signout-button:hover {
-  background: #c82333;
-  color: antiquewhite;
-}
-
-@media screen and (max-width: 931px) {
-  .Asidebar-header-mobile {
-    width: 100% !important;
-    position-area: y-end;
+@media screen and (max-width: 768px) {
+  .search-bar-container {
+    width: 180px;
+  }
+  
+  .notification-dropdown {
+    width: 300px;
+    right: 10px;
+  }
+  
+  .profile-dropdown {
+    width: 240px;
   }
 }
-
-.name-input-container {
-  margin-right: 10px;
-}
-
-.name-input {
-  padding: 5px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.profile-icon1 {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #23c854;
-}
-
-

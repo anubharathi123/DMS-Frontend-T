@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import apiServices from '../../ApiServices/ApiServices'; // Ensure correct import path
+import apiServices from '../../ApiServices/ApiServices';
 import Loader from "react-js-loader";
 import './NotificationDropdown.css';
 
@@ -8,46 +8,8 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(10); // Show 10 notifications initially
+  const [visibleCount, setVisibleCount] = useState(10);
   const [orgId, setOrgId] = useState("");
-  const [clickedIndex, setClickedIndex] = useState(null);
-
-
-  
-  
-  // useEffect(() => {
-  //   const fetchNotifications = async () => {
-  //     try {
-  //       const details_data = await apiServices.details();
-  //       let org_id = details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
-  //       if (!org_id) throw new Error("Organization ID not found");
-
-  //       setOrgId(org_id);
-
-  //       // Fetch notifications using the obtained org_id
-  //       const response = await apiServices.OrgNotification();
-  //       console.log(response);
-  //       const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-  //       .map((not, index) => ({
-  //           not_message:not.message,
-  //           not_title:not.title,
-  //           id:response[index].id 
-  //       }));
-
-  //       setNotifications(sortedNotifications);
-  //       onNotificationsUpdate(sortedNotifications); // Pass to parent
-  //     } catch (err) {
-  //       console.error("Error fetching notifications:", err);
-  //       setError(err.message || "Failed to load notifications");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   if (!orgId) {
-  //     fetchNotifications();
-  //   }
-  // }, [orgId, onNotificationsUpdate]); // Re-run when orgId updates
 
   const fetchOrgAndNotifications = async () => {
     try {
@@ -60,37 +22,34 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
 
       setOrgId(org_id);
       
-      // Fetch notifications using the obtained org_id
       const response = await apiServices.OrgNotification();
-      console.log(response);
       const sortedNotifications = response.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-      .map((not) => ({
-          not_message:not.notification.message,
-          not_title:not.notification.title,
-          id:not.id,
-          is_read:not.is_read,
-      }));
+        .map((not) => ({
+          not_message: not.notification.message,
+          not_title: not.notification.title,
+          id: not.id,
+          is_read: not.is_read,
+        }));
       
       setNotifications(sortedNotifications);
     } catch (err) {
       console.error('Error fetching notifications:', err);
       setError(err.message || 'Failed to load notifications');
     } finally {
-      setTimeout(() => setLoading(false), 3000); // Delay loading state by 2 seconds
+      setTimeout(() => setLoading(false), 3000);
     }
   };
 
   useEffect(() => {
-    
-    if (!orgId) { // Prevent multiple API calls
-    fetchOrgAndNotifications();
+    if (!orgId) {
+      fetchOrgAndNotifications();
     }
-  }, [orgId]); // Depend only on orgId
+  }, [orgId]);
 
   useEffect(() => {
     if (newNotification) {
       setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
-      setIsOpen(true); // Ensure the dropdown opens when a new notification is received
+      setIsOpen(true);
     }
   }, [newNotification]);
 
@@ -103,90 +62,62 @@ const NotificationPage = ({ newNotification, onNotificationsUpdate }) => {
     setVisibleCount((prevCount) => prevCount + 10);
   };
 
-  if (!isOpen) {
-    return null;
-  }
-
-
-
   const handleNotificationClick = async (event, type, id) => {
     event.stopPropagation();
     try {
       if (type === "item") {
-        // setClickedIndex(id); // Set the clicked notification's ID
-        console.log("id : " ,id)
-        
-        const response = await apiServices.notificationMarkasRead(id);
-        console.log("Mark as Read:", response);
-
-        // Update the notification's status locally
-        // setNotifications((prevNotifications) =>
-        //   prevNotifications.map((notification) =>
-        //     notification.id === id ? { ...notification, read: true } : notification
-        //   )
-        // );
-        fetchOrgAndNotifications(); // Re-fetch notifications to update the state
+        await apiServices.notificationMarkasRead(id);
+        fetchOrgAndNotifications();
       }
     } catch (error) {
       console.error("Error marking notification as read:", error);
     }
   };
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
     <div className="notification-page">
-      {/* <button type="button" className="notification-close" onClick={closeNotification}>
-        x
-      </button> */}
-      <h3>Notifications</h3>
+      <div className="notification-header">
+        <h3>Notifications</h3>
+        <button 
+          type="button" 
+          className="notification-close" 
+          onClick={closeNotification}
+          aria-label="Close notifications"
+        >
+          ×
+        </button>
+      </div>
+      
       {loading ? (
-        // <p>Loading notifications...</p>
         <div className="notification-loading">
-    <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={60} />
-    <p style={{ marginTop: "10px", color: "#555" }}>Loading notifications...</p>
-  </div>
+          <Loader type="box-up" bgColor={'#000b58'} color={'#000b58'} size={60} />
+          <p style={{ marginTop: "10px", color: "#555" }}>Loading notifications...</p>
+        </div>
       ) : error ? (
         <p className="error-message">{error}</p>
       ) : notifications.length > 0 ? (
         <>
-           <ul className="notification-list">
-   {notifications.map((notification, index) => (
-     <li
-     key={notification.id || index}
-     className={`notification-item ${notification.is_read ? "read" : ""}`}
-     onClick={(event) => handleNotificationClick(event, "item", notification.id)}
-     style={{
-       backgroundColor: notification.is_read ? "white" : "#d3d3d3", // Change color when read
-       cursor: "pointer",
-       padding: "10px",
-       borderRadius: "5px",
-       position: "relative", // Make sure parent element is relative to position child elements
-     }}
-   >
-     {/* Unread indicator */}
-     {!notification.is_read && (
-       <div
-         className="unread-indicator"
-         style={{
-           position: "absolute",
-           top: "50%",
-           left: "95%",
-          //  transform: "translate(-50%, -50%)",
-           width: "10px",
-           height: "10px",
-           borderRadius: "50%",
-           backgroundColor: "#FFC1C3",
-         }}
-       ></div>
-     )}
-     
-     <span className="message">
-       <strong>{notification.not_message}</strong>
-     </span>
-     <div className="notification-time">{notification.not_title}</div>
-   </li>
-   
-   ))}
- </ul>
+          <ul className="notification-list">
+            {notifications.map((notification, index) => (
+              <li
+                key={notification.id || index}
+                className={`notification-item ${notification.is_read ? "read" : ""}`}
+                onClick={(event) => handleNotificationClick(event, "item", notification.id)}
+              >
+                {!notification.is_read && (
+                  <div className="unread-indicator"></div>
+                )}
+                <span className="message">
+                  <strong>{notification.not_message}</strong>
+                </span>
+                <div className="notification-time">{notification.not_title}</div>
+              </li>
+            ))}
+          </ul>
           {notifications.length > visibleCount && (
             <button className="show-more" onClick={handleShowMore}>
               Show More
