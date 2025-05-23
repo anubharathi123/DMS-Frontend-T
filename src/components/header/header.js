@@ -17,7 +17,7 @@ const Header = () => {
   const [notifications, setNotifications] = useState([]);
   const [profileImage, setProfileImage] = useState();
   const [iconColor, setIconColor] = useState("#000");
-
+const [role, setRole] = useState(localStorage.getItem("role") || "VIEWER");
   const previousNotificationIds = useRef(new Set());
   const profileButtonRef = useRef();
   const profileDropdownRef = useRef();
@@ -45,7 +45,64 @@ const Header = () => {
     const unreadedCount = response1.filter((n) => !n.is_read).length;
     setNotificationCount(unreadedCount);
   };
+// Role-based search suggestions
+  const getRoleBasedSuggestions = () => {
+    const commonSuggestions = [
+      "Find Company",
+      "Find Documents",
+      "Dashboard",
+      "Profile"
+    ];
 
+    const adminSuggestions = [
+      ...commonSuggestions,
+      "Find Admin",
+      "Admin List",
+      "Company List",
+      "Announcement List",
+      "Audit Log",
+      "Settings"
+    ];
+
+    const productOwnerSuggestions = [
+      ...commonSuggestions,
+      "Enquiry List",
+      "Organization List",
+      "New Organization"
+    ];
+
+    const uploaderSuggestions = [
+      ...commonSuggestions,
+      "Upload Document",
+      "My Documents"
+    ];
+
+    const reviewerSuggestions = [
+      ...commonSuggestions,
+      "Validate Documents",
+      "Pending Approvals"
+    ];
+
+    switch(role) {
+      case "ADMIN":
+      case "PRODUCT_ADMIN":
+        return adminSuggestions;
+      case "PRODUCT_OWNER":
+        return productOwnerSuggestions;
+      case "UPLOADER":
+        return uploaderSuggestions;
+      case "REVIEWER":
+        return reviewerSuggestions;
+      default: // VIEWER
+        return [
+          ...commonSuggestions,
+          "Document List",
+          "Search Documents"
+        ];
+    }
+  };
+
+  const allSuggestions = getRoleBasedSuggestions();
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
@@ -76,7 +133,34 @@ const Header = () => {
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
+const navigateBasedOnSuggestion = (suggestion) => {
+    const suggestionMap = {
+      "Dashboard": "/Dashboard",
+      "Profile": "/Profile",
+      "Find Company": "/OrganizationList",
+      "Find Admin": "/AdminList",
+      "Admin List": "/AdminList",
+      "Company List": "/OrganizationList",
+      "Announcement List": "/AnnouncementList",
+      "Audit Log": "/AuditLog",
+      "Settings": "/Settings",
+      "Enquiry List": "/enquirylist",
+      "Organization List": "/OrganizationList",
+      "New Organization": "/CompanyCreation",
+      "Upload Document": "/upload",
+      "My Documents": "/DocumentList",
+      "Validate Documents": "/verifydocument",
+      "Pending Approvals": "/MsiPending",
+      "Document List": "/DocumentList",
+      "Search Documents": "/DocumentList"
+    };
 
+    if (suggestionMap[suggestion]) {
+      navigate(suggestionMap[suggestion]);
+      setQuery("");
+      setSuggestions([]);
+    }
+  };
   useEffect(() => {
     const updateProfileImage = async () => {
       setProfileImage(localStorage.getItem("profileImage"));
@@ -115,16 +199,7 @@ const Header = () => {
       .join("");
   };
 
-  const allSuggestions = [
-    "Find Company",
-    "Find Documents",
-    "Find Admin",
-    "Admin List",
-    "Company List",
-    "Announcement List",
-    "Audit Log",
-    "Settings",
-  ];
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -217,46 +292,49 @@ const Header = () => {
         style={{ cursor: "pointer", backgroundColor: "#fff", marginRight: "auto", height: "40px" }}
       />
 
-    {/* 🔹 Search Bar Section */}
-<div className="search-bar-container">
-  <input
-    type="text"
-    value={query}
-    onChange={(e) => {
-      const value = e.target.value;
-      setQuery(value);
-      setSuggestions(
-        value
-          ? allSuggestions.filter((item) =>
-              item.toLowerCase().includes(value.toLowerCase())
-            )
-          : []
-      );
-    }}
-    className="search-input"
-    placeholder="Search..."
-  />
-  <img src={SearchIcon} alt="search_icon" className="search_icon" />
+    {/* 🔹 Updated Search Bar Section */}
+      <div className="search-bar-container">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => {
+            const value = e.target.value;
+            setQuery(value);
+            setSuggestions(
+              value
+                ? allSuggestions.filter((item) =>
+                    item.toLowerCase().includes(value.toLowerCase())
+                  )
+                : []
+            );
+          }}
+          className="search-input"
+          placeholder="Search..."
+        />
+        <img src={SearchIcon} alt="search_icon" className="search_icon" />
 
-  {(suggestions.length > 0 || query) && (
-    <ul className="search-suggestions">
-      {suggestions.length > 0 ? (
-        suggestions.map((suggestion, index) => (
-          <li
-            key={index}
-            className="suggestion-item"
-            onClick={() => setQuery(suggestion)}
-          >
-            {suggestion}
-          </li>
-        ))
-      ) : (
-        <li className="suggestion-item no-match">Not found</li>
-      )}
-    </ul>
-  )}
-</div>
-
+        {(suggestions.length > 0 || query) && (
+          <ul className="search-suggestions">
+            {suggestions.length > 0 ? (
+              suggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  className="suggestion-item"
+                  onClick={() => {
+                    setQuery(suggestion);
+                    // Add navigation logic based on suggestion
+                    navigateBasedOnSuggestion(suggestion);
+                  }}
+                >
+                  {suggestion}
+                </li>
+              ))
+            ) : (
+              <li className="suggestion-item no-match">No results found</li>
+            )}
+          </ul>
+        )}
+      </div>
 
       {/* 🔹 Notification Button */}
       <button
