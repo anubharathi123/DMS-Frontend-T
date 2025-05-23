@@ -6,6 +6,7 @@ import SearchIcon from "../../assets/images/search_icon.png";
 import NotificationPage from "../NotificationDropdown/NotificationDropdown";
 import "cropperjs/dist/cropper.css";
 import avatar from "../../assets/images/candidate-profile.png";
+import Logo from "../../assets/images/Logo.png"; // ✅ Logo import
 import ApiService from "../../ApiServices/ApiServices";
 
 const Header = () => {
@@ -16,15 +17,12 @@ const Header = () => {
   const [notifications, setNotifications] = useState([]);
   const [profileImage, setProfileImage] = useState();
   const [iconColor, setIconColor] = useState("#000");
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const previousNotificationIds = useRef(new Set());
   const profileButtonRef = useRef();
   const profileDropdownRef = useRef();
   const notificationDropdownRef = useRef();
   const notificationButtonRef = useRef();
-  const searchInputRef = useRef();
-  const searchContainerRef = useRef();
   const navigate = useNavigate();
   const name = localStorage.getItem("name") || "User";
   const email = localStorage.getItem("email") || "email";
@@ -35,8 +33,6 @@ const Header = () => {
   }, []);
 
   const handleNotificationsUpdate = async (newNotifications) => {
-    console.log("New Notifications Received:", newNotifications);
-
     const updatedNotifications = newNotifications.map((notification) => ({
       ...notification,
       is_read: true,
@@ -51,36 +47,35 @@ const Header = () => {
   };
 
   useEffect(() => {
-  const fetchNotifications = async () => {
-    try {
-      const details_data = await ApiService.details();
-      let org_id =
-        details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
-      if (!org_id) throw new Error("Organization ID not found");
+    const fetchNotifications = async () => {
+      try {
+        const details_data = await ApiService.details();
+        let org_id =
+          details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
+        if (!org_id) throw new Error("Organization ID not found");
 
-      const response = await ApiService.OrgNotification(org_id);
-      const sortedNotifications = response
-        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort by timestamp in descending order
-        .map((not) => ({
-          not_message: not.notification.message,
-          not_title: not.notification.title,
-          timestamp: not.timestamp // Ensure you have the timestamp for sorting
-        }));
+        const response = await ApiService.OrgNotification(org_id);
+        const sortedNotifications = response
+          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+          .map((not) => ({
+            not_message: not.notification.message,
+            not_title: not.notification.title,
+          }));
 
-      const response1 = await ApiService.OrgNotification();
-      const unreadedCount = response1.filter((n) => !n.is_read).length;
+        const response1 = await ApiService.OrgNotification();
+        const unreadedCount = response1.filter((n) => !n.is_read).length;
 
-      setNotifications(sortedNotifications); // Set sorted notifications
-      setNotificationCount(unreadedCount);
-    } catch (err) {
-      console.error("Error fetching notifications:", err);
-    }
-  };
+        setNotifications(sortedNotifications);
+        setNotificationCount(unreadedCount);
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+      }
+    };
 
-  fetchNotifications();
-  const interval = setInterval(fetchNotifications, 30000);
-  return () => clearInterval(interval);
-}, []);
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const updateProfileImage = async () => {
@@ -121,14 +116,14 @@ const Header = () => {
   };
 
   const allSuggestions = [
-    { text: "Find Company", path: "/companies" },
-    { text: "Find Documents", path: "/documents" },
-    { text: "Find Admin", path: "/admins" },
-    { text: "Admin List", path: "/admin-list" },
-    { text: "Company List", path: "/company-list" },
-    { text: "Announcement List", path: "/announcements" },
-    { text: "Audit Log", path: "/audit-log" },
-    { text: "Settings", path: "/settings" },
+    "Find Company",
+    "Find Documents",
+    "Find Admin",
+    "Admin List",
+    "Company List",
+    "Announcement List",
+    "Audit Log",
+    "Settings",
   ];
 
   useEffect(() => {
@@ -137,13 +132,11 @@ const Header = () => {
         profileDropdownRef.current?.contains(event.target) ||
         notificationDropdownRef.current?.contains(event.target) ||
         profileButtonRef.current?.contains(event.target) ||
-        notificationButtonRef.current?.contains(event.target) ||
-        (searchContainerRef.current && searchContainerRef.current.contains(event.target))
+        notificationButtonRef.current?.contains(event.target)
       ) {
         return;
       }
       setActiveDropdown();
-      setShowSuggestions(false);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -177,12 +170,11 @@ const Header = () => {
   useEffect(() => {
     const iconColor1 = getRandomColor();
     setIconColor(iconColor1);
-    console.log("Icon color", iconColor1);
     localStorage.setItem("iconColor", iconColor1);
   }, []);
 
-  const handleNavigateProfile = () => {
-    navigate("/profile");
+  const handleNavigateHome = () => {
+    navigate("/Dashboard");
   };
 
   const handleNavigate404 = () => {
@@ -214,88 +206,59 @@ const Header = () => {
     }
   };
 
-  const handleSearch = (selectedSuggestion = null) => {
-    const searchTerm = selectedSuggestion || query;
-    if (!searchTerm.trim()) return;
-
-    const matchedSuggestion = allSuggestions.find(
-      (suggestion) => suggestion.text.toLowerCase() === searchTerm.toLowerCase()
-    );
-
-    if (matchedSuggestion) {
-      navigate(matchedSuggestion.path);
-    } else {
-      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
-    }
-
-    setQuery("");
-    setShowSuggestions(false);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  const handleSuggestionClick = (suggestion) => {
-    setQuery(suggestion.text);
-    handleSearch(suggestion.text);
-  };
-
   return (
     <div className="header-container">
-      <div className="search-bar-container" ref={searchContainerRef}>
-        <input
-          type="text"
-          value={query}
-          ref={searchInputRef}
-          onChange={(e) => {
-            const value = e.target.value;
-            setQuery(value);
-            setShowSuggestions(value.length > 0);
-            setSuggestions(
-              value
-                ? allSuggestions.filter((item) =>
-                    item.text.toLowerCase().includes(value.toLowerCase())
-                  )
-                : []
-            );
-          }}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setShowSuggestions(query.length > 0)}
-          className="search-input"
-          placeholder="Search..."
-        />
-        <button 
-          className="search-icon-btn"
-          onClick={() => handleSearch()}
-        >
-          <img 
-            src={SearchIcon} 
-            alt="search_icon" 
-            className="search_icon" 
-          />
-        </button>
-        {showSuggestions && suggestions.length > 0 && (
-          <ul className="search-suggestions">
-            {suggestions.map((suggestion, index) => (
-              <li
-                key={index}
-                className="suggestion-item"
-                onClick={() => handleSuggestionClick(suggestion)}
-              >
-                {suggestion.text}
-              </li>
-            ))}
-          </ul>
-        )}
-        {showSuggestions && query && suggestions.length === 0 && (
-          <p className="no-suggestions">No suggestions found</p>
-        )}
-      </div>
+      {/* 🔹 Logo Section */}
+      <img
+        src={Logo}
+        alt="Logo"
+        className="logo"
+        onClick={handleNavigateHome}
+        style={{ cursor: "pointer", backgroundColor: "#fff", marginRight: "auto", height: "40px" }}
+      />
 
-      {/* Notification Button */}
+    {/* 🔹 Search Bar Section */}
+<div className="search-bar-container">
+  <input
+    type="text"
+    value={query}
+    onChange={(e) => {
+      const value = e.target.value;
+      setQuery(value);
+      setSuggestions(
+        value
+          ? allSuggestions.filter((item) =>
+              item.toLowerCase().includes(value.toLowerCase())
+            )
+          : []
+      );
+    }}
+    className="search-input"
+    placeholder="Search..."
+  />
+  <img src={SearchIcon} alt="search_icon" className="search_icon" />
+
+  {(suggestions.length > 0 || query) && (
+    <ul className="search-suggestions">
+      {suggestions.length > 0 ? (
+        suggestions.map((suggestion, index) => (
+          <li
+            key={index}
+            className="suggestion-item"
+            onClick={() => setQuery(suggestion)}
+          >
+            {suggestion}
+          </li>
+        ))
+      ) : (
+        <li className="suggestion-item no-match">Not found</li>
+      )}
+    </ul>
+  )}
+</div>
+
+
+      {/* 🔹 Notification Button */}
       <button
         type="button"
         className="notificationbtn"
@@ -316,6 +279,7 @@ const Header = () => {
         <img src={Notification} alt="Notifications" className="notification-icon" />
       </button>
 
+      {/* 🔹 Profile Button */}
       <button
         type="button"
         className="profilebtn"
@@ -332,7 +296,7 @@ const Header = () => {
         )}
       </button>
 
-      {/* Profile Dropdown */}
+      {/* 🔹 Profile Dropdown */}
       {activeDropdown === "profile" && (
         <div className="profile-dropdown" ref={profileDropdownRef}>
           <p><b></b> {name}</p>
@@ -340,7 +304,7 @@ const Header = () => {
           <hr />
           <ul className="dropdown-menu">
             <li>
-              <button type="button" className="dropdown-item" onClick={handleNavigateProfile}>
+              <button type="button" className="dropdown-item" onClick={handleNavigateHome}>
                 Home
               </button>
             </li>

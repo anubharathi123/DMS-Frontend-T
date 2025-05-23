@@ -9,6 +9,7 @@ import {
   FaArrowDown,
 } from "react-icons/fa";
 import "./dashboard.css";
+import { FaClock } from "react-icons/fa";
 import apiServices from "../../ApiServices/ApiServices";
 import { PiFilesBold } from "react-icons/pi";
 
@@ -281,7 +282,7 @@ const CompanyTable = ({
                   <div style={{ display: "flex", alignItems: "center", gap: "20px", fontSize: "11px", color: "#555" }}>
                     <div><FaFileAlt style={{ marginRight: "5px" }} />{data.file_count} Total Files</div>
                     <div><FaFolderOpen style={{ marginRight: "5px" }} />{data.status_count.approved} Approved</div>
-                    <div><FaUsers style={{ marginRight: "5px" }} />{data.status_count.pending} Pending</div>
+                    <div><FaClock style={{ marginRight: "5px" }} />{data.status_count.pending} Pending</div>
                   </div>
                 </div>
               ))

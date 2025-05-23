@@ -5,6 +5,14 @@
   --light-teal: #fff4b7;
   --white: #ffffff;
 }
+.documenttable_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 75%;
+  margin: 65px auto 0 auto; /* Top margin pushes below navbar */
+  position: relative;        /* Or remove it if not needed */
+}
 
 .file-upload-page-outer {
   text-align: center; /* Center the content */
@@ -14,7 +22,7 @@
   justify-content: center; /* Center horizontally */
   
   margin: 0; /* Remove left margin for full width */
-  position: fixed; /* Keep it in place */
+  position: absolute; /* Keep it in place */
   top: 100px; /* Position it below the header */
   overflow: hidden; /* Prevent overflow */
 }
@@ -218,4 +226,31 @@
   display: flex;
    justify-content: center;
    gap: 14px;
+}
+/* Declaration Date Styles */
+.declaration-date-section {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Similar gap as declaration section */
+}
+
+.declaration-date-label {
+  font-size: 14px;
+  color: var(--mid-blue);
+  font-weight: bold;
+}
+
+.declaration-date-input {
+  padding: 5px;
+  padding-left: 10px;
+  font-size: 14px;
+  border: 1.5px solid var(--mid-blue);
+  border-radius: 6px;
+  outline: none;
+  width: 65%; /* Same width as declaration input */
+}
+
+.declaration-date-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 8px rgba(0, 106, 103, 0.3);
 }

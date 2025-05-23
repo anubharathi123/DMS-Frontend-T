@@ -1,4 +1,18 @@
 /* ========== Sidebar Base ========== */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.close-btn {
+  font-size: 24px;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
 .aside-bar {
   position: fixed;
   top: 0;

@@ -322,10 +322,6 @@ const DocumentTable = () => {
   const handleFilter = (e) => {
     setFilter(e.target.value);
   };
-
-  const handleCalendarToggle = () => {
-    setIsCalendarOpen(prev => !prev);
-  };
  const handleDownloadFile = (fileUrl, fileName) => {
   const link = document.createElement('a');
   link.href = fileUrl;
@@ -641,9 +637,8 @@ const DocumentTable = () => {
             <th className="documenttable_th px-6 py-3">Uploaded Date
               <button
                 className="document-list-calendarbtn"
-                onClick={handleCalendarToggle}
               >
-                📅
+                
               </button>
               {isCalendarOpen && (
                 <div

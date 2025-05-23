@@ -7,6 +7,7 @@ import apiServices from '../../ApiServices/ApiServices';
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const FileUploadPage = () => {
+  const dateInfoRef = useRef(null);
   const [declarationNumber, setDeclarationNumber] = useState('');
   const [isFileUploadEnabled, setIsFileUploadEnabled] = useState(false);
   const [approvedFiles, setApprovedFiles] = useState([]); // Track approved files
@@ -22,7 +23,18 @@ const FileUploadPage = () => {
   const [isGoButtonClicked, setIsGoButtonClicked] = useState(false); // Track if "Go" button has been clicked
   
   const searchInfoRef = useRef(null); // Reference for search info popup
-  
+  const handleDeclarationDateChange = (e) => {
+    if (!isDeclarationDateReadOnly) {
+      setDeclarationDate(e.target.value);
+    }
+  };
+  const handleDateInfo = () => {
+    setShowDateInfo(!showDateInfo);
+  };
+  const [showDateInfo, setShowDateInfo] = useState(false);
+  const [declarationDate, setDeclarationDate] = useState('');
+  const [existingDeclarationDate, setExistingDeclarationDate] = useState('');
+  const [isDeclarationDateReadOnly, setIsDeclarationDateReadOnly] = useState(false);
   const handleSearchInfo = () => {
     setShowSearchInfo(!showSearchInfo);
   };
@@ -121,51 +133,93 @@ const FileUploadPage = () => {
     }
   };
   
-  const handleFileChange = (e, type) => {
+ const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        alert("File size should not exceed 5MB.");
-        return;
-      }
-  
-      setFiles((prevFiles) => ({ ...prevFiles, [type]: file }));
+        // Check file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            alert("File size should not exceed 5MB.");
+            return;
+        }
+
+        // Check file type
+        const allowedTypes = ['application/pdf', 'text/plain', 'text/csv', 'application/vnd.ms-excel'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const isAllowedType = allowedTypes.includes(file.type) || 
+                             ['pdf', 'txt', 'csv'].includes(fileExtension);
+
+        if (!isAllowedType) {
+            alert("Only PDF, TXT, and CSV files are allowed.");
+            return;
+        }
+
+        // Check if the file is already uploaded
+        const isFileAlreadyUploaded = Object.values(files).some(existingFile => 
+            existingFile && existingFile.name === file.name
+        );
+
+        if (isFileAlreadyUploaded) {
+            alert("This file has already been uploaded.");
+            return;
+        }
+
+        setFiles((prevFiles) => ({ ...prevFiles, [type]: file }));
     }
-  };
+};
+
 
   const handleFileDelete = (type) => {
     setFiles((prevFiles) => ({ ...prevFiles, [type]: null }));
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('declaration_Number', declarationNumber);
-  
-    Object.keys(files).forEach((key) => {
-      if (files[key] && !files[key].alreadyUploaded) {
-        formData.append(key, files[key]);
-      }
-    });
-  
-    if (formData.has('declaration_Number') && formData.size === 1) {
-      alert('No new files to upload.');
-      return;
+  e.preventDefault();
+  const formData = new FormData();
+  formData.append('declaration_Number', declarationNumber);
+
+  // Check if any files are selected (excluding 'other')
+  const hasFilesToUpload = Object.keys(files).some(key => 
+    key !== 'other' && files[key] && !files[key].alreadyUploaded
+  );
+
+  if (!hasFilesToUpload) {
+    alert('Please upload at least one required document');
+    return;
+  }
+
+  Object.keys(files).forEach((key) => {
+    if (files[key] && !files[key].alreadyUploaded) {
+      formData.append(key, files[key]);
     }
-  
-    try {
-      setIsLoading(true);
-      await apiServices.uploadDocument(formData);
-      alert('Files submitted successfully!');
+  });
+
+  try {
+    setIsLoading(true);
+    const response = await apiServices.uploadDocument(formData);
+    
+    if (response && response.success) {
+      // Show success message with document details
+      const successMessage = `Documents submitted successfully!\n\n` +
+        `Declaration Number: ${declarationNumber}\n` +
+        `Submitted Documents:\n` +
+        Object.keys(files)
+          .filter(key => files[key] && !files[key].alreadyUploaded)
+          .map(key => `- ${key}: ${files[key].name}`)
+          .join('\n');
+      
+      alert(successMessage);
       navigate('/documentlist');
-    } catch (error) {
-      console.error('Error:', error);
-      // alert('Failed to submit files.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      throw new Error(response?.message || 'Failed to submit files');
     }
-  };
+  } catch (error) {
+    console.error('Error:', error);
+    alert(error.message || 'Failed to submit files. Please try again.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleCancelUpload = () => {
     navigate('/DocumentList')
@@ -215,6 +269,40 @@ const FileUploadPage = () => {
               </div>
             )}
           </div>
+          {isFileUploadEnabled && (
+            <div className="declaration-date-section" style={{position: 'relative'}}>
+              <label htmlFor="declarationDate" className="declaration-date-label">
+                Declaration Date
+              </label>
+              <input
+                type="date"
+                id="declarationDate"
+                className="declaration-date-input"
+                value={declarationDate}
+                onChange={handleDeclarationDateChange}
+                readOnly={isDeclarationDateReadOnly}
+              />
+              <a className='date_info_icon' onClick={handleDateInfo} style={{marginLeft: '8px', cursor: 'pointer'}}>
+                <IoMdInformationCircleOutline />
+              </a>
+              {showDateInfo && (
+                <div ref={dateInfoRef} className="date-info-popup" style={{
+                  position: 'absolute',
+                  top: '30px',
+                  left: '0',
+                  backgroundColor: 'white',
+                  border: '1px solid #ccc',
+                  padding: '10px',
+                  zIndex: 1000,
+                  width: '250px',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                  borderRadius: '4px',
+                }}>
+                  Please enter the date corresponding to the declaration number you entered.
+                </div>
+              )}
+            </div>
+          )}
 
           {/* File Upload Section */}
           {isFileUploadEnabled && (
@@ -236,10 +324,11 @@ const FileUploadPage = () => {
             <label className="upload-icon">
               <FaUpload />
               <input
-                type="file"
-                className="hidden-input"
-                onChange={(e) => handleFileChange(e, item.key)}
-              />
+  type="file"
+  className="hidden-input"
+  onChange={(e) => handleFileChange(e, item.key)}
+  accept=".pdf,.txt,.csv,application/pdf,text/plain,text/csv"
+/>
             </label>
           ) : files[item.key]?.alreadyUploaded ? (
             // If file is already uploaded, display file name and status

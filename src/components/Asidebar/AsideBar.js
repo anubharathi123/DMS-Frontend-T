@@ -123,16 +123,7 @@ const DocumentDropdown = ({ isOpen }) => {
             <span className="dropdown-icon">•</span> All Documents
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/ArchivedDocuments" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> Archived
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/FavoriteDocuments" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> Favorites
-          </NavLink>
-        </li>
+       
       </ul>
     </div>
   );
@@ -258,9 +249,10 @@ const AsideBar = () => {
       )}
 
       <aside ref={sidebarRef} className={`aside-bar ${sidebarOpen ? 'open' : 'closed'}`}>
-        <div className="logo-container">
-          <img src={Logo} alt="Company Logo" className="logo-img" />
-        </div>
+  <div className="sidebar-header">
+    <img src={Logo} alt="Company Logo" className="logo-img" />
+    <button className="close-btn" onClick={toggleSidebar}>🡐</button>
+  </div>
 
         <nav className="sidebar-nav">
           <ul className="nav-menu">

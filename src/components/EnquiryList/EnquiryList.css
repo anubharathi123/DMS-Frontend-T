@@ -12,6 +12,23 @@
     overflow: auto;
     background-color: #f9fafb;
 }
+.enquiry-table-td {
+    width: 20%; /* Adjust this for overall column width */
+    word-wrap: break-word;
+    text-align: center;
+    padding: 10px 30px; /* Increased horizontal padding for more space */
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.enquiry-table-th:nth-child(2) { /* Targeting the Email column */
+    width: 20%; /* Increase width of Email column */
+}
+
+.enquiry-table-th:nth-child(3) { /* Targeting the Mobile column */
+    width: 20%; /* Adjust width of Mobile column if needed */
+}
+
 .enquiry-header {
     font-size: 18px;
     font-weight: bold;
