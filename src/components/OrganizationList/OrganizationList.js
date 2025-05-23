@@ -6,6 +6,14 @@ import { Search } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import apiServices,{API_URL1} from '../../ApiServices/ApiServices';
 import './OrganizationList.css';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography
+} from '@mui/material';
 import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
@@ -15,6 +23,86 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Plus from '../../assets/images/pluslogo.png';
 import plus from '../../assets/images/Pluslogo2.png'
 const OrganizationList = () => {
+     const [deleteSuccess, setDeleteSuccess] = useState(false);
+    const confirmDelete = async () => {
+    try {
+        setIsLoading(true);
+        const response = await apiServices.deleteOrganization(orgToDelete);
+        console.log(response, response.success, response.message);
+        if (response) {
+            setData(prevData => prevData.filter(org => org.id !== orgToDelete));
+            setDeleteSuccess(true); // Show success message
+            setTimeout(() => setDeleteSuccess(false), 3000); // Hide after 3 seconds
+        }
+    } catch (error) {
+        console.error("Error deleting organization:", error);
+    } finally {
+        setIsLoading(false);
+        setShowDeleteDialog(false);
+        setOrgToDelete(null);
+    }
+};
+    
+    // Add new state at the beginning of the component:
+const [suggestions, setSuggestions] = useState([]);
+const [showSuggestions, setShowSuggestions] = useState(false);
+
+const searchInputRef = useRef(null);
+const suggestionsRef = useRef(null);
+
+// Update the handleSearch function:
+const handleSearch = (e) => {
+    const value = e.target.value;
+    
+    setSearchTerm(value);
+
+    if (value.length > 0) {
+        const filteredSuggestions = data.filter(org =>
+            org.username.toLowerCase().includes(value.toLowerCase()) ||
+            org.org_name.toLowerCase().includes(value.toLowerCase())
+        ).slice(0, 10); // Limit suggestions count
+
+        setSuggestions(filteredSuggestions);
+        setShowSuggestions(true);
+    } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+        // No need to filter data here - filteredData will handle empty searchTerm
+    }
+};
+
+const handleSuggestionClick = (org) => {
+    setSearchTerm(org.username);
+    setShowSuggestions(false);
+    setCurrentPage(1);
+};
+
+// Add useEffect to close suggestions when clicking outside:
+useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (
+            suggestionsRef.current &&
+            !suggestionsRef.current.contains(event.target) &&
+            searchInputRef.current &&
+            !searchInputRef.current.contains(event.target)
+        ) {
+            setShowSuggestions(false);
+        }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+}, []);
+// Add new state for delete confirmation dialog at the top of the component
+const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+const [orgToDelete, setOrgToDelete] = useState(null);
+
+// Update the handleDelete function
+const handleDelete = async (id) => {
+    setOrgToDelete(id);
+    setShowDeleteDialog(true);
+};
     const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
@@ -164,10 +252,7 @@ const OrganizationList = () => {
         }, []);
       
 
-    const handleSearch = (e) => {
-        console.log("Search Term:", e.target.value);
-        setSearchTerm(e.target.value);
-      };
+    
 
     const handleStatusFilter = (e) => {
         setStatusFilter(e.target.value);
@@ -253,27 +338,7 @@ const OrganizationList = () => {
   };
     
 
-    const handleDelete = async (id) => {
-        console.log("Delete ID:", id);
-        if (!window.confirm("Are you sure you want to delete this organization?")) {
-            return;
-        }
-        try {
-            setIsLoading(true);
     
-            // Call API to delete the organization
-            const response = await apiServices.deleteOrganization(id);
-            console.log(response,response.success,response.message)
-            if (response) { // Ensure API returns success
-                setData(prevData => prevData.filter(org => org.id !== id));
-            }
-        } catch (error) {
-            console.error("Error deleting organization:", error);
-            alert("An error occurred while deleting.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
     
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.filter((org) => !org.is_delete).slice(
@@ -305,22 +370,83 @@ const OrganizationList = () => {
         )}
 
             <div className='organization-container_controls'>
-                <div className='organization-search'>
-                    <Search className='org_search-icon'></Search>
-                    <input type="text" 
-                        value={searchTerm}
-                         onChange={handleSearch}
-                            placeholder="Search" 
-                            className="organization-search-input"/>
-                            <button className='organization_searchinfo' onClick={handleSearchInfo}>
-                                        <IoMdInformationCircleOutline/> 
-                                        </button>
-                                        {showSearchInfo && (
-                                          <div ref={searchInfoRef} className="organization-searchinfo-popup">
-                                              Date filter format should be like this: yyyy-mm-dd
-                                          </div>
-                                        )}
-                </div>
+                 <div className='organization-search' style={{ position: 'relative' }}>
+    <Search className='org_search-icon'></Search>
+    <input
+        type="text"
+        value={searchTerm}
+        onChange={handleSearch}
+        placeholder="Search by username or organization name"
+        className="organization-search-input"
+        ref={searchInputRef}
+        autoComplete="off"
+        onFocus={() => {
+            if (searchTerm && suggestions.length > 0) setShowSuggestions(true);
+        }}
+    />
+    {showSuggestions && (
+        <ul
+            className="suggestions-dropdown"
+            ref={suggestionsRef}
+            style={{
+                position: 'absolute',
+                backgroundColor: '#fff',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                marginTop: '2px',
+                width: '100%',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                zIndex: 1000,
+                listStyleType: 'none',
+                paddingLeft: 0,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            }}
+        >
+            {suggestions.length > 0 ? (
+                suggestions.map((org) => (
+                    <li
+                        key={org.id}
+                        style={{ 
+                            padding: '8px', 
+                            cursor: 'pointer',
+                            display: 'flex',
+                            justifyContent: 'space-between'
+                        }}
+                        onClick={() => handleSuggestionClick(org)}
+                        onMouseDown={(e) => e.preventDefault()}
+                    >
+                        <span>
+                            <strong>{org.username}</strong>
+                            <div style={{ color: '#666', fontSize: '0.9em' }}>
+                                {org.org_name}
+                            </div>
+                        </span>
+                        <span style={{ color: '#999', fontSize: '0.8em' }}>
+                            {new Date(org.created_date).toLocaleDateString()}
+                        </span>
+                    </li>
+                ))
+            ) : (
+                <li style={{ 
+                    padding: '8px', 
+                    color: '#666',
+                    fontStyle: 'italic'
+                }}>
+                    No matches found
+                </li>
+            )}
+        </ul>
+    )}
+    <button className='organization_searchinfo' onClick={handleSearchInfo}>
+        <IoMdInformationCircleOutline />
+    </button>
+    {showSearchInfo && (
+        <div ref={searchInfoRef} className="organization-searchinfo-popup">
+            Search by username, organization name, or date (yyyy-mm-dd)
+        </div>
+    )}
+</div>
                 <div className="organization-filter">
                     <label className="organization_filter-label">Filter by Status:</label>
                     <select value={statusFilter} onChange={handleStatusFilter}className="organization-filter-select">
@@ -375,64 +501,106 @@ const OrganizationList = () => {
                 </thead>
                 
                 <tbody className='organization-tbody' style={{ maxHeight: rowsPerPage > 5 ? '200px' : 'auto' }}>
-                    {paginatedData.length > 0 ? (
-                        paginatedData.map((org, index) => (
-                            
-                           
-                            <tr key={index} className="organization-table-row">
-                                <td className="organization-table-td">{org.username}</td>
-                                <td className="organization-table-td"
-                                title={org.org_name}>
-  {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
-</td>
-                                <td className="organization-table-td">
-                                {org.msa_doc ? (
-                                    <button
-                                        title={org.msa_doc}
-                                        className="file-button"
-                                        onClick={() => handleOpenFile(org.msa_doc)}
-                                    >
-                                        {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
-                                    </button>
-                                ) : (
-                                    "Null"
-                                )}
-                              
-                                    </td>
-                                <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                                {/* <td className='organization-table-td'>{org.mobile}</td> */}
-                                <td className="organization-table-td">
-  {org.status ? "Inactive" : "Active"}
-</td>
-                                <td className="organization-table-td">
-                                    <button className='organization-edit' onClick={() => handleEdit(org.id)}>
-                                    <FontAwesomeIcon icon={faPencil} />
-                                    </button>
-                                    <button 
-                                        onClick={() => handleFreeze(org.id, org.status)} 
-                                        disabled={isLoading}
-                                        className='organization-freeze'>
-                                        {org.status ? <FontAwesomeIcon icon={faToggleOff} /> : <FontAwesomeIcon icon={faToggleOn} /> }
-                                    </button>
-                                    <button
-                                        className="organization-delete"
-                                        onClick={() => handleDelete(org.id)}
-                                      
-                                    >
-                                        <FontAwesomeIcon icon={faTrash} />
-
-                                    </button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="4" className="organization-table-td">
-                                No organizations found for the selected date.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
+  {paginatedData.length > 0 ? (
+    paginatedData.map((org, index) => (
+      <tr key={index} className="organization-table-row">
+        <td className="organization-table-td">{org.username}</td>
+        <td className="organization-table-td" title={org.org_name}>
+          {org.org_name.length > 20 ? org.org_name.substring(0, 20) + "..." : org.org_name}
+        </td>
+        <td className="organization-table-td">
+          {org.msa_doc ? (
+            <button
+              title={org.msa_doc}
+              className="file-button"
+              onClick={() => handleOpenFile(org.msa_doc)}
+            >
+              {org.msa_doc.split('/').pop().substring(0, 20) + '...'}
+            </button>
+          ) : (
+            "Null"
+          )}
+        </td>
+        <td className="organization-table-td">{new Date(org.created_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+        <td className="organization-table-td">
+          {org.status ? "Inactive" : "Active"}
+        </td>
+        <td className="organization-table-td">
+          <button className='organization-edit' onClick={() => handleEdit(org.id)}>
+            <FontAwesomeIcon icon={faPencil} />
+          </button>
+          <button 
+            onClick={() => handleFreeze(org.id, org.status)} 
+            disabled={isLoading}
+            className='organization-freeze'>
+            {org.status ? <FontAwesomeIcon icon={faToggleOff} /> : <FontAwesomeIcon icon={faToggleOn} />}
+          </button>
+          <Dialog
+    open={showDeleteDialog}
+    onClose={() => setShowDeleteDialog(false)}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+    PaperProps={{
+        style: {
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+        }
+    }}
+    BackdropProps={{
+        style: {
+            backgroundColor: 'rgba(0,0,0,0.1)' // This makes the backdrop transparent
+        }
+    }}
+>
+    <DialogTitle id="alert-dialog-title" sx={{ display: 'flex', alignItems: 'center' }}>
+        <IoMdInformationCircleOutline style={{ marginRight: 8 }} />
+        <Typography variant="h6">Confirm Delete</Typography>
+    </DialogTitle>
+    <DialogContent>
+        <Typography>Are you sure you want to delete this organization?</Typography>
+    </DialogContent>
+    <DialogActions>
+        <Button 
+            onClick={() => setShowDeleteDialog(false)} 
+            color="primary"
+            variant="outlined"
+        >
+            No
+        </Button>
+        <Button 
+            onClick={confirmDelete} 
+            color="error" 
+            variant="contained"
+            autoFocus
+            disabled={isLoading}
+        >
+            {isLoading ? "Deleting..." : "Yes"}
+        </Button>
+    </DialogActions>
+</Dialog>
+{deleteSuccess && (
+    <div className="success-message">
+        Organization deleted successfully!
+    </div>
+)}
+          <button
+            className="organization-delete"
+            onClick={() => handleDelete(org.id)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="6" className="organization-table-td" style={{ textAlign: 'center' }}>
+        No results found.
+      </td>
+    </tr>
+  )}
+</tbody>
                 
             </table>
             {selectedFile && (

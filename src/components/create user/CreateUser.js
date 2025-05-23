@@ -192,37 +192,38 @@ const [error, setError] = useState(null); // For error handling
               />
             </div>
 
-            {/* Person Name */}
-                  <div className="company-form-group">
-                  <label className="company-label">
-                    Person Name <span className="mandatory">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={(e) => {
-                    const value = e.target.value;
-                    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/g;
-                    if (value.length > 100) {
-                      setError("Person Name is Too Long.");
-                      setTimeout(() => {
-                      setError("");
-                      }, 3000);
-                    } else if (specialCharRegex.test(value)) {
-                      setError("Special Characters are not allowed.");
-                      setTimeout(() => {
-                      setError("");
-                      }, 3000);
-                    } else {
-                      setError(""); // Clear error if valid
-                      handleChange(e);
-                    }
-                    }}
-                    className="company-input"
-                    required
-                  />
-                  </div>
+           {/* Person Name */}
+<div className="company-form-group">
+  <label className="company-label">
+    Person Name <span className="mandatory">*</span>
+  </label>
+  <input
+    type="text"
+    name="name"
+    value={formData.name}
+    onChange={(e) => {
+      const value = e.target.value;
+      const alphabeticRegex = /^[A-Za-z\s]*$/; // Regex to allow only alphabetic characters and spaces
+      if (value.length > 100) {
+        setError("Person Name is Too Long.");
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+      } else if (!alphabeticRegex.test(value)) {
+        
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+      } else {
+        setError(""); // Clear error if valid
+        handleChange(e);
+      }
+    }}
+    className="company-input"
+    required
+  />
+</div>
+
 
                   {/* Mobile */}
         <div className="company-form-group">

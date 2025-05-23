@@ -212,24 +212,27 @@ const DocumentTable = () => {
   // Call the function (once)
 
   const filteredData1 = filteredData.filter((item) => {
-    if (filter === '') {
-      return item.declarationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.updatedDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.documentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.assigned_to.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.status.toLowerCase().includes(searchTerm.toLowerCase());
-    } else {
-      return item.status === filter && (
-        item.declarationNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.updatedDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.documentType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.assigned_to.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.status.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-  });
+  const searchLower = searchTerm.toLowerCase();
+  
+  if (filter === '') {
+    return (item.declarationNumber?.toLowerCase().includes(searchLower) || 
+            item.fileName?.toLowerCase().includes(searchLower) || 
+            item.updatedDate?.toLowerCase().includes(searchLower) || 
+            item.documentType?.toLowerCase().includes(searchLower) || 
+            item.assigned_to?.toLowerCase().includes(searchLower) || 
+            item.status?.toLowerCase().includes(searchLower));
+  } else {
+    return item.status === filter && (
+      item.declarationNumber?.toLowerCase().includes(searchLower) || 
+      item.fileName?.toLowerCase().includes(searchLower) || 
+      item.updatedDate?.toLowerCase().includes(searchLower) || 
+      item.documentType?.toLowerCase().includes(searchLower) || 
+      item.assigned_to?.toLowerCase().includes(searchLower) || 
+      item.status?.toLowerCase().includes(searchLower)
+    );
+  }
+});
+
 
   useEffect(() => {
     const filteredDocuments = data.filter((item) => {
@@ -323,6 +326,14 @@ const DocumentTable = () => {
   const handleCalendarToggle = () => {
     setIsCalendarOpen(prev => !prev);
   };
+ const handleDownloadFile = (fileUrl, fileName) => {
+  const link = document.createElement('a');
+  link.href = fileUrl;
+  link.setAttribute('download', fileName); // Set the file name for download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   const handleRowsPerPage = (e) => {
     setRowsPerPage(parseInt(e.target.value));
@@ -581,7 +592,7 @@ const DocumentTable = () => {
             type="search"
             value={searchTerm}
             onChange={handleSearch}
-            placeholder="Search"
+            placeholder="Declaration No, File Name, Doc Type, etc."
             className="documenttable_search_input py-2 pl-10 text-sm text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
           />
           <button className='document_searchinfo' onClick={handleSearchInfo}>
@@ -596,10 +607,10 @@ const DocumentTable = () => {
         <div className="documenttable_filter flex items-center">
           <label className="documenttable_filter_label mr-2">Filter by Status:</label>
           <select value={filter} onChange={handleFilter} className="documenttable_filter_select py-2 pl-10 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600">
-            <option value="">All</option>
-            <option value="PENDING">Pending</option>
-            <option value="REJECTED">Reject</option>
-            <option value="APPROVED">Approve</option>
+            <option value="">ALL</option>
+            <option value="PENDING">PENDING</option>
+            <option value="REJECTED">REJECTED</option>
+            <option value="APPROVED">APPROVED</option>
           </select>
         </div>
 
@@ -627,7 +638,7 @@ const DocumentTable = () => {
 
             <th className="documenttable_th px-6 py-3">Declaration Number</th>
             <th className="documenttable_th px-6 py-3">File Name</th>
-            <th className="documenttable_th px-6 py-3">Updated Date
+            <th className="documenttable_th px-6 py-3">Uploaded Date
               <button
                 className="document-list-calendarbtn"
                 onClick={handleCalendarToggle}
@@ -676,25 +687,20 @@ const DocumentTable = () => {
                 </td>
 
                 <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
-                <td className="documenttable_td px-6 py-4">
-                  {item.fileName ? (
-                    <button
-                      title={item.fileName}
-                      className="file-button"
-                      onClick={() => handleOpenFile(item.fileName)}
-                    >
-                      {item.fileName.split('/').pop().substring(0, 20) + '...'}
-                    </button>
-                  ) : (
-                    "Null"
-                  )}
-                  {/* <a
-                        title={item.fileName.split('/').pop()}
-                        onClick={() => handleDownloadFile(`${url}/${item.fileName}`, item.fileName.split('/').pop())}
-                        style={{ cursor: "pointer", textDecoration: "underline" }}>
-                  {item.fileName.split('/').pop().substring(0, 20) + '...'}
-                </a> */}
-                </td>
+                <td className="documenttable_td px-6 py-4 file-name-cell">
+  {item.fileName ? (
+    <button
+      title={item.fileName.split('/').pop()}
+      className="file-button"
+      onClick={() => handleOpenFile(item.fileName)}
+    >
+      {item.fileName.split('/').pop().substring(0, 20)}
+      {item.fileName.split('/').pop().length > 20 && '...'}
+    </button>
+  ) : (
+    "Null"
+  )}
+</td>
 
                 <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
 
@@ -834,9 +840,10 @@ const DocumentTable = () => {
                 style={{ width: "100%", height: "500px" }}
               />
 
-              <button className='file-download' >
-                Download
-              </button>
+              <button className='file-download' onClick={() => handleDownloadFile(selectedFile, selectedFile.split('/').pop())}>
+  Download
+</button>
+
             </div>
           </div>
         )}

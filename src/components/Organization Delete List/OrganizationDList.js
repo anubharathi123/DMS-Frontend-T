@@ -15,6 +15,61 @@ import { faRepeat } from '@fortawesome/free-solid-svg-icons';
 
 
 const OrganizationList = () => {
+    const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to permanently delete this organization? This action cannot be undone.");
+    
+    if (!confirmDelete) {
+        return; // Exit if user clicks Cancel/No
+    }
+    
+    try {
+        setIsLoading(true);
+        const response = await apiServices.permanentOrganizationdelete(id);
+        console.log(response); // Log the entire response for debugging
+        
+        // Check if the response has a success property
+        if (response && response.success) {
+            alert("Organization permanently deleted successfully!");
+            fetchOrganization();
+        } else {
+            // If response does not have success property, show the message
+            alert(response.message || "Failed to delete organization");
+        }
+    } catch (error) {
+        console.error("Error deleting organization:", error);
+        
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+    const handleRestore = async (id) => {
+    const confirmRestore = window.confirm("Are you sure you want to restore this organization?");
+    if (!confirmRestore) {
+        return; // Exit if user clicks Cancel
+    }
+    
+    try {
+        setIsLoading(true);
+        const response = await apiServices.RestoreOrganizationdelete(id);
+        console.log(response, response.success, response.message);
+        
+        if (response.success) {
+            alert("Organization restored successfully!");
+            fetchOrganization();
+        } else {
+            alert(response.message || "Failed to restore organization");
+        }
+    } catch (error) {
+        console.error("Error restoring organization:", error);
+        alert("An error occurred while restoring.");
+    } finally {
+        setIsLoading(false);
+    }
+};
+    
+
+
     const [data, setData] = useState([]);
     const [startDate, setStartDate] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -190,45 +245,7 @@ const OrganizationList = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this organization?")) {
-        }
-        try {
-            setIsLoading(true);
-
-            // Call API to delete the organization
-            const response = await apiServices.permanentOrganizationdelete(id);
-            console.log(response, response.success, response.message)
-            // Ensure API returns success
-            fetchOrganization()
-
-        } catch (error) {
-            console.error("Error deleting organization:", error);
-            alert("An error occurred while deleting.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleRestore = async (id) => {
-        if (!window.confirm("Are you sure you want to restore this organization?")) {
-        }
-        try {
-            setIsLoading(true);
-
-            // Call API to delete the organization
-            const response = await apiServices.RestoreOrganizationdelete(id);
-            console.log(response, response.success, response.message)
-            // Ensure API returns success
-            fetchOrganization()
-
-        } catch (error) {
-            console.error("Error deleting organization:", error);
-            alert("An error occurred while deleting.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    
 
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const paginatedData = filteredData.slice(
@@ -408,6 +425,7 @@ const OrganizationList = () => {
                 </tbody>
 
             </table>
+            
 
             <div className="organization_pagination">
                 <div className="organization_pageinfo">

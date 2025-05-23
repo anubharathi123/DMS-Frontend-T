@@ -36,36 +36,18 @@ const OrganizationDropdown = ({ isOpen }) => {
         </li>
         <li>
           <NavLink 
-            to="/OrganizationList/user-active" 
+            to="/OrganizationDeleteList" 
             className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => navigate('/OrganizationList/user-active', { state: { statusFilter: 'active' } })}
-          >
-            <span className="dropdown-icon">•</span> Active Organizations
-          </NavLink>
-        </li>
-        <li>
-          <NavLink 
-            to="/OrganizationList/user-inactive" 
-            className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => navigate('/OrganizationList/user-inactive', { state: { statusFilter: 'inactive' } })}
-          >
-            <span className="dropdown-icon">•</span> Inactive Organizations
-          </NavLink>
-        </li>
-        <li>
-          <NavLink 
-            to="/OrganizationList/user-deleted" 
-            className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => navigate('/OrganizationList/user-deleted', { state: { statusFilter: 'deleted' } })}
+            onClick={() => navigate('/OrganizationDeleteList', { state: { statusFilter: 'deleted' } })}
           >
             <span className="dropdown-icon">•</span> Deleted List
           </NavLink>
         </li>
         <li>
           <NavLink 
-            to="/OrganizationList/msi-approval" 
+            to="/MsiPending" 
             className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => navigate('/OrganizationList/msi-approval', { state: { statusFilter: 'msi-approval' } })}
+            onClick={() => navigate('/MsiPending', { state: { statusFilter: 'msi-approval' } })}
           >
             <span className="dropdown-icon">•</span> Pending Approval
           </NavLink>
@@ -94,9 +76,9 @@ const AdminDropdown = ({ isOpen }) => {
         </li>
         <li>
           <NavLink 
-            to="/AdminList/admin-delete" 
+            to="/DeletedAdminList" 
             className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={() => navigate('/AdminList/admin-delete', { state: { statusFilter: 'delete' } })}
+            onClick={() => navigate('/DeletedAdminList', { state: { statusFilter: 'delete' } })}
           >
             <span className="dropdown-icon">•</span> Deleted list
           </NavLink>

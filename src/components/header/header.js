@@ -51,35 +51,36 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const details_data = await ApiService.details();
-        let org_id =
-          details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
-        if (!org_id) throw new Error("Organization ID not found");
+  const fetchNotifications = async () => {
+    try {
+      const details_data = await ApiService.details();
+      let org_id =
+        details_data?.details?.[7]?.id || details_data?.details?.[1]?.id;
+      if (!org_id) throw new Error("Organization ID not found");
 
-        const response = await ApiService.OrgNotification(org_id);
-        const sortedNotifications = response
-          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-          .map((not) => ({
-            not_message: not.notification.message,
-            not_title: not.notification.title,
-          }));
+      const response = await ApiService.OrgNotification(org_id);
+      const sortedNotifications = response
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort by timestamp in descending order
+        .map((not) => ({
+          not_message: not.notification.message,
+          not_title: not.notification.title,
+          timestamp: not.timestamp // Ensure you have the timestamp for sorting
+        }));
 
-        const response1 = await ApiService.OrgNotification();
-        const unreadedCount = response1.filter((n) => !n.is_read).length;
+      const response1 = await ApiService.OrgNotification();
+      const unreadedCount = response1.filter((n) => !n.is_read).length;
 
-        setNotifications(sortedNotifications);
-        setNotificationCount(unreadedCount);
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-      }
-    };
+      setNotifications(sortedNotifications); // Set sorted notifications
+      setNotificationCount(unreadedCount);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    }
+  };
 
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
-  }, []);
+  fetchNotifications();
+  const interval = setInterval(fetchNotifications, 30000);
+  return () => clearInterval(interval);
+}, []);
 
   useEffect(() => {
     const updateProfileImage = async () => {
@@ -161,7 +162,7 @@ const Header = () => {
       localStorage.removeItem("profileImage");
       localStorage.removeItem("iconColor");
       localStorage.removeItem("headerColor");
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.warn("Error logging out:", error.message);
     }
@@ -180,8 +181,8 @@ const Header = () => {
     localStorage.setItem("iconColor", iconColor1);
   }, []);
 
-  const handleNavigateHome = () => {
-    navigate("/Dashboard");
+  const handleNavigateProfile = () => {
+    navigate("/profile");
   };
 
   const handleNavigate404 = () => {
@@ -339,7 +340,7 @@ const Header = () => {
           <hr />
           <ul className="dropdown-menu">
             <li>
-              <button type="button" className="dropdown-item" onClick={handleNavigateHome}>
+              <button type="button" className="dropdown-item" onClick={handleNavigateProfile}>
                 Home
               </button>
             </li>
