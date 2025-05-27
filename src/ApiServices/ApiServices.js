@@ -446,7 +446,7 @@ const authService = {
 
   // Document APIs
   uploadDocument: async (data) => {
-    // console.log('data:', data); 
+    console.log('data:', data); 
     return handleResponse(apiClient.post('documents/upload/', data));
   },
   getDocuments: async () => handleResponse(apiClient.get('documents/')),

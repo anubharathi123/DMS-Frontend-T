@@ -15,7 +15,7 @@
 }
 
 .file-upload-page-outer {
-  text-align: center; /* Center the content */
+  /* text-align: center; Center the content */
   width: 100%;
   height: calc(100vh - 60px); /* Full height minus the header height */
   display: flex; /* Use flexbox for centering */

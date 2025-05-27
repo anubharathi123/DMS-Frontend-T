@@ -193,6 +193,7 @@ const FileUploadPage = () => {
   e.preventDefault();
   const formData = new FormData();
   formData.append('declaration_Number', declarationNumber);
+console.log('Declaration Number:', declarationNumber);
 
   // Check if any files are selected (excluding 'other')
   const hasFilesToUpload = Object.keys(files).some(key =>
@@ -203,13 +204,13 @@ const FileUploadPage = () => {
     alert('Please upload at least one required document');
     return;
   }
-
+console.log('Files to upload:', files);
   Object.keys(files).forEach((key) => {
     if (files[key] && !files[key].alreadyUploaded) {
       formData.append(key, files[key]);
     }
   });
-
+console.log('FormData prepared:', formData);
   try {
     setIsLoading(true);
 
@@ -218,14 +219,14 @@ const FileUploadPage = () => {
       declaration_number: declarationNumber,
       declaration_date: declarationDate,
     };
-
-    const declarationMetaResponse = await apiServices.uploadDeclarationMeta(metadata);
-
-    if (!declarationMetaResponse || declarationMetaResponse.error) {
-      alert('Failed to create declaration metadata.');
-      return;
-    }
-
+console.log('Declaration metadata:', metadata);
+    // const declarationMetaResponse = await apiServices.uploadDeclarationMeta(metadata);
+// console.log('Declaration metadata response:', declarationMetaResponse);
+    // if (!declarationMetaResponse || declarationMetaResponse.error) {
+    //   alert('Failed to create declaration metadata.');
+    //   return;
+    // }
+    // console.log('Declaration metadata uploaded successfully:', declarationMetaResponse);
     // ✅ Proceed with file upload only if metadata upload is successful
     const response = await apiServices.uploadDocument(formData);
 
