@@ -303,137 +303,105 @@ const companyCount= async () => {
   }
 }
   // Fetch all dashboard data
-  const fetchAllDashboardData = async () => {
-    const startTime = performance.now();
-    setIsLoading(true);
-    setLoadingPercentage(0);
+  // Fetch all dashboard data
+const fetchAllDashboardData = async () => {
+  const startTime = performance.now();
+  setIsLoading(true);
+  setLoadingPercentage(0);
 
-    // Simulate loading progress
-    const progressInterval = setInterval(() => {
-      setLoadingPercentage(prev => (prev < 90 ? prev + 1 : prev));
-    }, 100);
+  // Simulate loading progress
+  const progressInterval = setInterval(() => {
+    setLoadingPercentage(prev => (prev < 90 ? prev + 1 : prev));
+  }, 100);
 
-    try {
-      const [
-        // orgCountResponse,
-        // companyCountResponse,
-        yearMonthCompanyResponse,
-        lineDataResponse,
-        dashboardResponse,
-        userCountResponse,
-      ] = await Promise.all([
-        // apiServices.organizationCount(),
-        // apiServices.companyCount(),
-        apiServices.MonthYearCompany(),
-        apiServices.getlinedata(),
-        apiServices.DashboardView(),
-        // apiServices.msi_Enquiry(),
-      ]);
+  try {
+    const [
+      yearMonthCompanyResponse,
+      lineDataResponse,
+      dashboardResponse,
+      userCountResponse,
+    ] = await Promise.all([
+      apiServices.MonthYearCompany(),
+      apiServices.getlinedata(),
+      apiServices.DashboardView(),
+    ]);
 
-      // Process organization count data
-      // if (orgCountResponse) {
-      //   const dashboard = orgCountResponse.map(db => ({
-      //     org_name: db.organization_name,
-      //     username: db.organization_user,
-      //     doc_count: db.total_files_all,
-      //     doc_size: db.total_file_size_all,
-      //     emp: db.total_employees,
-      //   }));
-      //   setCompanyData(dashboard);
-      // }
+    // Process dashboard statistics
+    if (dashboardResponse) {
+      setDashboardStats(dashboardResponse);
+      console.log("Raw dashboard response:", dashboardResponse); 
+    }
 
-      // Process company count statistics
-      // if (companyCountResponse) {
-      //   setOrgCount({
-      //     totalCompanies: companyCountResponse.total_organizations || 0,
-      //     activeCompanies: companyCountResponse.active_org_count || 0,
-      //     inactiveCompanies: companyCountResponse.inactive_org_count || 0,
-      //     clientAdmins: companyCountResponse.user_count || 0,
-      //     totalDocuments: companyCountResponse.document_count || 0,
-      //     approvedDocuments: companyCountResponse.approved_count || 0,
-      //     pendingDocuments: companyCountResponse.pending_org_count || 0,
-      //     rejectedDocuments: companyCountResponse.rejected_count || 0,
-      //     user_count: companyCountResponse.user_count || 0,
-      //     deleted_org_count: companyCountResponse.deleted_org_count || 0,
-      //   });
-      // }
+    // Process line chart data
+    if (lineDataResponse) {
+      const trends = lineDataResponse.map(ct => ({
+        count: ct.count,
+        month: ct.month,
+        year: ct.year,
+      }));
+      setLineChartData(trends);
+      const uniqueYears = [...new Set(trends.map(ct => ct.year))];
+      setSelectedYear(uniqueYears[0] || "2023");
+    }
 
-      // Process dashboard statistics
-      if (dashboardResponse) {
-        setDashboardStats(dashboardResponse);
-        console.log("Raw dashboard response:", dashboardResponse); 
-      }
+    // Process year-month-company data
+    if (yearMonthCompanyResponse) {
+      const monthShort = {
+        January: "Jan", February: "Feb", March: "Mar", April: "Apr",
+        May: "May", June: "Jun", July: "Jul", August: "Aug",
+        September: "Sep", October: "Oct", November: "Nov", December: "Dec"
+      };
 
-      // Process line chart data
-      if (lineDataResponse) {
-        const trends = lineDataResponse.map(ct => ({
-          count: ct.count,
-          month: ct.month,
-          year: ct.year,
-        }));
-        setLineChartData(trends);
-        const uniqueYears = [...new Set(trends.map(ct => ct.year))];
-        setSelectedYear(uniqueYears[0] || "2023");
-      }
+      const formatted = {};
+      const years = new Set();
 
-      // Process year-month-company data
-      if (yearMonthCompanyResponse) {
-        const monthShort = {
-          January: "Jan", February: "Feb", March: "Mar", April: "Apr",
-          May: "May", June: "Jun", July: "Jul", August: "Aug",
-          September: "Sep", October: "Oct", November: "Nov", December: "Dec"
-        };
+      yearMonthCompanyResponse.forEach(company => {
+        company.years.forEach(year => {
+          years.add(year.year);
+          if (!formatted[year.year]) formatted[year.year] = {};
+          
+          Object.values(monthShort).forEach(m => {
+            if (!formatted[year.year][m]) {
+              formatted[year.year][m] = { companies: [] };
+            }
+          });
 
-        const formatted = {};
-        const years = new Set();
-
-        yearMonthCompanyResponse.forEach(company => {
-          company.years.forEach(year => {
-            years.add(year.year);
-            if (!formatted[year.year]) formatted[year.year] = {};
-            
-            Object.values(monthShort).forEach(m => {
-              if (!formatted[year.year][m]) {
-                formatted[year.year][m] = { companies: [] };
-              }
-            });
-
-            year.monthly_document_counts.forEach(monthData => {
-              const short = monthShort[monthData.month] || monthData.month;
-              formatted[year.year][short].companies.push({
-                companyname: company.organization_name,
-                Doccount: monthData.document_count || 0,
-                FileSize: monthData.file_size || "N/A",
-              });
+          year.monthly_document_counts.forEach(monthData => {
+            const short = monthShort[monthData.month] || monthData.month;
+            formatted[year.year][short].companies.push({
+              companyname: company.organization_name,
+              Doccount: monthData.document_count || 0,
+              FileSize: monthData.file_size || "N/A",
             });
           });
         });
+      });
 
-        setUniqueReportYears([...years]);
-        setChartData(formatted);
-      }
-
-      // Process MSI and enquiry data
-      if (userCountResponse) {
-        setEnquiryData(userCountResponse);
-        setMsiData(userCountResponse);
-      }
-
-      // Ensure minimum loading time of 2 seconds
-      const elapsed = performance.now() - startTime;
-      const remaining = Math.max(2000 - elapsed, 0);
-
-      setTimeout(() => {
-        clearInterval(progressInterval);
-        setLoadingPercentage(100);
-        setTimeout(() => setIsLoading(false), 300);
-      }, remaining);
-    } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-      clearInterval(progressInterval);
-      setIsLoading(false);
+      setUniqueReportYears([...years]);
+      setChartData(formatted);
     }
-  };
+
+    // Process MSI and enquiry data
+    if (userCountResponse) {
+      setEnquiryData(userCountResponse);
+      setMsiData(userCountResponse);
+    }
+
+    // Ensure minimum loading time of 2 seconds
+    const elapsed = performance.now() - startTime;
+    const remaining = Math.max(2000 - elapsed, 0);
+
+    setTimeout(() => {
+      clearInterval(progressInterval);
+      setLoadingPercentage(100);
+      setIsLoading(false); // Set loading to false immediately after data is fetched
+    }, remaining);
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    clearInterval(progressInterval);
+    setIsLoading(false);
+  }
+};
 
   // Fetch monthly document data for admin roles
   const fetchMonthlyDocumentData = async () => {

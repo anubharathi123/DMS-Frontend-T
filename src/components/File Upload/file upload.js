@@ -65,74 +65,90 @@ const FileUploadPage = () => {
   
  
   const handleGoClick = async () => {
-    if (declarationNumber.length === 13) {
-      try {
-        setIsLoading(true);
-        const response = await apiServices.checkdeclarationdoc(declarationNumber);
-        if (response) {
-          const updatedDocuments = {
-            declaration: null,
-            invoice: null,
-            packingList: null,
-            awsBol: null,
-            countryOfOrigin: null,
-            deliveryOrder: null,
-          };
-  
-          Object.keys(response).forEach((key) => {
-            const document = response[key];
-            if (document?.document_type?.name) {
-              const docTypeName = document.document_type.name.toLowerCase();
-              const mappings = {
-                'declaration': 'declaration',
-                'invoice': 'invoice',
-                'packinglist': 'packingList',
-                'awsbol': 'awsBol',
-                'countryoforigin': 'certificateOfOrigin',
-                'deliveryorder': 'deliveryOrder',
-                'other': 'other',
+  if (declarationNumber.length === 13) {
+    try {
+      setIsLoading(true);
+      const response = await apiServices.checkdeclarationdoc(declarationNumber);
+      if (response) {
+        const updatedDocuments = {
+          declaration: null,
+          invoice: null,
+          packingList: null,
+          awsBol: null,
+          countryOfOrigin: null,
+          deliveryOrder: null,
+        };
+
+        let firstUploadDate = null; // 👈 Track first document's date
+
+        Object.keys(response).forEach((key) => {
+          const document = response[key];
+          if (document?.document_type?.name) {
+            const docTypeName = document.document_type.name.toLowerCase();
+            const mappings = {
+              'declaration': 'declaration',
+              'invoice': 'invoice',
+              'packinglist': 'packingList',
+              'awsbol': 'awsBol',
+              'countryoforigin': 'countryOfOrigin',
+              'deliveryorder': 'deliveryOrder',
+              'other': 'other',
+            };
+
+            const mappedKey = mappings[docTypeName];
+            if (mappedKey) {
+              const filePath = document.current_version?.file_path || '';
+              const fileName = filePath.split('/').pop();
+              const status = document.status;
+
+              updatedDocuments[mappedKey] = {
+                fileName,
+                alreadyUploaded: true,
+                status,
               };
-  
-              const mappedKey = mappings[docTypeName];
-              if (mappedKey) {
-                const filePath = document.current_version?.file_path || '';
-                const fileName = filePath.split('/').pop();
-                const status = document.status;
-  
-                updatedDocuments[mappedKey] = {
-                  fileName,
-                  alreadyUploaded: true,
-                  status,
-                };
-  
-                // Add to approved files if the file is approved
-                if (status === 'approved') {
-                  setApprovedFiles((prevApprovedFiles) => [
-                    ...prevApprovedFiles,
-                    fileName
-                  ]);
-                }
+
+              // ✅ Capture upload date from first valid document
+              if (!firstUploadDate && document.created_at) {
+                firstUploadDate = document.created_at;
+              }
+
+              // ✅ Approved file tracking
+              if (status === 'approved') {
+                setApprovedFiles((prevApprovedFiles) => [
+                  ...prevApprovedFiles,
+                  fileName
+                ]);
               }
             }
-          });
-  
-          setFiles(updatedDocuments);
-          setIsFileUploadEnabled(true);
-          setIsGoButtonClicked(true);
+          }
+        });
+
+        // ✅ Auto-set declaration date
+        if (firstUploadDate) {
+          const formattedDate = new Date(firstUploadDate).toISOString().split('T')[0];
+          setDeclarationDate(formattedDate);
+          setIsDeclarationDateReadOnly(true);
         } else {
-          throw new Error('Invalid response structure');
+          setIsDeclarationDateReadOnly(false); // if no uploaded doc
         }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error validating declaration number. Please try again.');
-      } finally {
-        setIsLoading(false);
+
+        setFiles(updatedDocuments);
+        setIsFileUploadEnabled(true);
+        setIsGoButtonClicked(true);
+      } else {
+        throw new Error('Invalid response structure');
       }
-    } else {
-      alert('Declaration number must be 13 digits long.');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error validating declaration number. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-  };
-  
+  } else {
+    alert('Declaration number must be 13 digits long.');
+  }
+};
+
  const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     
@@ -173,13 +189,13 @@ const FileUploadPage = () => {
     setFiles((prevFiles) => ({ ...prevFiles, [type]: null }));
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
   const formData = new FormData();
   formData.append('declaration_Number', declarationNumber);
 
   // Check if any files are selected (excluding 'other')
-  const hasFilesToUpload = Object.keys(files).some(key => 
+  const hasFilesToUpload = Object.keys(files).some(key =>
     key !== 'other' && files[key] && !files[key].alreadyUploaded
   );
 
@@ -196,8 +212,23 @@ const FileUploadPage = () => {
 
   try {
     setIsLoading(true);
+
+    // ✅ Upload declaration metadata first
+    const metadata = {
+      declaration_number: declarationNumber,
+      declaration_date: declarationDate,
+    };
+
+    const declarationMetaResponse = await apiServices.uploadDeclarationMeta(metadata);
+
+    if (!declarationMetaResponse || declarationMetaResponse.error) {
+      alert('Failed to create declaration metadata.');
+      return;
+    }
+
+    // ✅ Proceed with file upload only if metadata upload is successful
     const response = await apiServices.uploadDocument(formData);
-    
+
     if (response && response.success) {
       // Show success message with document details
       const successMessage = `Documents submitted successfully!\n\n` +
@@ -207,7 +238,7 @@ const FileUploadPage = () => {
           .filter(key => files[key] && !files[key].alreadyUploaded)
           .map(key => `- ${key}: ${files[key].name}`)
           .join('\n');
-      
+
       alert(successMessage);
       navigate('/documentlist');
     } else {

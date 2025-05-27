@@ -26,12 +26,13 @@ const OrganizationDropdown = ({ isOpen }) => {
       <ul>
         <li>
           <NavLink to="/OrganizationList" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> Main Organization
+            <span className="dropdown-icon"></span> Main Organization
           </NavLink>
         </li>
         <li>
           <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> New Organization
+            <span className="dropdown-icon">
+              </span> New Organization
           </NavLink>
         </li>
         <li>
@@ -40,7 +41,7 @@ const OrganizationDropdown = ({ isOpen }) => {
             className={({ isActive }) => (isActive ? "active" : "")}
             onClick={() => navigate('/OrganizationDeleteList', { state: { statusFilter: 'deleted' } })}
           >
-            <span className="dropdown-icon">•</span> Deleted List
+            <span className="dropdown-icon"></span> Deleted List
           </NavLink>
         </li>
         <li>
@@ -49,7 +50,7 @@ const OrganizationDropdown = ({ isOpen }) => {
             className={({ isActive }) => (isActive ? "active" : "")}
             onClick={() => navigate('/MsiPending', { state: { statusFilter: 'msi-approval' } })}
           >
-            <span className="dropdown-icon">•</span> Pending Approval
+            <span className="dropdown-icon"></span> Pending Approval
           </NavLink>
         </li>
       </ul>
@@ -66,12 +67,12 @@ const AdminDropdown = ({ isOpen }) => {
       <ul>
         <li>
           <NavLink to="/AdminList" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> Main Admin
+            <span className="dropdown-icon"></span> Main Admin
           </NavLink>
         </li>
         <li>
           <NavLink to="/AdminCreation" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> New Admin
+            <span className="dropdown-icon"></span> New Admin
           </NavLink>
         </li>
         <li>
@@ -80,7 +81,7 @@ const AdminDropdown = ({ isOpen }) => {
             className={({ isActive }) => (isActive ? "active" : "")}
             onClick={() => navigate('/DeletedAdminList', { state: { statusFilter: 'delete' } })}
           >
-            <span className="dropdown-icon">•</span> Deleted list
+            <span className="dropdown-icon"></span> Deleted list
           </NavLink>
         </li>
       </ul>
@@ -95,17 +96,17 @@ const UserDropdown = ({ isOpen }) => {
       <ul>
         <li>
           <NavLink to="/user-list" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> Main User
+            <span className="dropdown-icon"></span> Main User
           </NavLink>
         </li>
         <li>
           <NavLink to="/createuser" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> New User
+            <span className="dropdown-icon"></span> New User
           </NavLink>
         </li>
         <li>
           <NavLink to="/deletedusers" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> Deleted User
+            <span className="dropdown-icon"></span> Deleted User
           </NavLink>
         </li>
       </ul>
@@ -120,7 +121,7 @@ const DocumentDropdown = ({ isOpen }) => {
       <ul>
         <li>
           <NavLink to="/DocumentList" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon">•</span> All Documents
+            <span className="dropdown-icon"></span> All Documents
           </NavLink>
         </li>
        

@@ -101,6 +101,28 @@ const [role, setRole] = useState(localStorage.getItem("role") || "VIEWER");
         ];
     }
   };
+ useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      profileDropdownRef.current?.contains(event.target) ||
+      notificationDropdownRef.current?.contains(event.target) ||
+      profileButtonRef.current?.contains(event.target) ||
+      notificationButtonRef.current?.contains(event.target) ||
+      document.querySelector('.search-suggestions')?.contains(event.target)
+    ) {
+      return;
+    }
+    setActiveDropdown();
+    setQuery(""); // Clear the query when clicking outside
+    setSuggestions([]); // Clear suggestions when clicking outside
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
+
 
   const allSuggestions = getRoleBasedSuggestions();
   useEffect(() => {
@@ -293,69 +315,101 @@ const navigateBasedOnSuggestion = (suggestion) => {
       />
 
     {/* 🔹 Updated Search Bar Section */}
-      <div className="search-bar-container">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => {
-            const value = e.target.value;
-            setQuery(value);
-            setSuggestions(
-              value
-                ? allSuggestions.filter((item) =>
-                    item.toLowerCase().includes(value.toLowerCase())
-                  )
-                : []
-            );
-          }}
-          className="search-input"
-          placeholder="Search..."
-        />
-        <img src={SearchIcon} alt="search_icon" className="search_icon" />
+<div className="search-bar-container" style={{ position: "relative" }}>
+  <input
+    type="text"
+    value={query}
+    onChange={(e) => {
+      const value = e.target.value;
+      setQuery(value);
+      setSuggestions(
+        value
+          ? allSuggestions.filter((item) =>
+              item.toLowerCase().includes(value.toLowerCase())
+            )
+          : []
+      );
+    }}
+    className="search-input"
+    placeholder="Search..."
+    style={{ paddingRight: "30px" }} // Add padding to the right for the icon
+  />
+  <img src={SearchIcon} alt="search_icon" className="search_icon" style={{
+    position: "absolute",
+    right: "10px", // Adjust the position as needed
+    top: "50%",
+    transform: "translateY(-50%)", // Center the icon vertically
+    pointerEvents: "none" // Prevent the icon from capturing mouse events
+  }} />
+  
+  {(suggestions.length > 0 || query) && (
+    <ul className="search-suggestions">
+      {suggestions.length > 0 ? (
+        suggestions.map((suggestion, index) => (
+          <li
+            key={index}
+            className="suggestion-item"
+            onClick={() => {
+              setQuery(suggestion);
+              // Add navigation logic based on suggestion
+              navigateBasedOnSuggestion(suggestion);
+            }}
+          >
+            {suggestion}
+          </li>
+        ))
+      ) : (
+        <li className="suggestion-item no-match">No results found</li>
+      )}
+    </ul>
+  )}
+</div>
 
-        {(suggestions.length > 0 || query) && (
-          <ul className="search-suggestions">
-            {suggestions.length > 0 ? (
-              suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  className="suggestion-item"
-                  onClick={() => {
-                    setQuery(suggestion);
-                    // Add navigation logic based on suggestion
-                    navigateBasedOnSuggestion(suggestion);
-                  }}
-                >
-                  {suggestion}
-                </li>
-              ))
-            ) : (
-              <li className="suggestion-item no-match">No results found</li>
-            )}
-          </ul>
-        )}
-      </div>
 
       {/* 🔹 Notification Button */}
-      <button
-        type="button"
-        className="notificationbtn"
-        onClick={async () => {
-          setNotificationCount(0);
-          await handleNotificationClick();
-        }}
-        ref={notificationButtonRef}
-      >
-        {notificationCount > 0 && (
-          <span className="notification-badge">{notificationCount}</span>
-        )}
-        {activeDropdown === "notification" && (
-          <div className="notification-dropdown" ref={notificationDropdownRef}>
-            <NotificationPage onNotificationsUpdate={handleNotificationsUpdate} />
-          </div>
-        )}
-        <img src={Notification} alt="Notifications" className="notification-icon" />
-      </button>
+<button
+  type="button"
+  className="notificationbtn"
+  onClick={async () => {
+    await handleNotificationClick(); // Toggle the dropdown
+  }}
+  ref={notificationButtonRef}
+  style={{ position: "relative" }} // Add relative positioning
+>
+  {notificationCount > 0 && (
+    <span className="notification-badge" style={{
+      position: "absolute",
+      top: "-5px", // Adjust the position as needed
+      right: "-10px", // Adjust the position as needed
+      backgroundColor: "red", // Change the background color for visibility
+      color: "white", // Change the text color for contrast
+      borderRadius: "50%",
+      padding: "2px 6px",
+      fontSize: "12px", // Adjust font size as needed
+      fontWeight: "bold",
+    }}>
+      {notificationCount}
+    </span>
+  )}
+  <img src={Notification} alt="Notifications" className="notification-icon" />
+</button>
+
+{/* 🔹 Notification Dropdown */}
+{activeDropdown === "notification" && (
+  <div className="notification-dropdown" ref={notificationDropdownRef}>
+    {notifications.length > 0 ? (
+      notifications.map((notification, index) => (
+        <div key={index} className="notification-item">
+          <h4>{notification.not_title}</h4>
+          <p>{notification.not_message}</p>
+        </div>
+      ))
+    ) : (
+      <p className="no-notifications">No notifications available</p>
+    )}
+  </div>
+)}
+
 
       {/* 🔹 Profile Button */}
       <button

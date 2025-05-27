@@ -294,17 +294,6 @@ const AdminList = () => {
     setCurrentPage(1);
 };
 
-//   const handleCalendarToggle = () => {
-//   setIsCalendarOpen(!isCalendarOpen);
-//     setIsCalendarOpen(prev => !prev);
-
-// };
-
-  const handleCalendarToggle = () => {
-    setIsCalendarOpen(prev => !prev);
-    // handleClickOutside("mousedown", handleClickOutside)
-  };
-
   const handleRowsPerPage = (e) => {
     setRowsPerPage(parseInt(e.target.value));
   };
@@ -382,12 +371,7 @@ const AdminList = () => {
             <th className="adminlist_th">Name</th>
             <th className="adminlist_th">Email</th>
             <th className="adminlist_th">Created Date
-              <button
-                className="admin-list-calendarbtn"
-                onClick={handleCalendarToggle}
-              >
-                📅
-              </button>
+              
               {isCalendarOpen && (
                 <div
                   style={{ position: "absolute", zIndex: 1000 }}

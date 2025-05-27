@@ -148,7 +148,7 @@ const UserList = () => {
   const handleFreeze = async (id,orgId, status) => {
     try {
         const confirmMsg = status ? "Resume" : "Freeze";
-        if (!window.confirm(`Are you sure you want to ${confirmMsg} this organization?`)) return;
+        if (!window.confirm(`Are you sure you want to ${confirmMsg} this user?`)) return;
         setIsLoading(true);
 
         const response = status ? await apiServices.resumeEmployee(orgId,id) : await apiServices.freezeEmployee(orgId,id);
@@ -317,9 +317,7 @@ const UserList = () => {
           <th className="userlist_th">Email</th>
           <th className="userlist_th">
             Created Date
-            <button className="user-list-calendarbtn" onClick={handleCalendarToggle}>
-              📅
-            </button>
+            
             {isCalendarOpen && (
               <div style={{ position: "absolute", zIndex: 1000 }} ref={calendarRef}>
             <DatePicker
