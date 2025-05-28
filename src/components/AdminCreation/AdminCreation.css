@@ -6,17 +6,30 @@
   --beige: #D4EBF8;
 }
 
-/* Admin Creation Page Styling */
+.bottom-wrapper {
+  display: flex;
+  justify-content: center;     /* Center horizontally */
+  align-items: flex-end;       /* Align at the bottom */
+  min-height: 100vh;           /* Full viewport height */
+  padding-bottom: 20px;        /* Optional space from bottom */
+}
+
 .admincreation-container {
-  width: 600px;
-  padding: 10px;
   position: fixed;
-  background-color: #E6E6E6;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 17px;
   border-radius: 15px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 60px;
+  width: 100%;
+  max-width: 585px;
+  height: 350px;
+  background-color: #E6E6E6;
+  
 }
+
 
 .admincreation-title {
   text-align: center;

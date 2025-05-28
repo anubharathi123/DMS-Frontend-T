@@ -26,13 +26,13 @@ const OrganizationDropdown = ({ isOpen }) => {
       <ul>
         <li>
           <NavLink to="/OrganizationList" className={({ isActive }) => (isActive ? "active" : "")}>
-            <span className="dropdown-icon"></span> Main Organization
+            <span className="dropdown-icon"></span> Organization List
           </NavLink>
         </li>
         <li>
           <NavLink to="/CompanyCreation" className={({ isActive }) => (isActive ? "active" : "")}>
             <span className="dropdown-icon">
-              </span> New Organization
+              </span> Create Organization
           </NavLink>
         </li>
         <li>

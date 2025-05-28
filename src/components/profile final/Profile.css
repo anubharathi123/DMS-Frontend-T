@@ -3,7 +3,7 @@
     flex-wrap: wrap;
     position: fixed;
     /* height:100vh; */
-    margin-top: 55px;
+    margin-top: 600px;
     justify-content: center;
     /* align-items: center; */
     gap: 60px;
@@ -35,7 +35,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    top: 280px;
+    top: 20px;
     transition: transform 0.9s ease-in-out;
 }
 

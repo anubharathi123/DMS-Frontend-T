@@ -9,6 +9,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 const FileUploadPage = () => {
   const dateInfoRef = useRef(null);
   const [declarationNumber, setDeclarationNumber] = useState('');
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isFileUploadEnabled, setIsFileUploadEnabled] = useState(false);
   const [approvedFiles, setApprovedFiles] = useState([]); // Track approved files
   const [files, setFiles] = useState({
@@ -54,6 +55,15 @@ const FileUploadPage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showSearchInfo]);
+  useEffect(() => {
+  // Check if all files are already uploaded (i.e., no new uploads)
+  const hasNewFile = Object.keys(files).some(
+    (key) => files[key] && !files[key].alreadyUploaded
+  );
+
+  // Disable submit button if no new files to upload
+  setIsSubmitDisabled(!hasNewFile);
+}, [files]);
 
   const handleDeclarationNumberChange = (e) => {
     setDeclarationNumber(e.target.value);
@@ -64,23 +74,38 @@ const FileUploadPage = () => {
   const [isLoading, setIsLoading] = useState(false); 
   
  
-  const handleGoClick = async () => {
+const handleGoClick = async () => {
   if (declarationNumber.length === 13) {
     try {
       setIsLoading(true);
+
+      // Fetch declaration date
+      const declarationResponse = await apiServices.getDeclarationByNumber(declarationNumber);
+
+      if (declarationResponse?.date) {
+        const formattedDate = new Date(declarationResponse.date).toISOString().split('T')[0];
+        setDeclarationDate(formattedDate);
+        setIsDeclarationDateReadOnly(true);
+      } else {
+        // No date found: allow user to enter it manually
+        setDeclarationDate('');
+        setIsDeclarationDateReadOnly(false);
+      }
+
+      // Check for existing uploaded documents
       const response = await apiServices.checkdeclarationdoc(declarationNumber);
-      if (response) {
-        const updatedDocuments = {
-          declaration: null,
-          invoice: null,
-          packingList: null,
-          awsBol: null,
-          countryOfOrigin: null,
-          deliveryOrder: null,
-        };
+      const updatedDocuments = {
+        declaration: null,
+        invoice: null,
+        packingList: null,
+        awsBol: null,
+        countryOfOrigin: null,
+        deliveryOrder: null,
+      };
 
-        let firstUploadDate = null; // 👈 Track first document's date
+      let firstUploadDate = null;
 
+      if (response && typeof response === 'object') {
         Object.keys(response).forEach((key) => {
           const document = response[key];
           if (document?.document_type?.name) {
@@ -107,12 +132,10 @@ const FileUploadPage = () => {
                 status,
               };
 
-              // ✅ Capture upload date from first valid document
               if (!firstUploadDate && document.created_at) {
                 firstUploadDate = document.created_at;
               }
 
-              // ✅ Approved file tracking
               if (status === 'approved') {
                 setApprovedFiles((prevApprovedFiles) => [
                   ...prevApprovedFiles,
@@ -122,25 +145,18 @@ const FileUploadPage = () => {
             }
           }
         });
-
-        // ✅ Auto-set declaration date
-        if (firstUploadDate) {
-          const formattedDate = new Date(firstUploadDate).toISOString().split('T')[0];
-          setDeclarationDate(formattedDate);
-          setIsDeclarationDateReadOnly(true);
-        } else {
-          setIsDeclarationDateReadOnly(false); // if no uploaded doc
-        }
-
-        setFiles(updatedDocuments);
-        setIsFileUploadEnabled(true);
-        setIsGoButtonClicked(true);
-      } else {
-        throw new Error('Invalid response structure');
       }
+
+      setFiles(updatedDocuments);
+      setIsFileUploadEnabled(true);
+      setIsGoButtonClicked(true);
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error validating declaration number. Please try again.');
+      console.error('Unexpected error (non-breaking):', error);
+      // Do nothing – user can continue to upload manually
+      setIsFileUploadEnabled(true);
+      setIsGoButtonClicked(true);
+      setDeclarationDate('');
+      setIsDeclarationDateReadOnly(false);
     } finally {
       setIsLoading(false);
     }
@@ -193,7 +209,6 @@ const FileUploadPage = () => {
   e.preventDefault();
   const formData = new FormData();
   formData.append('declaration_Number', declarationNumber);
-console.log('Declaration Number:', declarationNumber);
 
   // Check if any files are selected (excluding 'other')
   const hasFilesToUpload = Object.keys(files).some(key =>
@@ -204,13 +219,13 @@ console.log('Declaration Number:', declarationNumber);
     alert('Please upload at least one required document');
     return;
   }
-console.log('Files to upload:', files);
+
   Object.keys(files).forEach((key) => {
     if (files[key] && !files[key].alreadyUploaded) {
       formData.append(key, files[key]);
     }
   });
-console.log('FormData prepared:', formData);
+
   try {
     setIsLoading(true);
 
@@ -219,43 +234,42 @@ console.log('FormData prepared:', formData);
       declaration_number: declarationNumber,
       declaration_date: declarationDate,
     };
-console.log('Declaration metadata:', metadata);
-    // const declarationMetaResponse = await apiServices.uploadDeclarationMeta(metadata);
-// console.log('Declaration metadata response:', declarationMetaResponse);
-    // if (!declarationMetaResponse || declarationMetaResponse.error) {
-    //   alert('Failed to create declaration metadata.');
-    //   return;
-    // }
-    // console.log('Declaration metadata uploaded successfully:', declarationMetaResponse);
+
+    const declarationMetaResponse = await apiServices.uploadDeclarationMeta(metadata);
+
+    if (!declarationMetaResponse || declarationMetaResponse.error) {
+      alert('Failed to create declaration metadata.');
+      return;
+    }
+
     // ✅ Proceed with file upload only if metadata upload is successful
     const response = await apiServices.uploadDocument(formData);
 
-    if (response && response.success) {
-      // Show success message with document details
-      const successMessage = `Documents submitted successfully!\n\n` +
-        `Declaration Number: ${declarationNumber}\n` +
-        `Submitted Documents:\n` +
-        Object.keys(files)
-          .filter(key => files[key] && !files[key].alreadyUploaded)
-          .map(key => `- ${key}: ${files[key].name}`)
-          .join('\n');
+      const isSuccessByMessage = response?.message?.toLowerCase().includes('success');
 
-      alert(successMessage);
-      navigate('/documentlist');
-    } else {
-      throw new Error(response?.message || 'Failed to submit files');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    alert(error.message || 'Failed to submit files. Please try again.');
-  } finally {
-    setIsLoading(false);
+  if (response?.success || isSuccessByMessage) {
+    const successMessage = `Documents submitted successfully!\n\n`;
+
+    alert(successMessage);
+    navigate('/documentlist');
+  } else {
+    throw new Error(response?.message || 'Failed to submit files');
   }
+} catch (error) {
+  console.error('Error:', error);
+  alert(error.message || 'Failed to submit files. Please try again.');
+} finally {
+  setIsLoading(false);
+}
 };
 
   const handleCancelUpload = () => {
     navigate('/DocumentList')
   }
+ // Check if there is any file that is NOT already uploaded (i.e. new files)
+  const hasNewFilesToUpload = Object.keys(files).some(
+  key => files[key] && !files[key].alreadyUploaded
+);
 
   return (
     <div className="file-upload-page-outer">
@@ -384,9 +398,15 @@ console.log('Declaration metadata:', metadata);
       </div>
     ))}
     <div className='upload-buttons'>
-    <button type="submit" className="submit-button">
-      Submit
-    </button>
+{hasNewFilesToUpload && (
+  <button
+    type="submit"
+    className="submit-button"
+    disabled={isSubmitDisabled}
+  >
+    Submit
+  </button>
+)}
     <button type="button" className="cancel-button" onClick={handleCancelUpload}>
       Cancel
     </button>
