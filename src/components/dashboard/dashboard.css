@@ -11,15 +11,26 @@
   --beige: #f4b7;
 }
 
-/* General Dashboard Container */
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  /* align-items: center; */
-  margin-left: 223px;
-  margin-top: 60px;
   align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+  padding: 80px 24px 24px 24px; /* TOP padding increased to 80px */
+  box-sizing: border-box;
+  overflow-y: hidden; /* or scroll with scrollbar hidden */
+}
+
+.dashboard-container {
+  overflow-y: scroll; /* Still scrolls */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.dashboard-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 
 .bg{
@@ -85,6 +96,7 @@
   color: var(--dark-blue);
   font-size: 20px;
   text-align: center;
+  
 }
 
 .dashboard-h2 {
@@ -1069,46 +1081,6 @@ select {
 }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .chart-container {
   width: 50%;
   background: #fff;
@@ -1364,3 +1336,31 @@ select {
   /* top: 1%; */
   right: 51%; 
  }
+
+ .storage-usage-card {
+  background: #f4f8ff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.storage-bar-container {
+  background: #e1eaff;
+  border-radius: 10px;
+  height: 20px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.storage-bar {
+  background-color: #4e84db;
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  transition: width 0.5s ease;
+}
+
+.storage-stats p {
+  margin: 5px 0;
+  font-size: 14px;
+}

@@ -8,7 +8,6 @@ import Loader from "react-js-loader";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import refreshIcon from '../../assets/images/refresh-icon.png';
 
-
 const DocumentTable = () => {
   const initialState = {
     documents: [],
@@ -39,28 +38,12 @@ const DocumentTable = () => {
   const [reviewers, setReviewers] = useState([]);       // list of reviewers
   const [isEditing, setIsEditing] = useState(true); // allow edit initially if status is PENDING
   const [userRole, setUserRole] = useState(null); // Store user role
-
-
   const [showDropdown, setShowDropdown] = useState(false);
-
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
-
-
-
   const [selectedReviewer, setSelectedReviewer] = useState('');
   const [selectedReviewer1, setSelectedReviewer1] = useState('');
-
   const [selectedRows, setSelectedRows] = useState([]);
-
-
-
-
-
-
-
-
-
   const searchInfoRef = useRef(null); // Reference for search info popup
   const url = API_URL1
   const navigate = useNavigate();
@@ -111,44 +94,57 @@ const DocumentTable = () => {
   }, []);
 
 
-  const fetchDocuments = async () => {
-    try {
-      setIsLoading(true);
-      console.log("Fetching documents...");
-      const response = await apiServices.getDocuments();
-      console.log(response)
-      const documents = response.documents.map(doc => ({
+const fetchDocuments = async () => {
+  try {
+    setIsLoading(true);
+    console.log("Fetching documents...");
+    const response = await apiServices.getDocuments();
 
-        docId: doc.id,
-        assigned_to: doc.assigned_to?.first_name || null,
-        declarationNumber: doc.declaration_number,
-        file: doc.current_version?.file_path,
-        fileName: doc.current_version?.file_path ? doc.current_version.file_path : '',
-        updatedDate: doc.updated_at,
-        documentType: doc.document_type?.name || '',
-        status: doc.status || '',
-        rejectionReason: doc.file_approval_history?.rework_reason?.description || '',
-        fileUrl: doc.fileUrl || '',
-        viewed: false,
-        version: doc.current_version?.version_number,
-      })).sort((a, b) => new Date(b.updatedDate) - new Date(a.updatedDate));
-      // if(documents.status === "PENDING"){
-      //   console.log("Pending Doc ID", documents.id)
-      // }
+    // Use Promise.all to fetch declaration dates for all documents concurrently
+    const documentsWithDate = await Promise.all(
+      response.documents.map(async (doc) => {
+        let declarationDate = null;
+        try {
+          const declResp = await apiServices.getDeclarationByNumber(doc.declaration_number);
+          declarationDate = declResp?.date || null;
+        } catch (error) {
+          console.warn(`Failed to fetch declaration date for ${doc.declaration_number}`, error);
+        }
+        
+        return {
+          docId: doc.id,
+          assigned_to: doc.assigned_to?.first_name || null,
+          declarationNumber: doc.declaration_number,
+          file: doc.current_version?.file_path,
+          fileName: doc.current_version?.file_path ? doc.current_version.file_path : '',
+          updatedDate: doc.updated_at,
+          documentType: doc.document_type?.name || '',
+          status: doc.status || '',
+          rejectionReason: doc.file_approval_history?.rework_reason?.description || '',
+          fileUrl: doc.fileUrl || '',
+          viewed: false,
+          version: doc.current_version?.version_number,
+          declarationDate,  // <-- add declaration date here
+        };
+      })
+    );
 
-      setData(documents);
-      setFilteredData(documents);
+    // Sort by updatedDate descending
+    const sortedDocuments = documentsWithDate.sort((a, b) => new Date(b.updatedDate) - new Date(a.updatedDate));
 
-      if (documents.length === 0) {
-        setActionMessage('No files are available for approval.');
-      }
-    } catch (error) {
-      // console.error('Error fetching documents:', error);
-      // setActionMessage('Error fetching documents. Please try again later.');
-    } finally {
-      setIsLoading(false);
+    setData(sortedDocuments);
+    setFilteredData(sortedDocuments);
+
+    if (sortedDocuments.length === 0) {
+      setActionMessage('No files are available for approval.');
     }
-  };
+  } catch (error) {
+    // You can handle error if needed
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   useEffect(() => {
 
@@ -170,13 +166,7 @@ const DocumentTable = () => {
 
         if (Array.isArray(reviewers) && reviewers.length > 0) {
           reviewers.forEach((reviewer, index) => {
-            // console.log(`🔹 Reviewer ${index + 1}:`);
-            // console.log("  ID:", reviewer.id);
-            // console.log("  Name:", reviewer.auth_user.first_name);
-            // console.log("  Username:", reviewer.auth_user.username);
-            // console.log("  Email:", reviewer.auth_user.email);
-            // console.log("  Mobile:", reviewer.mobile);
-            // console.log("  Role:", reviewer.role?.name);
+
           });
 
           // Pass the reviewers data to a state or function for further use
@@ -201,15 +191,6 @@ const DocumentTable = () => {
 
     fetchReviewer();
   }, []);
-
-
-
-
-  // Call the function here, not inside itself
-
-
-
-  // Call the function (once)
 
   const filteredData1 = filteredData.filter((item) => {
     if (filter === '') {
@@ -627,6 +608,7 @@ const DocumentTable = () => {
 
             <th className="documenttable_th px-6 py-3">Declaration Number</th>
             <th className="documenttable_th px-6 py-3">File Name</th>
+             <th className="documenttable_th px-6 py-3">Declaration Date</th> 
             <th className="documenttable_th px-6 py-3">Updated Date
               <button
                 className="document-list-calendarbtn"
@@ -695,6 +677,15 @@ const DocumentTable = () => {
                   {item.fileName.split('/').pop().substring(0, 20) + '...'}
                 </a> */}
                 </td>
+<td className="documenttable_td px-6 py-4">
+  {item.declarationDate
+    ? new Date(item.declarationDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'N/A'}
+</td>
 
                 <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
 

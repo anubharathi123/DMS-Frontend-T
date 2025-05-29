@@ -131,6 +131,19 @@ const authService = {
     }
     return response;
   },
+   uploadDeclarationMeta: async (data) => {
+    if (!data) {
+      throw new Error('Declaration metadata is required.');
+    }
+    return handleResponse(apiClient.post('declaration/create/', data));
+  },
+  getDeclarationByNumber: async (declarationNumber) => {
+  if (!declarationNumber) {
+    throw new Error('Declaration number is required.');
+  }
+  return handleResponse(apiClient.get(`declaration/${declarationNumber}/`));
+},
+
   changePassword: async (data) => {
     // if (data.confirmPassword == !data.new_password) {
     //   throw new Error('Olpassword and new password are required.');
