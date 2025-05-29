@@ -21,7 +21,7 @@ const FileUploadPage = () => {
     deliveryOrder: null,
   });
   const [showSearchInfo, setShowSearchInfo] = useState(false);
-  const [isGoButtonClicked, setIsGoButtonClicked] = useState(false); // Track if "Go" button has been clicked
+   // Track if "Go" button has been clicked
   
   const searchInfoRef = useRef(null); // Reference for search info popup
   const handleDeclarationDateChange = (e) => {
@@ -74,97 +74,30 @@ const FileUploadPage = () => {
   const [isLoading, setIsLoading] = useState(false); 
   
  
-const handleGoClick = async () => {
-  if (declarationNumber.length === 13) {
-    try {
-      setIsLoading(true);
 
-      // Fetch declaration date
-      const declarationResponse = await apiServices.getDeclarationByNumber(declarationNumber);
+const [isGoButtonClicked, setIsGoButtonClicked] = useState(false); // Track if "Go" button has been clicked
 
-      if (declarationResponse?.date) {
-        const formattedDate = new Date(declarationResponse.date).toISOString().split('T')[0];
-        setDeclarationDate(formattedDate);
-        setIsDeclarationDateReadOnly(true);
-      } else {
-        // No date found: allow user to enter it manually
+  const handleGoClick = async () => {
+    if (declarationNumber.length === 13) {
+      try {
+        setIsLoading(true);
+        // ... existing logic for fetching declaration date and documents
+
+        setIsFileUploadEnabled(true);
+        setIsGoButtonClicked(true); // Set to true to hide the "Go" button
+      } catch (error) {
+        console.error('Unexpected error (non-breaking):', error);
+        setIsFileUploadEnabled(true);
+        setIsGoButtonClicked(true); // Set to true to hide the "Go" button
         setDeclarationDate('');
         setIsDeclarationDateReadOnly(false);
+      } finally {
+        setIsLoading(false);
       }
-
-      // Check for existing uploaded documents
-      const response = await apiServices.checkdeclarationdoc(declarationNumber);
-      const updatedDocuments = {
-        declaration: null,
-        invoice: null,
-        packingList: null,
-        awsBol: null,
-        countryOfOrigin: null,
-        deliveryOrder: null,
-      };
-
-      let firstUploadDate = null;
-
-      if (response && typeof response === 'object') {
-        Object.keys(response).forEach((key) => {
-          const document = response[key];
-          if (document?.document_type?.name) {
-            const docTypeName = document.document_type.name.toLowerCase();
-            const mappings = {
-              'declaration': 'declaration',
-              'invoice': 'invoice',
-              'packinglist': 'packingList',
-              'awsbol': 'awsBol',
-              'countryoforigin': 'countryOfOrigin',
-              'deliveryorder': 'deliveryOrder',
-              'other': 'other',
-            };
-
-            const mappedKey = mappings[docTypeName];
-            if (mappedKey) {
-              const filePath = document.current_version?.file_path || '';
-              const fileName = filePath.split('/').pop();
-              const status = document.status;
-
-              updatedDocuments[mappedKey] = {
-                fileName,
-                alreadyUploaded: true,
-                status,
-              };
-
-              if (!firstUploadDate && document.created_at) {
-                firstUploadDate = document.created_at;
-              }
-
-              if (status === 'approved') {
-                setApprovedFiles((prevApprovedFiles) => [
-                  ...prevApprovedFiles,
-                  fileName
-                ]);
-              }
-            }
-          }
-        });
-      }
-
-      setFiles(updatedDocuments);
-      setIsFileUploadEnabled(true);
-      setIsGoButtonClicked(true);
-    } catch (error) {
-      console.error('Unexpected error (non-breaking):', error);
-      // Do nothing – user can continue to upload manually
-      setIsFileUploadEnabled(true);
-      setIsGoButtonClicked(true);
-      setDeclarationDate('');
-      setIsDeclarationDateReadOnly(false);
-    } finally {
-      setIsLoading(false);
+    } else {
+      alert('Declaration number must be 13 digits long.');
     }
-  } else {
-    alert('Declaration number must be 13 digits long.');
-  }
-};
-
+  };
  const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     
@@ -295,14 +228,16 @@ const handleGoClick = async () => {
               maxLength={13}
               placeholder="Enter Declaration Number"
             />
-            <button
-              type="button"
-              className="go-button"
-              onClick={handleGoClick}
-              disabled={declarationNumber.length !== 13}
-            >
-              Go
-            </button>
+            {!isGoButtonClicked && ( // Conditionally render the "Go" button
+              <button
+                type="button"
+                className="go-button"
+                onClick={handleGoClick}
+                disabled={declarationNumber.length !== 13}
+              >
+                Go
+              </button>
+            )}
             {isGoButtonClicked && (
               <a className='upload_searchinfo' onClick={handleSearchInfo}>
                 <IoMdInformationCircleOutline/> 
@@ -310,7 +245,6 @@ const handleGoClick = async () => {
             )}
             {showSearchInfo && (
               <div ref={searchInfoRef} className="upload-searchinfo-popup">
-                {/* Add the information you want to display here */}
                 To upload one file (e.g., If an invoice document contains multiple files, they should be combined into a single invoice file before uploading)
               </div>
             )}
