@@ -607,8 +607,9 @@ const fetchDocuments = async () => {
             {/* } */}
 
             <th className="documenttable_th px-6 py-3">Declaration Number</th>
-            <th className="documenttable_th px-6 py-3">File Name</th>
              <th className="documenttable_th px-6 py-3">Declaration Date</th> 
+            <th className="documenttable_th px-6 py-3">File Name</th>
+            
             <th className="documenttable_th px-6 py-3">Updated Date
               <button
                 className="document-list-calendarbtn"
@@ -659,6 +660,15 @@ const fetchDocuments = async () => {
 
                 <td className="documenttable_td px-6 py-4">{item.declarationNumber}</td>
                 <td className="documenttable_td px-6 py-4">
+  {item.declarationDate
+    ? new Date(item.declarationDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'N/A'}
+</td>
+                <td className="documenttable_td px-6 py-4">
                   {item.fileName ? (
                     <button
                       title={item.fileName}
@@ -677,15 +687,7 @@ const fetchDocuments = async () => {
                   {item.fileName.split('/').pop().substring(0, 20) + '...'}
                 </a> */}
                 </td>
-<td className="documenttable_td px-6 py-4">
-  {item.declarationDate
-    ? new Date(item.declarationDate).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : 'N/A'}
-</td>
+
 
                 <td className="documenttable_td px-6 py-4">{new Date(item.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
 
@@ -782,22 +784,22 @@ const fetchDocuments = async () => {
                 </td>
 
                 <td className="documenttable_td px-6 py-4">
-                  {item.status === "REJECTED" ? (
-                    <div className="tooltip-container">
-                      <span
-                        className="tooltip-trigger"
-                        title={item.rejectionReason}
-                      >
-                        {item.rejectionReason.split('/').pop().substring(0, 20) + '.......'}
-                      </span>
+  {item.status === "REJECTED" ? (
+    <div className="tooltip-container">
+      <span
+        className="tooltip-trigger"
+        title={item.rejectionReason}
+      >
+        {item.rejectionReason && item.rejectionReason.length > 20 
+          ? `${item.rejectionReason.substring(0, 20)}...` 
+          : item.rejectionReason || '----'}
+      </span>
+    </div>
+  ) : (
+    <span>----</span>
+  )}
+</td>
 
-                      {/* <div className="tooltip-content">{item.rejectionReason}</div> */}
-                    </div>
-                  ) : (
-                    <span>----</span>
-                  )}
-
-                </td>
               </tr>
             ))
           ) : (

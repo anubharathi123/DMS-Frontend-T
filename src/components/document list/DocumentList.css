@@ -389,3 +389,10 @@ padding-left: .5rem !important;
 }
 
 
+.documenttable_td:nth-child(4) {  /* Target the File Name column */
+  padding-right: 30px; /* Add right padding to create space */
+}
+
+.documenttable_td:nth-child(5) {  /* Target the Updated Date column */
+  padding-left: 30px; /* Add left padding to create space */
+}
