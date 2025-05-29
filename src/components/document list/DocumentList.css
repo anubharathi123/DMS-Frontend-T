@@ -184,22 +184,23 @@
   color: #000b58;
 }
 
-.documenttable_th {
-  padding: 0;
-  text-align: left;
-  font-weight: bold;
-  text-align: center;
-}
+
 
 .documenttable_row {
   background-color: white;
   border-bottom: 1px solid #e5e7eb;
 }
 
-.documenttable_td {
-  padding: 10px;
-  text-align: left;
+.documenttable_th, .documenttable_td {
+  padding: 10px; /* Ensure both header and content cells have the same padding */
+  text-align: left; /* Align text to the left */
 }
+
+.documenttable_th {
+  font-weight: bold; /* Make header text bold */
+  background-color: #f3f4f6; /* Optional: Background color for header */
+}
+
 
 .documenttable_status {
   display: inline-block;
@@ -423,4 +424,15 @@ padding-left: .5rem !important;
 
 .tooltip-container:hover .tooltip-content {
   display: block;
+
+}
+
+
+/* Add this to your CSS file */
+.documenttable_td:nth-child(4) {  /* Target the File Name column */
+  padding-right: 30px; /* Add right padding to create space */
+}
+
+.documenttable_td:nth-child(5) {  /* Target the Updated Date column */
+  padding-left: 30px; /* Add left padding to create space */
 }

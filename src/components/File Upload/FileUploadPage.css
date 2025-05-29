@@ -150,6 +150,32 @@
   gap: 10px;
 }
 
+.declaration-date-section {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Similar gap as declaration section */
+}
+
+.declaration-date-label {
+  font-size: 14px;
+  color: var(--mid-blue);
+  font-weight: bold;
+}
+
+.declaration-date-input {
+  padding: 5px;
+  padding-left: 10px;
+  font-size: 14px;
+  border: 1.5px solid var(--mid-blue);
+  border-radius: 6px;
+  outline: none;
+  width: 65%; /* Same width as declaration input */
+}
+
+.declaration-date-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 8px rgba(0, 106, 103, 0.3);
+}
 .upload-icon {
   display: flex;
   align-items: center;
