@@ -110,25 +110,35 @@ const AsideBar = () => {
                   <p className="asidebar_p_tag">User</p>
                 </NavLink>
               </li>
+              
             )}
 
-            {role === "PRODUCT_OWNER" && (
-              <li>
-                <NavLink to="/AdminList" className={({ isActive }) => (isActive ? "active" : "")}>
-                  <UserPlus className="aside-icon" size={20} />
-                  <p className="asidebar_p_tag">Admin</p>
-                </NavLink>
-              </li>
-            )}
 
-            {role === "PRODUCT_OWNER" && (
-              <li>
-                <NavLink to="/enquirylist" className={({ isActive }) => (isActive ? "active" : "")}>
-                  <FileQuestion className="aside-icon" size={20} />
-                  <p className="asidebar_p_tag">Enquiry</p>
-                </NavLink>
-              </li>
-            )}
+           {role === "PRODUCT_OWNER" && (
+  <>
+    <li>
+      <NavLink to="/AdminList" className={({ isActive }) => (isActive ? "active" : "")}>
+        <UserPlus className="aside-icon" size={20} />
+        <p className="asidebar_p_tag">Admin</p>
+      </NavLink>
+    </li>
+
+    <li>
+      <NavLink to="/enquirylist" className={({ isActive }) => (isActive ? "active" : "")}>
+        <FileQuestion className="aside-icon" size={20} />
+        <p className="asidebar_p_tag">Enquiry</p>
+      </NavLink>
+    </li>
+
+    <li>
+      <NavLink to="/audithome" className={({ isActive }) => (isActive ? "active" : "")}>
+        <FileCheck2 className="aside-icon" size={20} />
+        <p className="asidebar_p_tag">Audit</p>
+      </NavLink>
+    </li>
+  </>
+)}
+
 
 
 

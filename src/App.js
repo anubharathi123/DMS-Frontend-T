@@ -57,6 +57,7 @@ import { IdCard } from "lucide-react";
 import ConfirmationPage from "./components/SuccessMessage/ConfirmationPage";
 import UpdateAdmin from "./components/AdminCreation Update/UpdateAdmin";
 import UpdateUser from "./components/UpdateUser/UpdateUser";
+import AuditHomePage from "./components/AuditHome/AuditHomePage";
 
 
 // Function to check authentication status
@@ -146,7 +147,7 @@ function AppContent() {
         <Route path="/NotFoundView" element={<NotFoundView />} />
         <Route path="/backup" element={<BackupList />} />
 
-            
+        <Route path="/audithome" element={<AuditHomePage />} />
         {/* <Route path="/login" element={<Login2 />} /> */}
         {/* <Route path="/" element={<Login1 />} /> */}
 

@@ -8,7 +8,8 @@ import apiServices from '../../ApiServices/ApiServices';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { IoMdInformationCircleOutline } from "react-icons/io";
-
+import { Box } from "@mui/material"; // already imported
+import { Typography, Switch } from '@mui/material';
 
 
 const CompanyCreation = () => {
@@ -18,7 +19,16 @@ const CompanyCreation = () => {
     personName: '',
     mobile: '',
     email: '',
+    companyType: '',
   });
+const handleAuditToggle = (e) => {
+  setCompany({ 
+    ...company, 
+    requiresAudit: e.target.checked,
+    auditFrequency: e.target.checked ? company.auditFrequency : '',
+    auditStartDate: e.target.checked ? company.auditStartDate : ''
+  });
+};
 
   const [contractDocuments, setContractDocuments] = useState(null);
   // const [dragging, setDragging] = useState(false);
@@ -155,7 +165,10 @@ const CompanyCreation = () => {
   //   document.getElementById("file-input").click();
   // };
 
-  const isFormValid = Object.values(company).every((value) => value.trim() !== '');
+  const isFormValid = Object.values(company).every((value) =>
+  typeof value === 'string' ? value.trim() !== '' : true
+);
+
 
   return (
     <div className="company-creation-container">
@@ -267,6 +280,25 @@ const CompanyCreation = () => {
                           </div>
                       )} */}
                       </div>
+  {/* Company Type */}
+<div className="company-creation-form-group">
+  <label className="company-creation-label">
+    Company Type <span className="company-creation-mandatory">*</span>
+  </label>
+  <select
+    name="companyType"
+    value={company.companyType}
+    onChange={handleChange}
+    className="company-type-dropdown"
+    required
+  >
+    <option value="">Select Company Type</option>
+    <option value="FREEZONE">Freezone</option>
+    <option value="MAINLAND">Mainland</option>
+    <option value="WAREHOUSE">Warehouse</option>
+    <option value="BROKER">Broker</option>
+  </select>
+</div>
 
                       {/* Mobile */}
           <div className="company-creation-form-group">
@@ -325,6 +357,25 @@ const CompanyCreation = () => {
                 />
                 {/* <button className='input-info'><IoMdInformationCircleOutline /></button> */}
                 </div>
+<div className="company-creation-form-group">
+  <label className="company-creation-label">
+    Require Audit Service
+  </label>
+  <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', marginRight: '1000px' }}>
+  <Switch
+    checked={company.requiresAudit}
+    onChange={handleAuditToggle}
+    color="primary"
+    size="small"
+    inputProps={{ 'aria-label': 'audit toggle' }}
+  />
+</div>
+
+</div>
+
+
+
+
 
                 {/* Submit and Cancel */}
           <div className="company-creation-buttons">

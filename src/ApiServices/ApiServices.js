@@ -50,6 +50,9 @@ const handleResponse = async (request) => {
   }
 };
 
+
+
+
 const authService = {
   // Authentication APIs
   register: async (userData) => {
@@ -131,19 +134,6 @@ const authService = {
     }
     return response;
   },
-   uploadDeclarationMeta: async (data) => {
-    if (!data) {
-      throw new Error('Declaration metadata is required.');
-    }
-    return handleResponse(apiClient.post('declaration/create/', data));
-  },
-  getDeclarationByNumber: async (declarationNumber) => {
-  if (!declarationNumber) {
-    throw new Error('Declaration number is required.');
-  }
-  return handleResponse(apiClient.get(`declaration/${declarationNumber}/`));
-},
-
   changePassword: async (data) => {
     // if (data.confirmPassword == !data.new_password) {
     //   throw new Error('Olpassword and new password are required.');
@@ -206,6 +196,8 @@ const authService = {
     return handleResponse(apiClient.get('enquiries/', data))
   },
 
+  
+
   notificationMarkasRead:async (id) => {
     console.log('id:', id)
     return handleResponse(apiClient.put(`notification_delivery/${id}/true/`))
@@ -239,7 +231,13 @@ const authService = {
     }
     return handleResponse(apiClient.post(`organization/${orgId}/restore/`));
   },
-  
+  restoreAdmin: async (adminId) => {
+  if (!adminId) {
+    throw new Error('Admin ID is required to restore an admin.');
+  }
+  return handleResponse(apiClient.post(`product-admin/${adminId}/restore/`));
+},
+
   msi_Enquiry: async () => {
     return handleResponse(apiClient.get(`total_mis_enquriy/`))
   },
@@ -276,21 +274,6 @@ const authService = {
   OrgNotification: async () => {
     return handleResponse(apiClient.get(`notification_delivery/`))
   },
-
-
-  // Bulk Assign
-  BulkAssign: async (id) => {
-    return handleResponse(apiClient.post(`assign-approver-document/bulk/${id}/`))
-  },
-
-  // Asssign Selected Document
-  SelectedAssign: async (id, data1) => {
-    return handleResponse(apiClient.post(`assign-approver-selected-document/${id}/`, data1))
-    
-  },
-
-
-
   // Organization APIs
   createOrganization: async (data) => {
     // if (!data.name || !data.owner_email) {
@@ -306,6 +289,13 @@ const authService = {
       throw new Error('Organization ID is required to approve an organization.');
     }
     return handleResponse(apiClient.post(`organization/${orgId}/approve/`));
+  },
+  RestoreOrganizationdelete:async(orgId)=>{
+    if(!orgId)
+    {
+      throw new Error('Organisation ID is required to delete an organization permanently');
+    }
+    return handleResponse(apiClient.post(`organization_undelete/${orgId}/`))
   },
   rejectOrganization: async (orgId) => {
     if (!orgId) {
@@ -404,20 +394,6 @@ const authService = {
     return handleResponse(apiClient.delete(`organization_delete/${orgId}/`))
   },
 
-  RestoreOrganizationdelete:async(orgId) => {
-    if (!orgId) {
-      throw new Error('Organization ID is required to delete an organization permanently.');
-    } 
-    return handleResponse(apiClient.post(`organization_undelete/${orgId}/`))
-  },
-
-  RestoreUserdelete:async(orgId) => {
-    if (!orgId) {
-      throw new Error('Organization ID is required to restore an user.');
-    } 
-    return handleResponse(apiClient.patch(`auth/${orgId}/un_delete/`))
-  },
-
   addSubAdmin: async (orgId, data) => {
     if (!orgId || !data.email) {
       throw new Error('Organization ID and sub-admin email are required.');
@@ -494,12 +470,13 @@ const authService = {
     return handleResponse(apiClient.post(`documents/${docId}/approve/`));
   },
 
-  pendingDocument: async (docId) => {
-    if (!docId) {
-      throw new Error('Document ID is required to approve a document.');
-    }
-    return handleResponse(apiClient.post(`documents/${docId}/approve/`));
-  },
+ pendingDocument: async (docId) => {
+  if (!docId) {
+    throw new Error('Document ID is required.');
+  }
+  return handleResponse(apiClient.post(`documents/${docId}/pending/`));  // corrected endpoint
+},
+
 
   rejectDocument: async (docId, reason) => {
     // if (!docId || !reason) {
